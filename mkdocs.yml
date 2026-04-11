@@ -194,9 +194,25 @@ nav:
     - "P07 — DevOps Pipeline": projects/p07_devops_pipeline.md
   - "📚 Courses":
     - courses/index.md
-    - "🐍 Python: Zero to Hero":
-      - courses/python_zero_to_hero/index.md
-      - "Lesson 01 — First Program": courses/python_zero_to_hero/lesson_01.md
+    - "🐍 Python Fundamentals":
+      - courses/python_fundamentals/index.md
+      - "Lesson 01 — First Program": courses/python_fundamentals/lesson_01.md
+      - "Lesson 02 — Variables and Types": courses/python_fundamentals/lesson_02.md
+      - "Lesson 03 — Input and Decisions": courses/python_fundamentals/lesson_03.md
+      - "Lesson 04 — Loops": courses/python_fundamentals/lesson_04.md
+      - "Lesson 05 — Functions": courses/python_fundamentals/lesson_05.md
+      - "Lesson 06 — Handling Errors": courses/python_fundamentals/lesson_06.md
+    - "🐍 Python: Data and Files":
+      - courses/python_data_and_files/index.md
+      - "Lesson 01 — Organising Data": courses/python_data_and_files/lesson_01.md
+      - "Lesson 02 — Working with Files": courses/python_data_and_files/lesson_02.md
+    - "🐍 Python: OOP":
+      - courses/python_oop/index.md
+      - "Lesson 01 — Classes and Objects": courses/python_oop/lesson_01.md
+    - "🐍 Python: Professional Tools":
+      - courses/python_professional/index.md
+      - "Lesson 01 — Modules and Virtual Environments": courses/python_professional/lesson_01.md
+      - "Lesson 02 — Building CLI Tools": courses/python_professional/lesson_02.md
   - Resources:
     - resources/index.md
   - "⚗️ Specialisations":
