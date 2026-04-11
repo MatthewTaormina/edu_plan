@@ -4,6 +4,43 @@
 
 ---
 
+## Storage Models — The Conceptual Layer
+
+Before choosing a database type, understand **how** it stores data. This affects performance
+characteristics more than almost any other factor.
+
+| Storage Model | How data is laid out | Optimised for | Examples |
+|---------------|---------------------|--------------|---------|
+| **Row-oriented** | Each row stored together on disk | OLTP — frequent reads/writes of individual records | PostgreSQL 🟢, MySQL 🟢, SQLite 🟢 |
+| **Columnar** | Each column stored together on disk | OLAP — aggregate queries across millions of rows | DuckDB 🟢, ClickHouse 🟢, Amazon Redshift 🟢, BigQuery 🟢, Parquet 🟢 |
+| **Document** | Each record stored as a self-describing JSON/BSON blob | Flexible schemas, nested data, variable structure | MongoDB 🟢, Firestore 🟢 |
+
+```
+Row-oriented (OLTP):
+  Row 1: [id=1, name="Alice", age=30, city="London"]
+  Row 2: [id=2, name="Bob",   age=25, city="Paris" ]
+  → Fast to fetch one complete row: SELECT * FROM users WHERE id = 1
+
+Columnar (OLAP):
+  id column:   [1, 2, 3, ...]
+  name column: ["Alice", "Bob", "Carol", ...]
+  age column:  [30, 25, 28, ...]
+  → Fast to aggregate across all rows: SELECT AVG(age) FROM users   ← reads only the age column
+
+Document:
+  { "_id": "abc", "name": "Alice", "address": { "city": "London", "postcode": "EC1A" } }
+  → Each document is independent; schema can vary per record
+```
+
+!!! tip "A practical rule"
+    - Building an app that reads/writes individual user records? → **Row-oriented** (PostgreSQL)
+    - Running analytics queries over millions of events? → **Columnar** (DuckDB for local, BigQuery/Redshift for cloud)
+    - Data has a changing or nested structure? → **Document** (MongoDB)
+
+These models are covered in depth in the [Schema Design](design.md) unit.
+
+---
+
 ## Database Types
 
 Databases are not one-size-fits-all. Each type is optimised for a different problem.
