@@ -255,13 +255,25 @@ Until then, treat domain units as reference material in all cross-links.
 | **Reference / Wiki** | `docs/reference/` | Deep-dive topic pages; dip in as needed |
 | **Resources** | `docs/resources/` | Curated external links (pages, videos, articles only) |
 
+### Course Types
+
+There are two valid course formats — both live in `docs/courses/`:
+
+| Type | Name style | Structure | Example |
+|------|-----------|-----------|---------|
+| **Theory-based** | Concept or level | Concept-first, reusable across paths | "Python Fundamentals", "OOP Concepts", "Data Structures" |
+| **Project-based** | Goal outcome | Build something narrative, goal-first | "Build Your First Website", "Build a REST API", "Build a CLI Tool" |
+
+Theory-based courses focus on understanding. Project-based courses focus on doing.
+A learning path may sequence one or both types together.
+
 ### Course Naming and Scope
 
-**Course names must match their depth.** A course named "Zero to Hero" must deliver on that promise — a learner who completes it must be competent, not just introduced.
+**Course names must match their depth.** A course named "Fundamentals" should cover the fundamentals completely. A project-based course named "Build Your First Website" must result in a working website.
 
-- "Python: Zero to Hero" → ~30-36 lessons across 3 parts
+- "Python Fundamentals" → 6 lessons (variables through error handling)
 - "Git Fundamentals" → 6-8 lessons
-- "Linux Command Line" → 10-12 lessons
+- "Build Your First Website" → 6-8 lessons (HTML → CSS → JS → deploy)
 
 Courses may be split into Parts (e.g. Part 1: Fundamentals, Part 2: Intermediate).
 Lessons within a course may reference other courses: "For async patterns, see [Async Python](../async_python/index.md)."
