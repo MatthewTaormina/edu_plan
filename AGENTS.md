@@ -217,12 +217,54 @@ Do **not** embed or replicate third-party course content. Reference it, link it,
 
 ## Courses vs Domain Units
 
-This repository contains **two types of learning content:**
+### Content Hierarchy
 
-| Type | Location | Purpose | Structure |
-|------|----------|---------|-----------|
-| **Domain Units** | `docs/domains/` | Topic reference + teaching — used as needed | Concept-first, not necessarily linear |
-| **Courses** | `docs/courses/` | Linear, lesson-by-lesson learning experience | Lesson 1 → 2 → 3 → Project → Certificate |
+```
+Learning Path (docs/paths/)
+  └── references Courses → "I want to become X — here's the sequence of courses"
+
+Course (docs/courses/<name>/)
+  └── contains Lessons → linear, lesson-by-lesson, inline exercises
+       └── each Lesson links to:
+             ├── Reference pages  (docs/reference/) — deep reading on the concept
+             ├── Resources        (external pages, videos, articles — specific URLs)
+             └── Projects         (docs/projects/) — apply what you just learned
+
+Project (docs/projects/)
+  └── links to:
+        ├── Reference pages — concepts needed
+        └── Resources       — specific guides and tools
+
+Reference / Wiki (docs/reference/)
+  └── formerly "domains/" — this is the encyclopaedia, not the course
+        Topic deep-dives: dip in when you need to understand something
+        NOT a learning sequence — cross-linked from lessons and projects
+```
+
+**Rule: `docs/domains/` will be renamed `docs/reference/` in a dedicated refactor commit.**
+Until then, treat domain units as reference material in all cross-links.
+
+### Content Type Distinctions
+
+| Type | Location | Use when... |
+|------|----------|-------------|
+| **Learning Paths** | `docs/paths/` | "I want to become X" — sequences of courses for a role |
+| **Courses** | `docs/courses/` | "Teach me Y" — linear lessons, named to match scope |
+| **Lessons** | `docs/courses/<course>/` | Individual steps within a course; link out to references/resources/projects |
+| **Projects** | `docs/projects/` | Hands-on application; link to reference and resources |
+| **Reference / Wiki** | `docs/reference/` | Deep-dive topic pages; dip in as needed |
+| **Resources** | `docs/resources/` | Curated external links (pages, videos, articles only) |
+
+### Course Naming and Scope
+
+**Course names must match their depth.** A course named "Zero to Hero" must deliver on that promise — a learner who completes it must be competent, not just introduced.
+
+- "Python: Zero to Hero" → ~30-36 lessons across 3 parts
+- "Git Fundamentals" → 6-8 lessons
+- "Linux Command Line" → 10-12 lessons
+
+Courses may be split into Parts (e.g. Part 1: Fundamentals, Part 2: Intermediate).
+Lessons within a course may reference other courses: "For async patterns, see [Async Python](../async_python/index.md)."
 
 **Courses** are self-contained in this repo. They sequence domain concepts into a taught experience
 with inline exercises between lessons (not just at the end). A course:
