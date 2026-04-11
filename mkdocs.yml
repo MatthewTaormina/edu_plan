@@ -12,8 +12,6 @@ edit_uri: edit/main/docs/
 theme:
   name: material
 
-
-
   palette:
     # Dark mode (default)
     - scheme: slate
@@ -119,16 +117,43 @@ nav:
   - Start Here:
     - start/orientation.md
     - start/self_assessment.md
-    - "🛠️ Tools Setup": start/tools_setup.md
+    - "Tools Setup": start/tools_setup.md
   - Learning Paths:
-    - "🟢 Beginner": paths/beginner.md
-    - "🔵 Web Developer": paths/web_developer.md
-    - "🟣 Systems Programmer": paths/systems.md
-    - "🟠 DevOps Engineer": paths/devops.md
-    - "🔴 Full Stack": paths/fullstack.md
-    - "⚫ AI Engineer": paths/ai_engineer.md
-  - Domains:
-    - "🏛️ Foundations":
+    - "Beginner": paths/beginner.md
+    - "Web Developer": paths/web_developer.md
+    - "Systems Programmer": paths/systems.md
+    - "DevOps Engineer": paths/devops.md
+    - "Full Stack": paths/fullstack.md
+    - "AI Engineer": paths/ai_engineer.md
+  - Courses:
+    - courses/index.md
+    - "Python Fundamentals":
+      - courses/python_fundamentals/index.md
+      - "Lesson 01 — First Program": courses/python_fundamentals/lesson_01.md
+      - "Lesson 02 — Variables and Types": courses/python_fundamentals/lesson_02.md
+      - "Lesson 03 — Input and Decisions": courses/python_fundamentals/lesson_03.md
+      - "Lesson 04 — Loops": courses/python_fundamentals/lesson_04.md
+      - "Lesson 05 — Functions": courses/python_fundamentals/lesson_05.md
+      - "Lesson 06 — Handling Errors": courses/python_fundamentals/lesson_06.md
+    - "Python: Data and Files":
+      - courses/python_data_and_files/index.md
+      - "Lesson 01 — Organising Data": courses/python_data_and_files/lesson_01.md
+      - "Lesson 02 — Working with Files": courses/python_data_and_files/lesson_02.md
+      - "Lesson 03 — JSON and CSV": courses/python_data_and_files/lesson_03.md
+      - "Lesson 04 — Capstone: Contact Book": courses/python_data_and_files/lesson_04.md
+    - "Python: OOP":
+      - courses/python_oop/index.md
+      - "Lesson 01 — Classes and Objects": courses/python_oop/lesson_01.md
+      - "Lesson 02 — Inheritance and Composition": courses/python_oop/lesson_02.md
+      - "Lesson 03 — Dunder Methods": courses/python_oop/lesson_03.md
+      - "Lesson 04 — Dataclasses": courses/python_oop/lesson_04.md
+      - "Lesson 05 — Capstone: Task Manager": courses/python_oop/lesson_05.md
+    - "Python: Professional Tools":
+      - courses/python_professional/index.md
+      - "Lesson 01 — Modules and Virtual Environments": courses/python_professional/lesson_01.md
+      - "Lesson 02 — Building CLI Tools": courses/python_professional/lesson_02.md
+  - Wiki:
+    - "Foundations":
       - domains/foundations/index.md
       - "Programming Basics": domains/foundations/programming_basics.md
       - "Data Structures": domains/foundations/data_structures.md
@@ -140,7 +165,7 @@ nav:
       - "Concurrency": domains/foundations/concurrency.md
       - "Networking": domains/foundations/networking.md
       - "OS Concepts": domains/foundations/os_concepts.md
-    - "🌐 Web Development":
+    - "Web Development":
       - domains/web_dev/index.md
       - "HTML & CSS": domains/web_dev/html_css.md
       - "JavaScript Core": domains/web_dev/javascript_core.md
@@ -149,13 +174,13 @@ nav:
       - "REST APIs": domains/web_dev/rest_api.md
       - "GraphQL": domains/web_dev/graphql.md
       - "SSR vs CSR": domains/web_dev/ssr_csr.md
-    - "🔩 Systems Programming":
+    - "Systems Programming":
       - domains/systems_programming/index.md
       - "C Fundamentals": domains/systems_programming/c_fundamentals.md
       - "Rust Fundamentals": domains/systems_programming/rust_fundamentals.md
       - "Rust Advanced": domains/systems_programming/rust_advanced.md
       - "Assembly Basics": domains/systems_programming/assembly_basics.md
-    - "🚢 DevOps":
+    - "DevOps":
       - domains/devops/index.md
       - "Linux CLI": domains/devops/linux_cli.md
       - "Git Workflow": domains/devops/git_workflow.md
@@ -165,22 +190,22 @@ nav:
       - "Infrastructure as Code": domains/devops/iac.md
       - "Monitoring": domains/devops/monitoring.md
       - "Testing": domains/devops/testing.md
-    - "🗄️ Databases":
+    - "Databases":
       - domains/databases/index.md
       - "SQL Fundamentals": domains/databases/sql_fundamentals.md
       - "NoSQL": domains/databases/nosql.md
       - "Database Design": domains/databases/design.md
       - "Performance": domains/databases/performance.md
-    - "☁️ Cloud":
+    - "Cloud":
       - domains/cloud/index.md
       - "Cloud Fundamentals": domains/cloud/fundamentals.md
       - "Serverless": domains/cloud/serverless.md
       - "Architecture Patterns": domains/cloud/architecture_patterns.md
-    - "🤖 AI / ML":
+    - "AI / ML":
       - domains/ai_ml/index.md
       - "ML Foundations": domains/ai_ml/foundations.md
       - "LLM Engineering": domains/ai_ml/llm_engineering.md
-    - "🔐 Security":
+    - "Security":
       - domains/security/index.md
       - "App Security": domains/security/appsec.md
   - Projects:
@@ -192,38 +217,11 @@ nav:
     - "P05 — Data Pipeline": projects/p05_data_pipeline.md
     - "P06 — AI Agent": projects/p06_ai_agent.md
     - "P07 — DevOps Pipeline": projects/p07_devops_pipeline.md
-  - "📚 Courses":
-    - courses/index.md
-    - "🐍 Python Fundamentals":
-      - courses/python_fundamentals/index.md
-      - "Lesson 01 — First Program": courses/python_fundamentals/lesson_01.md
-      - "Lesson 02 — Variables and Types": courses/python_fundamentals/lesson_02.md
-      - "Lesson 03 — Input and Decisions": courses/python_fundamentals/lesson_03.md
-      - "Lesson 04 — Loops": courses/python_fundamentals/lesson_04.md
-      - "Lesson 05 — Functions": courses/python_fundamentals/lesson_05.md
-      - "Lesson 06 — Handling Errors": courses/python_fundamentals/lesson_06.md
-    - "🐍 Python: Data and Files":
-      - courses/python_data_and_files/index.md
-      - "Lesson 01 — Organising Data": courses/python_data_and_files/lesson_01.md
-      - "Lesson 02 — Working with Files": courses/python_data_and_files/lesson_02.md
-      - "Lesson 03 — JSON and CSV": courses/python_data_and_files/lesson_03.md
-      - "Lesson 04 — Capstone: Contact Book": courses/python_data_and_files/lesson_04.md
-    - "🐍 Python: OOP":
-      - courses/python_oop/index.md
-      - "Lesson 01 — Classes and Objects": courses/python_oop/lesson_01.md
-      - "Lesson 02 — Inheritance and Composition": courses/python_oop/lesson_02.md
-      - "Lesson 03 — Dunder Methods": courses/python_oop/lesson_03.md
-      - "Lesson 04 — Dataclasses": courses/python_oop/lesson_04.md
-      - "Lesson 05 — Capstone: Task Manager": courses/python_oop/lesson_05.md
-    - "🐍 Python: Professional Tools":
-      - courses/python_professional/index.md
-      - "Lesson 01 — Modules and Virtual Environments": courses/python_professional/lesson_01.md
-      - "Lesson 02 — Building CLI Tools": courses/python_professional/lesson_02.md
   - Resources:
     - resources/index.md
-  - "⚗️ Specialisations":
-    - "🟡 Legacy Systems":
+  - Specialisations:
+    - "Legacy Systems":
       - specialisations/legacy_systems/index.md
-  - "📐 Style & Standards":
+  - "Style & Standards":
     - "Pseudocode Standard": meta/pseudocode_standard.md
     - "Contributor Guide": meta/style_guide.md
