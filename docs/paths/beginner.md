@@ -1,130 +1,93 @@
-# 🟢 Beginner Path — From Zero to Writing Code
+# Beginner Path — From Zero to Writing Code
 
 > **Who this is for:** You've never programmed before, or you've dabbled but nothing stuck.
 > **Goal:** Build a solid foundation so any other path makes sense.
-> **Time estimate:** 3–6 months at 1 hr/day
+> **Time estimate:** 3–4 months at 1 hr/day
 
 ---
 
-## 🏁 Milestones
-
-Complete these in order. Each one unlocks the next.
-
-### Milestone 1 — Environment & Mindset 🌱
+## Step 1 — Set Up Your Environment
 *~1 week*
 
-- [ ] Read [`00_start_here/orientation.md`](../00_start_here/orientation.md)
-- [ ] Complete self-assessment
-- [ ] Set up your tools (VS Code, Git, terminal)
+- [ ] Install Python 3.12+ — [python.org/downloads](https://python.org/downloads)
+- [ ] Install VS Code — [code.visualstudio.com](https://code.visualstudio.com)
+- [ ] Install Git — [git-scm.com](https://git-scm.com)
 - [ ] Create a GitHub account
 - [ ] Create a repo called `learning-journal` — commit daily notes
 
-**🏆 Reward:** You are now a developer. You have a GitHub account and write code every day.
+**Done when:** You can open a terminal, type `python --version`, and see a version number.
 
 ---
 
-### Milestone 2 — Programming Basics (Python) 🐍
-*~4 weeks*
+## Step 2 — Python Fundamentals
+*~3 weeks · [Start Course →](../courses/python_fundamentals/index.md)*
 
-**Why Python?** — It's readable, forgiving, and has the most learning resources. Once you know one language, others come faster.
+Learn to write real Python programs from scratch.
 
-#### Course
-- 📺 [CS50P — Harvard's Python Course (FREE)](https://cs50.harvard.edu/python/) — the gold standard
+| # | Lesson | What you'll do |
+|---|--------|---------------|
+| 01 | [First Program](../courses/python_fundamentals/lesson_01.md) | Print to the screen, run Python |
+| 02 | [Variables and Types](../courses/python_fundamentals/lesson_02.md) | Store and work with data |
+| 03 | [Input and Decisions](../courses/python_fundamentals/lesson_03.md) | Read input, write if/else |
+| 04 | [Loops](../courses/python_fundamentals/lesson_04.md) | Repeat actions with for/while |
+| 05 | [Functions](../courses/python_fundamentals/lesson_05.md) | Organise code into reusable pieces |
+| 06 | [Handling Errors](../courses/python_fundamentals/lesson_06.md) | Write robust, safe programs |
 
-#### Units to Complete
-- [ ] [`domains/foundations/programming_basics.md`](../domains/foundations/programming_basics.md)
-  - Variables, data types, operators
-  - Control flow (if/else, loops)
-  - Functions and scope
-  - Strings and collections (lists, dicts)
-  - File I/O
-  - Error handling / exceptions
-
-#### Assignment (do after each topic)
-- After variables: Write a temperature converter (°C ↔ °F)
-- After functions: Write a calculator with 4 operations
-- After collections: Build a contact book (add/find/delete)
-- After file I/O: Save the contact book to a file
-
-**🏆 Reward:** You can write real programs that solve real problems.
+**Done when:** You complete the capstone number guessing game.
 
 ---
 
-### Milestone 3 — Data Structures & Algorithms Basics 📊
-*~4 weeks*
+## Step 3 — Data and Files
+*~2 weeks · [Start Course →](../courses/python_data_and_files/index.md)*
 
-- [ ] [`domains/foundations/data_structures.md`](../domains/foundations/data_structures.md)
-  - Arrays and dynamic arrays
-  - Linked lists
-  - Stacks and queues
-  - Hash tables (dictionaries)
-  - Trees (binary trees, BSTs)
-  
-- [ ] [`domains/foundations/algorithms.md`](../domains/foundations/algorithms.md)
-  - Big-O notation (don't memorize — understand the concept)
-  - Linear search vs binary search
-  - Bubble sort and merge sort (understand, don't memorize)
+Store, read, and exchange data between programs.
 
-#### Course
-- 📺 [CS50x — Weeks 1–5 (FREE)](https://cs50.harvard.edu/x/) — best intro to CS fundamentals
+| # | Lesson | What you'll do |
+|---|--------|---------------|
+| 01 | [Organising Data](../courses/python_data_and_files/lesson_01.md) | Lists, dicts, sets, tuples |
+| 02 | [Working with Files](../courses/python_data_and_files/lesson_02.md) | Read and write text files |
+| 03 | [JSON and CSV](../courses/python_data_and_files/lesson_03.md) | Save structured data |
+| 04 | [Capstone: Contact Book](../courses/python_data_and_files/lesson_04.md) | Build a file-backed CLI app |
 
-**🏆 Reward:** You now think algorithmically. You understand *why* code is fast or slow.
+**Done when:** Your contact book saves to disk and survives a restart.
 
 ---
 
-### Milestone 4 — Version Control & Collaboration 🌿
-*~1 week*
+## Step 4 — Version Control
+*~1 week · [Git Workflow Wiki](../domains/devops/git_workflow.md)*
 
-- [ ] [`domains/devops/git_workflow.md`](../domains/devops/git_workflow.md)
-  - Commits, branches, merges
-  - Pull requests
-  - Resolving conflicts
-  - `.gitignore`, commit messages
+- [ ] Commits, branches, merges
+- [ ] Pull requests
+- [ ] Resolving conflicts
+- [ ] `.gitignore`, commit messages
 
-#### Resource
-- 📺 [Learn Git Branching (Interactive, FREE)](https://learngitbranching.js.org/)
+**Resource:** [Learn Git Branching (Interactive, FREE)](https://learngitbranching.js.org/)
 
-**🏆 Reward:** Your code is safe, versioned, and shareable.
+**Done when:** You commit code every day and understand `git log`, `git branch`, `git merge`.
 
 ---
 
-### Milestone 5 — First Real Project 🚀
-*~2 weeks*
+## Step 5 — (Choose Your Flavour)
 
-Build something you actually want to use. See [`projects/p01_cli_tool.md`](../projects/p01_cli_tool.md).
+From here, choose based on what you want to build:
 
-Examples:
-- A CLI habit tracker (saves to file, shows streaks)
-- A CLI quiz game (loads questions from JSON)
-- A CLI password generator + strength checker
+### Option A — Keep Going with Python
+→ [Python: OOP](../courses/python_oop/index.md) — model your programs with classes
+→ [Python: Professional Tools](../courses/python_professional/index.md) — tests, CLI tools, packaging
+→ [Python Developer Path](python_developer.md)
 
-Requirements:
-- [ ] Uses functions, data structures, and file I/O
-- [ ] Has error handling
-- [ ] Is on GitHub
-- [ ] Has a README explaining what it does
+### Option B — Build Websites
+→ [Web Developer Path](web_developer.md) — HTML, CSS, JavaScript, React
 
-**🏆 Reward:** You have a real project on GitHub. Show it to people.
+### Option C — Infrastructure & Tools
+→ [DevOps Path](devops.md) — Linux, Docker, cloud
 
 ---
 
-## ➡️ After This Path
+## Reference Material
 
-Based on your interest, branch to:
+While studying, these Wiki pages are useful to dip into:
 
-| Interest | Next Path |
-|----------|-----------|
-| Build websites / apps | 🔵 [Web Developer Path](web_developer.md) |
-| Understand computers deeply | 🟣 [Systems Path](systems.md) |
-| Infrastructure / cloud | 🟠 [DevOps Path](devops.md) |
-| Not sure | Stay here, build 2–3 more projects first |
-
----
-
-## 🔍 Optional Exploration Topics
-
-These are rabbit holes — skip if you're just getting started, revisit when curious:
-
-- 🔍 How does a CPU actually execute your Python code? (interpretation vs compilation)
-- 🔍 What is the difference between a compiled and interpreted language?
-- 🔍 What is memory? What's the difference between RAM and disk?
+- [Programming Basics](../domains/foundations/programming_basics.md)
+- [Data Structures](../domains/foundations/data_structures.md)
+- [Algorithms](../domains/foundations/algorithms.md)

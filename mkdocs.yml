@@ -36,7 +36,7 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
-    - navigation.expand
+    - navigation.prune
     - navigation.indexes
     - navigation.top
     - navigation.footer
@@ -120,6 +120,7 @@ nav:
     - "Tools Setup": start/tools_setup.md
   - Learning Paths:
     - "Beginner": paths/beginner.md
+    - "Python Developer": paths/python_developer.md
     - "Web Developer": paths/web_developer.md
     - "Systems Programmer": paths/systems.md
     - "DevOps Engineer": paths/devops.md
