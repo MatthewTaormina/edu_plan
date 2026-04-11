@@ -1,45 +1,50 @@
 # Courses
 
-Courses in this repository are **self-contained, linear learning experiences** — lesson by lesson,
-with inline exercises, a capstone project, and a final milestone checklist.
+Courses are **self-contained, linear learning experiences** — lesson by lesson,
+with inline exercises and a capstone project at the end.
 
-They are different from [Domain Units](../domains/foundations/index.md), which are topic references
-you can dip into as needed. Courses guide you from zero to competent on a specific skill.
+They are different from the [Wiki](../domains/foundations/index.md) (reference material
+you dip into as needed). Courses guide you from zero to competent on a specific skill.
+
+There are two types:
+
+| Type | Description | Example |
+|------|-------------|---------|
+| **Theory-based** | Concept-first, reusable across paths | Python Fundamentals |
+| **Project-based** | Goal-first, build something real | Build Your First Website *(planned)* |
 
 ---
 
 ## Available Courses
 
-| Course | Level | Duration | Status |
-|--------|-------|----------|--------|
-| [Python: Zero to Hero](python_zero_to_hero/index.md) | Beginner | 8 weeks | 🚧 In Progress |
-| [Git & Version Control](git_fundamentals/index.md) | Beginner | 1 week | 🚧 Planned |
-| [Linux Command Line](linux_fundamentals/index.md) | Beginner | 2 weeks | 🚧 Planned |
-| [Web Development Fundamentals](web_dev_fundamentals/index.md) | Beginner | 6 weeks | 🚧 Planned |
-| [DevOps Fundamentals](devops_fundamentals/index.md) | Intermediate | 10 weeks | 🚧 Planned |
-| [Rust: Systems Programming](rust_systems/index.md) | Advanced | 12 weeks | 🚧 Planned |
+### Python
+
+| Course | Level | Lessons | Status |
+|--------|-------|---------|--------|
+| [Python Fundamentals](python_fundamentals/index.md) | Beginner | 6 | ✅ Complete |
+| [Python: Data and Files](python_data_and_files/index.md) | Beginner | 4 | ✅ Complete |
+| [Python: OOP](python_oop/index.md) | Intermediate | 5 | ✅ Complete |
+| [Python: Professional Tools](python_professional/index.md) | Intermediate | 4 | 🚧 In Progress |
+
+### Planned
+
+| Course | Level | Type |
+|--------|-------|------|
+| Git Fundamentals | Beginner | Theory |
+| Linux Command Line | Beginner | Theory |
+| Build Your First Website | Beginner | Project |
+| DevOps Fundamentals | Intermediate | Theory |
 
 ---
 
 ## How Courses Work
 
-Each course follows the same structure:
-
 ```
-Course Index      → Syllabus, prerequisites, time estimate
-  │
-  ├── Lesson 01   → Concept explanation → Example → Try It exercise
-  ├── Lesson 02   → Builds on previous lesson
+Course Index
+  ├── Lesson 01  → Concept → Example → Try It
+  ├── Lesson 02  → Builds on previous
   ├── ...
-  ├── Lesson N
-  │
-  ├── Capstone Project  → Apply everything in a real project
-  └── Completion Checklist + Certificate (can print/screenshot)
+  └── Capstone   → Apply everything in one real project
 ```
 
-**The difference from Domain Units:**
-
-- Domain units explain a topic thoroughly — you study them when you need that knowledge
-- Courses sequence that knowledge into a taught progression — you follow them start to finish
-
-Courses cross-link to domain units for deeper reading, but don't repeat the same content.
+Each lesson links out to Wiki pages for deeper reading — it doesn't repeat the same content.
