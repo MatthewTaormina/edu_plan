@@ -11,7 +11,6 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  custom_dir: docs/overrides
   logo: assets/logo.svg
   favicon: assets/logo.svg
 
@@ -114,8 +113,6 @@ extra:
       link: https://github.com/your-username/edu_plan
       name: GitHub
   generator: false
-  analytics:
-    provider: custom
 
 nav:
   - Home: index.md
