@@ -206,9 +206,15 @@ nav:
       - courses/python_data_and_files/index.md
       - "Lesson 01 — Organising Data": courses/python_data_and_files/lesson_01.md
       - "Lesson 02 — Working with Files": courses/python_data_and_files/lesson_02.md
+      - "Lesson 03 — JSON and CSV": courses/python_data_and_files/lesson_03.md
+      - "Lesson 04 — Capstone: Contact Book": courses/python_data_and_files/lesson_04.md
     - "🐍 Python: OOP":
       - courses/python_oop/index.md
       - "Lesson 01 — Classes and Objects": courses/python_oop/lesson_01.md
+      - "Lesson 02 — Inheritance and Composition": courses/python_oop/lesson_02.md
+      - "Lesson 03 — Dunder Methods": courses/python_oop/lesson_03.md
+      - "Lesson 04 — Dataclasses": courses/python_oop/lesson_04.md
+      - "Lesson 05 — Capstone: Task Manager": courses/python_oop/lesson_05.md
     - "🐍 Python: Professional Tools":
       - courses/python_professional/index.md
       - "Lesson 01 — Modules and Virtual Environments": courses/python_professional/lesson_01.md
