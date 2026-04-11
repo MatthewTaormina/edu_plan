@@ -254,6 +254,7 @@ There are two distinct contexts — apply the right rule to each:
 - When a developer tool has **no native Windows support** (e.g. Ansible control node), state this explicitly with a `!!! note` and recommend either WSL2 or a Linux VM — never silently assume Linux.
 - Docker Desktop provides cross-platform container support on Windows and is the safe default for container-based tooling.
 - Shell examples that differ between platforms: provide **both PowerShell and Bash/zsh** tabs side by side.
+- **OS-specific lessons are exempt.** A lesson *about* Linux (e.g. Linux CLI, systemd, package management) or Windows (e.g. PowerShell, Active Directory) is allowed to be OS-specific. Suggest a practice environment at the top: VirtualBox/VMware for a full VM, or WSL2 for lightweight Linux on Windows.
 
 **Practical examples:**
 
