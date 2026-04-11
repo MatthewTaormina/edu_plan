@@ -191,6 +191,62 @@ Nav entries use Title Case for display names:
 
 ---
 
+## Resource Link Rules
+
+Resources listed in unit `## 📚 Resources` sections must be **specific, linkable items** — not course platforms in general.
+
+| ✅ Acceptable resource | ❌ Not acceptable |
+|----------------------|-----------------|
+| A specific YouTube video (with URL) | "Check out KodeKloud" (no specific content) |
+| A specific docs page or guide | An entire course platform |
+| A specific article or blog post | A tool's homepage |
+| A book (with edition + year) | A YouTube channel (link specific videos) |
+
+**Paid courses** (Udemy, KodeKloud, Pluralsight, Frontend Masters, etc.) are listed in a separate
+**"External Courses"** tab within the `## 📚 Resources` section — never in Primary or Supplemental:
+
+```markdown
+=== "External Courses"
+    - 🎓 **[KodeKloud — CKA Practice](https://kodekloud.com/)** — Best prep for the CKA exam (PAID)
+    - 🎓 **[Frontend Masters — Complete Intro to React](https://frontendmasters.com/...)** — (PAID)
+```
+
+Do **not** embed or replicate third-party course content. Reference it, link it, move on.
+
+---
+
+## Courses vs Domain Units
+
+This repository contains **two types of learning content:**
+
+| Type | Location | Purpose | Structure |
+|------|----------|---------|-----------|
+| **Domain Units** | `docs/domains/` | Topic reference + teaching — used as needed | Concept-first, not necessarily linear |
+| **Courses** | `docs/courses/` | Linear, lesson-by-lesson learning experience | Lesson 1 → 2 → 3 → Project → Certificate |
+
+**Courses** are self-contained in this repo. They sequence domain concepts into a taught experience
+with inline exercises between lessons (not just at the end). A course:
+- Has a defined syllabus and time estimate at the top
+- Is split into numbered lessons, each building on the last
+- Has inline "Try it" exercises after each concept block
+- Ends with a capstone project and a milestone checklist
+- Cross-links to domain units for deeper reading, but does not duplicate them
+
+Example: `docs/courses/python_zero_to_hero/` contains lessons 01–12 with exercises, not the
+Python domain unit content repeated.
+
+---
+
+## Cross-Platform Policy (Windows + Linux)
+
+All tools, commands, and examples must work on **both Windows and Linux**.
+
+- Prefer tools with native Windows support — not "use WSL" as the workaround
+- When a tool is Linux-only (or Linux-primary), state that explicitly with a `!!! warning`
+- Shell examples: provide both PowerShell and Bash/zsh variants where they differ
+- **Do not recommend** Linux container-first tools (e.g. Dagger) for general use — they require WSL2 on Windows and are not cross-platform in practice
+- Docker Desktop provides cross-platform container support and is the safe default
+
 ## Things to Check at Session Start
 
 1. Run `git log --oneline -10` to see what was last committed
