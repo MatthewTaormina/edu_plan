@@ -109,9 +109,10 @@ Status icons: 🟢 Modern | 🟡 Legacy | 🔴 Deprecated | 🔵 Foundation
 
 ### Legacy/Modern Policy
 
-- **2020+ default:** Primary content is modern (2020+). Legacy tools acknowledged, not excluded.
-- **Three categories:** Modern (primary), Legacy (labeled, taught), Foundation (always taught in full)
-- **Tab order:** `Modern (Recommended)` tab first, then `Legacy (Common)`, then `Foundation`
+- **Modern = actively maintained + dominant, regardless of age.** SSH (1995), Bash (1989), SQL (1974), C — all are 🟢 current because nothing has replaced them.
+- **Legacy = has a widely-adopted modern alternative.** Age alone is not sufficient. Webpack is legacy because Vite exists. jQuery is legacy because the platform caught up.
+- **Foundation = core primitives modern tooling wraps.** Teach them in full so learners understand what the abstraction hides.
+- **Tab order:** `Modern (Recommended)` first, then `Legacy (Common)`, then `Foundation`
 - **Inline feature notes:** `` `XMLHttpRequest` (introduced 1999, superseded by `fetch` 2015) ``
 
 ### Pseudocode
@@ -153,5 +154,5 @@ Nav entries use Title Case for display names:
 
 - Do not add content for macOS (all OS/hardware content is Windows + Linux only)
 - Do not recommend paid-only resources as primary references
-- Do not write units for technologies that are pre-2020 only — label them legacy and pair with a modern alternative
+- Do not write units for technologies that are **deprecated with no active use** — label them deprecated and note the replacement
 - Do not skip the pseudocode step even if the concept seems simple
