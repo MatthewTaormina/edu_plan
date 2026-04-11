@@ -181,7 +181,7 @@ The cutoff is not strict — it's a signal about maturity and current relevance:
 | React 18+ (hooks), Vue 3, SvelteKit | jQuery, Angular.js (v1), Backbone |
 | TypeScript 5+ | Flow, JSDoc-only typing |
 | Docker BuildKit, Compose v2 | Legacy docker-compose v1 syntax |
-| GitHub Actions, GitLab CI, Dagger | Jenkins (still common — label 🟡) |
+| GitHub Actions, GitLab CI | Jenkins (still common — label 🟡) |
 | Python 3.10+ (match, walrus, slots) | Python 2.x (label 🔴 Deprecated) |
 | Rust (stable 2021 edition+) | (Rust is modern — no legacy concern) |
 | async/await everywhere | Callback hell, Promise chains only |

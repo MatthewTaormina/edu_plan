@@ -474,7 +474,7 @@ deploy-production:
     **Jenkins** · **Introduced:** 2011 (as Hudson 2005) · **Latest:** 2.x (actively maintained, 2024) · **Deprecated:** N/A (maintained, but declining adoption for new projects)  
     Include here because: you will encounter Jenkins in enterprise environments and older devops setups.  
     Consider Jenkins if: self-hosted with a complex plugin ecosystem; on-prem requirements; no GitHub/GitLab.  
-    **Modern alternative:** GitHub Actions, GitLab CI, or Dagger (2022) for self-hosted.
+    **Modern alternative:** GitHub Actions (cloud-hosted) or GitLab CI (self-hosted). Both support Linux and Windows runners natively.
 
 ```groovy
 // Jenkinsfile (Declarative Pipeline — introduced 2016, preferred over Scripted)
