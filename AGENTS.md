@@ -112,8 +112,29 @@ Status icons: 🟢 Modern | 🟡 Legacy | 🔴 Deprecated | 🔵 Foundation
 - **Modern = actively maintained + dominant, regardless of age.** SSH (1995), Bash (1989), SQL (1974), C — all are 🟢 current because nothing has replaced them.
 - **Legacy = has a widely-adopted modern alternative.** Age alone is not sufficient. Webpack is legacy because Vite exists. jQuery is legacy because the platform caught up.
 - **Foundation = core primitives modern tooling wraps.** Teach them in full so learners understand what the abstraction hides.
+- **Legacy Specialisation = historically significant but not widely encountered in new work.** COBOL, FORTRAN, AS/400, SOAP/WSDL, VB6, mainframe JCL. These belong ONLY in `docs/specialisations/legacy_systems/` — never in domain or foundation content.
 - **Tab order:** `Modern (Recommended)` first, then `Legacy (Common)`, then `Foundation`
 - **Inline feature notes:** `` `XMLHttpRequest` (introduced 1999, superseded by `fetch` 2015) ``
+
+### Four-Tier Content Model
+
+```
+[Foundation]          Core primitives — always teach, regardless of modern shortcuts
+     ↓
+[Domain Units]        Current best-practice content — the main body of the guide
+     ↓
+[Paths]               Curated sequences through Domain Units for a role
+     ↓
+[Specialisations]     Optional deep-dives for specific career contexts
+  ├── advanced/       (e.g. distributed systems, compilers, OS internals)
+  └── legacy_systems/ (e.g. COBOL, FORTRAN, mainframes — encountered, not started from)
+```
+
+Legacy specialisations must:
+- State explicitly **why** someone would learn this: "You may encounter this in regulated industries (banking, insurance, government)"
+- Be marked **🟡 Legacy Specialisation** in their heading
+- Link back to the modern alternative at the top
+- Never be linked from the Beginner or standard domain paths
 
 ### Pseudocode
 
