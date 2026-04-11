@@ -75,13 +75,31 @@ Software evolves. Learners deserve to know what tools are current versus what th
 
 ### Tool / Framework Information Block
 
-Every time a specific tool, library, or framework is introduced (not just mentioned), include a metadata line:
+Every time a specific tool, library, or framework is introduced (not just mentioned), include a metadata line using this exact format:
 
 ```markdown
-> **Tool:** Webpack · **Created:** 2012 · **Latest:** 5.x (2020) · **Status:** 🟡 Legacy (Vite is preferred for new projects)
-
-> **Tool:** Vite · **Created:** 2020 · **Latest:** 5.x · **Status:** 🟢 Modern · **Maintained by:** Evan You / Vite team
+> **Tool:** <name> · **Introduced:** <year> · **Latest:** <version> (<year>) · **Deprecated:** <year or "N/A"> · **Status:** <icon + label>
 ```
+
+Examples:
+
+```markdown
+> **Tool:** Webpack · **Introduced:** 2012 · **Latest:** 5.98 (2024) · **Deprecated:** N/A · **Status:** 🟡 Legacy — Vite preferred for new projects; still maintained for existing ones
+
+> **Tool:** Vite · **Introduced:** 2020 · **Latest:** 5.x (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern
+
+> **Tool:** Grunt · **Introduced:** 2012 · **Latest:** 1.6 (2022) · **Deprecated:** N/A · **Status:** 🔴 Deprecated — ecosystem moved to npm scripts / Vite
+
+> **Tool:** docker-compose v1 · **Introduced:** 2014 · **Latest:** 1.29 (2021) · **Deprecated:** July 2023 · **Status:** 🔴 Deprecated — replaced by `docker compose` (v2, no hyphen)
+
+> **Tool:** Python 2.x · **Introduced:** 2000 · **Latest:** 2.7 (2010) · **Deprecated:** January 1, 2020 · **Status:** 🔴 Deprecated — use Python 3.10+
+```
+
+**Rules:**
+- `Introduced` = year the tool/version first released publicly
+- `Deprecated` = year officially end-of-life or superseded (use `N/A` if still actively maintained)
+- Always include both fields — they give learners the full timeline at a glance
+- For language features (not tools), use an inline note: `` `XMLHttpRequest` (introduced 1999, superseded by `fetch` 2015) ``
 
 Status icons:
 - 🟢 **Modern** — actively developed, current best practice
