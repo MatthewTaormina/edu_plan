@@ -194,6 +194,9 @@ nav:
     - "P07 — DevOps Pipeline": projects/p07_devops_pipeline.md
   - Resources:
     - resources/index.md
+  - "⚗️ Specialisations":
+    - "🟡 Legacy Systems":
+      - specialisations/legacy_systems/index.md
   - "📐 Style & Standards":
     - "Pseudocode Standard": meta/pseudocode_standard.md
     - "Contributor Guide": meta/style_guide.md
