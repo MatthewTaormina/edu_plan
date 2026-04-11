@@ -1,0 +1,233 @@
+# Education plan
+
+## Objective
+Learn high level and low level programming concepts and master them including data structures, algorithms, memory management, concurrency, and more. 
+
+## Programming languages of interest
+- Rust
+- Python
+- TypeScript
+- JavaScript
+- C#
+- Java
+- PHP
+- Kotlin
+- Rust
+- C
+- C++
+- Python
+- TypeScript
+- JavaScript
+- C#
+- Java
+- PHP
+
+### Concepts
+### Web Development
+- Server side rendering
+- Client side rendering
+- REST API
+- GraphQL
+### Cloud Computing
+- Cloud Computing Fundamentals
+    - Cloud Computing Concepts
+    - Cloud Computing Services
+    - Cloud Computing Architecture
+    - Cloud Computing Security
+    - Cloud Computing Performance
+    - Cloud Computing Scalability
+    - Cloud Computing Availability
+    - Cloud Computing Backup and Recovery
+    - Cloud Computing Replication
+    - Cloud Computing Sharding
+    - Cloud Computing Clustering
+    - Cloud Computing Partitioning
+    - Cloud Computing Indexing
+    - Cloud Computing Query Optimization
+    - Cloud Computing Monitoring
+    - Cloud Computing Migration
+- Infrastructure as Code
+    - Infrastructure Automation
+    - Infrastructure Security
+    - Infrastructure Performance
+    - Infrastructure Scalability
+    - Infrastructure Availability
+    - Infrastructure Backup and Recovery
+    - Infrastructure Replication
+    - Infrastructure Sharding
+    - Infrastructure Clustering
+    - Infrastructure Partitioning
+    - Infrastructure Indexing
+    - Infrastructure Query Optimization
+    - Infrastructure Monitoring
+    - Infrastructure Migration
+
+- Microservices
+    - Microservices Architecture
+    - Microservices Communication
+    - Microservices Security
+    - Microservices Performance
+    - Microservices Scalability
+    - Microservices Availability
+    - Microservices Backup and Recovery
+    - Microservices Replication
+    - Microservices Sharding
+    - Microservices Clustering
+    - Microservices Partitioning
+    - Microservices Indexing
+    - Microservices Query Optimization
+    - Microservices Monitoring
+    - Microservices Migration
+- Monolithic architecture
+    - Monolithic Architecture
+    - Monolithic Communication
+    - Monolithic Security
+    - Monolithic Performance
+    - Monolithic Scalability
+    - Monolithic Availability
+    - Monolithic Backup and Recovery
+    - Monolithic Replication
+    - Monolithic Sharding
+    - Monolithic Clustering
+    - Monolithic Partitioning
+    - Monolithic Indexing
+    - Monolithic Query Optimization
+    - Monolithic Monitoring
+    - Monolithic Migration
+- Event-driven architecture
+    - Event-driven Architecture
+    - Event-driven Communication
+    - Event-driven Security
+    - Event-driven Performance
+    - Event-driven Scalability
+    - Event-driven Availability
+    - Event-driven Backup and Recovery
+    - Event-driven Replication
+    - Event-driven Sharding
+    - Event-driven Clustering
+    - Event-driven Partitioning
+    - Event-driven Indexing
+    - Event-driven Query Optimization
+    - Event-driven Monitoring
+    - Event-driven Migration
+- Serverless architecture
+    - Serverless Architecture
+    - Serverless Communication
+    - Serverless Security
+    - Serverless Performance
+    - Serverless Scalability
+    - Serverless Availability
+    - Serverless Backup and Recovery
+    - Serverless Replication
+    - Serverless Sharding
+    - Serverless Clustering
+    - Serverless Partitioning
+    - Serverless Indexing
+    - Serverless Query Optimization
+    - Serverless Monitoring
+    - Serverless Migration
+- Containerization
+    - Containerization Architecture
+    - Containerization Communication
+    - Containerization Security
+    - Containerization Performance
+    - Containerization Scalability
+    - Containerization Availability
+    - Containerization Backup and Recovery
+    - Containerization Replication
+    - Containerization Sharding
+    - Containerization Clustering
+    - Containerization Partitioning
+    - Containerization Indexing
+    - Containerization Query Optimization
+    - Containerization Monitoring
+    - Containerization Migration
+- Orchestration
+    - Orchestration Architecture
+    - Orchestration Communication
+    - Orchestration Security
+    - Orchestration Performance
+    - Orchestration Scalability
+    - Orchestration Availability
+    - Orchestration Backup and Recovery
+    - Orchestration Replication
+    - Orchestration Sharding
+    - Orchestration Clustering
+    - Orchestration Partitioning
+    - Orchestration Indexing
+    - Orchestration Query Optimization
+    - Orchestration Monitoring
+    - Orchestration Migration
+- CI/CD
+    - CI/CD Architecture
+    - CI/CD Communication
+    - CI/CD Security
+    - CI/CD Performance
+    - CI/CD Scalability
+    - CI/CD Availability
+    - CI/CD Backup and Recovery
+    - CI/CD Replication
+    - CI/CD Sharding
+    - CI/CD Clustering
+    - CI/CD Partitioning
+    - CI/CD Indexing
+    - CI/CD Query Optimization
+    - CI/CD Monitoring
+    - CI/CD Migration
+- Testing (unit, integration, end-to-end)
+- Monitoring
+- Logging
+- Security
+- Performance optimization- Git/ Version Control
+### Virtualazation
+- Virtual Machines
+- Containers
+- Docker
+- Kubernetes
+### Databases
+- Database design
+- Database optimization
+- Database security
+- Database scalability
+- Database availability
+- Database backup and recovery
+- Database replication
+- Database sharding
+- Database clustering
+- Database partitioning
+- Database indexing
+- Database query optimization
+- Database monitoring
+- Database migration
+
+### AI
+- AI Chatbots
+- AI Agents
+- AI Media Generation
+- AI Automation
+- AI Code Generation
+- AI Code Review
+- AI Code Optimization
+- AI Code Testing
+- AI Code Debugging
+- AI Code Documentation
+- AI Code Generation
+- AI Code Review
+- AI Code Optimization
+- AI Code Testing
+- AI Code Debugging
+- AI Code Documentation
+
+
+
+## Application types
+- web applications
+- mobile applications
+- desktop applications
+- CLI applications
+- Server applications
+- AI applications
+
+## Goverance
+
+

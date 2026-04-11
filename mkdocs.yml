@@ -1,0 +1,144 @@
+site_name: "Open Learner's Guide"
+site_description: "An open-source, self-paced guide to IT, Programming, and DevOps"
+site_author: "Open Contributors"
+site_url: "https://localhost"
+docs_dir: docs
+site_dir: site
+
+repo_url: https://github.com/your-username/edu_plan
+repo_name: edu_plan
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+
+  palette:
+    # Dark mode (default)
+    - scheme: slate
+      primary: deep purple
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    # Light mode
+    - scheme: default
+      primary: deep purple
+      accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.edit
+    - toc.follow
+
+plugins:
+  - search:
+      lang: en
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  # Core
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+      title: On This Page
+
+  # PyMdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: false
+  - pymdownx.tilde
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/your-username/edu_plan
+      name: GitHub
+  generator: false
+  analytics:
+    provider: custom
+
+nav:
+  - Home: index.md
+  - Start Here:
+    - start/orientation.md
+    - start/self_assessment.md
+  - Learning Paths:
+    - "🟢 Beginner": paths/beginner.md
+    - "🔵 Web Developer": paths/web_developer.md
+    - "🟣 Systems Programmer": paths/systems.md
+    - "🟠 DevOps Engineer": paths/devops.md
+    - "🔴 Full Stack": paths/fullstack.md
+    - "⚫ AI Engineer": paths/ai_engineer.md
+  - Domains:
+    - "🏛️ Foundations": domains/foundations/index.md
+    - "🌐 Web Development": domains/web_dev/index.md
+    - "🔩 Systems Programming": domains/systems_programming/index.md
+    - "🚢 DevOps": domains/devops/index.md
+    - "🗄️ Databases": domains/databases/index.md
+    - "☁️ Cloud": domains/cloud/index.md
+    - "🤖 AI / ML": domains/ai_ml/index.md
+    - "🔐 Security": domains/security/index.md
+  - Projects:
+    - projects/index.md
+  - Resources:
+    - resources/index.md

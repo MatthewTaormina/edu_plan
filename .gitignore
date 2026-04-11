@@ -1,0 +1,23 @@
+# MkDocs build output
+site/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+env/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/settings.json
+*.swp
+*.swo
+
+# Logs
+*.log
