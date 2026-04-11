@@ -69,9 +69,11 @@ Software evolves. Learners deserve to know what tools are current versus what th
 
 | Category | Definition | How to present |
 |----------|-----------|----------------|
-| **Modern** | Created or significantly revised 2020+; actively maintained; current best practice | Primary content — no special label needed |
-| **Legacy** | Created before 2020, or superseded by a modern alternative; still in use but not recommended for new work | Labeled with the `legacy` admonition |
-| **Foundation** | Core concept that preexists language-specific tooling (e.g., manual memory management, linked lists, raw SQL) | Teach in full — note that modern tooling wraps it |
+| **Modern** | Actively maintained and current best practice — regardless of creation date. Includes tools pre-2020 that are still the dominant standard with no widely-adopted successor (e.g. SSH, Bash, SQL, C, Make). | Primary content — no special label needed |
+| **Legacy** | Has a widely-adopted modern alternative AND the community has largely moved on. **Age alone is not sufficient.** | Labeled with the `legacy` admonition — teach it, note the alternative |
+| **Foundation** | A core primitive concept that modern tooling wraps but does not replace. Must be understood to debug the abstraction. | Teach in full — note modern tooling sits on top of it |
+
+> **Rule of thumb:** If a tool is still actively maintained, still dominant in its niche, and has no widely-adopted successor — treat it as **current**, not legacy. Examples: SSH (1995), Bash (1989), Make (1976), SQL (1974), POSIX C — all 🟢 current.
 
 ### Tool / Framework Information Block
 
