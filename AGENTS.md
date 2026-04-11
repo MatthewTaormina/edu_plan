@@ -239,13 +239,31 @@ Python domain unit content repeated.
 
 ## Cross-Platform Policy (Windows + Linux)
 
-All tools, commands, and examples must work on **both Windows and Linux**.
+There are two distinct contexts — apply the right rule to each:
 
-- Prefer tools with native Windows support — not "use WSL" as the workaround
-- When a tool is Linux-only (or Linux-primary), state that explicitly with a `!!! warning`
-- Shell examples: provide both PowerShell and Bash/zsh variants where they differ
-- **Do not recommend** Linux container-first tools (e.g. Dagger) for general use — they require WSL2 on Windows and are not cross-platform in practice
-- Docker Desktop provides cross-platform container support and is the safe default
+| Context | Platform requirement |
+|---------|---------------------|
+| **Deployment target** (cloud servers, containers) | Linux — expected and fine. Cloud infrastructure is Linux. No caveat needed. |
+| **Developer workstation** (what the learner types at their desk) | Must work on **Windows OR Linux** — show both shell variants where they differ |
+
+**Rules:**
+
+- **Server-side commands** (running on a remote Linux box via SSH): Linux-only syntax is correct and expected. `systemctl`, `apt`, `journalctl` on the server = fine.
+- **Developer tools** (what the learner installs and runs locally to trigger, deploy, or manage things): must be available as a native Windows binary or Docker Desktop-based — not "use WSL as the workaround".
+- **SSH from Windows**: Windows 10/11 ships OpenSSH natively. Use `ssh user@host` in PowerShell — no PuTTY or WSL needed.
+- When a developer tool has **no native Windows support** (e.g. Ansible control node), state this explicitly with a `!!! note` and recommend either WSL2 or a Linux VM — never silently assume Linux.
+- Docker Desktop provides cross-platform container support on Windows and is the safe default for container-based tooling.
+- Shell examples that differ between platforms: provide **both PowerShell and Bash/zsh** tabs side by side.
+
+**Practical examples:**
+
+| Tool | Client runs from | Notes |
+|------|-----------------|-------|
+| `terraform` | Windows ✅ or Linux ✅ | Native binary for both |
+| `kubectl` | Windows ✅ or Linux ✅ | Native binary for both |
+| `docker` / `docker compose` | Windows ✅ (Docker Desktop) or Linux ✅ | Fine |
+| `ansible` (control node) | Linux ✅ / WSL2 on Windows ⚠️ | No native Windows control node — note it |
+| `ssh` | Windows ✅ (built-in since Win10) or Linux ✅ | Always show PowerShell + Bash tabs |
 
 ## Things to Check at Session Start
 
