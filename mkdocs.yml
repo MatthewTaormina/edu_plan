@@ -11,8 +11,8 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  logo: assets/logo.svg
-  favicon: assets/logo.svg
+
+
 
   palette:
     # Dark mode (default)
@@ -133,6 +133,8 @@ nav:
       - "Programming Basics": domains/foundations/programming_basics.md
       - "Data Structures": domains/foundations/data_structures.md
       - "Algorithms": domains/foundations/algorithms.md
+      - "Regular Expressions": domains/foundations/regex.md
+      - "Protocols & Standards": domains/foundations/protocols_and_standards.md
       - "Memory Management": domains/foundations/memory_management.md
       - "Concurrency": domains/foundations/concurrency.md
       - "Networking": domains/foundations/networking.md
