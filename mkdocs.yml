@@ -119,6 +119,7 @@ nav:
   - Start Here:
     - start/orientation.md
     - start/self_assessment.md
+    - "🛠️ Tools Setup": start/tools_setup.md
   - Learning Paths:
     - "🟢 Beginner": paths/beginner.md
     - "🔵 Web Developer": paths/web_developer.md
@@ -127,15 +128,69 @@ nav:
     - "🔴 Full Stack": paths/fullstack.md
     - "⚫ AI Engineer": paths/ai_engineer.md
   - Domains:
-    - "🏛️ Foundations": domains/foundations/index.md
-    - "🌐 Web Development": domains/web_dev/index.md
-    - "🔩 Systems Programming": domains/systems_programming/index.md
-    - "🚢 DevOps": domains/devops/index.md
-    - "🗄️ Databases": domains/databases/index.md
-    - "☁️ Cloud": domains/cloud/index.md
-    - "🤖 AI / ML": domains/ai_ml/index.md
-    - "🔐 Security": domains/security/index.md
+    - "🏛️ Foundations":
+      - domains/foundations/index.md
+      - "Programming Basics": domains/foundations/programming_basics.md
+      - "Data Structures": domains/foundations/data_structures.md
+      - "Algorithms": domains/foundations/algorithms.md
+      - "Memory Management": domains/foundations/memory_management.md
+      - "Concurrency": domains/foundations/concurrency.md
+      - "Networking": domains/foundations/networking.md
+      - "OS Concepts": domains/foundations/os_concepts.md
+    - "🌐 Web Development":
+      - domains/web_dev/index.md
+      - "HTML & CSS": domains/web_dev/html_css.md
+      - "JavaScript Core": domains/web_dev/javascript_core.md
+      - "TypeScript": domains/web_dev/typescript.md
+      - "Frontend Frameworks": domains/web_dev/frontend_frameworks.md
+      - "REST APIs": domains/web_dev/rest_api.md
+      - "GraphQL": domains/web_dev/graphql.md
+      - "SSR vs CSR": domains/web_dev/ssr_csr.md
+    - "🔩 Systems Programming":
+      - domains/systems_programming/index.md
+      - "C Fundamentals": domains/systems_programming/c_fundamentals.md
+      - "Rust Fundamentals": domains/systems_programming/rust_fundamentals.md
+      - "Rust Advanced": domains/systems_programming/rust_advanced.md
+      - "Assembly Basics": domains/systems_programming/assembly_basics.md
+    - "🚢 DevOps":
+      - domains/devops/index.md
+      - "Linux CLI": domains/devops/linux_cli.md
+      - "Git Workflow": domains/devops/git_workflow.md
+      - "Docker": domains/devops/docker.md
+      - "Kubernetes": domains/devops/kubernetes.md
+      - "CI/CD": domains/devops/ci_cd.md
+      - "Infrastructure as Code": domains/devops/iac.md
+      - "Monitoring": domains/devops/monitoring.md
+      - "Testing": domains/devops/testing.md
+    - "🗄️ Databases":
+      - domains/databases/index.md
+      - "SQL Fundamentals": domains/databases/sql_fundamentals.md
+      - "NoSQL": domains/databases/nosql.md
+      - "Database Design": domains/databases/design.md
+      - "Performance": domains/databases/performance.md
+    - "☁️ Cloud":
+      - domains/cloud/index.md
+      - "Cloud Fundamentals": domains/cloud/fundamentals.md
+      - "Serverless": domains/cloud/serverless.md
+      - "Architecture Patterns": domains/cloud/architecture_patterns.md
+    - "🤖 AI / ML":
+      - domains/ai_ml/index.md
+      - "ML Foundations": domains/ai_ml/foundations.md
+      - "LLM Engineering": domains/ai_ml/llm_engineering.md
+    - "🔐 Security":
+      - domains/security/index.md
+      - "App Security": domains/security/appsec.md
   - Projects:
     - projects/index.md
+    - "P01 — CLI Tool": projects/p01_cli_tool.md
+    - "P02 — REST API": projects/p02_rest_api.md
+    - "P03 — Full Stack App": projects/p03_fullstack_app.md
+    - "P04 — Containerized Service": projects/p04_containerized_service.md
+    - "P05 — Data Pipeline": projects/p05_data_pipeline.md
+    - "P06 — AI Agent": projects/p06_ai_agent.md
+    - "P07 — DevOps Pipeline": projects/p07_devops_pipeline.md
   - Resources:
     - resources/index.md
+  - "📐 Style & Standards":
+    - "Pseudocode Standard": meta/pseudocode_standard.md
+    - "Contributor Guide": meta/style_guide.md
