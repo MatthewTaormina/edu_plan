@@ -55,6 +55,122 @@ Every atomic unit must follow this structure (in order):
 
 ---
 
+## Legacy vs. Modern Policy
+
+This is the most important content decision in this repository. Follow it exactly.
+
+### The Rule
+
+> **Default to modern (2020+). Acknowledge legacy. Never exclude foundations.**
+
+Software evolves. Learners deserve to know what tools are current versus what they'll encounter in old codebases or legacy documentation. This guide handles that with explicit labeling.
+
+### Three Categories
+
+| Category | Definition | How to present |
+|----------|-----------|----------------|
+| **Modern** | Created or significantly revised 2020+; actively maintained; current best practice | Primary content — no special label needed |
+| **Legacy** | Created before 2020, or superseded by a modern alternative; still in use but not recommended for new work | Labeled with the `legacy` admonition |
+| **Foundation** | Core concept that preexists language-specific tooling (e.g., manual memory management, linked lists, raw SQL) | Teach in full — note that modern tooling wraps it |
+
+### Tool / Framework Information Block
+
+Every time a specific tool, library, or framework is introduced (not just mentioned), include a metadata line:
+
+```markdown
+> **Tool:** Webpack · **Created:** 2012 · **Latest:** 5.x (2020) · **Status:** 🟡 Legacy (Vite is preferred for new projects)
+
+> **Tool:** Vite · **Created:** 2020 · **Latest:** 5.x · **Status:** 🟢 Modern · **Maintained by:** Evan You / Vite team
+```
+
+Status icons:
+- 🟢 **Modern** — actively developed, current best practice
+- 🟡 **Legacy** — still supported, common in older codebases, not recommended for new projects
+- 🔴 **Deprecated** — abandoned or officially end-of-life; avoid entirely
+- 🔵 **Foundation** — a timeless concept or primitive, not subject to modern/legacy classification
+
+### Legacy Admonition
+
+When introducing a legacy tool or pattern:
+
+```markdown
+!!! warning "🟡 Legacy Tool"
+    **Webpack** — Created 2012 · Still in active use in 2024
+    Modern alternative: **Vite** (2020+) for bundling, or **esbuild** for libraries.
+    Include this unit because: you will encounter Webpack in existing projects and job codebases.
+    Skip to [Vite →](vite.md) if starting a fresh project.
+```
+
+### Modern Recommendation
+
+When a modern alternative exists:
+
+```markdown
+!!! tip "✅ Modern Best Practice"
+    Use **Vite** for new projects (2020+). It is 10-100x faster than Webpack in
+    development due to native ES modules. Only use Webpack if joining an existing project.
+```
+
+### Foundation Teaching (Core First, Shortcuts Second)
+
+For foundational concepts (e.g., raw pointers before smart pointers, raw SQL before ORMs, manual HTTP before fetch):
+
+```markdown
+!!! note "🔵 Foundation Concept"
+    This section teaches the underlying mechanism. Modern code uses abstractions
+    (smart pointers, ORMs, async libraries) that wrap this — but you must understand
+    the foundation to debug when the abstraction breaks.
+```
+
+Then immediately follow with the modern approach:
+
+```markdown
+=== "Foundation (Manual)"
+    ```c
+    // Raw pointer management — C, C++ pre-2011
+    int* arr = malloc(sizeof(int) * 10);
+    // ... use arr ...
+    free(arr);
+    ```
+
+=== "Modern (Preferred)"
+    ```rust
+    // Rust owns and frees automatically
+    let arr = vec![0i32; 10];
+    // Freed when `arr` goes out of scope — no free() needed
+    ```
+```
+
+### Writing Tabs for Legacy + Modern
+
+When a concept has both legacy and modern implementations, structure tabs as:
+
+```
+=== "Modern (Recommended)"   ← first tab, default visible
+=== "Legacy (Common)"        ← second tab
+=== "Foundation"             ← third if needed (teaching the raw concept)
+```
+
+### What "2020+" Means
+
+The cutoff is not strict — it's a signal about maturity and current relevance:
+
+| Examples of Modern (primary content) | Examples of Legacy (acknowledge, label) |
+|--------------------------------------|----------------------------------------|
+| Vite, esbuild, Turbopack | Webpack, Grunt, Gulp |
+| React 18+ (hooks), Vue 3, SvelteKit | jQuery, Angular.js (v1), Backbone |
+| TypeScript 5+ | Flow, JSDoc-only typing |
+| Docker BuildKit, Compose v2 | Legacy docker-compose v1 syntax |
+| GitHub Actions, GitLab CI, Dagger | Jenkins (still common — label 🟡) |
+| Python 3.10+ (match, walrus, slots) | Python 2.x (label 🔴 Deprecated) |
+| Rust (stable 2021 edition+) | (Rust is modern — no legacy concern) |
+| async/await everywhere | Callback hell, Promise chains only |
+| `fetch` API | `XMLHttpRequest` |
+| ES Modules | CommonJS `require()` |
+| CSS Grid, Flexbox, CSS Variables | Floats, tables for layout |
+
+---
+
 ## Content Rules
 
 ### Code Examples
@@ -63,12 +179,15 @@ Every atomic unit must follow this structure (in order):
    See [`pseudocode_standard.md`](pseudocode_standard.md) for the exact syntax
 
 2. **Tabbed multi-language blocks** for implementations  
-   Tab order: `Pseudocode → Python → TypeScript → Rust → C → Java/Kotlin → C#`  
-   Only include tabs that add meaningful value
+   Tab order: `Pseudocode → Python → TypeScript → Rust → C`  
+   Only include tabs that add meaningful value  
+   Add `Legacy` / `Modern` tabs where the pattern has changed significantly
 
 3. **Never** show only one language for a language-agnostic concept
 
 4. **Language-specific** content (Rust ownership, Python GIL, etc.) stays in that language only — label it with `=== "Rust (Language-Specific)"` or similar
+
+5. **Date new tools** whenever first mentioned: `Vite (2020)`, `Docker BuildKit (2019, default 2021)`
 
 ### Assignments
 
@@ -77,6 +196,7 @@ Every atomic unit must follow this structure (in order):
 - Mark **optional stretch goals** with `⭐ Stretch:`
 - State **which path** the assignment targets (or "All paths")
 - At least one assignment per unit should involve **file I/O** or **real data**
+- Assignments use **modern tools** by default
 
 ### Research Questions
 
@@ -91,6 +211,7 @@ Every atomic unit must follow this structure (in order):
 - Each resource gets a one-sentence description of **why it's good**
 - No "learn X in 30 days" type resources — be specific about what chapters/weeks to use
 - Max 3 resources per tab (Primary, Supplemental, Practice)
+- **Flag outdated resources:** if linking to documentation for a tool that has a major newer version, note: `(covers v4 — check for v5 changes)`
 
 ---
 
@@ -100,14 +221,26 @@ Every atomic unit must follow this structure (in order):
 !!! tip "Research Question 🔍"
     Bounded optional exploration question.
 
+!!! note "🔵 Foundation Concept"
+    Core concept that modern tooling wraps — teach this so the abstraction makes sense.
+
 !!! note "Key Insight"
     Important concept that clarifies a common confusion.
+
+!!! warning "🟡 Legacy Tool"
+    Tool/pattern created before 2020, still common. Created YYYY · Status: supported/unsupported.
 
 !!! warning "Common Mistake"
     Something beginners consistently get wrong.
 
+!!! danger "🔴 Deprecated"
+    This tool/pattern is abandoned or officially end-of-life. Do not use for new work.
+
 !!! danger "Do Not..."
     Anti-patterns that cause bugs or security issues.
+
+!!! success "✅ Modern Best Practice"
+    Created 2020+. Prefer this over the legacy approach.
 
 !!! success "You've Got It When..."
     Concrete signal the learner has understood the concept.
@@ -179,6 +312,7 @@ fix: correct broken link in beginner path
 content: expand algorithms unit with graph examples
 style: apply pseudocode standard to memory_management
 chore: add stub for rust_advanced unit
+meta: update legacy/modern labeling policy
 ```
 
 Prefixes: `feat`, `fix`, `content`, `style`, `chore`, `meta`
