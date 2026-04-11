@@ -136,6 +136,35 @@ Legacy specialisations must:
 - Link back to the modern alternative at the top
 - Never be linked from the Beginner or standard domain paths
 
+### Language Domain Philosophy
+
+> **Minimal redundancy. Cross-link rather than repeat.**
+
+Foundation units already teach concepts in multi-language tabs (Python, TypeScript, Rust, C).
+Language-specific domain units must **not** re-teach those concepts.
+
+**Language units cover only what is unique to that language:**
+
+| Language | Unique content (not in foundations) |
+|----------|-------------------------------------|
+| Python | Environments (`venv`/`uv`), `pip`, decorators, `__dunder__` methods, type hints + mypy, asyncio specifics, Python packaging |
+| TypeScript | Type system (generics, utility types, discriminated unions), `tsconfig`, declaration files, module resolution |
+| Rust | Traits, `impl`, crates ecosystem, `unsafe`, error handling (`?`, `Result`) |
+| C | Pointers/pointer arithmetic, header files, undefined behaviour, make/cmake, ABI, linking |
+
+**Reference sheets** (syntax cheat-sheet pages, not tutorials) live at `docs/reference/<language>.md`.
+They show syntax only — no concept explanation. Learners bookmark them for quick lookup.
+
+**Navigation model:**
+```
+Concept → Foundation unit (learns the concept, sees multiple languages)
+        → Language unit (learns idiomatic usage in that language)
+        → Reference sheet (quick syntax lookup, no learning content)
+```
+
+If a concept is already in a foundation unit, **do not re-explain it** in a language unit.
+Use a cross-link: "For the concept behind this, see [Concurrency](../foundations/concurrency.md)."
+
 ### Pseudocode
 
 - Always shown first for any language-agnostic concept
