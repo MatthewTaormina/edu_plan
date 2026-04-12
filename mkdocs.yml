@@ -122,6 +122,7 @@ nav:
     - "Python Developer": paths/python_developer.md
     - "Web Developer": paths/web_developer.md
     - "Frontend Engineer": paths/frontend_engineer.md
+    - "Backend Developer": paths/backend_developer.md
     - "Systems Programmer": paths/systems.md
     - "DevOps Engineer": paths/devops.md
     - "Full Stack": paths/fullstack.md
@@ -258,12 +259,37 @@ nav:
       - "Lesson 02 — Modules: CommonJS, ESM & npm": courses/nodejs_fundamentals/lesson_02.md
       - "Lesson 03 — File System & Streams": courses/nodejs_fundamentals/lesson_03.md
       - "Lesson 04 — The HTTP Module: Raw Servers": courses/nodejs_fundamentals/lesson_04.md
+      - "Lesson 05 — Environment, Process & CLI Args": courses/nodejs_fundamentals/lesson_05.md
+      - "Lesson 06 — Async Patterns": courses/nodejs_fundamentals/lesson_06.md
+      - "Lesson 07 — Capstone: CLI File Processor": courses/nodejs_fundamentals/lesson_07.md
     - "Express API":
       - courses/express_api/index.md
+      - "Lesson 01 — Setup, Routing & TypeScript": courses/express_api/lesson_01.md
+      - "Lesson 02 — Middleware: Built-in, Third-Party & Custom": courses/express_api/lesson_02.md
+      - "Lesson 03 — Request & Response": courses/express_api/lesson_03.md
+      - "Lesson 04 — Error Handling & Validation (Zod)": courses/express_api/lesson_04.md
+      - "Lesson 05 — Authentication: JWT & Sessions": courses/express_api/lesson_05.md
+      - "Lesson 06 — File Uploads with Multer": courses/express_api/lesson_06.md
+      - "Lesson 07 — Testing with Vitest & Supertest": courses/express_api/lesson_07.md
+      - "Lesson 08 — Capstone: Task Manager REST API": courses/express_api/lesson_08.md
     - "PHP & Server-Side Rendering":
       - courses/php_ssr/index.md
+      - "Lesson 01 — PHP Runtime & Setup": courses/php_ssr/lesson_01.md
+      - "Lesson 02 — Syntax Essentials": courses/php_ssr/lesson_02.md
+      - "Lesson 03 — Handling Requests": courses/php_ssr/lesson_03.md
+      - "Lesson 04 — Templates: Separating Logic from HTML": courses/php_ssr/lesson_04.md
+      - "Lesson 05 — Sessions & Cookies": courses/php_ssr/lesson_05.md
+      - "Lesson 06 — Forms, Validation & CSRF": courses/php_ssr/lesson_06.md
+      - "Lesson 07 — Capstone: Flat-File Blog": courses/php_ssr/lesson_07.md
     - "Laravel Fundamentals":
       - courses/laravel_fundamentals/index.md
+      - "Lesson 01 — Setup, Artisan & Project Structure": courses/laravel_fundamentals/lesson_01.md
+      - "Lesson 02 — Routing & Controllers": courses/laravel_fundamentals/lesson_02.md
+      - "Lesson 03 — Blade Templating Engine": courses/laravel_fundamentals/lesson_03.md
+      - "Lesson 04 — Request Lifecycle & Middleware": courses/laravel_fundamentals/lesson_04.md
+      - "Lesson 05 — Eloquent Models & Relationships": courses/laravel_fundamentals/lesson_05.md
+      - "Lesson 06 — Authentication with Breeze": courses/laravel_fundamentals/lesson_06.md
+      - "Lesson 07 — Capstone: Blog with Auth": courses/laravel_fundamentals/lesson_07.md
   - Wiki:
     - "Foundations":
       - domains/foundations/index.md
