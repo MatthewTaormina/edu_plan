@@ -184,6 +184,52 @@ nav:
       - "Lesson 07 — Time & Asynchrony": courses/javascript_fundamentals/lesson_07.md
       - "Lesson 08 — Network Requests": courses/javascript_fundamentals/lesson_08.md
       - "Lesson 09 — Capstone": courses/javascript_fundamentals/lesson_09.md
+    - "Build Tools & Toolchain":
+      - courses/build_tools/index.md
+      - "Lesson 01 — Node.js & Package Management": courses/build_tools/lesson_01.md
+      - "Lesson 02 — ES Modules, Bundling & Tree-Shaking": courses/build_tools/lesson_02.md
+      - "Lesson 03 — Vite in Depth": courses/build_tools/lesson_03.md
+      - "Lesson 04 — Linting & Formatting": courses/build_tools/lesson_04.md
+      - "Lesson 05 — Testing Setup (Vitest + jsdom)": courses/build_tools/lesson_05.md
+    - "TypeScript Fundamentals":
+      - courses/typescript_fundamentals/index.md
+      - "Lesson 01 — Why TypeScript & Setup": courses/typescript_fundamentals/lesson_01.md
+      - "Lesson 02 — Primitive, Array, Tuple & Object Types": courses/typescript_fundamentals/lesson_02.md
+      - "Lesson 03 — Interfaces, Type Aliases & Unions": courses/typescript_fundamentals/lesson_03.md
+      - "Lesson 04 — Generics": courses/typescript_fundamentals/lesson_04.md
+      - "Lesson 05 — Utility Types": courses/typescript_fundamentals/lesson_05.md
+      - "Lesson 06 — TypeScript & the DOM": courses/typescript_fundamentals/lesson_06.md
+      - "Lesson 07 — Capstone: Typed Todo App": courses/typescript_fundamentals/lesson_07.md
+    - "Tailwind CSS":
+      - courses/tailwind_css/index.md
+      - "Lesson 01 — Utility-First Philosophy": courses/tailwind_css/lesson_01.md
+      - "Lesson 02 — Typography, Color & Spacing": courses/tailwind_css/lesson_02.md
+      - "Lesson 03 — Flexbox & Grid with Tailwind": courses/tailwind_css/lesson_03.md
+      - "Lesson 04 — Responsive Design": courses/tailwind_css/lesson_04.md
+      - "Lesson 05 — Dark Mode & Custom Themes": courses/tailwind_css/lesson_05.md
+      - "Lesson 06 — Reusable Components with @apply & Plugins": courses/tailwind_css/lesson_06.md
+      - "Lesson 07 — Integrating Tailwind with Vite": courses/tailwind_css/lesson_07.md
+      - "Lesson 08 — Capstone: Admin Dashboard UI": courses/tailwind_css/lesson_08.md
+    - "React Fundamentals":
+      - courses/react_fundamentals/index.md
+      - "Lesson 01 — What is React, Vite Setup & JSX": courses/react_fundamentals/lesson_01.md
+      - "Lesson 02 — Components, Props & Children": courses/react_fundamentals/lesson_02.md
+      - "Lesson 03 — State with useState": courses/react_fundamentals/lesson_03.md
+      - "Lesson 04 — Side Effects with useEffect": courses/react_fundamentals/lesson_04.md
+      - "Lesson 05 — Events & Forms": courses/react_fundamentals/lesson_05.md
+      - "Lesson 06 — Lists, Keys & Conditional Rendering": courses/react_fundamentals/lesson_06.md
+      - "Lesson 07 — Context & useContext": courses/react_fundamentals/lesson_07.md
+      - "Lesson 08 — Custom Hooks": courses/react_fundamentals/lesson_08.md
+      - "Lesson 09 — Capstone: Reading List Tracker": courses/react_fundamentals/lesson_09.md
+    - "React Advanced":
+      - courses/react_advanced/index.md
+      - "Lesson 01 — Performance: useMemo, useCallback, memo": courses/react_advanced/lesson_01.md
+      - "Lesson 02 — useReducer & Complex State": courses/react_advanced/lesson_02.md
+      - "Lesson 03 — React Router v6": courses/react_advanced/lesson_03.md
+      - "Lesson 04 — Server State with TanStack Query": courses/react_advanced/lesson_04.md
+      - "Lesson 05 — Error Boundaries & Suspense": courses/react_advanced/lesson_05.md
+      - "Lesson 06 — Testing React with Vitest + Testing Library": courses/react_advanced/lesson_06.md
+      - "Lesson 07 — Capstone: Multi-Page Dashboard": courses/react_advanced/lesson_07.md
   - Wiki:
     - "Foundations":
       - domains/foundations/index.md
