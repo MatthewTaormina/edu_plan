@@ -35,8 +35,9 @@ Beginner Foundations
   - Responsive design basics (mobile-first)
   - Forms
 
-#### Course
-- 📺 [The Odin Project — Foundations (FREE)](https://www.theodinproject.com/paths/foundations) — Covers HTML + CSS well
+#### Courses
+- 📘 [HTML Fundamentals](../courses/html_fundamentals/index.md)
+- 📘 [CSS Fundamentals](../courses/css_fundamentals/index.md)
 
 #### Assignment
 - Build a personal portfolio page (no JS yet)
@@ -59,6 +60,9 @@ Beginner Foundations
   - Modules
 
 #### Course
+- 📘 [JavaScript Fundamentals](../courses/javascript_fundamentals/index.md)
+
+#### Resource
 - 📺 [javascript.info (FREE)](https://javascript.info/) — The best free JS reference, read chapters 1–11
 
 #### Assignment
@@ -124,8 +128,9 @@ Beginner Foundations
   - Input validation
   - Authentication (JWT basics)
 
-#### Course
-- 📺 [The Odin Project — NodeJS Path (FREE)](https://www.theodinproject.com/paths/full-stack-javascript) — Excellent, practical
+#### Courses
+- 📘 [Node.js Fundamentals](../courses/nodejs_fundamentals/index.md)
+- 📘 [Express API](../courses/express_api/index.md)
 
 #### Assignment (Project P02)
 See [`projects/p02_rest_api.md`](../projects/p02_rest_api.md)
