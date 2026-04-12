@@ -76,11 +76,17 @@ From here, choose based on what you want to build:
 → [Python: Professional Tools](../courses/python_professional/index.md) — tests, CLI tools, packaging
 → [Python Developer Path](python_developer.md)
 
-### Option B — Build Websites
-→ [Web Developer Path](web_developer.md) — HTML, CSS, JavaScript, React
+### Option B — Build Websites (Frontend)
+→ [Frontend Developer Path](frontend_developer.md) — HTML, CSS, JavaScript, TypeScript, React or Angular
 
-### Option C — Infrastructure & Tools
-→ [DevOps Path](devops.md) — Linux, Docker, cloud
+### Option C — Build Websites (Full Stack)
+→ [Full Stack Developer Path](fullstack.md) — Frontend + backend API + database + deployment
+
+### Option D — Build Backend APIs & Servers
+→ [Backend Developer Path](backend_developer.md) — Node.js, Express, PHP/Laravel
+
+### Option E — Infrastructure & Tools
+→ [DevOps Engineer Path](devops.md) — Linux, Docker, cloud
 
 ---
 

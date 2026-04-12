@@ -120,12 +120,11 @@ nav:
   - Learning Paths:
     - "Beginner": paths/beginner.md
     - "Python Developer": paths/python_developer.md
-    - "Web Developer": paths/web_developer.md
-    - "Frontend Engineer": paths/frontend_engineer.md
+    - "Frontend Developer": paths/frontend_developer.md
     - "Backend Developer": paths/backend_developer.md
+    - "Full Stack Developer": paths/fullstack.md
     - "Systems Programmer": paths/systems.md
     - "DevOps Engineer": paths/devops.md
-    - "Full Stack": paths/fullstack.md
     - "AI Engineer": paths/ai_engineer.md
   - Courses:
     - courses/index.md
