@@ -385,7 +385,21 @@ const sidebars: SidebarsConfig = {
             'domains/foundations/networking/troubleshooting',
           ],
         },
-        'domains/foundations/os_concepts',
+        {
+          type: 'category',
+          label: 'OS Concepts',
+          link: { type: 'doc', id: 'domains/foundations/os_concepts/index' },
+          items: [
+            'domains/foundations/os_concepts/processes_threads',
+            'domains/foundations/os_concepts/scheduling',
+            'domains/foundations/os_concepts/virtual_memory',
+            'domains/foundations/os_concepts/file_systems',
+            'domains/foundations/os_concepts/permissions',
+            'domains/foundations/os_concepts/ipc',
+            'domains/foundations/os_concepts/services_daemons',
+            'domains/foundations/os_concepts/package_management',
+          ],
+        },
       ],
     },
     {

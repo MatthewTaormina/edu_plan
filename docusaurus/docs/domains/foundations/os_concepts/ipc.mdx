@@ -1,0 +1,213 @@
+---
+title: Inter-Process Communication
+description: IPC mechanisms — pipes, FIFOs, Unix domain sockets, shared memory, message queues, and signals — with code examples in Python.
+sidebar_label: Inter-Process Communication
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> **Section:** [OS Concepts](.) · **Time Estimate:** 2–3 hours
+
+---
+
+## Why IPC Exists
+
+Processes are **isolated by design** — one process cannot read another's memory. When cooperating processes need to share data or coordinate, they use **IPC (Inter-Process Communication)** mechanisms provided by the OS kernel.
+
+---
+
+## IPC Mechanisms at a Glance
+
+<svg viewBox="0 0 640 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IPC mechanisms comparison diagram" style={{maxWidth:'640px',width:'100%',display:'block',margin:'1.5rem auto'}}>
+  <defs>
+    <linearGradient id="ipc-hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stopColor="#6366f1" stopOpacity="0.25"/>
+      <stop offset="100%" stopColor="#6366f1" stopOpacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  {/* Header */}
+  <rect x="4" y="4" width="632" height="28" rx="4" fill="var(--ifm-color-emphasis-200)"/>
+  <text x="16" y="22" fontFamily="sans-serif" fontSize="12" fontWeight="700" fill="var(--ifm-color-emphasis-800)">Mechanism</text>
+  <text x="190" y="22" fontFamily="sans-serif" fontSize="12" fontWeight="700" fill="var(--ifm-color-emphasis-800)">Direction</text>
+  <text x="280" y="22" fontFamily="sans-serif" fontSize="12" fontWeight="700" fill="var(--ifm-color-emphasis-800)">Scope</text>
+  <text x="380" y="22" fontFamily="sans-serif" fontSize="12" fontWeight="700" fill="var(--ifm-color-emphasis-800)">Speed</text>
+  <text x="450" y="22" fontFamily="sans-serif" fontSize="12" fontWeight="700" fill="var(--ifm-color-emphasis-800)">Best for</text>
+
+  {/* Rows */}
+  {[
+    ["Pipe", "One-way", "Parent→child only", "Fast", "Shell piping, subprocess I/O"],
+    ["Named Pipe (FIFO)", "One-way", "Any processes", "Fast", "Unrelated processes, same host"],
+    ["Unix Domain Socket", "Bidirectional", "Same host", "Very fast", "High-perf local IPC"],
+    ["Shared Memory", "Shared", "Same host", "Fastest", "Large data, needs locking"],
+    ["Message Queue", "One-way", "Same host", "Fast", "Decoupled producer/consumer"],
+    ["Signal (Linux)", "One-way", "Any process", "Instant", "Notifications, lifecycle events"],
+    ["Windows Named Pipe", "Bidirectional", "Same or network", "Fast", "Windows inter-process"],
+  ].map((row, i) => (
+    <g key={i}>
+      <rect x="4" y={36 + i * 32} width="632" height="30" rx="2"
+        fill={i % 2 === 0 ? "var(--ifm-color-emphasis-50)" : "transparent"}
+        stroke="var(--ifm-color-emphasis-200)" strokeWidth="0.5"/>
+      <text x="16" y={56 + i * 32} fontFamily="monospace" fontSize="11" fontWeight="600" fill="var(--ifm-color-emphasis-800)">{row[0]}</text>
+      <text x="190" y={56 + i * 32} fontFamily="sans-serif" fontSize="11" fill="var(--ifm-color-emphasis-700)">{row[1]}</text>
+      <text x="280" y={56 + i * 32} fontFamily="sans-serif" fontSize="11" fill="var(--ifm-color-emphasis-700)">{row[2]}</text>
+      <text x="380" y={56 + i * 32} fontFamily="sans-serif" fontSize="11" fill="var(--ifm-color-emphasis-700)">{row[3]}</text>
+      <text x="450" y={56 + i * 32} fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-600)">{row[4]}</text>
+    </g>
+  ))}
+</svg>
+
+---
+
+## Pipes
+
+A **pipe** is a one-way, in-memory byte stream. The classic shell pipe (`|`) is this mechanism:
+
+```bash
+# Shell pipes: stdout of grep feeds into stdin of wc
+grep "error" /var/log/app.log | wc -l
+```
+
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
+
+```pseudocode
+pipe_read, pipe_write ← create_pipe()
+child_pid ← fork()
+
+IF child_pid == 0 THEN    // Child process
+    close(pipe_write)
+    data ← read(pipe_read)
+    PRINT "Child received: " + data
+    close(pipe_read)
+ELSE                      // Parent process
+    close(pipe_read)
+    write(pipe_write, "Hello from parent")
+    close(pipe_write)
+    wait_for_child(child_pid)
+END IF
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import subprocess
+
+# Pipe via subprocess — grep filters stdin
+proc = subprocess.Popen(
+    ["grep", "error"],
+    stdin=subprocess.PIPE,
+    stdout=subprocess.PIPE,
+    text=True
+)
+stdout, _ = proc.communicate("info line\nerror: something failed\ninfo line")
+print(stdout)  # "error: something failed\n"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Named Pipes (FIFOs)
+
+Named pipes persist as a filesystem path and can be used by **unrelated processes**:
+
+<Tabs>
+<TabItem value="python" label="Python (Linux)">
+
+```python
+import os, threading
+
+FIFO = "/tmp/my_fifo"
+os.mkfifo(FIFO)
+
+def writer():
+    with open(FIFO, 'w') as f:
+        f.write("hello from writer")
+
+threading.Thread(target=writer).start()
+
+with open(FIFO, 'r') as f:
+    print(f.read())     # "hello from writer"
+
+os.unlink(FIFO)
+```
+
+</TabItem>
+<TabItem value="windows" label="Windows (PowerShell)">
+
+```powershell
+# Server — run in one terminal
+$pipe = New-Object System.IO.Pipes.NamedPipeServerStream("mypipe")
+$pipe.WaitForConnection()
+$reader = New-Object System.IO.StreamReader($pipe)
+Write-Host "Received: $($reader.ReadLine())"
+$pipe.Close()
+
+# Client — run in another terminal
+$client = New-Object System.IO.Pipes.NamedPipeClientStream(".", "mypipe")
+$client.Connect()
+$writer = New-Object System.IO.StreamWriter($client)
+$writer.AutoFlush = $true
+$writer.WriteLine("Hello from client")
+$client.Close()
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Shared Memory
+
+The fastest IPC — processes map the **same physical pages** into their address spaces. No kernel copy of the data. The tradeoff: you must synchronise access with locks or semaphores.
+
+```python
+from multiprocessing import shared_memory, Process, Lock
+import numpy as np
+
+# Producer: create shared memory
+shm = shared_memory.SharedMemory(create=True, size=1024)
+shm.buf[:5] = b"hello"
+
+# Consumer: attach by name (in another process)
+shm2 = shared_memory.SharedMemory(name=shm.name)
+print(bytes(shm2.buf[:5]))  # b"hello"
+
+shm2.close()
+shm.close()
+shm.unlink()    # Destroy the shared segment
+```
+
+---
+
+## Linux Signals — Quick Reference
+
+Signals are **asynchronous notifications** sent to a process. They're the reason `Ctrl+C` kills a program and `systemctl reload nginx` reloads its config.
+
+```python
+import signal, sys
+
+def handle_sigterm(signum, frame):
+    print("SIGTERM received — shutting down cleanly")
+    # flush buffers, close connections, delete temp files...
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, handle_sigterm)
+signal.signal(signal.SIGHUP, lambda s, f: reload_config())
+
+# Keep running
+while True:
+    ...
+```
+
+```bash
+# Send signals from the shell
+kill -SIGTERM <PID>       # Graceful shutdown
+kill -SIGHUP  <PID>       # Reload config
+kill -SIGUSR1 <PID>       # App-defined action (e.g. dump stats)
+kill -9       <PID>       # SIGKILL — cannot be caught
+```

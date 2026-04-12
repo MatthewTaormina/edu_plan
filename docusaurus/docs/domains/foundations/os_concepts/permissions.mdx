@@ -1,0 +1,185 @@
+---
+title: Permissions
+description: Unix file permissions (rwx, chmod, chown, setuid, ACLs) and Windows NTFS permissions (icacls, Get-Acl) — with practical examples.
+sidebar_label: Permissions
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> **Section:** [OS Concepts](.) · **Time Estimate:** 2–3 hours
+
+---
+
+## Linux — Unix Permission Model
+
+Every file and directory has a three-level permission set: **owner**, **group**, and **other (everyone else)**.
+
+<svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Unix permissions anatomy diagram" style={{maxWidth:'640px',width:'100%',display:'block',margin:'1.5rem auto'}}>
+  <defs>
+    <linearGradient id="perm-type" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#6366f1" stopOpacity="0.2"/>
+      <stop offset="100%" stopColor="#6366f1" stopOpacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="perm-owner" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#ef4444" stopOpacity="0.2"/>
+      <stop offset="100%" stopColor="#ef4444" stopOpacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="perm-group" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.2"/>
+      <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="perm-other" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#10b981" stopOpacity="0.2"/>
+      <stop offset="100%" stopColor="#10b981" stopOpacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  {/* Output line */}
+  <text x="20" y="40" fontFamily="monospace" fontSize="16" fontWeight="700" fill="var(--ifm-color-emphasis-800)">-rwxr-xr--  2  alice  devteam  4096  script.sh</text>
+
+  {/* Type bracket */}
+  <rect x="16" y="50" width="14" height="30" rx="2" fill="url(#perm-type)" stroke="#6366f1" strokeWidth="1.2"/>
+  <line x1="23" y1="80" x2="23" y2="110" stroke="#6366f1" strokeWidth="1" strokeDasharray="3,2"/>
+  <text x="23" y="124" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="#6366f1">type</text>
+  <text x="23" y="136" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="#6366f1">- = file</text>
+  <text x="23" y="148" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="#6366f1">d = dir</text>
+  <text x="23" y="160" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="#6366f1">l = link</text>
+
+  {/* Owner bracket */}
+  <rect x="30" y="50" width="36" height="30" rx="2" fill="url(#perm-owner)" stroke="#ef4444" strokeWidth="1.2"/>
+  <line x1="48" y1="80" x2="48" y2="96" stroke="#ef4444" strokeWidth="1" strokeDasharray="3,2"/>
+  <text x="48" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="#ef4444">owner</text>
+  <text x="48" y="124" textAnchor="middle" fontFamily="monospace" fontSize="11" fontWeight="700" fill="#ef4444">rwx = 7</text>
+  <text x="48" y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-600)">read+write+exec</text>
+
+  {/* Group bracket */}
+  <rect x="66" y="50" width="36" height="30" rx="2" fill="url(#perm-group)" stroke="#f59e0b" strokeWidth="1.2"/>
+  <line x1="84" y1="80" x2="84" y2="96" stroke="#f59e0b" strokeWidth="1" strokeDasharray="3,2"/>
+  <text x="84" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="#f59e0b">group</text>
+  <text x="84" y="124" textAnchor="middle" fontFamily="monospace" fontSize="11" fontWeight="700" fill="#f59e0b">r-x = 5</text>
+  <text x="84" y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-600)">read+exec</text>
+
+  {/* Other bracket */}
+  <rect x="102" y="50" width="36" height="30" rx="2" fill="url(#perm-other)" stroke="#10b981" strokeWidth="1.2"/>
+  <line x1="120" y1="80" x2="120" y2="96" stroke="#10b981" strokeWidth="1" strokeDasharray="3,2"/>
+  <text x="120" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="#10b981">other</text>
+  <text x="120" y="124" textAnchor="middle" fontFamily="monospace" fontSize="11" fontWeight="700" fill="#10b981">r-- = 4</text>
+  <text x="120" y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-600)">read only</text>
+
+  {/* Link count */}
+  <text x="165" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-500)">links: 2</text>
+
+  {/* Owner / group labels */}
+  <text x="230" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-500)">alice</text>
+  <text x="300" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-500)">devteam</text>
+</svg>
+
+### Permission Bits
+
+| Symbol | Value | Meaning on file | Meaning on directory |
+|--------|:-----:|----------------|---------------------|
+| `r` | 4 | Read file contents | List directory contents (`ls`) |
+| `w` | 2 | Modify file | Create, delete, rename files inside |
+| `x` | 1 | Execute file | Enter directory (`cd`) |
+| `-` | 0 | Permission denied | — |
+
+**Octal notation:** Each group (owner/group/other) is a sum: `rwx = 4+2+1 = 7`, `r-x = 5`, `r-- = 4`.
+
+| Mode | Octal | Common use |
+|------|:-----:|-----------|
+| `rwxr-xr-x` | 755 | Executables, public directories |
+| `rw-r--r--` | 644 | Regular files, configs |
+| `rw-------` | 600 | Private keys, secrets |
+| `rwx------` | 700 | Private scripts |
+| `rwxrwxrwx` | 777 | ⚠️ World-writable — avoid |
+
+---
+
+## Linux — Commands
+
+```bash
+# Change permissions
+chmod 755 script.sh             # Numeric: owner rwx, group r-x, other r-x
+chmod +x script.sh              # Add execute for all
+chmod -R 644 /var/www/html/     # Recursive
+chmod go-w sensitive.txt        # Remove write from group and other
+
+# Change ownership
+chown alice file.txt            # Change owner
+chown alice:devteam file.txt    # Change owner and group
+chown -R alice:devteam /app/    # Recursive
+
+# Special bits
+chmod u+s /usr/bin/passwd       # Setuid: runs as file's owner (root), not the caller
+chmod g+s /shared/dir           # Setgid: new files inherit directory's group
+chmod +t /tmp                   # Sticky bit: only file owner can delete (used on /tmp)
+
+# Find dangerous permissions
+find / -perm -4000 -type f 2>/dev/null      # All setuid files
+find / -perm -o+w -type f 2>/dev/null       # World-writable files (security risk)
+```
+
+### ACLs — Fine-Grained Control
+
+Standard Unix permissions only have three levels. For more granularity, use ACLs:
+
+```bash
+# View ACL
+getfacl file.txt
+
+# Give a specific user read access without changing ownership
+setfacl -m u:bob:r file.txt
+
+# Give a group read+write
+setfacl -m g:contractors:rw /project/
+
+# Remove an ACL entry
+setfacl -x u:bob file.txt
+
+# Remove all ACLs
+setfacl -b file.txt
+```
+
+---
+
+## Windows — NTFS ACL Model
+
+Windows uses **Access Control Lists (ACLs)** natively — each file has a list of Access Control Entries (ACEs), each specifying a user or group and their allowed/denied permissions.
+
+Standard rights: **FullControl, Modify, ReadAndExecute, Read, Write**.
+
+```powershell
+# View current ACL
+Get-Acl "C:\mydir" | Format-List
+
+# Grant a user read-only access to a folder (including sub-items)
+$acl  = Get-Acl "C:\mydir"
+$rule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    "DOMAIN\username",
+    "Read",
+    "ContainerInherit,ObjectInherit",   # Propagates to sub-folders and files
+    "None",
+    "Allow"
+)
+$acl.SetAccessRule($rule)
+Set-Acl "C:\mydir" $acl
+
+# icacls — simpler CLI alternative
+icacls C:\mydir /grant "alice:(OI)(CI)RX"  # OI=object inherit, CI=container inherit
+icacls C:\mydir /deny  "Guest:F"            # Deny full control to Guest
+icacls C:\mydir /remove "alice"             # Remove alice's entry
+icacls C:\mydir /reset /T                  # Reset all to inherited (recursive)
+
+# Take ownership of an orphaned file (requires admin)
+takeown /F C:\orphaned.txt
+```
+
+### Windows ACL Inheritance Flags
+
+| Flag | Meaning |
+|------|---------|
+| `(OI)` | Object Inherit — applies to files within the folder |
+| `(CI)` | Container Inherit — applies to sub-folders |
+| `(NP)` | No Propagate — don't inherit further |
+| `(IO)` | Inherit Only — doesn't apply to the folder itself |

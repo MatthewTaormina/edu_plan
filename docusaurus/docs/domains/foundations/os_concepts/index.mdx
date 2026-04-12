@@ -1,0 +1,152 @@
+---
+title: OS Concepts
+description: How operating systems manage processes, memory, file systems, permissions, IPC, services, and packages — for Windows and Linux.
+sidebar_label: OS Concepts
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import MilestoneChecklist from '@site/src/components/MilestoneChecklist';
+
+> **Domain:** Foundations · **Time Estimate:** 2–3 weeks · **Focus:** Windows and Linux only
+
+> **Prerequisites:** [Networking](../networking) is helpful. Basic command-line familiarity is expected.
+>
+> **Who needs this:** Systems programmers, DevOps engineers, and any developer who deploys software. The OS manages every resource your program uses. Understanding it makes you dramatically better at debugging, optimisation, and system design.
+
+---
+
+## 🎯 Learning Objectives
+
+By the end of this section, you will be able to:
+
+- [ ] Explain what a process and a thread are, and how they differ
+- [ ] Describe how the OS schedules processes and use tools to inspect it
+- [ ] Explain virtual memory, paging, and the virtual address space
+- [ ] Navigate both NTFS (Windows) and ext4 (Linux) file system features
+- [ ] Set and explain file permissions on both operating systems
+- [ ] Write a simple inter-process communication example (pipe or socket)
+- [ ] Manage services and daemons on Windows (Services) and Linux (systemd)
+- [ ] Install and update software using native package managers (`winget` / `apt` / `dnf`)
+
+---
+
+## 📚 Subsections
+
+### Execution
+
+| Page | Topics |
+|------|--------|
+| [Processes & Threads](./processes_threads) | Process anatomy, thread model, inspection tools, signals, process states |
+| [Process Scheduling](./scheduling) | Preemptive scheduling, priority, nice values, CPU affinity, load average |
+
+### Memory
+
+| Page | Topics |
+|------|--------|
+| [Virtual Memory & Paging](./virtual_memory) | Address space layout, page tables, MMU, swap/page file, OOM killer |
+
+### Storage
+
+| Page | Topics |
+|------|--------|
+| [File Systems](./file_systems) | ext4 vs NTFS, inodes, MFT, symlinks, hard links, mount points |
+| [Permissions](./permissions) | Unix rwx bits, chmod/chown, setuid/setgid, Windows ACLs, icacls |
+
+### Communication & Services
+
+| Page | Topics |
+|------|--------|
+| [Inter-Process Communication](./ipc) | Pipes, FIFOs, Unix sockets, shared memory, message queues, signals |
+| [Services & Daemons](./services_daemons) | systemd units, journalctl, Windows Services, NSSM |
+
+### Environment
+
+| Page | Topics |
+|------|--------|
+| [Package Management](./package_management) | apt, dnf/rpm, winget, Chocolatey, Scoop |
+
+---
+
+## 🏗️ Assignments
+
+### Assignment 1 — Process Inspector
+**Language:** Python or PowerShell/Bash
+
+Build a process monitoring tool that:
+- [ ] Lists all running processes with: PID, name, CPU%, memory MB, user
+- [ ] Updates every 2 seconds
+- [ ] Highlights processes over a configurable CPU% threshold in red
+- [ ] Can kill a process by name (with confirmation prompt)
+- [ ] Logs process stats to a CSV file every 30 seconds
+
+### Assignment 2 — File Permissions Audit
+**Language:** Bash (Linux) AND PowerShell (Windows)
+
+Write a script that audits a directory:
+- [ ] Finds all files writable by "other" (Linux: world-writable) — security risk
+- [ ] Finds all setuid/setgid files (Linux)
+- [ ] Finds files not owned by the expected user
+- [ ] Generates a report: file path, current permissions, recommended permissions, risk level
+- [ ] Automatically fixes any "low risk" issues with a `--fix` flag
+
+Run on `/etc` (Linux) or `C:\Windows\System32` (Windows) — document what you find.
+
+### Assignment 3 — Service Deployer
+**Platform:** Linux (WSL2 or VM) AND Windows
+
+Take one of your previous assignments (any web server or CLI tool) and:
+- [ ] **Linux:** Write a systemd unit file for it. Include: restart on failure, environment vars, proper user, working directory. Enable and verify with `systemctl status`.
+- [ ] **Windows:** Use NSSM (or New-Service) to register it as a Windows service. Verify it shows in `services.msc` and starts on boot.
+- [ ] Document the differences: how does systemd's restart logic compare to Windows Services?
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary">
+
+- 📺 **[CS50 — Week 4: Memory (FREE)](https://cs50.harvard.edu/x/)** — Best intro to virtual memory and pointers
+- 📖 **[Linux Command Line — William Shotts (FREE online)](https://linuxcommand.org/tlcl.php)** — Comprehensive, free, excellent
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📺 **[Low Level Learning — OS Internals (YouTube, FREE)](https://www.youtube.com/@LowLevelLearning)** — Engaging deep dives into OS concepts
+- 📺 **[NetworkChuck — Linux for Hackers (YouTube, FREE)](https://www.youtube.com/playlist?list=PLIhvC56v63IJIujb5cyE13oLuyORZpdkL)** — Practical Linux from scratch
+
+</TabItem>
+<TabItem value="reference" label="Reference">
+
+- 📖 **[The Linux man pages (FREE)](https://man7.org/linux/man-pages/)** — The authoritative reference
+- 📖 **[Windows Sysinternals Suite (FREE)](https://learn.microsoft.com/en-us/sysinternals/)** — Process Explorer, Process Monitor, Autoruns — indispensable Windows tools
+
+</TabItem>
+</Tabs>
+
+---
+
+## ✅ Milestone Checklist
+
+<MilestoneChecklist
+  lessonId="wiki-os-concepts"
+  items={[
+    "Can explain the difference between a process and a thread with a concrete example",
+    "Can view memory usage per-process on both Windows and Linux",
+    "Can set Unix permissions using chmod numerically (e.g. 755, 644) without looking it up",
+    "Can grant a specific Windows user read-only access to a folder using icacls",
+    "Can write a systemd unit file from scratch",
+    "Can install, start, enable, and view logs for a service on both Windows and Linux",
+    "All 3 assignments complete",
+  ]}
+/>
+
+---
+
+## 🏆 Milestone Complete!
+
+> **You now know how the machine under your code works.**
+>
+> Understanding processes, memory, file systems, and services separates developers from the
+> engineers who can actually debug production systems. You're now in that second group.
