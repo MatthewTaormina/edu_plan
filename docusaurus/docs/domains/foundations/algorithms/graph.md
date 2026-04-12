@@ -1,15 +1,15 @@
-import Tabs from '@theme/Tabs';
+﻿import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Graph Traversal
 
-**Section:** Algorithms › Graph Traversal · **Prerequisite:** [Recursion & Dynamic Programming](./recursion.md)
+**Section:** Algorithms â€º Graph Traversal Â· **Prerequisite:** [Recursion & Dynamic Programming](./recursion.md)
 
-> **Who needs this:** Graphs model almost everything — networks, dependencies, social connections, maps, state machines. BFS and DFS are the two fundamental operations on graphs and appear constantly in real systems (dependency resolution, web crawlers, route planning, AI game trees).
+> **Who needs this:** Graphs model almost everything â€” networks, dependencies, social connections, maps, state machines. BFS and DFS are the two fundamental operations on graphs and appear constantly in real systems (dependency resolution, web crawlers, route planning, AI game trees).
 
 ---
 
-## 🎯 Learning Objectives
+## ðŸŽ¯ Learning Objectives
 
 - [ ] Represent a graph as an adjacency list and adjacency matrix
 - [ ] Implement BFS and explain what it guarantees (shortest path in unweighted graphs)
@@ -20,18 +20,18 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-## 📖 Concepts
+## ðŸ“– Concepts
 
 ### 1. Graph Representation
 
 A graph has **vertices** (nodes) and **edges** (connections). Edges can be **directed** or **undirected**, and **weighted** or **unweighted**.
 
-**Adjacency list** — most common for sparse graphs:
+**Adjacency list** â€” most common for sparse graphs:
 
 ```
-Graph:  A — B — D
+Graph:  A â€” B â€” D
         |   |
-        C — E
+        C â€” E
 
 adjacency_list = {
     "A": ["B", "C"],
@@ -42,7 +42,7 @@ adjacency_list = {
 }
 ```
 
-**Adjacency matrix** — fast edge existence check, but O(V²) space:
+**Adjacency matrix** â€” fast edge existence check, but O(VÂ²) space:
 
 ```
      A  B  C  D  E
@@ -59,9 +59,9 @@ E  [ 0  1  1  0  0 ]
 
 ---
 
-### 2. Breadth-First Search (BFS) — O(V+E)
+### 2. Breadth-First Search (BFS) â€” O(V+E)
 
-BFS explores level by level — all neighbors of a node before moving deeper. Uses a **queue**. Key property: **BFS always finds the shortest path in an unweighted graph.**
+BFS explores level by level â€” all neighbors of a node before moving deeper. Uses a **queue**. Key property: **BFS always finds the shortest path in an unweighted graph.**
 
 ```
 Start at A:
@@ -69,7 +69,7 @@ Level 0: [A]
 Level 1: [B, C]       (A's neighbors)
 Level 2: [D, E]       (B and C's unvisited neighbors)
 
-Shortest path A → D = A → B → D (2 hops)
+Shortest path A â†’ D = A â†’ B â†’ D (2 hops)
 ```
 
 <Tabs>
@@ -77,14 +77,14 @@ Shortest path A → D = A → B → D (2 hops)
 
 ```pseudocode
 FUNCTION bfs(graph: AdjacencyList, start: Vertex) -> List<Vertex>
-    visited ← SET {}
-    queue   ← QUEUE [start]
-    order   ← []
+    visited â† SET {}
+    queue   â† QUEUE [start]
+    order   â† []
 
     ADD start TO visited
 
     WHILE queue is NOT EMPTY DO
-        node ← DEQUEUE from queue
+        node â† DEQUEUE from queue
         APPEND node TO order
 
         FOR each neighbor IN graph[node] DO
@@ -98,16 +98,16 @@ FUNCTION bfs(graph: AdjacencyList, start: Vertex) -> List<Vertex>
     RETURN order
 END FUNCTION
 
-// BFS shortest path — returns distance from start to each node
+// BFS shortest path â€” returns distance from start to each node
 FUNCTION bfs_distances(graph: AdjacencyList, start: Vertex) -> Map<Vertex, Int>
-    dist  ← MAP { start: 0 }
-    queue ← QUEUE [start]
+    dist  â† MAP { start: 0 }
+    queue â† QUEUE [start]
 
     WHILE queue is NOT EMPTY DO
-        node ← DEQUEUE from queue
+        node â† DEQUEUE from queue
         FOR each neighbor IN graph[node] DO
             IF neighbor NOT IN dist THEN
-                dist[neighbor] ← dist[node] + 1
+                dist[neighbor] â† dist[node] + 1
                 ENQUEUE neighbor INTO queue
             END IF
         END FOR
@@ -237,13 +237,13 @@ fn bfs(graph: &HashMap<&str, Vec<&str>>, start: &str) -> Vec<String> {
 
 ---
 
-### 3. Depth-First Search (DFS) — O(V+E)
+### 3. Depth-First Search (DFS) â€” O(V+E)
 
 DFS explores as deep as possible before backtracking. Can be implemented **recursively** (using the call stack) or **iteratively** (using an explicit stack). No shortest-path guarantee, but excellent for **cycle detection, reachability, and topological sort**.
 
 ```
 Start at A (DFS):
-Visit A → go deep to B → go deep to D → backtrack to B → go to E → backtrack...
+Visit A â†’ go deep to B â†’ go deep to D â†’ backtrack to B â†’ go to E â†’ backtrack...
 
 One possible DFS order: A, B, D, E, C
 ```
@@ -266,12 +266,12 @@ END FUNCTION
 
 // Iterative DFS (explicit stack)
 FUNCTION dfs_iterative(graph: AdjacencyList, start: Vertex) -> List<Vertex>
-    visited ← SET {}
-    stack   ← STACK [start]
-    order   ← []
+    visited â† SET {}
+    stack   â† STACK [start]
+    order   â† []
 
     WHILE stack is NOT EMPTY DO
-        node ← POP from stack
+        node â† POP from stack
         IF node NOT IN visited THEN
             ADD node TO visited
             APPEND node TO order
@@ -378,8 +378,8 @@ In a **directed** graph, a cycle exists if DFS reaches a node that's currently b
 ```pseudocode
 // Returns true if directed graph has a cycle
 FUNCTION has_cycle(graph: AdjacencyList) -> Bool
-    visited   ← SET {}    // Fully processed nodes
-    rec_stack ← SET {}    // Nodes in current DFS path
+    visited   â† SET {}    // Fully processed nodes
+    rec_stack â† SET {}    // Nodes in current DFS path
 
     FOR each node IN graph DO
         IF node NOT IN visited THEN
@@ -397,7 +397,7 @@ FUNCTION dfs_cycle(graph, node, visited, rec_stack) -> Bool
 
     FOR each neighbor IN graph[node] DO
         IF neighbor IN rec_stack THEN
-            RETURN TRUE    // Back edge — cycle found!
+            RETURN TRUE    // Back edge â€” cycle found!
         END IF
         IF neighbor NOT IN visited THEN
             IF dfs_cycle(graph, neighbor, visited, rec_stack) THEN
@@ -443,17 +443,17 @@ print(has_cycle(cycle)) # True
 
 ---
 
-### 5. Topological Sort — Kahn's Algorithm (BFS-based)
+### 5. Topological Sort â€” Kahn's Algorithm (BFS-based)
 
-**Topological sort** orders the nodes of a **directed acyclic graph (DAG)** such that every edge points forward — no node comes before its prerequisites.
+**Topological sort** orders the nodes of a **directed acyclic graph (DAG)** such that every edge points forward â€” no node comes before its prerequisites.
 
 **Use case:** Task scheduling, dependency resolution (npm install, make), course prerequisites.
 
 ```
 Dependencies:
-  A → C        (A must come before C)
-  B → C, D     (B must come before C and D)
-  C → E
+  A â†’ C        (A must come before C)
+  B â†’ C, D     (B must come before C and D)
+  C â†’ E
 
 Valid topological order: A, B, C, D, E  (or B, A, C, D, E)
 ```
@@ -462,25 +462,25 @@ Valid topological order: A, B, C, D, E  (or B, A, C, D, E)
 <TabItem value="pseudo" label="Pseudocode">
 
 ```pseudocode
-// Kahn's Algorithm — BFS-based topological sort
+// Kahn's Algorithm â€” BFS-based topological sort
 FUNCTION topological_sort(graph: AdjacencyList) -> List<Vertex>
     // Count incoming edges for each node
-    in_degree ← MAP { each node: 0 }
+    in_degree â† MAP { each node: 0 }
     FOR each node IN graph DO
         FOR each neighbor IN graph[node] DO
-            in_degree[neighbor] ← in_degree[neighbor] + 1
+            in_degree[neighbor] â† in_degree[neighbor] + 1
         END FOR
     END FOR
 
     // Start with all nodes that have no incoming edges
-    queue  ← QUEUE [ all nodes where in_degree[node] == 0 ]
-    result ← []
+    queue  â† QUEUE [ all nodes where in_degree[node] == 0 ]
+    result â† []
 
     WHILE queue is NOT EMPTY DO
-        node ← DEQUEUE from queue
+        node â† DEQUEUE from queue
         APPEND node TO result
         FOR each neighbor IN graph[node] DO
-            in_degree[neighbor] ← in_degree[neighbor] - 1
+            in_degree[neighbor] â† in_degree[neighbor] - 1
             IF in_degree[neighbor] == 0 THEN
                 ENQUEUE neighbor INTO queue
             END IF
@@ -489,7 +489,7 @@ FUNCTION topological_sort(graph: AdjacencyList) -> List<Vertex>
 
     // If result has fewer nodes than graph, there's a cycle
     IF length(result) != length(graph) THEN
-        RETURN ERROR("Graph has a cycle — topological sort not possible")
+        RETURN ERROR("Graph has a cycle â€” topological sort not possible")
     END IF
     RETURN result
 END FUNCTION
@@ -523,7 +523,7 @@ def topological_sort(graph: dict) -> list:
     return result
 
 graph = {"A": ["C"], "B": ["C", "D"], "C": ["E"], "D": [], "E": []}
-print(topological_sort(graph))  # → ['A', 'B', 'C', 'D', 'E'] (one valid order)
+print(topological_sort(graph))  # â†’ ['A', 'B', 'C', 'D', 'E'] (one valid order)
 ```
 
 </TabItem>
@@ -558,7 +558,7 @@ function topologicalSort(graph: Record<string, string[]>): string[] {
 
 ---
 
-### 6. BFS vs DFS — When to Use Which
+### 6. BFS vs DFS â€” When to Use Which
 
 | Goal | Use |
 |------|-----|
@@ -574,33 +574,27 @@ function topologicalSort(graph: Record<string, string[]>): string[] {
 
 ---
 
-## 📚 Resources
+## ðŸ“š Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary (Do These)">
 
-- 📺 **[NeetCode — Graph Algorithms (YouTube, FREE)](https://www.youtube.com/playlist?list=PLot-Xpze53ldV9xhr55QLJ04WcJEGoN0X)** — BFS, DFS, cycle detection with practical problems
-- 📺 **[Abdul Bari — BFS and DFS (YouTube, FREE)](https://www.youtube.com/watch?v=pcKY4hjDrxk)** — Clear walkthrough with visual examples
+- ðŸ“º **[NeetCode â€” Graph Algorithms (YouTube, FREE)](https://www.youtube.com/playlist?list=PLot-Xpze53ldV9xhr55QLJ04WcJEGoN0X)** â€” BFS, DFS, cycle detection with practical problems
+- ðŸ“º **[Abdul Bari â€” BFS and DFS (YouTube, FREE)](https://www.youtube.com/watch?v=pcKY4hjDrxk)** â€” Clear walkthrough with visual examples
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- 📖 **[Visualgo — Graph Traversal (FREE)](https://visualgo.net/en/dfsbfs)** — Animate BFS and DFS on custom graphs
-- 📺 **[MIT 6.006 — Graph Algorithms (YouTube, FREE)](https://www.youtube.com/watch?v=s-CYnVz-uh4)** — Rigorous treatment of BFS/DFS and their properties
+- ðŸ“– **[Visualgo â€” Graph Traversal (FREE)](https://visualgo.net/en/dfsbfs)** â€” Animate BFS and DFS on custom graphs
+- ðŸ“º **[MIT 6.006 â€” Graph Algorithms (YouTube, FREE)](https://www.youtube.com/watch?v=s-CYnVz-uh4)** â€” Rigorous treatment of BFS/DFS and their properties
 
 </TabItem>
 <TabItem value="practice" label="Practice">
 
-- 🎮 **[LeetCode #200 — Number of Islands (FREE)](https://leetcode.com/problems/number-of-islands/)** — Classic BFS/DFS connected components
-- 🎮 **[LeetCode #207 — Course Schedule (FREE)](https://leetcode.com/problems/course-schedule/)** — Cycle detection / topological sort
-- 🎮 **[LeetCode #127 — Word Ladder (FREE)](https://leetcode.com/problems/word-ladder/)** — BFS shortest path
-- 🎮 **[LeetCode #210 — Course Schedule II (FREE)](https://leetcode.com/problems/course-schedule-ii/)** — Return actual topological order
+- ðŸŽ® **[LeetCode #200 â€” Number of Islands (FREE)](https://leetcode.com/problems/number-of-islands/)** â€” Classic BFS/DFS connected components
+- ðŸŽ® **[LeetCode #207 â€” Course Schedule (FREE)](https://leetcode.com/problems/course-schedule/)** â€” Cycle detection / topological sort
+- ðŸŽ® **[LeetCode #127 â€” Word Ladder (FREE)](https://leetcode.com/problems/word-ladder/)** â€” BFS shortest path
+- ðŸŽ® **[LeetCode #210 â€” Course Schedule II (FREE)](https://leetcode.com/problems/course-schedule-ii/)** â€” Return actual topological order
 
 </TabItem>
 </Tabs>
-
----
-
-## ➡️ Next
-
-→ [Pathfinding Algorithms](./pathfinding.md)

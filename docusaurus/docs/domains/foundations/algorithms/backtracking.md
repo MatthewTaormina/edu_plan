@@ -1,17 +1,17 @@
-import Tabs from '@theme/Tabs';
+﻿import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Backtracking
 
-**Section:** Algorithms › Backtracking · **Prerequisite:** [Greedy Algorithms](./greedy.md)
+**Section:** Algorithms â€º Backtracking Â· **Prerequisite:** [Greedy Algorithms](./greedy.md)
 
-> **Who needs this:** Anyone solving constraint satisfaction problems — puzzles, combinatorics, game AI. Backtracking is the systematic approach for problems where you must explore many possibilities but can prune invalid branches early. It powers Sudoku solvers, chess engines (at the base level), scheduling systems, and compiler type-checkers.
+> **Who needs this:** Anyone solving constraint satisfaction problems â€” puzzles, combinatorics, game AI. Backtracking is the systematic approach for problems where you must explore many possibilities but can prune invalid branches early. It powers Sudoku solvers, chess engines (at the base level), scheduling systems, and compiler type-checkers.
 
 ---
 
-## 🎯 Learning Objectives
+## ðŸŽ¯ Learning Objectives
 
-- [ ] State the three-step backtracking pattern: choose → explore → unchoose
+- [ ] State the three-step backtracking pattern: choose â†’ explore â†’ unchoose
 - [ ] Implement N-Queens using backtracking
 - [ ] Implement a Sudoku solver using backtracking
 - [ ] Generate all subsets and permutations of a set
@@ -19,7 +19,7 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-## 📖 Concepts
+## ðŸ“– Concepts
 
 ### 1. The Backtracking Pattern
 
@@ -69,8 +69,8 @@ Decision tree (include=Y, exclude=N):
 
 ```pseudocode
 FUNCTION subsets(nums: List<Int>) -> List<List<Int>>
-    result ← [[]]   // Start with empty subset
-    current ← []
+    result â† [[]]   // Start with empty subset
+    current â† []
 
     FUNCTION backtrack(start: Int) -> Void
         FOR i FROM start TO length(nums) - 1 DO
@@ -137,7 +137,7 @@ function subsets(nums: number[]): number[][] {
 
 ### 3. N-Queens Problem
 
-**Problem:** Place N queens on an N×N chessboard so that no two queens threaten each other (no shared row, column, or diagonal).
+**Problem:** Place N queens on an NÃ—N chessboard so that no two queens threaten each other (no shared row, column, or diagonal).
 
 ```
 4-Queens solution (one valid):
@@ -158,11 +158,11 @@ Columns used: 1, 3, 0, 2
 
 ```pseudocode
 FUNCTION solve_n_queens(n: Int) -> List<List<String>>
-    results    ← []
-    queens     ← []   // queens[row] = column of queen in that row
-    cols       ← SET {}
-    diag1      ← SET {}  // (row - col) is constant along \ diagonal
-    diag2      ← SET {}  // (row + col) is constant along / diagonal
+    results    â† []
+    queens     â† []   // queens[row] = column of queen in that row
+    cols       â† SET {}
+    diag1      â† SET {}  // (row - col) is constant along \ diagonal
+    diag2      â† SET {}  // (row + col) is constant along / diagonal
 
     FUNCTION backtrack(row: Int) -> Void
         IF row == n THEN
@@ -172,7 +172,7 @@ FUNCTION solve_n_queens(n: Int) -> List<List<String>>
 
         FOR col FROM 0 TO n - 1 DO
             IF col IN cols OR (row-col) IN diag1 OR (row+col) IN diag2 THEN
-                CONTINUE    // Pruning — this placement is invalid
+                CONTINUE    // Pruning â€” this placement is invalid
             END IF
 
             // Choose
@@ -274,12 +274,12 @@ function solveNQueens(n: number): string[][] {
 
 ### 4. Sudoku Solver
 
-**Problem:** Fill a 9×9 grid so every row, column, and 3×3 box contains digits 1–9 exactly once.
+**Problem:** Fill a 9Ã—9 grid so every row, column, and 3Ã—3 box contains digits 1â€“9 exactly once.
 
 ```
 Strategy:
 1. Find the next empty cell
-2. Try digits 1–9; skip any that violate constraints
+2. Try digits 1â€“9; skip any that violate constraints
 3. Recurse to fill the next empty cell
 4. If no digit works, backtrack to the previous cell
 ```
@@ -294,18 +294,18 @@ FUNCTION solve_sudoku(board: 9x9 Grid) -> Bool
             IF board[row][col] == EMPTY THEN
                 FOR digit FROM 1 TO 9 DO
                     IF is_valid(board, row, col, digit) THEN
-                        board[row][col] ← digit          // Choose
+                        board[row][col] â† digit          // Choose
                         IF solve_sudoku(board) THEN
                             RETURN TRUE                  // Solution found
                         END IF
-                        board[row][col] ← EMPTY          // Unchoose (backtrack)
+                        board[row][col] â† EMPTY          // Unchoose (backtrack)
                     END IF
                 END FOR
-                RETURN FALSE    // No digit worked — backtrack further
+                RETURN FALSE    // No digit worked â€” backtrack further
             END IF
         END FOR
     END FOR
-    RETURN TRUE    // All cells filled — solution complete!
+    RETURN TRUE    // All cells filled â€” solution complete!
 END FUNCTION
 
 FUNCTION is_valid(board, row, col, digit) -> Bool
@@ -314,8 +314,8 @@ FUNCTION is_valid(board, row, col, digit) -> Bool
     // Check column
     IF digit IN column col of board THEN RETURN FALSE
     // Check 3x3 box
-    box_row ← (row / 3) * 3
-    box_col ← (col / 3) * 3
+    box_row â† (row / 3) * 3
+    box_col â† (col / 3) * 3
     IF digit IN board[box_row..box_row+2][box_col..box_col+2] THEN RETURN FALSE
     RETURN TRUE
 END FUNCTION
@@ -335,7 +335,7 @@ def solve_sudoku(board: list[list[int]]) -> bool:
         # Column check
         if any(board[r][col] == digit for r in range(9)):
             return False
-        # 3×3 box check
+        # 3Ã—3 box check
         br, bc = (row // 3) * 3, (col // 3) * 3
         return not any(board[br + dr][bc + dc] == digit
                        for dr in range(3) for dc in range(3))
@@ -349,7 +349,7 @@ def solve_sudoku(board: list[list[int]]) -> bool:
                         if solve_sudoku(board):
                             return True
                         board[row][col] = 0  # Backtrack
-                return False  # No valid digit — backtrack further
+                return False  # No valid digit â€” backtrack further
 
     return True  # All cells filled
 ```
@@ -365,7 +365,7 @@ def solve_sudoku(board: list[list[int]]) -> bool:
 
 ```
 nums = [3, 1, 4, 2, 2]   target = 6
-Solution: {4, 2} or {3, 1, 2} → True
+Solution: {4, 2} or {3, 1, 2} â†’ True
 ```
 
 <Tabs>
@@ -411,52 +411,46 @@ function subsetSum(nums: number[], target: number): boolean {
 </Tabs>
 
 :::note DP vs Backtracking for Subset Sum
-This backtracking solution is O(2ⁿ) worst case. The **optimization version** (minimum subsets, count of subsets) is solved with DP in O(n × target) time. Backtracking is appropriate for the **decision version** when you also need to enumerate solutions.
+This backtracking solution is O(2â¿) worst case. The **optimization version** (minimum subsets, count of subsets) is solved with DP in O(n Ã— target) time. Backtracking is appropriate for the **decision version** when you also need to enumerate solutions.
 :::
 
 ---
 
 ### 6. Backtracking Complexity
 
-Backtracking is exponential in the worst case — that's inherent to the problem class. The art is in **tight pruning**:
+Backtracking is exponential in the worst case â€” that's inherent to the problem class. The art is in **tight pruning**:
 
 | Problem | Without pruning | With pruning |
 |---------|----------------|-------------|
 | N-Queens | O(N!) | O(N!) worst but far fewer nodes visited |
 | Sudoku | O(9^81) | Typically solves in microseconds |
-| Subset sum | O(2ⁿ) | O(2ⁿ) worst, but early exits help |
+| Subset sum | O(2â¿) | O(2â¿) worst, but early exits help |
 
 Good backtracking implementations track constraints with efficient data structures (sets, bitboards) so each validity check is O(1), not O(n).
 
 ---
 
-## 📚 Resources
+## ðŸ“š Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary (Do These)">
 
-- 📺 **[NeetCode — Backtracking (YouTube, FREE)](https://www.youtube.com/watch?v=A80YzvNwqXA)** — Template approach with subsets, permutations, and combinations
-- 📺 **[Back to Back SWE — N Queens (YouTube, FREE)](https://www.youtube.com/watch?v=wGbuCyNpxIg)** — The classic interview problem explained thoroughly
+- ðŸ“º **[NeetCode â€” Backtracking (YouTube, FREE)](https://www.youtube.com/watch?v=A80YzvNwqXA)** â€” Template approach with subsets, permutations, and combinations
+- ðŸ“º **[Back to Back SWE â€” N Queens (YouTube, FREE)](https://www.youtube.com/watch?v=wGbuCyNpxIg)** â€” The classic interview problem explained thoroughly
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- 📺 **[Abdul Bari — Backtracking (YouTube, FREE)](https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O)** — Theoretical grounding for backtracking
-- 📖 **[Visualgo — Backtracking (FREE)](https://visualgo.net/)** — Animated tree of recursive calls
+- ðŸ“º **[Abdul Bari â€” Backtracking (YouTube, FREE)](https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O)** â€” Theoretical grounding for backtracking
+- ðŸ“– **[Visualgo â€” Backtracking (FREE)](https://visualgo.net/)** â€” Animated tree of recursive calls
 
 </TabItem>
 <TabItem value="practice" label="Practice">
 
-- 🎮 **[LeetCode #78 — Subsets (FREE)](https://leetcode.com/problems/subsets/)** — The entry point
-- 🎮 **[LeetCode #46 — Permutations (FREE)](https://leetcode.com/problems/permutations/)** — All orderings
-- 🎮 **[LeetCode #51 — N-Queens (FREE)](https://leetcode.com/problems/n-queens/)** — Classic constraint problem
-- 🎮 **[LeetCode #37 — Sudoku Solver (FREE)](https://leetcode.com/problems/sudoku-solver/)** — Apply backtracking end-to-end
+- ðŸŽ® **[LeetCode #78 â€” Subsets (FREE)](https://leetcode.com/problems/subsets/)** â€” The entry point
+- ðŸŽ® **[LeetCode #46 â€” Permutations (FREE)](https://leetcode.com/problems/permutations/)** â€” All orderings
+- ðŸŽ® **[LeetCode #51 â€” N-Queens (FREE)](https://leetcode.com/problems/n-queens/)** â€” Classic constraint problem
+- ðŸŽ® **[LeetCode #37 â€” Sudoku Solver (FREE)](https://leetcode.com/problems/sudoku-solver/)** â€” Apply backtracking end-to-end
 
 </TabItem>
 </Tabs>
-
----
-
-## ➡️ Next
-
-→ [String Algorithms](./string.md)

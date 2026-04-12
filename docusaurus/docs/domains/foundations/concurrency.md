@@ -1,17 +1,17 @@
-import Tabs from '@theme/Tabs';
+﻿import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Concurrency
 
-**Domain:** Foundations · **Time Estimate:** 2–3 weeks · **Relevant to:** All domains
+**Domain:** Foundations Â· **Time Estimate:** 2â€“3 weeks Â· **Relevant to:** All domains
 
-> **Prerequisites:** [OS Concepts](os_concepts.md) — understand processes and threads first. [Memory Management](memory_management.md) helps with shared-memory hazards.
+> **Prerequisites:** [OS Concepts](os_concepts.md) â€” understand processes and threads first. [Memory Management](memory_management.md) helps with shared-memory hazards.
 >
-> **Who needs this:** Every developer. Web servers handle concurrent requests. GUIs use background threads. Databases manage concurrent transactions. Cloud functions scale horizontally. Concurrency is not advanced — it's everywhere.
+> **Who needs this:** Every developer. Web servers handle concurrent requests. GUIs use background threads. Databases manage concurrent transactions. Cloud functions scale horizontally. Concurrency is not advanced â€” it's everywhere.
 
 ---
 
-## 🎯 Learning Objectives
+## ðŸŽ¯ Learning Objectives
 
 By the end of this unit, you will be able to:
 
@@ -26,7 +26,7 @@ By the end of this unit, you will be able to:
 
 ---
 
-## 📖 Concepts
+## ðŸ“– Concepts
 
 ### 1. Concurrency vs. Parallelism
 
@@ -37,18 +37,18 @@ Concurrency: Dealing with multiple things AT ONCE (may interleave on 1 CPU)
 Parallelism: Doing multiple things SIMULTANEOUSLY (requires multiple CPUs)
 
 Concurrency (1 core, context switching):
-Time:  ─────────────────────────────────────────►
-Task A: ████░░░░████░░░░████░░░░
-Task B: ░░░░████░░░░████░░░░████
+Time:  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–º
+Task A: â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘
+Task B: â–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆ
        (only one runs at a time, but both make progress)
 
 Parallelism (2 cores):
-Core 0: ████████████████████████
-Core 1: ████████████████████████
-       (both run simultaneously — true parallel execution)
+Core 0: â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+Core 1: â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ
+       (both run simultaneously â€” true parallel execution)
 ```
 
-**Why concurrency without parallelism is useful:** A web server waiting for a database to respond isn't using the CPU — it can handle other requests in the meantime. This is **I/O-bound** concurrency.
+**Why concurrency without parallelism is useful:** A web server waiting for a database to respond isn't using the CPU â€” it can handle other requests in the meantime. This is **I/O-bound** concurrency.
 
 **I/O-bound vs CPU-bound:**
 
@@ -66,13 +66,13 @@ A **race condition** occurs when multiple concurrent threads access shared data 
 
 ```
 Thread 1                    Thread 2
-read counter → 0            read counter → 0
-add 1         → 1           add 1         → 1
+read counter â†’ 0            read counter â†’ 0
+add 1         â†’ 1           add 1         â†’ 1
 write 1                     write 1
-                            ← expected: 2, actual: 1
+                            â† expected: 2, actual: 1
 ```
 
-This is a **race** — the increment is not atomic. The CPU instruction sequence for `counter++` is actually three instructions: LOAD, ADD, STORE. Two threads can interleave these.
+This is a **race** â€” the increment is not atomic. The CPU instruction sequence for `counter++` is actually three instructions: LOAD, ADD, STORE. Two threads can interleave these.
 
 <Tabs>
 <TabItem value="python-demonstrating-a-race" label="Python (demonstrating a race)">
@@ -91,8 +91,8 @@ threads = [threading.Thread(target=increment, args=(100_000,)) for _ in range(10
 for t in threads: t.start()
 for t in threads: t.join()
 
-print(counter)  # Should be 1,000,000 — but is often less!
-# e.g., 847,293 — different every run
+print(counter)  # Should be 1,000,000 â€” but is often less!
+# e.g., 847,293 â€” different every run
 ```
 
 
@@ -135,8 +135,8 @@ fn main() {
 A **mutex** (mutual exclusion) ensures only one thread can access the protected data at a time.
 
 ```
-Thread 1: lock() → ✓ acquired → access data → unlock()
-Thread 2: lock() → ✗ blocked... waiting... → lock() → ✓ acquired → access data → unlock()
+Thread 1: lock() â†’ âœ“ acquired â†’ access data â†’ unlock()
+Thread 2: lock() â†’ âœ— blocked... waiting... â†’ lock() â†’ âœ“ acquired â†’ access data â†’ unlock()
 ```
 
 <Tabs>
@@ -174,7 +174,7 @@ with condition:
 <TabItem value="typescript" label="TypeScript">
 
 ```typescript
-// JavaScript/TypeScript is single-threaded (per Worker) — no mutex needed in normal code
+// JavaScript/TypeScript is single-threaded (per Worker) â€” no mutex needed in normal code
 // BUT: Workers can share memory, requiring atomics
 
 // SharedArrayBuffer + Atomics for true shared memory between Workers
@@ -182,7 +182,7 @@ const sab = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
 const counter = new Int32Array(sab);
 
 // In each worker:
-Atomics.add(counter, 0, 1);        // Atomic increment — thread-safe
+Atomics.add(counter, 0, 1);        // Atomic increment â€” thread-safe
 const val = Atomics.load(counter, 0);  // Atomic read
 
 // Atomics.wait / Atomics.notify implement mutex-like patterns
@@ -209,7 +209,7 @@ thread::spawn(move || {
 let rwlock = Arc::new(RwLock::new(0));
 let r = rwlock.read().unwrap();     // Multiple readers OK simultaneously
 drop(r);
-let mut w = rwlock.write().unwrap(); // Exclusive writer — waits for readers
+let mut w = rwlock.write().unwrap(); // Exclusive writer â€” waits for readers
 *w = 42;
 ```
 
@@ -221,26 +221,26 @@ let mut w = rwlock.write().unwrap(); // Exclusive writer — waits for readers
 
 ### 4. Deadlocks
 
-A **deadlock** occurs when two or more threads each wait for the other to release a lock — forever.
+A **deadlock** occurs when two or more threads each wait for the other to release a lock â€” forever.
 
 ```
-Thread 1 holds lock A, wants lock B → waiting...
-Thread 2 holds lock B, wants lock A → waiting...
+Thread 1 holds lock A, wants lock B â†’ waiting...
+Thread 2 holds lock B, wants lock A â†’ waiting...
 
-Both wait forever — the program hangs.
+Both wait forever â€” the program hangs.
 ```
 
 **Classic four conditions for deadlock (Coffee Tables rules):**
-1. **Mutual exclusion** — resources can't be shared
-2. **Hold and wait** — thread holds one resource while waiting for another
-3. **No preemption** — OS can't forcibly take resources back
-4. **Circular wait** — Thread 1 waits for Thread 2 waits for Thread 1
+1. **Mutual exclusion** â€” resources can't be shared
+2. **Hold and wait** â€” thread holds one resource while waiting for another
+3. **No preemption** â€” OS can't forcibly take resources back
+4. **Circular wait** â€” Thread 1 waits for Thread 2 waits for Thread 1
 
 **Prevention strategies:**
-- **Lock ordering** — always acquire locks in the same global order
-- **Timeout** — use `try_lock()` with a timeout, retry or fail
-- **Use a single lock** — simpler is better
-- **Avoid nested locks** — design to never need two locks at once
+- **Lock ordering** â€” always acquire locks in the same global order
+- **Timeout** â€” use `try_lock()` with a timeout, retry or fail
+- **Use a single lock** â€” simpler is better
+- **Avoid nested locks** â€” design to never need two locks at once
 
 ```python
 # DEADLOCK example
@@ -251,12 +251,12 @@ lock_b = threading.Lock()
 def thread1():
     lock_a.acquire()        # Gets A
     time.sleep(0.1)
-    lock_b.acquire()        # Waits for B — which thread2 holds
+    lock_b.acquire()        # Waits for B â€” which thread2 holds
     # ...
 
 def thread2():
     lock_b.acquire()        # Gets B
-    lock_a.acquire()        # Waits for A — which thread1 holds
+    lock_a.acquire()        # Waits for A â€” which thread1 holds
     # ...
     # DEADLOCK!
 
@@ -274,7 +274,7 @@ def thread2_fixed():
 
 ---
 
-### 5. Async / Await — Cooperative Multitasking
+### 5. Async / Await â€” Cooperative Multitasking
 
 Instead of multiple threads, **async I/O** uses a single thread with an **event loop** that switches between tasks whenever one is waiting for I/O.
 
@@ -282,15 +282,15 @@ Instead of multiple threads, **async I/O** uses a single thread with an **event 
 Single-threaded async (non-blocking I/O):
 
 Event Loop:
-  Task A: send request → await response...
-          (suspended — give CPU to someone else)
-  Task B: send request → await response...
-          (suspended — give CPU to someone else)
-  Task C: doing CPU work → running...
-  ← Task A's response arrived! Resume Task A.
-  ← Task B's response arrived! Resume Task B.
+  Task A: send request â†’ await response...
+          (suspended â€” give CPU to someone else)
+  Task B: send request â†’ await response...
+          (suspended â€” give CPU to someone else)
+  Task C: doing CPU work â†’ running...
+  â† Task A's response arrived! Resume Task A.
+  â† Task B's response arrived! Resume Task B.
 
-All three tasks interleave on ONE thread — no mutex needed
+All three tasks interleave on ONE thread â€” no mutex needed
 (there's only one thread, so no concurrent memory access)
 ```
 
@@ -312,7 +312,7 @@ async def main():
         "https://httpbin.org/delay/1",
     ]
     async with aiohttp.ClientSession() as session:
-        # All three requests run concurrently — total time ~1s, not 3s
+        # All three requests run concurrently â€” total time ~1s, not 3s
         results = await asyncio.gather(*[fetch(session, url) for url in urls])
     print(f"Got {len(results)} responses")
 
@@ -335,9 +335,9 @@ async def use_countdown():
 <TabItem value="typescript" label="TypeScript">
 
 ```typescript
-// JS/TS async/await is built on Promises — always async-first
+// JS/TS async/await is built on Promises â€” always async-first
 async function fetchAll(urls: string[]): Promise<string[]> {
-    // Sequential — waits for each before starting next (slow)
+    // Sequential â€” waits for each before starting next (slow)
     const results = [];
     for (const url of urls) {
         const res = await fetch(url);
@@ -346,7 +346,7 @@ async function fetchAll(urls: string[]): Promise<string[]> {
     return results;
 }
 
-// Concurrent — all start at the same time (fast)
+// Concurrent â€” all start at the same time (fast)
 async function fetchAllConcurrent(urls: string[]): Promise<string[]> {
     const promises = urls.map(url => fetch(url).then(r => r.text()));
     return Promise.all(promises);  // Start all, wait for all to complete
@@ -399,12 +399,12 @@ async fn fetch(url: &str) -> String {
 
 ---
 
-### 6. Channels — Safe Message Passing
+### 6. Channels â€” Safe Message Passing
 
 Instead of sharing memory, threads can **send messages** to each other via channels. This avoids mutexes entirely for many patterns.
 
 ```
-Producer thread ──[channel]──► Consumer thread
+Producer thread â”€â”€[channel]â”€â”€â–º Consumer thread
                    message queue
 ```
 
@@ -549,7 +549,7 @@ use rayon::prelude::*;
 fn main() {
     let data: Vec<i64> = (1..=1_000_000).collect();
 
-    // Parallel map + sum — automatically uses all CPU cores
+    // Parallel map + sum â€” automatically uses all CPU cores
     let sum: i64 = data.par_iter().map(|&x| x * x).sum();
     println!("Sum of squares: {}", sum);
 
@@ -577,7 +577,7 @@ fn main() {
 | Download 100 files concurrently | Async I/O | Network is the bottleneck, not CPU |
 | Image resizing 1000 images | Thread pool / multiprocessing | CPU-bound, needs real parallelism |
 | Python CPU-intensive work | `ProcessPoolExecutor` | Python's GIL blocks threads for CPU work |
-| Rust CPU-intensive work | `rayon` or `tokio::spawn_blocking` | No GIL — raw parallelism |
+| Rust CPU-intensive work | `rayon` or `tokio::spawn_blocking` | No GIL â€” raw parallelism |
 | Producer/consumer pipeline | Channels + thread pool | Natural fit for the pattern |
 | Shared state with low contention | `Arc<Mutex<T>>` / `threading.Lock()` | Simple, correct |
 | Shared state with high read ratio | `RwLock` | Allows many concurrent readers |
@@ -590,21 +590,21 @@ The **Global Interpreter Lock** means only one Python thread executes Python byt
 
 ---
 
-## 📚 Resources
+## ðŸ“š Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary">
 
-- 📖 **[The Rust Book — Ch. 16: Fearless Concurrency (FREE)](https://doc.rust-lang.org/book/ch16-00-concurrency.html)** — Best intro to thread-safe concurrency
-- 📺 **[Arjan Codes — Python asyncio (YouTube, FREE)](https://www.youtube.com/@ArjanCodes)** — Clear, modern Python async explanations
+- ðŸ“– **[The Rust Book â€” Ch. 16: Fearless Concurrency (FREE)](https://doc.rust-lang.org/book/ch16-00-concurrency.html)** â€” Best intro to thread-safe concurrency
+- ðŸ“º **[Arjan Codes â€” Python asyncio (YouTube, FREE)](https://www.youtube.com/@ArjanCodes)** â€” Clear, modern Python async explanations
 
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- 📖 **[asyncio Docs (Python official)](https://docs.python.org/3/library/asyncio.html)** — Complete reference
-- 📖 **[MDN — Using Web Workers (FREE)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)** — JS concurrency in the browser context
-- 📺 **[Jon Gjengset — Tokio Deep Dive (YouTube, FREE)](https://www.youtube.com/c/JonGjengset)** — Rust async runtime internals
+- ðŸ“– **[asyncio Docs (Python official)](https://docs.python.org/3/library/asyncio.html)** â€” Complete reference
+- ðŸ“– **[MDN â€” Using Web Workers (FREE)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)** â€” JS concurrency in the browser context
+- ðŸ“º **[Jon Gjengset â€” Tokio Deep Dive (YouTube, FREE)](https://www.youtube.com/c/JonGjengset)** â€” Rust async runtime internals
 
 
 </TabItem>
@@ -612,40 +612,40 @@ The **Global Interpreter Lock** means only one Python thread executes Python byt
 
 ---
 
-## 🏗️ Assignments
+## ðŸ—ï¸ Assignments
 
-### Assignment 1 — Race Condition Lab
+### Assignment 1 â€” Race Condition Lab
 Demonstrate and fix a race condition:
 
 - [ ] Write a program with 10 threads all incrementing a shared counter 100,000 times
-- [ ] Run it 5 times and record the output — prove it's non-deterministic
-- [ ] Add a mutex — prove the result is now always exactly 1,000,000
-- [ ] Add a `RwLock` alternative — benchmark: does it improve read-heavy workloads?
-- [ ] Write a deadlock example and verify it hangs — then fix it
+- [ ] Run it 5 times and record the output â€” prove it's non-deterministic
+- [ ] Add a mutex â€” prove the result is now always exactly 1,000,000
+- [ ] Add a `RwLock` alternative â€” benchmark: does it improve read-heavy workloads?
+- [ ] Write a deadlock example and verify it hangs â€” then fix it
 
 ---
 
-### Assignment 2 — Async Web Scraper
+### Assignment 2 â€” Async Web Scraper
 **Language:** Python (asyncio) or TypeScript
 
 Build a concurrent link checker:
 
 - [ ] Accept a list of URLs (file or CLI args)
-- [ ] Check all URLs concurrently (limit: max 20 at once — use a semaphore)
+- [ ] Check all URLs concurrently (limit: max 20 at once â€” use a semaphore)
 - [ ] For each: record status code, response time, redirects
 - [ ] Print a summary: total, OK (2xx), redirect (3xx), broken (4xx/5xx), timeout
 - [ ] Set a 10-second timeout per URL
-- [ ] Write total wall-clock time — compare to sequential version
+- [ ] Write total wall-clock time â€” compare to sequential version
 
 ---
 
-### Assignment 3 — Work Queue Pipeline
+### Assignment 3 â€” Work Queue Pipeline
 **Language:** Your choice
 
 Implement a producer-consumer pipeline with three stages:
 
 ```
-[File Reader] → [Processor Queue] → [Transformer] → [Output Queue] → [Writer]
+[File Reader] â†’ [Processor Queue] â†’ [Transformer] â†’ [Output Queue] â†’ [Writer]
   (producer)                          (workers x4)                   (consumer)
 ```
 
@@ -657,7 +657,7 @@ Implement a producer-consumer pipeline with three stages:
 
 ---
 
-## ✅ Milestone Checklist
+## âœ… Milestone Checklist
 
 - [ ] Can explain concurrency vs parallelism with a concrete example
 - [ ] Can write a race condition and explain why it happens at the instruction level
@@ -669,7 +669,7 @@ Implement a producer-consumer pipeline with three stages:
 
 ---
 
-## 🏆 Milestone Complete!
+## ðŸ† Milestone Complete!
 
 > **Concurrency is now in your toolkit.**
 >
@@ -677,6 +677,4 @@ Implement a producer-consumer pipeline with three stages:
 > (async I/O), and do it safely (without races or deadlocks). This unlocks web server
 > design, distributed systems, and systems programming at a professional level.
 
-**Log this in your kanban:** Move `foundations/concurrency` to ✅ Done.
-
-## ➡️ Next Steps
+**Log this in your kanban:** Move `foundations/concurrency` to âœ… Done.
