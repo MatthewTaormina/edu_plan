@@ -252,6 +252,18 @@ nav:
       - "Lesson 07 — Reactive Forms": courses/angular_fundamentals/lesson_07.md
       - "Lesson 08 — Pipes, Directives & Template Utilities": courses/angular_fundamentals/lesson_08.md
       - "Lesson 09 — Capstone: Project Manager App": courses/angular_fundamentals/lesson_09.md
+    - "Node.js Fundamentals":
+      - courses/nodejs_fundamentals/index.md
+      - "Lesson 01 — Runtime, Event Loop & Non-Blocking I/O": courses/nodejs_fundamentals/lesson_01.md
+      - "Lesson 02 — Modules: CommonJS, ESM & npm": courses/nodejs_fundamentals/lesson_02.md
+      - "Lesson 03 — File System & Streams": courses/nodejs_fundamentals/lesson_03.md
+      - "Lesson 04 — The HTTP Module: Raw Servers": courses/nodejs_fundamentals/lesson_04.md
+    - "Express API":
+      - courses/express_api/index.md
+    - "PHP & Server-Side Rendering":
+      - courses/php_ssr/index.md
+    - "Laravel Fundamentals":
+      - courses/laravel_fundamentals/index.md
   - Wiki:
     - "Foundations":
       - domains/foundations/index.md
@@ -271,6 +283,8 @@ nav:
       - "JavaScript Core": domains/web_dev/javascript_core.md
       - "TypeScript": domains/web_dev/typescript.md
       - "Frontend Frameworks": domains/web_dev/frontend_frameworks.md
+      - "Node.js": domains/web_dev/nodejs.md
+      - "HTTP Servers & Middleware": domains/web_dev/http_server.md
       - "REST APIs": domains/web_dev/rest_api.md
       - "GraphQL": domains/web_dev/graphql.md
       - "SSR vs CSR": domains/web_dev/ssr_csr.md
