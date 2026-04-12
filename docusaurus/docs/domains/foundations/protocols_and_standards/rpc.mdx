@@ -1,0 +1,204 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# RPC Protocols
+
+> **Part of:** [Protocols & Standards](./index)
+
+**RPC (Remote Procedure Call)** is a protocol pattern where one service calls a function on another service as if it were a local function call — the network transport is abstracted away. Unlike REST (which is resource-centric), RPC is **action-centric**: you call methods, not manipulate resources.
+
+---
+
+## RPC Styles at a Glance
+
+| Protocol | Transport | Format | Type Safety | Streaming | Best For |
+|----------|-----------|--------|------------|----------|---------|
+| **gRPC** | HTTP/2 | Protocol Buffers (binary) | ✅ Strong | ✅ Yes | Internal microservices, high-throughput |
+| **JSON-RPC** | HTTP or WebSocket | JSON | ❌ None | ❌ No | Simple lightweight RPC over HTTP |
+| **XML-RPC** | HTTP | XML | ❌ None | ❌ No | Legacy systems 🟡 |
+| **tRPC** | HTTP | JSON (TypeScript types) | ✅ End-to-end TS | ❌ No | TypeScript full-stack monorepos |
+| **SOAP** | HTTP, SMTP | XML (WSDL) | ✅ (WSDL) | ❌ No | Enterprise legacy 🟡 |
+
+---
+
+## gRPC
+
+gRPC is the dominant RPC framework for internal service-to-service communication. Developed by Google and open-sourced in 2015.
+
+### How It Works
+
+1. Define your service and messages in a **`.proto` file** (Protocol Buffer schema)
+2. Generate client and server code in your language of choice (`protoc`)
+3. Client calls methods; gRPC handles serialisation, transport, and deserialisation
+
+```proto
+// user.proto
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc GetUser(GetUserRequest) returns (User);
+  rpc ListUsers(ListUsersRequest) returns (stream User);  // Server streaming
+  rpc CreateUser(stream CreateUserRequest) returns (User); // Client streaming
+  rpc Chat(stream ChatMessage) returns (stream ChatMessage); // Bidirectional
+}
+
+message GetUserRequest {
+  int64 id = 1;
+}
+
+message User {
+  int64 id = 1;
+  string name = 2;
+  string email = 3;
+}
+```
+
+<Tabs>
+<TabItem value="python" label="Python">
+
+```python
+# pip install grpcio grpcio-tools
+# Generate: python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. user.proto
+
+import grpc
+import user_pb2
+import user_pb2_grpc
+
+# Client
+channel = grpc.insecure_channel('localhost:50051')
+stub = user_pb2_grpc.UserServiceStub(channel)
+
+response = stub.GetUser(user_pb2.GetUserRequest(id=42))
+print(response.name)  # Strongly typed — IDE knows response has .name, .email, .id
+
+# Server streaming — iterate over results
+for user in stub.ListUsers(user_pb2.ListUsersRequest()):
+    print(user.name)
+```
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+// npm install @grpc/grpc-js @grpc/proto-loader
+
+import * as grpc from '@grpc/grpc-js';
+import * as protoLoader from '@grpc/proto-loader';
+
+const packageDef = protoLoader.loadSync('user.proto');
+const proto = grpc.loadPackageDefinition(packageDef) as any;
+
+// Client
+const client = new proto.user.UserService(
+  'localhost:50051',
+  grpc.credentials.createInsecure()
+);
+
+client.getUser({ id: 42 }, (err: Error, response: any) => {
+  if (err) throw err;
+  console.log(response.name);
+});
+```
+
+</TabItem>
+</Tabs>
+
+### gRPC Streaming Modes
+
+| Mode | Direction | Example Use Case |
+|------|-----------|-----------------|
+| Unary | Client → Server → Client (one request, one response) | `GetUser` |
+| Server streaming | Client sends one, server streams many | `ListUsers`, live feed |
+| Client streaming | Client streams many, server responds once | File upload in chunks |
+| Bidirectional streaming | Both sides stream simultaneously | Real-time chat, trading |
+
+### gRPC vs REST
+
+| | gRPC | REST |
+|-|------|------|
+| Protocol | HTTP/2 | HTTP/1.1 or HTTP/2 |
+| Format | Binary (Protobuf) | JSON (typically) |
+| Schema | Required (`.proto`) | Optional (OpenAPI) |
+| Code generation | ✅ Built-in | Via OpenAPI generators |
+| Browser support | ❌ Requires gRPC-Web proxy | ✅ Native |
+| Streaming | ✅ Built-in | Limited (SSE, WebSockets) |
+| Performance | ✅ 5–10× faster than JSON REST | Baseline |
+| Debuggability | Harder (binary) | Easy (curl, browser) |
+
+:::note[When to choose gRPC]
+gRPC is the right choice for **backend-to-backend** communication where performance matters and you control both sides. For public APIs or browser clients, REST or GraphQL are simpler because gRPC requires HTTP/2 and a generated client.
+:::
+
+---
+
+## JSON-RPC
+
+JSON-RPC is a lightweight, stateless RPC protocol using JSON over HTTP or WebSocket. No schema required.
+
+### Request Format
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "user.get",
+  "params": { "id": 42 },
+  "id": 1
+}
+```
+
+### Response Format
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": { "id": 42, "name": "Alice" },
+  "id": 1
+}
+```
+
+### Error Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "error": { "code": -32601, "message": "Method not found" },
+  "id": 1
+}
+```
+
+**Where you'll see JSON-RPC:** Ethereum blockchain API, some language server protocol (LSP) implementations, older API designs.
+
+---
+
+## tRPC — TypeScript End-to-End Type Safety
+
+tRPC is a modern TypeScript-native RPC framework that infers types from your server definitions on the client automatically — no code generation step.
+
+```typescript
+// Server (Next.js, Express, etc.)
+import { initTRPC } from '@trpc/server';
+const t = initTRPC.create();
+
+const router = t.router({
+  getUser: t.procedure
+    .input(z.object({ id: z.number() }))  // Zod validation
+    .query(async ({ input }) => {
+      return db.users.findById(input.id); // Return type inferred automatically
+    }),
+});
+
+export type AppRouter = typeof router;
+
+// Client — gets full TypeScript types, no manual imports
+import type { AppRouter } from '../server';
+const trpc = createTRPCClient<AppRouter>({ ... });
+
+const user = await trpc.getUser.query({ id: 42 });
+// user.name, user.email — IDE autocompletes, TypeScript checks types
+```
+
+:::note[tRPC scope]
+tRPC is best for TypeScript monorepos (e.g. Next.js full-stack apps) where client and server live in the same repository. For polyglot or public APIs, gRPC or REST is more appropriate.
+:::
