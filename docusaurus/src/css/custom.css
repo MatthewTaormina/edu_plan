@@ -1,0 +1,196 @@
+/**
+ * Open Learner's Guide — Custom Docusaurus Styles
+ * Palette: Deep Purple + Cyan, dark-first
+ */
+
+/* ─── Brand Colour Tokens ─────────────────────────────────────────────────── */
+:root {
+  --ifm-color-primary: #9c4dcc;          /* Deep Purple 400 */
+  --ifm-color-primary-dark: #8a3bbf;
+  --ifm-color-primary-darker: #7b2eb3;
+  --ifm-color-primary-darkest: #5e1f99;
+  --ifm-color-primary-light: #ae5fd9;
+  --ifm-color-primary-lighter: #be73e5;
+  --ifm-color-primary-lightest: #d49cf0;
+
+  --ifm-code-font-size: 92%;
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --ifm-heading-font-weight: 700;
+  --ifm-navbar-height: 60px;
+
+  --olg-accent-cyan: #00bcd4;
+  --olg-surface-subtle: rgba(156, 77, 204, 0.06);
+  --olg-border-subtle: rgba(156, 77, 204, 0.2);
+}
+
+/* ─── Dark Mode Overrides ─────────────────────────────────────────────────── */
+[data-theme='dark'] {
+  --ifm-color-primary: #ce93d8;          /* Purple 200 — lighter for dark bg */
+  --ifm-color-primary-dark: #ba68c8;
+  --ifm-color-primary-darker: #ab47bc;
+  --ifm-color-primary-darkest: #9c4dcc;
+  --ifm-color-primary-light: #e1bee7;
+  --ifm-color-primary-lighter: #f3e5f5;
+  --ifm-color-primary-lightest: #fce4ec;
+
+  --ifm-background-color: #0f0a1a;
+  --ifm-background-surface-color: #1a1028;
+  --ifm-navbar-background-color: #120d20;
+  --ifm-footer-background-color: #0a0715;
+
+  --olg-surface-subtle: rgba(206, 147, 216, 0.07);
+  --olg-border-subtle: rgba(206, 147, 216, 0.18);
+}
+
+/* ─── Google Fonts ────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ─── Navbar ──────────────────────────────────────────────────────────────── */
+.navbar {
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--olg-border-subtle);
+  box-shadow: none;
+}
+
+[data-theme='dark'] .navbar {
+  background: rgba(18, 13, 32, 0.92);
+}
+
+.navbar__title {
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--ifm-color-primary) 0%, var(--olg-accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────────────────────── */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--olg-border-subtle) !important;
+}
+
+.menu__link--active {
+  background: var(--olg-surface-subtle);
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+/* ─── Code Blocks ─────────────────────────────────────────────────────────── */
+.prism-code {
+  border-radius: 8px;
+  font-size: 0.88rem;
+}
+
+/* ─── Admonitions (:::tip, :::warning, etc.) ─────────────────────────────── */
+.admonition {
+  border-radius: 8px;
+  border-left-width: 4px;
+}
+
+/* ─── Docusaurus Tabs ─────────────────────────────────────────────────────── */
+.tabs__item--active {
+  border-bottom-color: var(--ifm-color-primary) !important;
+  color: var(--ifm-color-primary) !important;
+}
+
+/* ─── Headings — subtle left rule on h2 ──────────────────────────────────── */
+.markdown h2 {
+  border-bottom: 1px solid var(--olg-border-subtle);
+  padding-bottom: 0.4rem;
+}
+
+/* ─── Progress & Quiz Components ─────────────────────────────────────────── */
+.olg-quiz-card {
+  border: 1px solid var(--olg-border-subtle);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  background: var(--olg-surface-subtle);
+}
+
+.olg-quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  margin: 0.4rem 0;
+  cursor: pointer;
+  border: 1px solid var(--olg-border-subtle);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.olg-quiz-option:hover {
+  background: var(--olg-surface-subtle);
+  border-color: var(--ifm-color-primary);
+}
+
+.olg-quiz-option.correct {
+  background: rgba(0, 200, 83, 0.12);
+  border-color: #00c853;
+}
+
+.olg-quiz-option.incorrect {
+  background: rgba(244, 67, 54, 0.1);
+  border-color: #f44336;
+}
+
+.olg-progress-bar-outer {
+  height: 8px;
+  background: var(--olg-border-subtle);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0.5rem 0 1rem;
+}
+
+.olg-progress-bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ifm-color-primary), var(--olg-accent-cyan));
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.olg-milestone-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  margin: 0.25rem 0;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.olg-milestone-item:hover {
+  background: var(--olg-surface-subtle);
+}
+
+.olg-milestone-item.checked {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.olg-milestone-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid var(--ifm-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
+  transition: background 0.15s;
+}
+
+.olg-milestone-item.checked .olg-milestone-checkbox {
+  background: var(--ifm-color-primary);
+}
+
+/* ─── Mermaid diagrams — centre them ─────────────────────────────────────── */
+.docusaurus-mermaid-container {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
