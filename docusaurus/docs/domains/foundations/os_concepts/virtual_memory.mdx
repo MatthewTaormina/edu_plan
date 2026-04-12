@@ -49,49 +49,49 @@ Every process gets the *illusion* of a large, private, contiguous block of memor
   <line x1="148" y1="10" x2="148" y2="446" stroke="var(--ifm-color-emphasis-300)" strokeWidth="1"/>
 
   {/* HIGH address label */}
-  <text x="4" y="42" fontFamily="monospace" fontSize="13" fill="var(--ifm-color-emphasis-500)">0xFFFF…</text>
-  <text x="4" y="58" fontFamily="monospace" fontSize="11" fill="var(--ifm-color-emphasis-400)">(top)</text>
+  <text x="4" y="42" fontFamily="monospace" fontSize="13" fill="var(--ifm-color-emphasis-700)">0xFFFF…</text>
+  <text x="4" y="58" fontFamily="monospace" fontSize="11" fill="var(--ifm-color-emphasis-600)">(top)</text>
 
   {/* LOW address label */}
-  <text x="4" y="414" fontFamily="monospace" fontSize="13" fill="var(--ifm-color-emphasis-500)">0x0000</text>
-  <text x="4" y="430" fontFamily="monospace" fontSize="11" fill="var(--ifm-color-emphasis-400)">(bottom)</text>
+  <text x="4" y="414" fontFamily="monospace" fontSize="13" fill="var(--ifm-color-emphasis-700)">0x0000</text>
+  <text x="4" y="430" fontFamily="monospace" fontSize="11" fill="var(--ifm-color-emphasis-600)">(bottom)</text>
 
   {/* ── Kernel Space ── */}
   <rect x="152" y="10" width="596" height="64" rx="6" fill="url(#vas-kernel)" stroke="#6366f1" strokeWidth="1.8"/>
   <text x="450" y="38" textAnchor="middle" fontFamily="sans-serif" fontSize="16" fontWeight="700" fill="#6366f1">Kernel Space</text>
-  <text x="450" y="58" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-600)">OS code and data — user programs cannot access directly</text>
+  <text x="450" y="58" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-800)">OS code and data — user programs cannot access directly</text>
 
   {/* ── Stack ── */}
   <rect x="152" y="80" width="596" height="72" rx="6" fill="url(#vas-stack)" stroke="#3b82f6" strokeWidth="1.8"/>
   <text x="450" y="108" textAnchor="middle" fontFamily="sans-serif" fontSize="16" fontWeight="700" fill="#3b82f6">Stack</text>
-  <text x="450" y="128" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-600)">grows downward ↓  ·  local variables, function call frames, return addresses</text>
+  <text x="450" y="128" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-800)">grows downward ↓  ·  local variables, function call frames, return addresses</text>
 
   {/* Arrow showing stack growth direction */}
   <text x="162" y="122" fontFamily="sans-serif" fontSize="20" fill="#3b82f6">↓</text>
 
   {/* ── Unmapped gap ── */}
   <rect x="152" y="158" width="596" height="80" rx="6" fill="url(#vas-gap)" stroke="var(--ifm-color-emphasis-300)" strokeWidth="1.2" strokeDasharray="8,5"/>
-  <text x="450" y="192" textAnchor="middle" fontFamily="sans-serif" fontSize="15" fontWeight="600" fill="var(--ifm-color-emphasis-400)">— unmapped gap —</text>
-  <text x="450" y="214" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-400)">touch this → Segmentation Fault (Linux) / Access Violation (Windows)</text>
+  <text x="450" y="192" textAnchor="middle" fontFamily="sans-serif" fontSize="15" fontWeight="600" fill="var(--ifm-color-emphasis-600)">— unmapped gap —</text>
+  <text x="450" y="214" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-600)">touch this → Segmentation Fault (Linux) / Access Violation (Windows)</text>
 
   {/* ── Heap ── */}
   <rect x="152" y="244" width="596" height="72" rx="6" fill="url(#vas-heap)" stroke="#10b981" strokeWidth="1.8"/>
   <text x="450" y="272" textAnchor="middle" fontFamily="sans-serif" fontSize="16" fontWeight="700" fill="#10b981">Heap</text>
-  <text x="450" y="292" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-600)">grows upward ↑  ·  malloc() / new allocations · managed by allocator</text>
+  <text x="450" y="292" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-800)">grows upward ↑  ·  malloc() / new allocations · managed by allocator</text>
   <text x="162" y="290" fontFamily="sans-serif" fontSize="20" fill="#10b981">↑</text>
 
   {/* ── Data / BSS ── */}
   <rect x="152" y="322" width="596" height="56" rx="6" fill="url(#vas-data)" stroke="#f59e0b" strokeWidth="1.8"/>
   <text x="450" y="347" textAnchor="middle" fontFamily="sans-serif" fontSize="16" fontWeight="700" fill="#f59e0b">Data / BSS</text>
-  <text x="450" y="367" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-600)">global variables (Data = initialised, BSS = zero-initialised)</text>
+  <text x="450" y="367" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-800)">global variables (Data = initialised, BSS = zero-initialised)</text>
 
   {/* ── Text (Code) ── */}
   <rect x="152" y="384" width="596" height="56" rx="6" fill="url(#vas-code)" stroke="#ec4899" strokeWidth="1.8"/>
   <text x="450" y="409" textAnchor="middle" fontFamily="sans-serif" fontSize="16" fontWeight="700" fill="#ec4899">Text (Code)</text>
-  <text x="450" y="429" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-600)">compiled machine instructions · read-only · shared between forked processes</text>
+  <text x="450" y="429" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fill="var(--ifm-color-emphasis-800)">compiled machine instructions · read-only · shared between forked processes</text>
 
   {/* ── NULL note ── */}
-  <text x="450" y="452" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="var(--ifm-color-emphasis-400)">0x0 = NULL — null pointer dereferences crash here</text>
+  <text x="450" y="452" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="var(--ifm-color-emphasis-600)">0x0 = NULL — null pointer dereferences crash here</text>
 </svg>
 
 ---

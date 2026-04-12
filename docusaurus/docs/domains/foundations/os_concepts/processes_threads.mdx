@@ -68,12 +68,12 @@ A **thread** is an execution unit *inside* a process. Multiple threads in the sa
   {/* Shared area */}
   <rect x="20" y="140" width="560" height="36" rx="6" fill="url(#shared-grad)" stroke="#f59e0b" strokeWidth="1.2"/>
   <text x="300" y="155" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fontWeight="700" fill="#f59e0b">Shared Memory (heap, globals)</text>
-  <text x="300" y="169" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="var(--ifm-color-emphasis-600)">All threads read and write here — race conditions happen here</text>
+  <text x="300" y="169" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="var(--ifm-color-emphasis-800)">All threads read and write here — race conditions happen here</text>
 
   {/* Open files */}
   <rect x="20" y="188" width="560" height="28" rx="6" fill="#3b82f6" fillOpacity="0.08" stroke="#3b82f6" strokeWidth="1"/>
   <text x="300" y="200" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fontWeight="700" fill="#3b82f6">Open File Handles</text>
-  <text x="300" y="212" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="var(--ifm-color-emphasis-600)">fd:3 (socket) · fd:4 (log file) — shared across all threads</text>
+  <text x="300" y="212" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="var(--ifm-color-emphasis-800)">fd:3 (socket) · fd:4 (log file) — shared across all threads</text>
 </svg>
 
 **Key consequences:**
