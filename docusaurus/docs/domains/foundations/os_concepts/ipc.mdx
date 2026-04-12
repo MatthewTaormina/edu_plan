@@ -47,7 +47,7 @@ Processes are **isolated by design** — one process cannot read another's memor
   ].map((row, i) => (
     <g key={i}>
       <rect x="4" y={36 + i * 32} width="632" height="30" rx="2"
-        fill={i % 2 === 0 ? "var(--ifm-color-emphasis-50)" : "transparent"}
+        fill={i % 2 === 0 ? "var(--ifm-color-emphasis-100)" : "transparent"}
         stroke="var(--ifm-color-emphasis-200)" strokeWidth="0.5"/>
       <text x="16" y={56 + i * 32} fontFamily="monospace" fontSize="11" fontWeight="600" fill="var(--ifm-color-emphasis-800)">{row[0]}</text>
       <text x="190" y={56 + i * 32} fontFamily="sans-serif" fontSize="11" fill="var(--ifm-color-emphasis-700)">{row[1]}</text>
