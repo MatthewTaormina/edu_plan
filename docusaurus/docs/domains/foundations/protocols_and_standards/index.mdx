@@ -42,14 +42,43 @@ A **standard** is a protocol that has been formally documented and ratified by a
 
 ## 📚 Subsections
 
+### Network Models
+
 | Page | Topics |
 |------|--------|
-| [TCP/IP Model](./tcp_ip) | 4-layer model, TCP vs UDP, three-way handshake, QUIC |
+| [OSI Model](./osi_model) | 7-layer model, encapsulation, layer-by-layer protocol reference |
+| [TCP/IP Model](./tcp_ip) | 4-layer model, TCP vs UDP, three-way handshake |
+
+### Transport Layer
+
+| Page | Topics |
+|------|--------|
+| [QUIC](./quic) | Head-of-line blocking, 1-RTT handshake, connection migration, HTTP/3 |
+
+### Security & Identity
+
+| Page | Topics |
+|------|--------|
+| [TLS & HTTPS](./tls) | Encryption, integrity, authentication, TLS 1.3 handshake, certificate chain |
+| [OAuth 2.0 & OpenID Connect](./oauth) | Authorization Code + PKCE, JWTs, token types, OIDC identity layer |
+| [SSH](./ssh) | Key-based auth, config file, port forwarding, SCP/SFTP, hardening |
+
+### Application Layer
+
+| Page | Topics |
+|------|--------|
 | [DNS](./dns) | Domain name resolution, record types, TTL, recursive resolvers |
 | [HTTP](./http) | Request/response anatomy, methods, status codes, HTTP/1.1 vs /2 vs /3 |
-| [TLS & HTTPS](./tls) | Encryption, integrity, authentication, TLS 1.3 handshake, certificate chain |
 | [REST](./rest) | Architectural constraints, resource design, REST vs GraphQL vs gRPC |
 | [WebSockets](./websockets) | Persistent bidirectional channel, when to use vs HTTP, code examples |
+| [RPC Protocols](./rpc) | gRPC (Protobuf, streaming), JSON-RPC, tRPC |
+| [Email Protocols](./email_protocols) | SMTP, IMAP, POP3, SPF/DKIM/DMARC |
+| [Messaging Protocols](./messaging_protocols) | MQTT (IoT), AMQP/RabbitMQ, pub/sub vs queue patterns |
+
+### Standards & Governance
+
+| Page | Topics |
+|------|--------|
 | [Standards Bodies](./standards_bodies) | IETF, W3C, IEEE, ISO, ECMA, OpenAPI, RFCs explained |
 
 ---
