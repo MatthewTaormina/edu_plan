@@ -197,7 +197,8 @@ free(dynamic);           // Must free manually!
 </Tabs>
 
 :::tip[Research Question 🔍]
-    What happens internally when a dynamic array resizes? Why is `append()` / `push()` O(1) *amortized* rather than always O(1)? Look up "amortized analysis" and "dynamic array growth factor."
+What happens internally when a dynamic array resizes? Why is `append()` / `push()` O(1) *amortized* rather than always O(1)? Look up "amortized analysis" and "dynamic array growth factor."
+:::
 
 ---
 
@@ -468,7 +469,8 @@ impl<T> LinkedList<T> {
 </Tabs>
 
 :::tip[Research Question 🔍]
-    What is a **doubly linked list**? When would you use it vs. singly linked? What is a **sentinel node** and why do some implementations use one?
+What is a **doubly linked list**? When would you use it vs. singly linked? What is a **sentinel node** and why do some implementations use one?
+:::
 
 ---
 
@@ -741,7 +743,8 @@ class Queue<T> {
 </Tabs>
 
 :::warning[Common Mistake]
-    Using `list.pop(0)` (Python) or `array.shift()` (JavaScript/TS) for a queue. Both are O(n) because they shift every element. Use `collections.deque` in Python. In TypeScript/JavaScript, use a linked-list-based queue in performance-critical code.
+Using `list.pop(0)` (Python) or `array.shift()` (JavaScript/TS) for a queue. Both are O(n) because they shift every element. Use `collections.deque` in Python. For performance-critical TypeScript, use a linked-list-based queue.
+:::
 
 ---
 
@@ -927,7 +930,8 @@ class HashMap<K, V> {
 </Tabs>
 
 :::tip[Research Question 🔍]
-    When does a hash table's worst-case O(n) actually occur? What is a "hash collision attack" and why do Python and Rust use hash randomization? What is the "load factor" and how does it affect performance?
+When does a hash table's worst-case O(n) actually occur? What is a "hash collision attack" and why do Python and Rust use hash randomization? What is the "load factor" and how does it affect performance?
+:::
 
 ---
 
@@ -1104,7 +1108,8 @@ class BST<T> {
 </Tabs>
 
 :::tip[Research Question 🔍]
-    What happens to BST search performance when you insert elements in sorted order? (Try: `insert 1, 2, 3, 4, 5` — draw the tree.) What are **AVL trees** and **Red-Black trees**, and what problem do they solve?
+What happens to BST search performance when you insert elements in sorted order? (Try: insert 1, 2, 3, 4, 5 — draw the tree.) What are **AVL trees** and **Red-Black trees**, and what problem do they solve?
+:::
 
 ---
 
@@ -1112,13 +1117,13 @@ class BST<T> {
 
 A **graph** is nodes connected by edges. Unlike trees, graphs can have cycles and any connection structure.
 
-```
-Nodes: A B C D E
-Edges: A─B  A─C  B─D  C─D  D─E
-
-  A ── B
-  │    │
-  C ── D ── E
+```mermaid
+flowchart LR
+    A --- B
+    A --- C
+    B --- D
+    C --- D
+    D --- E
 ```
 
 **Types:** directed (edges have direction), undirected (bidirectional), weighted (edges have costs).
@@ -1266,7 +1271,8 @@ function dfs(graph: Graph, start: string, visited = new Set<string>()): string[]
 </Tabs>
 
 :::tip[Research Question 🔍]
-    What is the difference between BFS and DFS in terms of what they find? When would you choose one over the other? Name two real-world systems modeled as graphs (navigation? social networks?).
+What is the difference between BFS and DFS in terms of what they find? When would you choose one over the other? Name two real-world systems modeled as graphs.
+:::
 
 ---
 
@@ -1301,7 +1307,8 @@ function dfs(graph: Graph, start: string, visited = new Set<string>()): string[]
 ## 🏗️ Assignments
 
 :::note[Language Choice]
-    These assignments can be done in **any language**. Pick the one you're learning. The concepts are the same — the syntax differs. Consider implementing the same assignment in two languages to feel the difference.
+These assignments can be done in **any language**. Pick the one you're learning. The concepts are identical — only syntax differs. Consider implementing the same assignment in two languages to feel the difference.
+:::
 
 ### Assignment 1 — Implement Them All
 **Combines:** Linked list, stack, queue, hash table, BST  
