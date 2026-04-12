@@ -1,18 +1,18 @@
-﻿import Tabs from '@theme/Tabs';
+import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Recursion & Dynamic Programming
 
-**Section:** Algorithms â€º Recursion Â· **Prerequisite:** [Sorting Algorithms](./sorting.md)
+**Section:** Algorithms ΓÇ║ Recursion ┬╖ **Prerequisite:** [Sorting Algorithms](./sorting.md)
 
-> **Who needs this:** Anyone solving problems with repeated substructure â€” tree traversal, graph search, combinatorics, optimization. DP is one of the most tested topics in technical interviews and one of the most powerful in production systems.
+> **Who needs this:** Anyone solving problems with repeated substructure ΓÇö tree traversal, graph search, combinatorics, optimization. DP is one of the most tested topics in technical interviews and one of the most powerful in production systems.
 
 ---
 
-## ðŸŽ¯ Learning Objectives
+## ≡ƒÄ» Learning Objectives
 
 - [ ] Write recursive functions with correct base cases and recursive cases
-- [ ] Recognize when naive recursion has overlapping subproblems (O(2â¿) â†’ fixable)
+- [ ] Recognize when naive recursion has overlapping subproblems (O(2Γü┐) ΓåÆ fixable)
 - [ ] Apply memoization (top-down DP) to a recursive solution
 - [ ] Implement tabulation (bottom-up DP) for the same problem
 - [ ] Solve the 0/1 knapsack problem with DP
@@ -20,14 +20,14 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-## ðŸ“– Concepts
+## ≡ƒôû Concepts
 
 ### 1. Recursion
 
 A function is **recursive** when it calls itself. Every recursive solution needs:
 
-1. **Base case** â€” terminates the recursion (no more calls)
-2. **Recursive case** â€” calls itself with a *strictly smaller* problem
+1. **Base case** ΓÇö terminates the recursion (no more calls)
+2. **Recursive case** ΓÇö calls itself with a *strictly smaller* problem
 
 ```
 factorial(4):
@@ -35,11 +35,11 @@ factorial(4):
     3 * factorial(2)
       2 * factorial(1)
         1 * factorial(0)
-          â†’ 1   (base case)
-        â†’ 1 * 1 = 1
-      â†’ 2 * 1 = 2
-    â†’ 3 * 2 = 6
-  â†’ 4 * 6 = 24
+          ΓåÆ 1   (base case)
+        ΓåÆ 1 * 1 = 1
+      ΓåÆ 2 * 1 = 2
+    ΓåÆ 3 * 2 = 6
+  ΓåÆ 4 * 6 = 24
 ```
 
 <Tabs>
@@ -52,12 +52,12 @@ FUNCTION factorial(n: Int) -> Int
     RETURN n * factorial(n - 1)      // Recursive case
 END FUNCTION
 
-// Classic recursion: fibonacci (naive â€” watch for exponential blowup)
+// Classic recursion: fibonacci (naive ΓÇö watch for exponential blowup)
 FUNCTION fibonacci(n: Int) -> Int
     IF n <= 1 THEN RETURN n          // Base cases: fib(0)=0, fib(1)=1
     RETURN fibonacci(n - 1) + fibonacci(n - 2)
 END FUNCTION
-// WARNING: naive fibonacci is O(2^n) â€” see DP section for the fix.
+// WARNING: naive fibonacci is O(2^n) ΓÇö see DP section for the fix.
 
 // Recursion: sum of a list
 FUNCTION sum_list(arr: List<Int>, index: Int = 0) -> Int
@@ -82,7 +82,7 @@ def fibonacci_naive(n: int) -> int:
     if n <= 1:
         return n
     return fibonacci_naive(n - 1) + fibonacci_naive(n - 2)
-# fibonacci_naive(40) is noticeably slow â€” O(2^n)
+# fibonacci_naive(40) is noticeably slow ΓÇö O(2^n)
 # fibonacci_naive(100) would take longer than the universe's age
 ```
 
@@ -106,7 +106,7 @@ function fibonacciNaive(n: number): number {
 </Tabs>
 
 :::warning Stack Overflow
-Every recursive call adds a frame to the **call stack**. Recurse too deeply without hitting a base case and you get a stack overflow. Python crashes around depth 1000; JS around 10,000â€“15,000. Iterative solutions use O(1) stack space and avoid this entirely.
+Every recursive call adds a frame to the **call stack**. Recurse too deeply without hitting a base case and you get a stack overflow. Python crashes around depth 1000; JS around 10,000ΓÇô15,000. Iterative solutions use O(1) stack space and avoid this entirely.
 :::
 
 ---
@@ -117,21 +117,21 @@ Naive fibonacci computes the same values over and over:
 
 ```
 fib(5)
-â”œâ”€â”€ fib(4)
-â”‚   â”œâ”€â”€ fib(3)       â† computed AGAIN below
-â”‚   â”‚   â”œâ”€â”€ fib(2)
-â”‚   â”‚   â””â”€â”€ fib(1)
-â”‚   â””â”€â”€ fib(2)       â† computed AGAIN
-â””â”€â”€ fib(3)           â† duplicate of fib(3) above
-    â”œâ”€â”€ fib(2)       â† computed yet again
-    â””â”€â”€ fib(1)
+Γö£ΓöÇΓöÇ fib(4)
+Γöé   Γö£ΓöÇΓöÇ fib(3)       ΓåÉ computed AGAIN below
+Γöé   Γöé   Γö£ΓöÇΓöÇ fib(2)
+Γöé   Γöé   ΓööΓöÇΓöÇ fib(1)
+Γöé   ΓööΓöÇΓöÇ fib(2)       ΓåÉ computed AGAIN
+ΓööΓöÇΓöÇ fib(3)           ΓåÉ duplicate of fib(3) above
+    Γö£ΓöÇΓöÇ fib(2)       ΓåÉ computed yet again
+    ΓööΓöÇΓöÇ fib(1)
 ```
 
-`fib(3)` alone is computed twice. `fib(2)` is computed three times. As n grows, the duplication explodes exponentially. **This is the overlapping subproblems pattern â€” the trigger for dynamic programming.**
+`fib(3)` alone is computed twice. `fib(2)` is computed three times. As n grows, the duplication explodes exponentially. **This is the overlapping subproblems pattern ΓÇö the trigger for dynamic programming.**
 
 ---
 
-### 3. Dynamic Programming â€” Memoization (Top-Down)
+### 3. Dynamic Programming ΓÇö Memoization (Top-Down)
 
 **Memoization:** solve recursively, but cache each result the first time you compute it. On repeat calls, return the cached value instantly.
 
@@ -144,8 +144,8 @@ FUNCTION fib_memo(n: Int, cache: Map<Int, Int> = {}) -> Int
     IF n <= 1 THEN RETURN n
     IF n IN cache THEN RETURN cache[n]    // Already computed!
 
-    result â† fib_memo(n - 1, cache) + fib_memo(n - 2, cache)
-    cache[n] â† result
+    result ΓåÉ fib_memo(n - 1, cache) + fib_memo(n - 2, cache)
+    cache[n] ΓåÉ result
     RETURN result
 END FUNCTION
 ```
@@ -162,7 +162,7 @@ def fib_memo(n: int) -> int:
     if n <= 1:
         return n
     return fib_memo(n - 1) + fib_memo(n - 2)
-# fib_memo(1000) is now instant â€” O(n) time, O(n) space
+# fib_memo(1000) is now instant ΓÇö O(n) time, O(n) space
 
 # Option 2: Manual cache dict
 def fib_memo_manual(n: int, cache: dict = {}) -> int:
@@ -193,9 +193,9 @@ function fibMemo(n: number, cache: Map<number, number> = new Map()): number {
 
 ---
 
-### 4. Dynamic Programming â€” Tabulation (Bottom-Up)
+### 4. Dynamic Programming ΓÇö Tabulation (Bottom-Up)
 
-**Tabulation:** fill a table iteratively from the smallest subproblems up to the answer. No recursion â€” no stack overflow risk.
+**Tabulation:** fill a table iteratively from the smallest subproblems up to the answer. No recursion ΓÇö no stack overflow risk.
 
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
@@ -205,22 +205,22 @@ function fibMemo(n: number, cache: Map<number, number> = new Map()): number {
 FUNCTION fib_tab(n: Int) -> Int
     IF n <= 1 THEN RETURN n
 
-    table â† array of size n+1, all zeros
-    table[1] â† 1
+    table ΓåÉ array of size n+1, all zeros
+    table[1] ΓåÉ 1
 
     FOR i FROM 2 TO n DO
-        table[i] â† table[i-1] + table[i-2]
+        table[i] ΓåÉ table[i-1] + table[i-2]
     END FOR
 
     RETURN table[n]
 END FUNCTION
 
-// Space-optimized: only keep last 2 values â€” O(1) space
+// Space-optimized: only keep last 2 values ΓÇö O(1) space
 FUNCTION fib_optimal(n: Int) -> Int
     IF n <= 1 THEN RETURN n
-    prev, curr â† 0, 1
+    prev, curr ΓåÉ 0, 1
     FOR i FROM 2 TO n DO
-        prev, curr â† curr, prev + curr
+        prev, curr ΓåÉ curr, prev + curr
     END FOR
     RETURN curr
 END FUNCTION
@@ -239,7 +239,7 @@ def fib_tab(n: int) -> int:
         table[i] = table[i-1] + table[i-2]
     return table[n]
 
-# Space-optimized â€” O(1) space, O(n) time
+# Space-optimized ΓÇö O(1) space, O(n) time
 def fib(n: int) -> int:
     if n <= 1:
         return n
@@ -284,18 +284,18 @@ Best choice: item 0 (w=2, v=3) + item 1 (w=3, v=4) = weight 5, value 7
 
 ```pseudocode
 FUNCTION knapsack(weights: List<Int>, values: List<Int>, capacity: Int) -> Int
-    n â† length(weights)
-    dp â† 2D array of size (n+1) Ã— (capacity+1), all zeros
+    n ΓåÉ length(weights)
+    dp ΓåÉ 2D array of size (n+1) ├ù (capacity+1), all zeros
 
     FOR i FROM 1 TO n DO
         FOR w FROM 0 TO capacity DO
             // Option 1: skip item i
-            dp[i][w] â† dp[i-1][w]
+            dp[i][w] ΓåÉ dp[i-1][w]
 
             // Option 2: take item i (only if it fits)
             IF weights[i-1] <= w THEN
-                WITH_ITEM â† values[i-1] + dp[i-1][w - weights[i-1]]
-                dp[i][w] â† max(dp[i][w], WITH_ITEM)
+                WITH_ITEM ΓåÉ values[i-1] + dp[i-1][w - weights[i-1]]
+                dp[i][w] ΓåÉ max(dp[i][w], WITH_ITEM)
             END IF
         END FOR
     END FOR
@@ -323,7 +323,7 @@ def knapsack(weights: list[int], values: list[int], capacity: int) -> int:
 
 items_w = [2, 3, 4]
 items_v = [3, 4, 5]
-print(knapsack(items_w, items_v, 5))  # â†’ 7
+print(knapsack(items_w, items_v, 5))  # ΓåÆ 7
 ```
 
 </TabItem>
@@ -358,7 +358,7 @@ function knapsack(weights: number[], values: number[], capacity: number): number
 ```
 s1 = "ABCBDAB"
 s2 = "BDCAB"
-LCS = "BCAB" or "BDAB" â€” length 4
+LCS = "BCAB" or "BDAB" ΓÇö length 4
 ```
 
 `dp[i][j]` = LCS length of `s1[0..i]` and `s2[0..j]`.
@@ -368,16 +368,16 @@ LCS = "BCAB" or "BDAB" â€” length 4
 
 ```pseudocode
 FUNCTION lcs(s1: String, s2: String) -> Int
-    m â† length(s1)
-    n â† length(s2)
-    dp â† 2D array (m+1) Ã— (n+1), all zeros
+    m ΓåÉ length(s1)
+    n ΓåÉ length(s2)
+    dp ΓåÉ 2D array (m+1) ├ù (n+1), all zeros
 
     FOR i FROM 1 TO m DO
         FOR j FROM 1 TO n DO
             IF s1[i-1] == s2[j-1] THEN
-                dp[i][j] â† dp[i-1][j-1] + 1    // Characters match
+                dp[i][j] ΓåÉ dp[i-1][j-1] + 1    // Characters match
             ELSE
-                dp[i][j] â† max(dp[i-1][j], dp[i][j-1])  // Take better of skip-left or skip-up
+                dp[i][j] ΓåÉ max(dp[i-1][j], dp[i][j-1])  // Take better of skip-left or skip-up
             END IF
         END FOR
     END FOR
@@ -403,7 +403,7 @@ def lcs(s1: str, s2: str) -> int:
 
     return dp[m][n]
 
-print(lcs("ABCBDAB", "BDCAB"))  # â†’ 4
+print(lcs("ABCBDAB", "BDCAB"))  # ΓåÆ 4
 ```
 
 </TabItem>
@@ -428,33 +428,33 @@ function lcs(s1: string, s2: string): number {
 </TabItem>
 </Tabs>
 
-:::tip Research Question ðŸ”
-The **0/1 Knapsack** and **LCS** are two of the "template" DP patterns. Most DP problems are variations of one of ~6 patterns. Search "DP patterns NeetCode" to see the full taxonomy â€” recognizing the pattern is 80% of solving any DP problem.
+:::tip Research Question ≡ƒöì
+The **0/1 Knapsack** and **LCS** are two of the "template" DP patterns. Most DP problems are variations of one of ~6 patterns. Search "DP patterns NeetCode" to see the full taxonomy ΓÇö recognizing the pattern is 80% of solving any DP problem.
 :::
 
 ---
 
-## ðŸ“š Resources
+## ≡ƒôÜ Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary (Do These)">
 
-- ðŸ“º **[NeetCode â€” Dynamic Programming playlist (YouTube, FREE)](https://www.youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf)** â€” Best practical intro to DP patterns
-- ðŸ“º **[CS50x Week 3 (FREE)](https://cs50.harvard.edu/x/)** â€” Covers recursion visually with call stacks
+- ≡ƒô║ **[NeetCode ΓÇö Dynamic Programming playlist (YouTube, FREE)](https://www.youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf)** ΓÇö Best practical intro to DP patterns
+- ≡ƒô║ **[CS50x Week 3 (FREE)](https://cs50.harvard.edu/x/)** ΓÇö Covers recursion visually with call stacks
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- ðŸ“º **[Abdul Bari â€” Dynamic Programming (YouTube, FREE)](https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O)** â€” Deep, methodical DP derivations
-- ðŸ“º **[MIT 6.006 â€” DP (YouTube, FREE)](https://www.youtube.com/watch?v=OQ5jsbhAv_M)** â€” Rigorous academic treatment
+- ≡ƒô║ **[Abdul Bari ΓÇö Dynamic Programming (YouTube, FREE)](https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O)** ΓÇö Deep, methodical DP derivations
+- ≡ƒô║ **[MIT 6.006 ΓÇö DP (YouTube, FREE)](https://www.youtube.com/watch?v=OQ5jsbhAv_M)** ΓÇö Rigorous academic treatment
 
 </TabItem>
 <TabItem value="practice" label="Practice">
 
-- ðŸŽ® **[LeetCode #70 â€” Climbing Stairs (FREE)](https://leetcode.com/problems/climbing-stairs/)** â€” Classic DP intro (fibonacci variant)
-- ðŸŽ® **[LeetCode #322 â€” Coin Change (FREE)](https://leetcode.com/problems/coin-change/)** â€” Classic bottom-up DP
-- ðŸŽ® **[LeetCode #1143 â€” Longest Common Subsequence (FREE)](https://leetcode.com/problems/longest-common-subsequence/)** â€” Apply the LCS template
-- ðŸŽ® **[LeetCode #416 â€” Partition Equal Subset Sum (FREE)](https://leetcode.com/problems/partition-equal-subset-sum/)** â€” Knapsack variant
+- ≡ƒÄ« **[LeetCode #70 ΓÇö Climbing Stairs (FREE)](https://leetcode.com/problems/climbing-stairs/)** ΓÇö Classic DP intro (fibonacci variant)
+- ≡ƒÄ« **[LeetCode #322 ΓÇö Coin Change (FREE)](https://leetcode.com/problems/coin-change/)** ΓÇö Classic bottom-up DP
+- ≡ƒÄ« **[LeetCode #1143 ΓÇö Longest Common Subsequence (FREE)](https://leetcode.com/problems/longest-common-subsequence/)** ΓÇö Apply the LCS template
+- ≡ƒÄ« **[LeetCode #416 ΓÇö Partition Equal Subset Sum (FREE)](https://leetcode.com/problems/partition-equal-subset-sum/)** ΓÇö Knapsack variant
 
 </TabItem>
 </Tabs>

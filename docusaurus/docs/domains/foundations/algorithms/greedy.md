@@ -1,15 +1,15 @@
-﻿import Tabs from '@theme/Tabs';
+import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Greedy Algorithms
 
-**Section:** Algorithms â€º Greedy Â· **Prerequisite:** [Pathfinding](./pathfinding.md)
+**Section:** Algorithms ΓÇ║ Greedy ┬╖ **Prerequisite:** [Pathfinding](./pathfinding.md)
 
 > **Who needs this:** Anyone who needs to make a sequence of decisions where a locally optimal choice leads to a globally optimal solution. Greedy algorithms appear in compression (Huffman), scheduling, networking (minimum spanning trees), and many interview problems.
 
 ---
 
-## ðŸŽ¯ Learning Objectives
+## ≡ƒÄ» Learning Objectives
 
 - [ ] State what makes an algorithm "greedy" and when greedy works
 - [ ] Solve the activity selection problem with a greedy approach
@@ -19,7 +19,7 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-## ðŸ“– Concepts
+## ≡ƒôû Concepts
 
 ### 1. The Greedy Paradigm
 
@@ -27,11 +27,11 @@ A **greedy algorithm** makes the **locally optimal choice at each step** without
 
 ```
 Greedy property requirements:
-1. Greedy choice property â€” a locally optimal choice leads to a global optimum
-2. Optimal substructure â€” optimal solution contains optimal solutions to subproblems
+1. Greedy choice property ΓÇö a locally optimal choice leads to a global optimum
+2. Optimal substructure ΓÇö optimal solution contains optimal solutions to subproblems
 
-If BOTH hold â†’ greedy works and is faster than DP.
-If ONLY optimal substructure â†’ use DP (greedy would fail).
+If BOTH hold ΓåÆ greedy works and is faster than DP.
+If ONLY optimal substructure ΓåÆ use DP (greedy would fail).
 ```
 
 **Key question:** "If I always take the best-looking option right now, am I guaranteed to be optimal overall?" Sometimes yes, sometimes no.
@@ -55,10 +55,10 @@ Activities (start, end):
 Greedy strategy: always pick the activity that finishes earliest.
 1. Sort by end time: A(4), B(5), C(6), D(7), E(9), F(10), G(11)
 2. Pick A (ends first)
-3. Pick D (starts after A ends: 5 â‰¥ 4) âœ“
-4. Pick G (starts after D ends: 8 â‰¥ 7) âœ“
+3. Pick D (starts after A ends: 5 ΓëÑ 4) Γ£ô
+4. Pick G (starts after D ends: 8 ΓëÑ 7) Γ£ô
 
-Result: {A, D, G} â€” 3 activities (maximum possible)
+Result: {A, D, G} ΓÇö 3 activities (maximum possible)
 ```
 
 **Why "earliest finish" works:** An activity that finishes earliest leaves the most remaining time for future activities. Any other selection can only do worse or equal.
@@ -69,15 +69,15 @@ Result: {A, D, G} â€” 3 activities (maximum possible)
 ```pseudocode
 FUNCTION activity_selection(activities: List<(start, end)>) -> List<(start, end)>
     // Sort by end time
-    sorted â† SORT activities BY end time ascending
+    sorted ΓåÉ SORT activities BY end time ascending
 
-    selected â† [sorted[0]]       // Always take the first (earliest finish)
-    last_end â† sorted[0].end
+    selected ΓåÉ [sorted[0]]       // Always take the first (earliest finish)
+    last_end ΓåÉ sorted[0].end
 
     FOR i FROM 1 TO length(sorted) - 1 DO
         IF sorted[i].start >= last_end THEN    // No overlap
             APPEND sorted[i] TO selected
-            last_end â† sorted[i].end
+            last_end ΓåÉ sorted[i].end
         END IF
     END FOR
 
@@ -134,19 +134,19 @@ function activitySelection(activities: Activity[]): Activity[] {
 
 ---
 
-### 3. Coin Change â€” When Greedy Works and When It Fails
+### 3. Coin Change ΓÇö When Greedy Works and When It Fails
 
 **Greedy coin change:** Always use the largest coin that fits.
 
 ```
 US coins: [25, 10, 5, 1] cents
 
-Make change for 41Â¢:
-  25Â¢ Ã— 1 = 25   (remaining: 16)
-  10Â¢ Ã— 1 = 10   (remaining: 6)
-   5Â¢ Ã— 1 = 5    (remaining: 1)
-   1Â¢ Ã— 1 = 1    (remaining: 0)
-  â†’ 4 coins âœ“ OPTIMAL for US coins!
+Make change for 41┬ó:
+  25┬ó ├ù 1 = 25   (remaining: 16)
+  10┬ó ├ù 1 = 10   (remaining: 6)
+   5┬ó ├ù 1 = 5    (remaining: 1)
+   1┬ó ├ù 1 = 1    (remaining: 0)
+  ΓåÆ 4 coins Γ£ô OPTIMAL for US coins!
 ```
 
 But with arbitrary coin denominations, greedy fails:
@@ -156,10 +156,10 @@ Coins: [1, 3, 4]
 Make change for 6:
 
 Greedy: 4 + 1 + 1 = 3 coins
-Optimal: 3 + 3 = 2 coins  â† greedy missed this!
+Optimal: 3 + 3 = 2 coins  ΓåÉ greedy missed this!
 ```
 
-**Lesson:** Greedy works for coin change only with specific coin systems (like US coins) that have the greedy property. For arbitrary denominations, use **dynamic programming** ([Recursion & DP](./recursion.md) â€” coin change is a classic DP problem).
+**Lesson:** Greedy works for coin change only with specific coin systems (like US coins) that have the greedy property. For arbitrary denominations, use **dynamic programming** ([Recursion & DP](./recursion.md) ΓÇö coin change is a classic DP problem).
 
 :::tip Greedy vs DP Rule of Thumb
 If the problem involves **making a globally optimal sequence of choices** and you can **prove a greedy selection never forecloses a better future option**, use greedy (fast). If optimal future choices depend on past decisions in a complex way, use DP.
@@ -175,12 +175,12 @@ If the problem involves **making a globally optimal sequence of choices** and yo
 Meetings: [(0,30), (5,10), (15,20)]
 
 Timeline:
-  t=0:  (0,30) starts  â†’ 1 room
-  t=5:  (5,10) starts â†’ overlap with (0,30) â†’ 2 rooms needed
-  t=10: (5,10) ends   â†’ 1 room
-  t=15: (15,20) startsâ†’ overlap with (0,30) â†’ 2 rooms again
-  t=20: (15,20) ends  â†’ 1 room
-  t=30: (0,30) ends   â†’ 0 rooms
+  t=0:  (0,30) starts  ΓåÆ 1 room
+  t=5:  (5,10) starts ΓåÆ overlap with (0,30) ΓåÆ 2 rooms needed
+  t=10: (5,10) ends   ΓåÆ 1 room
+  t=15: (15,20) startsΓåÆ overlap with (0,30) ΓåÆ 2 rooms again
+  t=20: (15,20) ends  ΓåÆ 1 room
+  t=30: (0,30) ends   ΓåÆ 0 rooms
 
 Answer: 2 rooms minimum
 ```
@@ -206,7 +206,7 @@ def min_meeting_rooms(intervals: list[tuple]) -> int:
 
     return len(heap)
 
-print(min_meeting_rooms([(0,30),(5,10),(15,20)]))  # â†’ 2
+print(min_meeting_rooms([(0,30),(5,10),(15,20)]))  # ΓåÆ 2
 ```
 
 </TabItem>
@@ -239,25 +239,25 @@ function minMeetingRooms(intervals: [number, number][]): number {
 **Huffman encoding** is a greedy algorithm for lossless data compression. It assigns shorter binary codes to more frequent characters and longer codes to rarer ones, minimizing total encoded length.
 
 ```
-Text: "abracadabra" â€” character frequencies:
+Text: "abracadabra" ΓÇö character frequencies:
   a: 5, b: 2, r: 2, c: 1, d: 1
 
 Huffman codes (one possible assignment):
-  a â†’ 0       (most frequent â†’ shortest)
-  b â†’ 10
-  r â†’ 110
-  c â†’ 1110
-  d â†’ 1111
+  a ΓåÆ 0       (most frequent ΓåÆ shortest)
+  b ΓåÆ 10
+  r ΓåÆ 110
+  c ΓåÆ 1110
+  d ΓåÆ 1111
 
-Encoded length: 5Ã—1 + 2Ã—2 + 2Ã—3 + 1Ã—4 + 1Ã—4 = 25 bits
-vs. fixed 3-bit: 11 chars Ã— 3 bits = 33 bits   â†’ 24% smaller
+Encoded length: 5├ù1 + 2├ù2 + 2├ù3 + 1├ù4 + 1├ù4 = 25 bits
+vs. fixed 3-bit: 11 chars ├ù 3 bits = 33 bits   ΓåÆ 24% smaller
 ```
 
 **Algorithm:** Build a binary tree bottom-up. Use a min-heap; always merge the two lowest-frequency nodes into a new parent node with combined frequency. Repeat until one root remains.
 
 This is used in ZIP, PNG, JPEG, MP3, and HTTP/2 header compression (HPACK).
 
-You won't typically implement Huffman from scratch in production â€” compression libraries handle it. The value here is understanding **why greedy works** (merging the two cheapest items first is provably optimal by an exchange argument) and **where it's deployed**.
+You won't typically implement Huffman from scratch in production ΓÇö compression libraries handle it. The value here is understanding **why greedy works** (merging the two cheapest items first is provably optimal by an exchange argument) and **where it's deployed**.
 
 ---
 
@@ -265,35 +265,35 @@ You won't typically implement Huffman from scratch in production â€” compre
 
 | Property | Greedy | Dynamic Programming |
 |---------|--------|---------------------|
-| Speed | O(n log n) typically | O(nÂ²) or O(nm) typically |
-| Reconsiders past choices | âŒ Never | âœ… Via memoization |
-| Requires greedy choice property | âœ… Must hold | âŒ Not required |
+| Speed | O(n log n) typically | O(n┬▓) or O(nm) typically |
+| Reconsiders past choices | Γ¥î Never | Γ£à Via memoization |
+| Requires greedy choice property | Γ£à Must hold | Γ¥î Not required |
 | Proof needed | Correctness must be proven | Correctness follows from structure |
 | Examples | Activity selection, Huffman, Dijkstra | Knapsack, LCS, coin change (arbitrary) |
 
 ---
 
-## ðŸ“š Resources
+## ≡ƒôÜ Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary (Do These)">
 
-- ðŸ“º **[Abdul Bari â€” Greedy Algorithms (YouTube, FREE)](https://www.youtube.com/watch?v=ARvQcqJ_-NY)** â€” Covers activity selection and Huffman with proofs
-- ðŸ“º **[NeetCode â€” Interval Problems (YouTube, FREE)](https://www.youtube.com/watch?v=IexN60k62jo)** â€” Practical LeetCode-style greedy interval problems
+- ≡ƒô║ **[Abdul Bari ΓÇö Greedy Algorithms (YouTube, FREE)](https://www.youtube.com/watch?v=ARvQcqJ_-NY)** ΓÇö Covers activity selection and Huffman with proofs
+- ≡ƒô║ **[NeetCode ΓÇö Interval Problems (YouTube, FREE)](https://www.youtube.com/watch?v=IexN60k62jo)** ΓÇö Practical LeetCode-style greedy interval problems
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- ðŸ“º **[Huffman Coding â€” Computerphile (YouTube, FREE)](https://www.youtube.com/watch?v=umTbivyJoiI)** â€” Great conceptual explanation of Huffman trees
-- ðŸ“º **[MIT 6.006 â€” Greedy Algorithms (YouTube, FREE)](https://www.youtube.com/watch?v=tKwnms5iRBU)** â€” Academic treatment with exchange argument proofs
+- ≡ƒô║ **[Huffman Coding ΓÇö Computerphile (YouTube, FREE)](https://www.youtube.com/watch?v=umTbivyJoiI)** ΓÇö Great conceptual explanation of Huffman trees
+- ≡ƒô║ **[MIT 6.006 ΓÇö Greedy Algorithms (YouTube, FREE)](https://www.youtube.com/watch?v=tKwnms5iRBU)** ΓÇö Academic treatment with exchange argument proofs
 
 </TabItem>
 <TabItem value="practice" label="Practice">
 
-- ðŸŽ® **[LeetCode #455 â€” Assign Cookies (FREE)](https://leetcode.com/problems/assign-cookies/)** â€” Simple greedy intro
-- ðŸŽ® **[LeetCode #435 â€” Non-overlapping Intervals (FREE)](https://leetcode.com/problems/non-overlapping-intervals/)** â€” Activity selection variant
-- ðŸŽ® **[LeetCode #253 â€” Meeting Rooms II (FREE)](https://leetcode.com/problems/meeting-rooms-ii/)** â€” Min rooms / interval greedy
-- ðŸŽ® **[LeetCode #134 â€” Gas Station (FREE)](https://leetcode.com/problems/gas-station/)** â€” Greedy with circular reasoning
+- ≡ƒÄ« **[LeetCode #455 ΓÇö Assign Cookies (FREE)](https://leetcode.com/problems/assign-cookies/)** ΓÇö Simple greedy intro
+- ≡ƒÄ« **[LeetCode #435 ΓÇö Non-overlapping Intervals (FREE)](https://leetcode.com/problems/non-overlapping-intervals/)** ΓÇö Activity selection variant
+- ≡ƒÄ« **[LeetCode #253 ΓÇö Meeting Rooms II (FREE)](https://leetcode.com/problems/meeting-rooms-ii/)** ΓÇö Min rooms / interval greedy
+- ≡ƒÄ« **[LeetCode #134 ΓÇö Gas Station (FREE)](https://leetcode.com/problems/gas-station/)** ΓÇö Greedy with circular reasoning
 
 </TabItem>
 </Tabs>
