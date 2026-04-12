@@ -66,15 +66,20 @@ Before writing any significant program, ask: *What operations will I do most? Wh
 
 An **array** is a contiguous block of memory where each element is the same size and directly accessible by index.
 
-```
-Memory layout:
-┌────┬────┬────┬────┬────┐
-│ 10 │ 20 │ 30 │ 40 │ 50 │
-└────┴────┴────┴────┴────┘
-  0    1    2    3    4
+<svg viewBox="0 0 430 72" width="100%" style={{maxWidth:'500px',display:'block',margin:'1rem auto'}} aria-label="Array with 5 cells indexed 0-4">
+  <style>{`
+    .ac { fill: var(--ifm-card-background-color, #1e1e2e); stroke: var(--ifm-color-primary, #7c3aed); stroke-width: 2; }
+    .av { font: bold 18px monospace; fill: var(--ifm-font-color-base, #cdd6f4); dominant-baseline: middle; text-anchor: middle; }
+    .ai { font: bold 12px monospace; fill: var(--ifm-color-primary, #a78bfa); text-anchor: middle; }
+  `}</style>
+  <rect className="ac" x="4"   y="8" width="78" height="44" rx="6"/><text className="av" x="43"  y="30">10</text><text className="ai" x="43"  y="64">[0]</text>
+  <rect className="ac" x="90"  y="8" width="78" height="44" rx="6"/><text className="av" x="129" y="30">20</text><text className="ai" x="129" y="64">[1]</text>
+  <rect className="ac" x="176" y="8" width="78" height="44" rx="6"/><text className="av" x="215" y="30">30</text><text className="ai" x="215" y="64">[2]</text>
+  <rect className="ac" x="262" y="8" width="78" height="44" rx="6"/><text className="av" x="301" y="30">40</text><text className="ai" x="301" y="64">[3]</text>
+  <rect className="ac" x="348" y="8" width="78" height="44" rx="6"/><text className="av" x="387" y="30">50</text><text className="ai" x="387" y="64">[4]</text>
+</svg>
 
-array[2] → address = base_address + (2 × element_size) → 30
-```
+`array[2]` → `base_address + (2 × element_size)` → **30**
 
 This is why index access is **O(1)** — it's just arithmetic, not searching.
 
@@ -200,11 +205,13 @@ free(dynamic);           // Must free manually!
 
 A linked list stores data in **nodes**. Each node holds a value and a pointer to the next node. They are not stored contiguously — each node can be anywhere in memory.
 
-```
-Conceptual layout:
-[value:10 | next:→] ──→ [value:20 | next:→] ──→ [value:30 | next:NULL]
-       ↑
-      head
+```mermaid
+flowchart LR
+    H(["head"])
+    N1["value: 10\nnext: →"]
+    N2["value: 20\nnext: →"]
+    N3["value: 30\nnext: NULL"]
+    H --> N1 --> N2 --> N3
 ```
 
 The benefit: inserting or deleting at a **known position** is O(1) — just redirect pointers.  
@@ -469,13 +476,15 @@ impl<T> LinkedList<T> {
 
 A **stack** is LIFO — **Last In, First Out**. Like a stack of plates — you can only add or take from the top.
 
-```
-Empty      Push 10    Push 20    Push 30    Pop        Peek
-           ┌────┐     ┌────┐     ┌────┐     ┌────┐     ┌────┐
-           │ 10 │     │ 20 │     │ 30 │◄TOP │ 20 │◄TOP │ 20 │◄TOP
-           └────┘     │ 10 │     │ 20 │     │ 10 │     │ 10 │
-                      └────┘     │ 10 │     └────┘     └────┘
-                                 └────┘   returns 30
+```mermaid
+flowchart LR
+    E(["Empty"])
+    P1["Push 10\n───\n10"]
+    P2["Push 20\n───\n20 ◄ TOP\n10"]
+    P3["Push 30\n───\n30 ◄ TOP\n20\n10"]
+    P4["Pop → 30\n───\n20 ◄ TOP\n10"]
+    P5["Peek → 20\n───\n20 ◄ TOP\n10"]
+    E --> P1 --> P2 --> P3 --> P4 --> P5
 ```
 
 **Real uses:** undo/redo, browser back button, call stack, parenthesis matching, expression evaluation.
@@ -617,10 +626,27 @@ function isBalanced(text: string): boolean {
 
 A **queue** is FIFO — **First In, First Out**. Like a line at a store — new arrivals join the back, service happens at the front.
 
-```
-Enqueue 10  Enqueue 20  Enqueue 30  Dequeue     Front
-FRONT→[10]  [10][20]   [10][20][30] [20][30]←   20
-                                    returns 10
+```mermaid
+flowchart LR
+    subgraph q4["After Dequeue"]
+        direction LR
+        F4([FRONT]) --> D20[20] --> D30[30]
+    end
+    subgraph q3["Enqueue 30"]
+        direction LR
+        F3([FRONT]) --> C10[10] --> C20[20] --> C30[30]
+    end
+    subgraph q2["Enqueue 20"]
+        direction LR
+        F2([FRONT]) --> B10[10] --> B20[20]
+    end
+    subgraph q1["Enqueue 10"]
+        direction LR
+        F1([FRONT]) --> A10[10]
+    end
+    q1 --> q2 --> q3 --> q4
+    note["Dequeue removes 10\nfrom FRONT → returns 10"]
+    q3 --> note
 ```
 
 **Real uses:** task schedulers, web server request handling, BFS graph traversal, print queues.
@@ -725,17 +751,20 @@ A **hash table** maps keys to values with average O(1) lookup, insert, and delet
 
 **Concept — how it works:**
 
+```mermaid
+flowchart LR
+    K1["key: &quot;name&quot;"] --> H1["hash()"] --> B1["bucket[42]"] --> V1["&quot;Alice&quot;"]
+    K2["key: &quot;age&quot;"]  --> H2["hash()"] --> B2["bucket[7]"]  --> V2["25"]
+    K3["key: &quot;city&quot;"] --> H3["hash()"] --> B3["bucket[19]"] --> V3["&quot;Toronto&quot;"]
+    style B1 fill:#4c1d95,color:#fff
+    style B2 fill:#4c1d95,color:#fff
+    style B3 fill:#4c1d95,color:#fff
 ```
-"name" → hash() → 42 → bucket[42] → "Alice"
-"age"  → hash() → 7  → bucket[7]  → 25
-"city" → hash() → 19 → bucket[19] → "Toronto"
 
-// Lookup: table["name"]
-// 1. hash("name") → 42
-// 2. Go to bucket[42]
-// 3. Return "Alice"
-// No searching required — direct address!
-```
+Lookup `table["name"]`:
+1. `hash("name")` → 42
+2. Go directly to `bucket[42]`  
+3. Return `"Alice"` — **no searching required**
 
 **Collisions** happen when two keys hash to the same bucket. Handled by **chaining** (linked list at each bucket) or **open addressing** (find next empty bucket).
 
