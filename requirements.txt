@@ -1,0 +1,8 @@
+# MkDocs dependencies — pinned to avoid MkDocs 2.0 breaking changes.
+# To install: pip install -r requirements.txt
+# To upgrade safely: bump minor versions here, test with `mkdocs serve`, then commit.
+
+mkdocs>=1.6.1,<2.0
+mkdocs-material>=9.7.6,<10.0
+mkdocs-git-revision-date-localized-plugin>=1.5.1,<2.0
+mkdocs-minify-plugin>=0.8.0,<1.0
