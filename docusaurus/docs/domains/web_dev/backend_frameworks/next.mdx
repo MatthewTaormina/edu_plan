@@ -1,0 +1,563 @@
+---
+title: Next.js Reference
+description: Next.js App Router, Server Components, Client Components, routing, data fetching, API routes, SSR, SSG, and deployment.
+sidebar_label: Next.js
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Next.js
+
+> **Tool:** Next.js · **Introduced:** 2016 (Vercel) · **Latest:** Next.js 15 (2024) · **Status:** 🟢 Modern
+
+Next.js is a **full-stack React framework** — it adds server-side rendering, file-based routing, API routes, image optimisation, and more to React. It is the de-facto standard for production React applications and one of the most popular web frameworks overall.
+
+> **Prerequisite:** [React](../frontend_frameworks/react) · [Node Core](../node_core)
+> **See also:** [SSR vs CSR](../ssr_csr) — for the theory behind rendering strategies
+
+---
+
+## App Router vs Pages Router
+
+Next.js has two routing systems:
+
+| | App Router (Next.js 13+) | Pages Router (legacy) |
+|-|--------------------------|----------------------|
+| **Status** | Current standard | Stable but not the future |
+| **Server Components** | ✅ Default | ❌ |
+| **Streaming** | ✅ Built-in | ❌ |
+| **Data fetching** | `async/await` in components | `getServerSideProps`, `getStaticProps` |
+| **File convention** | `app/` directory | `pages/` directory |
+
+**All new projects should use the App Router.** This page focuses on the App Router.
+
+---
+
+## File-Based Routing
+
+The `app/` directory defines routes by folder structure. Special files control UI segments:
+
+```
+app/
+├── layout.tsx          → Root layout (wraps all pages)
+├── page.tsx            → Home page: /
+├── globals.css
+├── users/
+│   ├── layout.tsx      → Layout for all /users/* routes
+│   ├── page.tsx        → /users
+│   ├── loading.tsx     → Loading UI for this segment
+│   ├── error.tsx       → Error boundary for this segment
+│   ├── not-found.tsx   → 404 for this segment
+│   └── [id]/
+│       └── page.tsx    → /users/123
+├── blog/
+│   └── [...slug]/
+│       └── page.tsx    → /blog/any/depth/of/path (catch-all)
+└── api/
+    └── users/
+        └── route.ts    → API endpoint: /api/users
+```
+
+**Special file names:**
+
+| File | Purpose |
+|------|---------|
+| `page.tsx` | Unique UI for this route — makes the segment publicly accessible |
+| `layout.tsx` | Shared UI that wraps child pages (persists between navigations) |
+| `loading.tsx` | Suspense boundary — shown while the segment streams |
+| `error.tsx` | Error boundary — shown when an error is thrown |
+| `not-found.tsx` | Shown when `notFound()` is called |
+| `route.ts` | API endpoint — handles HTTP requests directly |
+| `template.tsx` | Like layout but re-rendered on each navigation |
+| `middleware.ts` | Runs before the request reaches the route |
+
+---
+
+## Server Components vs Client Components
+
+This is the most important concept in the App Router.
+
+### Server Components (default)
+
+```typescript
+// app/users/page.tsx — Server Component (no 'use client')
+// Runs on the server — has access to databases, file system, env vars
+// Zero JavaScript sent to the browser for this component
+
+import { db } from '@/lib/db'
+
+// You can use async/await directly — no useEffect needed
+export default async function UsersPage() {
+    // This runs on the server — db is only accessible server-side
+    const users = await db.user.findMany({ orderBy: { name: 'asc' } })
+
+    return (
+        <main>
+            <h1>Users</h1>
+            <ul>
+                {users.map(user => (
+                    <li key={user.id}>{user.name} — {user.email}</li>
+                ))}
+            </ul>
+        </main>
+    )
+}
+```
+
+### Client Components
+
+```typescript
+'use client'  // ← This directive makes it a Client Component
+// Runs in the browser — can use useState, useEffect, onClick, etc.
+
+import { useState } from 'react'
+
+export function SearchBar({ onSearch }: { onSearch: (term: string) => void }) {
+    const [term, setTerm] = useState('')
+
+    return (
+        <input
+            value={term}
+            onChange={e => setTerm(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && onSearch(term)}
+            placeholder="Search..."
+        />
+    )
+}
+```
+
+**Decision guide:**
+
+| Need | Use |
+|------|-----|
+| Fetch from database/API | Server Component |
+| Access env secrets | Server Component |
+| `useState`, `useEffect`, custom hooks | Client Component |
+| Browser APIs (`window`, `localStorage`) | Client Component |
+| `onClick`, `onChange` event handlers | Client Component |
+| Animations, real-time updates | Client Component |
+
+:::tip
+**Composition pattern:** Keep data fetching in Server Components. Use Client Components for interactive leaves. Server Components can render Client Components, but Client Components cannot render Server Components.
+:::
+
+---
+
+## Data Fetching
+
+### In Server Components
+
+```typescript
+// app/posts/[id]/page.tsx
+import { notFound } from 'next/navigation'
+
+interface PageProps {
+    params: { id: string }
+    searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function PostPage({ params, searchParams }: PageProps) {
+    // fetch() is extended by Next.js — automatic deduplication and caching
+    const response = await fetch(`https://api.example.com/posts/${params.id}`, {
+        next: { revalidate: 60 }  // ISR: revalidate every 60 seconds
+    })
+
+    if (!response.ok) notFound()
+
+    const post = await response.json()
+    return <PostDetail post={post} />
+}
+
+// Generate static pages at build time (replaces getStaticPaths)
+export async function generateStaticParams() {
+    const posts = await fetch('/api/posts').then(r => r.json())
+    return posts.map((post: Post) => ({ id: post.id.toString() }))
+}
+
+// Generate metadata (replaces next/head)
+export async function generateMetadata({ params }: PageProps) {
+    const post = await fetchPost(params.id)
+    return {
+        title:       post.title,
+        description: post.excerpt,
+        openGraph:   { title: post.title, images: [post.coverImage] }
+    }
+}
+```
+
+### Cache Control
+
+```typescript
+// fetch options — granular cache control
+fetch(url, { cache: 'force-cache' })      // Cache forever — use with revalidate
+fetch(url, { cache: 'no-store' })          // Never cache (dynamic)
+fetch(url, { next: { revalidate: 3600 } }) // ISR: revalidate after 1 hour
+fetch(url, { next: { tags: ['posts'] } })  // Tag-based revalidation
+
+// Revalidate by tag (call from a Server Action or API route)
+import { revalidateTag } from 'next/cache'
+revalidateTag('posts')  // Purge all cached fetches tagged 'posts'
+
+// Revalidate by path
+import { revalidatePath } from 'next/cache'
+revalidatePath('/posts')
+```
+
+---
+
+## Layouts
+
+```typescript
+// app/layout.tsx — Root layout (required)
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })  // Next.js font optimisation
+
+export const metadata: Metadata = {
+    title: { template: '%s | My App', default: 'My App' },
+    description: 'The best app ever',
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang="en">
+            <body className={inter.className}>
+                <header><Nav /></header>
+                <main>{children}</main>
+                <footer>...</footer>
+            </body>
+        </html>
+    )
+}
+
+// app/dashboard/layout.tsx — Dashboard-specific layout
+// This layout wraps all pages inside /dashboard/**
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="dashboard">
+            <Sidebar />
+            <section className="dashboard__content">{children}</section>
+        </div>
+    )
+}
+```
+
+---
+
+## API Routes (`route.ts`)
+
+```typescript
+// app/api/users/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { db } from '@/lib/db'
+import { createUserSchema } from '@/validators/user'
+
+// GET /api/users
+export async function GET(request: NextRequest) {
+    const searchParams = request.nextUrl.searchParams
+    const role = searchParams.get('role')
+
+    const users = await db.user.findMany({
+        where: role ? { role } : undefined,
+        select: { id: true, name: true, email: true, role: true }
+    })
+
+    return NextResponse.json(users)
+}
+
+// POST /api/users
+export async function POST(request: NextRequest) {
+    const body = await request.json()
+    const result = createUserSchema.safeParse(body)
+
+    if (!result.success) {
+        return NextResponse.json(
+            { error: 'Validation failed', issues: result.error.issues },
+            { status: 400 }
+        )
+    }
+
+    const user = await db.user.create({ data: result.data })
+    return NextResponse.json(user, { status: 201 })
+}
+
+// app/api/users/[id]/route.ts
+export async function GET(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+) {
+    const user = await db.user.findUnique({ where: { id: params.id } })
+    if (!user) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    return NextResponse.json(user)
+}
+
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+) {
+    await db.user.delete({ where: { id: params.id } })
+    return new NextResponse(null, { status: 204 })
+}
+```
+
+---
+
+## Server Actions
+
+Server Actions replace API routes for form submissions and mutations — they're async server functions that can be called directly from Client Components:
+
+```typescript
+// app/actions/user.actions.ts
+'use server'
+
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+import { db } from '@/lib/db'
+
+export async function createUser(formData: FormData) {
+    const name  = formData.get('name') as string
+    const email = formData.get('email') as string
+
+    await db.user.create({ data: { name, email } })
+    revalidatePath('/users')  // Invalidate the /users page cache
+    redirect('/users')        // Redirect after mutation
+}
+
+// Client Component using the Server Action
+'use client'
+import { createUser } from '@/actions/user.actions'
+
+function CreateUserForm() {
+    return (
+        <form action={createUser}>  {/* action= directly calls the Server Action */}
+            <input name="name" required placeholder="Full name" />
+            <input name="email" type="email" required placeholder="Email" />
+            <button type="submit">Create User</button>
+        </form>
+    )
+}
+
+// With useActionState (React 19 / Next.js 15)
+import { useActionState } from 'react'
+
+function CreateUserForm() {
+    const [state, formAction, isPending] = useActionState(createUser, null)
+    return (
+        <form action={formAction}>
+            {state?.error && <p>{state.error}</p>}
+            <input name="name" required />
+            <button disabled={isPending}>{isPending ? 'Creating...' : 'Create'}</button>
+        </form>
+    )
+}
+```
+
+---
+
+## Navigation
+
+```typescript
+import Link from 'next/link'
+import Image from 'next/image'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+
+// Link — client-side navigation, prefetches on hover
+<Link href="/users">Users</Link>
+<Link href={{ pathname: '/users/[id]', query: { id: '123' } }}>User 123</Link>
+
+// Image — automatic optimisation (WebP, sizing, lazy load)
+<Image
+    src="/hero.jpg"
+    alt="Hero image"
+    width={1200}
+    height={630}
+    priority  // Load eagerly (above the fold)
+/>
+
+// Programmatic navigation (Client Components only)
+const router = useRouter()
+router.push('/users')
+router.replace('/users')   // No browser history entry
+router.back()
+
+// Current path
+const pathname    = usePathname()           // '/users/123'
+const searchParams = useSearchParams()      // URLSearchParams
+```
+
+---
+
+## Middleware
+
+Middleware runs before every request — useful for auth, A/B testing, redirects, and edge logic:
+
+```typescript
+// middleware.ts (in project root, NOT in app/)
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+export function middleware(request: NextRequest) {
+    const token = request.cookies.get('session')?.value
+
+    // Protect /dashboard routes
+    if (request.nextUrl.pathname.startsWith('/dashboard') && !token) {
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
+
+    // Add custom headers
+    const response = NextResponse.next()
+    response.headers.set('X-Request-ID', crypto.randomUUID())
+    return response
+}
+
+// Only run middleware on matching paths (improves performance)
+export const config = {
+    matcher: ['/dashboard/:path*', '/api/:path*']
+}
+```
+
+---
+
+## Rendering Strategies
+
+| Strategy | When HTML is generated | Use when |
+|----------|----------------------|---------|
+| **SSR** (Server-Side Rendering) | Each request | Personalised content, auth-gated pages |
+| **SSG** (Static Site Generation) | Build time | Marketing pages, docs, blogs |
+| **ISR** (Incremental Static Regeneration) | Build + revalidate | Content that changes occasionally |
+| **CSR** (Client-Side Rendering) | Browser | Highly interactive dashboards |
+
+In the App Router, you control this per-segment via `fetch` cache options and `dynamic` exports:
+
+```typescript
+// Force static — pre-render at build time
+export const dynamic = 'force-static'
+
+// Force dynamic — always render on request (disables all caching)
+export const dynamic = 'force-dynamic'
+
+// Custom revalidation period
+export const revalidate = 3600  // Seconds
+```
+
+---
+
+## Deployment
+
+<Tabs>
+<TabItem value="vercel" label="Vercel">
+
+```bash
+npm install -g vercel
+vercel          # Deploy (prompts first time)
+vercel --prod   # Deploy to production
+```
+
+Vercel is Next.js's creator and provides zero-config deployment with:
+- Automatic preview deployments per PR
+- Edge Network (CDN + Edge Functions)
+- Analytics and Speed Insights
+
+</TabItem>
+<TabItem value="docker" label="Docker / Self-hosted">
+
+```dockerfile
+FROM node:20-alpine AS base
+
+# Install dependencies
+FROM base AS deps
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Build
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+# Production image
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV production
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+
+EXPOSE 3000
+CMD ["node", "server.js"]
+```
+
+```bash
+docker build -t my-app .
+docker run -p 3000:3000 my-app
+```
+
+Requires `output: 'standalone'` in `next.config.ts`.
+
+</TabItem>
+</Tabs>
+
+---
+
+## `next.config.ts`
+
+```typescript
+import type { NextConfig } from 'next'
+
+const config: NextConfig = {
+    output: 'standalone',          // Minimal Docker image
+
+    images: {
+        remotePatterns: [
+            { protocol: 'https', hostname: 'images.example.com' }
+        ],
+        formats: ['image/avif', 'image/webp'],
+    },
+
+    // Redirect/rewrite rules
+    async redirects() {
+        return [
+            { source: '/old-page', destination: '/new-page', permanent: true },
+        ]
+    },
+
+    // TypeScript and ESLint in production builds
+    typescript:   { ignoreBuildErrors: false },
+    eslint:       { ignoreDuringBuilds: false },
+
+    // Bundle analyser
+    bundlePagesRouterDependencies: true,
+}
+
+export default config
+```
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary">
+
+- [Next.js Docs](https://nextjs.org/docs) — comprehensive, well-maintained
+- [Next.js Learn](https://nextjs.org/learn) — official interactive course (free)
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Theo (t3.gg) — Next.js YouTube](https://www.youtube.com/@t3dotgg) — opinionated, practical
+- [Vercel Blog](https://vercel.com/blog) — Next.js announcements and patterns
+
+</TabItem>
+<TabItem value="courses" label="External Courses">
+
+- 🎓 **[Josh tried coding — Next.js course](https://www.youtube.com/@joshtriedcoding)** — practical full-stack projects (free + paid)
+- 🎓 **[Frontend Masters: Next.js Fundamentals](https://frontendmasters.com/courses/next-js-v3/)** — (PAID)
+
+</TabItem>
+</Tabs>

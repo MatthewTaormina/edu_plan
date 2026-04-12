@@ -1,0 +1,37 @@
+---
+title: Backend Frameworks
+description: Express and Next.js — the two primary Node.js backend frameworks, when to use each, and the middleware pattern.
+sidebar_label: Backend Frameworks
+---
+
+# Backend Frameworks
+
+> **Status:** 🟢 Modern
+
+This section covers the two dominant Node.js server frameworks:
+
+| Framework | Type | Use when |
+|-----------|------|---------|
+| [Express](./express) | Minimal HTTP framework | Building REST APIs; you want full control |
+| [Next.js](./next) | Full-stack React meta-framework | Building React apps with SSR, or API routes alongside a React frontend |
+
+---
+
+## Shared Concepts
+
+Both Express and Next.js are built on top of [Node Core's `http` module](../node_core) and share the same underlying HTTP model: request → middleware chain → response.
+
+See [HTTP Servers & Middleware](../http_server) for the request lifecycle, HTTP methods, status codes, CORS, and auth patterns that apply to both.
+
+---
+
+## Which One?
+
+| Scenario | Recommendation |
+|----------|---------------|
+| REST API that any frontend will call | Express (or Fastify for higher performance) |
+| React frontend + API routes, same repo | Next.js |
+| Server-rendered React site | Next.js |
+| Static site with some server logic | Next.js |
+| Microservice / background job | Express |
+| Learning Node.js servers from scratch | Express first, then Next.js |

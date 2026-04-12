@@ -1,0 +1,421 @@
+---
+title: Express Reference
+description: Express routing, middleware, error handling, request/response API, CORS, authentication, file uploads, and production patterns.
+sidebar_label: Express
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Express
+
+> **Tool:** Express · **Introduced:** 2010 · **Latest:** v5 (2024) · **Status:** 🟢 Modern
+
+Express is the most widely-deployed Node.js HTTP framework. It is intentionally minimal — a thin wrapper around Node's `http` module that adds routing and a middleware pattern. Everything else (database, auth, validation) comes from the ecosystem.
+
+> **Prerequisite:** [Node Core](../node_core) · [TypeScript](../typescript)
+> **Course:** [Express API](../../courses/express_api/index)
+
+---
+
+## Getting Started
+
+```bash
+npm install express
+npm install -D @types/express typescript tsx   # TypeScript setup
+```
+
+```typescript
+// src/index.ts — minimal Express server
+import express from 'express';
+
+const app  = express();
+const port = process.env.PORT ?? 3000;
+
+// Body parsers — parse incoming request bodies
+app.use(express.json());                     // Parse application/json
+app.use(express.urlencoded({ extended: true })); // Parse form data
+
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', uptime: process.uptime() });
+});
+
+// Start server
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+});
+```
+
+```bash
+# Run with TypeScript (development)
+npx tsx --watch src/index.ts
+
+# Or with node --watch (Node 18+, compile first)
+npx tsc && node --watch dist/index.js
+```
+
+---
+
+## Routing
+
+```typescript
+import { Router, Request, Response } from 'express';
+
+const router = Router();
+
+// Basic routes — method + path + handler
+router.get   ('/users',     listUsers);
+router.get   ('/users/:id', getUser);
+router.post  ('/users',     createUser);
+router.put   ('/users/:id', replaceUser);
+router.patch ('/users/:id', updateUser);
+router.delete('/users/:id', deleteUser);
+
+// Route parameters
+router.get('/users/:id/posts/:postId', (req, res) => {
+    const { id, postId } = req.params;  // Typed as { id: string; postId: string }
+    res.json({ userId: id, postId });
+});
+
+// Query strings: GET /users?role=admin&page=2
+router.get('/users', (req, res) => {
+    const { role, page = '1', limit = '20' } = req.query;
+    // Filter/paginate...
+    res.json({ role, page: parseInt(page as string), limit: parseInt(limit as string) });
+});
+
+// Mount the router on the app
+app.use('/api/v1', router);
+```
+
+### Route Handlers and `next`
+
+```typescript
+// A route handler is just a middleware that sends a response
+function getUser(req: Request, res: Response, next: NextFunction) {
+    const user = db.users.find(req.params.id);
+
+    if (!user) {
+        // Pass to error handler (or 404 middleware)
+        return next(new NotFoundError('User not found'));
+    }
+
+    res.json(user);
+}
+
+// Multiple handlers on one route (runs in order)
+router.post('/users',
+    validateBody(createUserSchema),  // Validates input
+    checkEmailUnique,                // Business rule check
+    createUser,                      // Creates the user
+);
+```
+
+---
+
+## Middleware
+
+Middleware functions run in sequence and either respond or call `next()` to continue.
+
+```typescript
+import { Request, Response, NextFunction } from 'express';
+
+// In-house middleware
+function requestLogger(req: Request, res: Response, next: NextFunction) {
+    const start = Date.now();
+    res.on('finish', () => {
+        console.log(`${req.method} ${req.path} → ${res.statusCode} (${Date.now() - start}ms)`);
+    });
+    next();
+}
+
+function authenticate(req: Request, res: Response, next: NextFunction) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Missing token' });
+    }
+
+    try {
+        const token = authHeader.slice(7);
+        const payload = jwt.verify(token, process.env.JWT_SECRET!);
+        req.user = payload as JwtPayload;  // Extend Request type (see below)
+        next();
+    } catch {
+        res.status(401).json({ error: 'Invalid token' });
+    }
+}
+
+// Augment Express Request type
+declare global {
+    namespace Express {
+        interface Request {
+            user?: JwtPayload;
+        }
+    }
+}
+
+// Apply middleware
+app.use(requestLogger);             // Every request
+app.use('/api', authenticate);      // Only /api routes
+router.get('/profile', authenticate, getProfile); // One route
+```
+
+### Popular Third-Party Middleware
+
+```typescript
+import cors          from 'cors';
+import helmet        from 'helmet';          // Security headers
+import rateLimit     from 'express-rate-limit';
+import compression   from 'compression';
+
+// CORS
+app.use(cors({
+    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? '*',
+    credentials: true,
+}));
+
+// Security headers (always use in production)
+app.use(helmet());
+
+// Rate limiting
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,  // 15 minutes
+    max: 100,                    // 100 requests per window per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+app.use('/api', limiter);
+
+// Gzip compression
+app.use(compression());
+```
+
+---
+
+## Request and Response API
+
+```typescript
+// Request object
+req.params       // Route parameters: { id: '123' }
+req.query        // Query string: { page: '2', sort: 'name' }
+req.body         // Parsed request body (requires express.json() middleware)
+req.headers      // Request headers object
+req.method       // 'GET' | 'POST' | 'PUT' | ...
+req.path         // /users/123
+req.ip           // Client IP address
+req.user         // Attached by auth middleware
+
+// Response object
+res.status(201)                          // Set status code (chainable)
+res.json({ id: 1, name: 'Alex' })       // Send JSON body
+res.send('Hello')                        // Send text body
+res.sendFile(path.resolve('./public/index.html'))
+res.redirect(302, '/login')              // Redirect
+res.set('X-Custom-Header', 'value')     // Set response header
+res.cookie('session', token, { httpOnly: true, secure: true, sameSite: 'strict' })
+res.clearCookie('session')
+
+// Streaming
+import { createReadStream } from 'node:fs';
+res.setHeader('Content-Type', 'application/octet-stream');
+createReadStream('./large-file.zip').pipe(res);
+```
+
+---
+
+## Error Handling
+
+Express has a special **4-argument error handler** that catches errors passed to `next(error)`:
+
+```typescript
+// Custom error class
+class AppError extends Error {
+    constructor(
+        public readonly statusCode: number,
+        message: string,
+        public readonly code?: string
+    ) {
+        super(message);
+        this.name = 'AppError';
+    }
+}
+
+// Async wrapper — catches async errors and passes to next()
+const asyncHandler = (fn: RequestHandler): RequestHandler =>
+    (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+
+// Route uses asyncHandler
+router.get('/users/:id', asyncHandler(async (req, res) => {
+    const user = await userService.findById(req.params.id);
+    if (!user) throw new AppError(404, 'User not found', 'USER_NOT_FOUND');
+    res.json(user);
+}));
+
+// Global error handler — MUST have exactly 4 arguments
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err);
+
+    if (err instanceof AppError) {
+        return res.status(err.statusCode).json({
+            error: err.message,
+            code:  err.code,
+        });
+    }
+
+    // Validation errors (e.g., Zod)
+    if (err instanceof ZodError) {
+        return res.status(400).json({
+            error: 'Validation failed',
+            issues: err.issues,
+        });
+    }
+
+    // Unknown errors — don't leak details in production
+    res.status(500).json({
+        error: process.env.NODE_ENV === 'production'
+            ? 'Internal server error'
+            : err.message,
+    });
+});
+
+// 404 handler — add AFTER all routes
+app.use((req, res) => {
+    res.status(404).json({ error: `Route ${req.method} ${req.path} not found` });
+});
+```
+
+---
+
+## Validation with Zod
+
+```typescript
+import { z } from 'zod';
+
+const createUserSchema = z.object({
+    name:     z.string().min(2).max(100),
+    email:    z.string().email(),
+    role:     z.enum(['admin', 'user']).default('user'),
+    age:      z.number().int().min(16).optional(),
+});
+
+type CreateUserDTO = z.infer<typeof createUserSchema>;
+
+// Reusable validation middleware
+function validateBody<T extends z.ZodType>(schema: T) {
+    return (req: Request, res: Response, next: NextFunction) => {
+        const result = schema.safeParse(req.body);
+        if (!result.success) {
+            return res.status(400).json({
+                error: 'Validation failed',
+                issues: result.error.issues,
+            });
+        }
+        req.body = result.data;  // Replace body with parsed+coerced data
+        next();
+    };
+}
+
+router.post('/users', validateBody(createUserSchema), createUser);
+```
+
+---
+
+## File Uploads with Multer
+
+```typescript
+import multer from 'multer';
+import path from 'node:path';
+import { randomUUID } from 'node:crypto';
+
+const storage = multer.diskStorage({
+    destination: 'uploads/',
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        cb(null, `${randomUUID()}${ext}`);
+    },
+});
+
+const upload = multer({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 },   // 5 MB max
+    fileFilter: (req, file, cb) => {
+        const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+        cb(null, allowed.includes(file.mimetype));
+    },
+});
+
+router.post('/avatar', authenticate, upload.single('avatar'), (req, res) => {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    res.json({ url: `/uploads/${req.file.filename}` });
+});
+```
+
+---
+
+## Project Structure
+
+```
+src/
+├── index.ts              ← Entry: create app, register middleware, start server
+├── app.ts                ← Express app setup (no listen — easier to test)
+├── routes/
+│   ├── index.ts          ← Mount all routers: app.use('/api/v1/users', userRouter)
+│   ├── users.router.ts
+│   └── posts.router.ts
+├── controllers/          ← Route handlers (thin — delegate to services)
+│   └── users.controller.ts
+├── services/             ← Business logic
+│   └── users.service.ts
+├── repositories/         ← Database access
+│   └── users.repository.ts
+├── middleware/
+│   ├── auth.ts
+│   ├── rate-limit.ts
+│   └── error-handler.ts
+├── validators/
+│   └── user.schema.ts    ← Zod schemas
+├── types/
+│   └── express.d.ts      ← Augmented Express types
+└── config.ts             ← Typed env var access
+```
+
+---
+
+## Express v5 (2024)
+
+Express 5, released in 2024 after a decade of development, adds:
+
+- **Async error handling built-in** — no more `asyncHandler` wrapper needed; rejected Promises are passed to `next()` automatically
+- **Improved path matching** — regex-like syntax for routes
+- **Removed deprecated APIs** — `req.param`, `res.send(status)`, etc.
+
+```typescript
+// Express 5 — async errors propagate automatically
+router.get('/users/:id', async (req, res) => {
+    const user = await userService.findById(req.params.id);
+    if (!user) throw new AppError(404, 'User not found');  // Caught by error handler
+    res.json(user);
+});
+// No asyncHandler wrapper needed
+```
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary">
+
+- [Express 5 Docs](https://expressjs.com/) — official documentation
+- [Course: Express API](../../courses/express_api/index)
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Zod Docs](https://zod.dev/) — schema validation
+- [Node.js Best Practices — Express section](https://github.com/goldbergyoni/nodebestpractices#2-error-handling-practices)
+- [Fastify Docs](https://fastify.dev/) — faster alternative to Express worth knowing
+
+</TabItem>
+</Tabs>
