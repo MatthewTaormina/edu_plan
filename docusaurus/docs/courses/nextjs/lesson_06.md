@@ -21,7 +21,7 @@
 
 `route.ts` files create API endpoints. They live in the `app/` directory alongside page files.
 
-```
+```text
 app/
 ├── api/
 │   ├── users/

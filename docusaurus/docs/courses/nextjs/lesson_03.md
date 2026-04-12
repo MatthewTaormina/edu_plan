@@ -19,7 +19,7 @@
 
 ### Dynamic Segments
 
-```
+```text
 app/
 ├── blog/
 │   ├── page.tsx                     → /blog

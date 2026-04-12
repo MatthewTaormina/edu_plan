@@ -20,7 +20,7 @@
 
 Every HTML element is a rectangular box composed of four concentric layers:
 
-```
+```text
 ┌─────────────────────────────────────┐  ← Margin (outside, transparent)
 │  ┌───────────────────────────────┐  │
 │  │  Border                       │  │

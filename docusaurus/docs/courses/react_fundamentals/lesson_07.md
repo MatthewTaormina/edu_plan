@@ -21,12 +21,18 @@
 
 When many nested components need the same data, passing it through every level becomes tedious:
 
-```
-App (has user data)
- └── Layout
-      └── Sidebar
-           └── UserMenu        ← NEEDS user data
-                └── UserAvatar ← NEEDS user data
+```mermaid
+flowchart TD
+    App["App (has user data)"]
+    Layout["Layout"]
+    Sidebar["Sidebar"]
+    UserMenu["UserMenu (NEEDS user data)"]
+    UserAvatar["UserAvatar (NEEDS user data)"]
+
+    App --> Layout
+    Layout --> Sidebar
+    Sidebar --> UserMenu
+    UserMenu --> UserAvatar
 ```
 
 Passing `user` through `Layout` and `Sidebar` just to reach `UserMenu` is **prop drilling**. Context provides a way to share values without explicit prop passing.

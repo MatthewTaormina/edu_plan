@@ -1,7 +1,7 @@
 # Lesson 05 — Dark Mode & Custom Themes
 
 > **Course:** Tailwind CSS · **Time:** 45 minutes
-> **📖 Wiki:** [HTML & CSS — Custom Properties](../../domains/web_dev/html_css.md)
+> **📖 Wiki:** [HTML & CSS — Custom Properties](../../domains/web_dev/html_css.mdx)
 > **🔗 Official Docs:** [Dark Mode](https://tailwindcss.com/docs/dark-mode) · [Theme Configuration](https://tailwindcss.com/docs/configuration)
 
 ---

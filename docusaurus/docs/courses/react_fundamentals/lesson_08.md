@@ -20,17 +20,21 @@
 
 Custom hooks are **functions that use other hooks**. They let you extract and share stateful logic between components — without changing the component tree or requiring render props.
 
-```
-Before: Component does everything
-  ├── fetch data
-  ├── manage loading/error state
-  ├── manage form state
-  └── render UI
-
-After: Component delegates to hooks
-  ├── useFetchUser()       → hook
-  ├── useForm(initialValues) → hook
-  └── render UI (clean component)
+```mermaid
+flowchart LR
+    subgraph Before["Before: Component does everything"]
+        direction TB
+        B1["fetch data"]
+        B2["manage loading/error state"]
+        B3["manage form state"]
+        B4["render UI"]
+    end
+    subgraph After["After: Component delegates to hooks"]
+        direction TB
+        A1["useFetchUser() → hook"]
+        A2["useForm(initialValues) → hook"]
+        A3["render UI (clean component)"]
+    end
 ```
 
 **Rule:** A custom hook must start with `use`. This tells React to enforce the rules of hooks for it.

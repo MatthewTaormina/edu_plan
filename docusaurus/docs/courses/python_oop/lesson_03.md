@@ -78,10 +78,10 @@ print(v1 < v2)    # True
 print(sorted([v2, v1]))  # [1.2.3, 2.0.0]
 ```
 
-!!! tip "Use `@dataclass(order=True)` for simple cases"
-    If your comparisons are just element-wise comparisons of attributes in order,
-    `@dataclass(order=True)` generates all comparison methods automatically.
-
+:::tip Use `@dataclass(order=True)` for simple cases
+If your comparisons are just element-wise comparisons of attributes in order,
+`@dataclass(order=True)` generates all comparison methods automatically.
+:::
 ---
 
 ## Container Methods

@@ -1,7 +1,7 @@
 # Lesson 04 — Responsive Design
 
 > **Course:** Tailwind CSS · **Time:** 45 minutes
-> **📖 Wiki:** [HTML & CSS — Responsive Design](../../domains/web_dev/html_css.md)
+> **📖 Wiki:** [HTML & CSS — Responsive Design](../../domains/web_dev/html_css.mdx)
 > **🔗 Official Docs:** [Tailwind — Responsive Design](https://tailwindcss.com/docs/responsive-design)
 
 ---

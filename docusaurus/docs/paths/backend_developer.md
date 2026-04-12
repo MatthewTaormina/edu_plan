@@ -97,9 +97,9 @@ PHP powers ~77% of websites. Even Node.js-focused developers benefit from readin
 
 | Topic | Resource |
 |-------|---------|
-| Git & version control | [Git Fundamentals](../courses/git_fundamentals/index.md) |
-| Linux server basics | [Linux CLI](../courses/linux_cli/index.md) |
-| Docker containers | [Docker Fundamentals](../courses/docker_fundamentals/index.md) |
+| Git & version control | [Git Fundamentals](../domains/devops/git_workflow.md) |
+| Linux server basics | [Linux CLI](../domains/devops/index.md) |
+| Docker containers | [Docker Fundamentals](../domains/devops/docker.mdx) |
 | Environment & secrets | Lesson 05 of Node.js Fundamentals |
 | CI/CD basics | Coming soon |
 
@@ -128,4 +128,4 @@ A backend developer on this path can:
 ## ➡️ Continue
 
 - [Full Stack Path](./fullstack.md) — Connect your API to a React or Next.js frontend
-- [Frontend Engineer Path](./frontend_engineer.md) — Deep dive into the browser side
+- [Frontend Engineer Path](./frontend_developer.md) — Deep dive into the browser side

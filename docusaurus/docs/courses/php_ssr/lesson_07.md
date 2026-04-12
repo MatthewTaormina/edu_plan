@@ -17,7 +17,7 @@ Build a **flat-file blog** with a contact form:
 
 ## Project Structure
 
-```
+```text
 blog/
 ├── index.php           ← POST list
 ├── post.php            ← Single post view

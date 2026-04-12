@@ -20,13 +20,13 @@ age = int(age_str)   # Convert to int before doing maths
 print(f"Next year you will be {age + 1}.")
 ```
 
-!!! warning "input() always returns str"
-    ```python
-    value = input("Enter a number: ")  # User types 5
-    print(value + 1)    # ❌ TypeError: can only concatenate str to str
-    print(int(value) + 1)  # ✅ 6
-    ```
-
+:::warning input() always returns str
+```python
+value = input("Enter a number: ")  # User types 5
+print(value + 1)    # ❌ TypeError: can only concatenate str to str
+print(int(value) + 1)  # ✅ 6
+```
+:::
 ---
 
 ## Making Decisions — if / elif / else

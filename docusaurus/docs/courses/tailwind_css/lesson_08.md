@@ -1,7 +1,7 @@
 # Lesson 08 — Capstone: Admin Dashboard UI
 
 > **Course:** Tailwind CSS · **Time:** 90–120 minutes
-> **📖 Wiki:** [HTML & CSS](../../domains/web_dev/html_css.md)
+> **📖 Wiki:** [HTML & CSS](../../domains/web_dev/html_css.mdx)
 > **🔗 Official Docs:** [Tailwind CSS Components](https://tailwindcss.com/docs/reusing-styles)
 
 ---

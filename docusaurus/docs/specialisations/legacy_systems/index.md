@@ -23,9 +23,9 @@ written decades ago and still in active production. Engineers in these fields ro
 This track teaches you to **read, understand, navigate, and incrementally modernise** these systems —
 not to build new things in them.
 
-!!! warning "🟡 Legacy Specialisation"
-    Technologies in this track are taught because you may **encounter** them, not because you should start new projects in them. Every unit explains: what the modern equivalent is, why the legacy system is still running, and how to interface it with modern tooling.
-
+:::warning 🟡 Legacy Specialisation
+Technologies in this track are taught because you may **encounter** them, not because you should start new projects in them. Every unit explains: what the modern equivalent is, why the legacy system is still running, and how to interface it with modern tooling.
+:::
 ---
 
 ## Units
@@ -48,16 +48,21 @@ not to build new things in them.
 The most practical skill in this track is **strangler fig modernisation** — wrapping legacy systems
 with modern APIs while leaving their internals intact.
 
-```
-Legacy COBOL program             Modern REST API
-┌───────────────────┐            ┌──────────────────┐
-│  WORKING-STORAGE  │            │  POST /calculate  │
-│  PROCEDURE DIVISION│◄──────────│  → calls COBOL    │
-│  (runs on z/OS)   │            │     batch job     │
-└───────────────────┘            └──────────────────┘
+```mermaid
+flowchart LR
+    subgraph Legacy["Legacy COBOL program"]
+        C1["WORKING-STORAGE"]
+        C2["PROCEDURE DIVISION (runs on z/OS)"]
+    end
+    subgraph Modern["Modern REST API"]
+        M1["POST /calculate"]
+        M2["calls COBOL batch job"]
+    end
+    M1 --> M2
+    M2 -->|calls| C2
 
-Pattern: modern frontend → API gateway → legacy backend
-Neither side needs to know about the other's internals.
+    %% Pattern: modern frontend → API gateway → legacy backend
+    %% Neither side needs to know about the other's internals.
 ```
 
 ---

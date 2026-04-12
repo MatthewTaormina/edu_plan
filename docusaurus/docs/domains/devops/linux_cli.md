@@ -9,8 +9,10 @@ import TabItem from '@theme/TabItem';
 >
 > **Who needs this:** Everyone in tech who touches a server. Virtually every cloud instance, container, and server runs Linux. Being comfortable at the command line is a baseline expectation for DevOps, backend development, and systems work.
 
-!!! tip "Windows Users"
-    Install **WSL2 (Windows Subsystem for Linux)** to follow along with a real Linux environment on your Windows machine. See: [Microsoft WSL2 Setup Guide](https://learn.microsoft.com/en-us/windows/wsl/install)
+:::tip Windows Users
+Install **WSL2 (Windows Subsystem for Linux)** to follow along with a real Linux environment on your Windows machine. See: [Microsoft WSL2 Setup Guide](https://learn.microsoft.com/en-us/windows/wsl/install)
+:::
+
 
 ---
 

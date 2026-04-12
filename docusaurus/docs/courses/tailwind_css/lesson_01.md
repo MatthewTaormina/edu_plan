@@ -1,7 +1,7 @@
 # Lesson 01 — Utility-First Philosophy
 
 > **Course:** Tailwind CSS · **Time:** 45 minutes
-> **📖 Wiki:** [HTML & CSS](../../domains/web_dev/html_css.md)
+> **📖 Wiki:** [HTML & CSS](../../domains/web_dev/html_css.mdx)
 > **🔗 Official Docs:** [Tailwind CSS — Core Concepts](https://tailwindcss.com/docs/utility-first)
 
 ---

@@ -32,11 +32,11 @@ Document:
   → Each document is independent; schema can vary per record
 ```
 
-!!! tip "A practical rule"
-    - Building an app that reads/writes individual user records? → **Row-oriented** (PostgreSQL)
-    - Running analytics queries over millions of events? → **Columnar** (DuckDB for local, BigQuery/Redshift for cloud)
-    - Data has a changing or nested structure? → **Document** (MongoDB)
-
+:::tip A practical rule
+- Building an app that reads/writes individual user records? → **Row-oriented** (PostgreSQL)
+- Running analytics queries over millions of events? → **Columnar** (DuckDB for local, BigQuery/Redshift for cloud)
+- Data has a changing or nested structure? → **Document** (MongoDB)
+:::
 These models are covered in depth in the [Schema Design](design.md) unit.
 
 ---

@@ -63,19 +63,19 @@ print(t)
 # Task(title='Write tests', priority=3, done=False, tags=['dev', 'testing'], ...)
 ```
 
-!!! warning "Don't use mutable defaults directly"
-    ```python
-    # ❌ This is a bug — all instances share the SAME list
-    @dataclass
-    class Bad:
-        items: list = []
+:::warning Don't use mutable defaults directly
+```python
+# ❌ This is a bug — all instances share the SAME list
+@dataclass
+class Bad:
+    items: list = []
 
-    # ✅ Use field(default_factory=list)
-    @dataclass
-    class Good:
-        items: list = field(default_factory=list)
-    ```
-
+# ✅ Use field(default_factory=list)
+@dataclass
+class Good:
+    items: list = field(default_factory=list)
+```
+:::
 ---
 
 ## Post-Init Processing

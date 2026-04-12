@@ -22,7 +22,7 @@
 
 TypeScript ships with `lib.dom.d.ts` — a complete type declaration for every HTML element. The hierarchy is:
 
-```
+```text
 EventTarget
   └── Node
         └── Element

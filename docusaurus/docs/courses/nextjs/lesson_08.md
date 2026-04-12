@@ -21,7 +21,7 @@ Build a **performant, fully-featured blog** using Next.js App Router:
 
 ## Project Structure
 
-```
+```text
 app/
 ├── layout.tsx                ← Root layout with dark mode
 ├── page.tsx                  ← Home (SSG)

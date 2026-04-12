@@ -68,8 +68,10 @@ age_num = int(age_text)   # "25" → 25 (number)
 print(type(age_num))       # <class 'int'>
 ```
 
-!!! tip "Research Question 🔍"
-    Why can't you do `"25" + 5` in Python but you can in JavaScript? What does this tell you about the two languages?
+:::tip Research Question 🔍
+Why can't you do `"25" + 5` in Python but you can in JavaScript? What does this tell you about the two languages?
+:::
+
 
 ---
 
@@ -167,8 +169,10 @@ for i in range(10):
     print(i)        # Prints: 1, 3
 ```
 
-!!! tip "Research Question 🔍"
-    What is an infinite loop? How do you break out of one in a terminal? (Hint: Ctrl+C)
+:::tip Research Question 🔍
+What is an infinite loop? How do you break out of one in a terminal? (Hint: Ctrl+C)
+:::
+
 
 ---
 
@@ -201,8 +205,10 @@ my_function()
 print(x)  # Still 10 — global was not changed
 ```
 
-!!! warning "Common Mistake"
-    Functions that don't have a `return` statement return `None` implicitly. If you assign the result to a variable and the function prints instead of returning, you get `None`.
+:::warning Common Mistake
+Functions that don't have a `return` statement return `None` implicitly. If you assign the result to a variable and the function prints instead of returning, you get `None`.
+:::
+
 
 ---
 
@@ -315,8 +321,10 @@ with open("output.txt", "a") as file:  # "a" = append
     file.write("Line 3\n")
 ```
 
-!!! tip "Why use `with`?"
-    The `with` statement automatically closes the file when the block ends — even if an error occurs. Always use it for file I/O.
+:::tip Why use `with`?
+The `with` statement automatically closes the file when the block ends — even if an error occurs. Always use it for file I/O.
+:::
+
 
 ---
 
@@ -385,8 +393,10 @@ def get_age(value):
 
 ## 🏗️ Assignments
 
-!!! note "Why multi-concept assignments?"
-    Single-concept exercises are forgettable. These assignments combine everything from this unit into programs you'd actually use.
+:::note Why multi-concept assignments?
+Single-concept exercises are forgettable. These assignments combine everything from this unit into programs you'd actually use.
+:::
+
 
 ### Assignment 1 — Temperature Converter (Basics)
 **Combines:** Variables, functions, loops, error handling, user input
@@ -467,8 +477,10 @@ Top 10 Words:
   ...
 ```
 
-!!! tip "Hint"
-    Use `sys.argv` to get command-line arguments. Use Python's built-in `string.punctuation` to know what characters to strip.
+:::tip Hint
+Use `sys.argv` to get command-line arguments. Use Python's built-in `string.punctuation` to know what characters to strip.
+:::
+
 
 ---
 
@@ -506,6 +518,6 @@ Before moving on, confirm you can do all of these **without looking up syntax**:
 
 ## ➡️ Next Unit
 
-→ [Data Structures](data_structures.md)
+→ [Data Structures](data_structures.mdx)
 
 **Or if you're on the Beginner Path:** continue to [Milestone 3 — Data Structures & Algorithms](../../paths/beginner.md#milestone-3--data-structures--algorithms-basics-)

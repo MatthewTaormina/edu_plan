@@ -29,10 +29,10 @@ export default function prismIncludeLanguages(
     require(`prismjs/components/prism-${lang}`);
   });
 
-  // Register the custom pseudocode grammar for this repo's dialect.
-  // The grammar uses the Prism IIFE pattern and reads globalThis.Prism.
-  // eslint-disable-next-line global-require
-  require('../prism/pseudocode.js');
+  // Note: pseudocode grammar is registered via src/prism/pseudocode.js which
+  // is loaded as an ESM clientModule (docusaurus.config.ts → clientModules).
+  // It imports { Prism } from 'prism-react-renderer' directly, so it does not
+  // need to be require()'d here.
 
   // Clean up and eventually restore former globalThis.Prism object (if any)
   delete (globalThis as Optional<typeof globalThis, 'Prism'>).Prism;

@@ -18,14 +18,12 @@
 
 ## Dependency Order
 
-```
-c_fundamentals ──────────────────┐
-      ↓                           ↓
-  assembly_basics          cpp_overview (optional)
-      ↓
-rust_fundamentals
-      ↓
-rust_advanced
+```mermaid
+flowchart TD
+    C[c_fundamentals] --> Asm[assembly_basics]
+    C --> Cpp["cpp_overview (optional)"]
+    Asm --> RustF[rust_fundamentals]
+    RustF --> RustA[rust_advanced]
 ```
 
 ## Context

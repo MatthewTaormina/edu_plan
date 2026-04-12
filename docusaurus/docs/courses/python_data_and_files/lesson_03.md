@@ -49,15 +49,15 @@ with open("user.json", "r", encoding="utf-8") as f:
 | `True`/`False` | `true`/`false` |
 | `None` | `null` |
 
-!!! warning "JSON only supports these types"
-    `datetime`, `set`, custom classes — not JSON serialisable by default.
-    Convert them to strings before serialising.
-    ```python
-    from datetime import datetime
-    data = {"created": datetime.now().isoformat()}   # ✅ "2024-04-11T19:30:00"
-    data = {"created": datetime.now()}               # ❌ TypeError
-    ```
-
+:::warning JSON only supports these types
+`datetime`, `set`, custom classes — not JSON serialisable by default.
+Convert them to strings before serialising.
+```python
+from datetime import datetime
+data = {"created": datetime.now().isoformat()}   # ✅ "2024-04-11T19:30:00"
+data = {"created": datetime.now()}               # ❌ TypeError
+```
+:::
 ---
 
 ## Useful JSON Patterns

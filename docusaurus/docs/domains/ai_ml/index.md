@@ -2,9 +2,9 @@
 
 > Build with language models, train models, and engineer AI systems.
 
-!!! warning "Coming in v0.6"
-    This domain is planned for Sprint 6. Check back soon!
-
+:::warning Coming in v0.6
+This domain is planned for Sprint 6. Check back soon!
+:::
 ## Units Planned
 
 | Unit | Topic | Status |

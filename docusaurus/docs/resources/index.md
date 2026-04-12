@@ -8,8 +8,10 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-!!! tip "How to use this page"
-    - **Official docs** = authoritative, always up-to-date, safe to trust completely
+:::tip How to use this page
+- **Official docs** = authoritative, always up-to-date, safe to trust completely
+:::
+
     - **Trusted references** = maintained by the community or major organizations, high quality
     - Use the language tabs to jump to your stack
     - Bookmark the docs for any language or tool you use daily

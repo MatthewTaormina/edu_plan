@@ -30,7 +30,7 @@ This capstone combines everything from this course:
 
 Create this layout:
 
-```
+```text
 contact_book/
 ├── contacts.py       ← entry point
 ├── storage.py        ← JSON file read/write

@@ -19,7 +19,7 @@ Build a **Reading List Tracker** that:
 
 ## Architecture
 
-```
+```text
 App
 ├── ThemeProvider (Context)
 ├── ReadingListProvider (Context)  ← Persisted to localStorage

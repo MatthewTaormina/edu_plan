@@ -95,5 +95,5 @@ From here, choose based on what you want to build:
 While studying, these Wiki pages are useful to dip into:
 
 - [Programming Basics](../domains/foundations/programming_basics.md)
-- [Data Structures](../domains/foundations/data_structures.md)
+- [Data Structures](../domains/foundations/data_structures.mdx)
 - [Algorithms](../domains/foundations/algorithms.md)

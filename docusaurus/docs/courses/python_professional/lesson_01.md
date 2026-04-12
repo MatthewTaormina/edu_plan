@@ -160,8 +160,10 @@ pip install requests
 </TabItem>
 </Tabs>
 
-!!! note "Always use a virtual environment"
-    Installing globally (`pip install ...` without activating a venv) causes version
+:::note Always use a virtual environment
+Installing globally (`pip install ...` without activating a venv) causes version
+:::
+
     conflicts across projects. One project = one venv.
 
 ---

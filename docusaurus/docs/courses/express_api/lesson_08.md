@@ -52,7 +52,7 @@ Tasks (authenticated)
 
 ## Project Structure
 
-```
+```text
 task-api/
 ├── src/
 │   ├── app.ts                    ← Express app (no listen)

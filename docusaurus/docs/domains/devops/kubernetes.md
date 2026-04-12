@@ -9,11 +9,13 @@ import TabItem from '@theme/TabItem';
 > **Tool:** kubectl · **Introduced:** 2014 · **Latest:** matches cluster version · **Deprecated:** N/A · **Status:** 🟢 Modern  
 > **Tool:** Helm · **Introduced:** 2016 · **Latest:** 3.15 (2024) · **Deprecated:** Helm 2 (deprecated 2020) · **Status:** 🟢 Modern (v3 only)
 
-> **Prerequisites:** [Docker](docker.md) — you must understand images, containers, and Compose first.  
+> **Prerequisites:** [Docker](docker.mdx) — you must understand images, containers, and Compose first.  
 > **Who needs this:** Anyone running containerised workloads at scale. Kubernetes is the production deployment platform for most cloud-native applications.
 
-!!! note "🔵 Foundation Concept"
-    Kubernetes solves the problem of running Docker across many machines. If Docker answers "how do I package and run one container?", Kubernetes answers "how do I run 100 containers reliably across 50 machines with zero downtime?"
+:::note 🔵 Foundation Concept
+Kubernetes solves the problem of running Docker across many machines. If Docker answers "how do I package and run one container?", Kubernetes answers "how do I run 100 containers reliably across 50 machines with zero downtime?"
+:::
+
 
 ---
 
@@ -241,8 +243,10 @@ data:
   database_url: cG9zdGdyZXNxbDovL...
 ```
 
-!!! danger "Secrets are not encrypted by default"
-    Kubernetes Secrets are base64-encoded, not encrypted. Enable **etcd encryption at rest** and consider **External Secrets Operator** (introduced 2021) with Vault or cloud secret managers in production.
+:::danger Secrets are not encrypted by default
+Kubernetes Secrets are base64-encoded, not encrypted. Enable **etcd encryption at rest** and consider **External Secrets Operator** (introduced 2021) with Vault or cloud secret managers in production.
+:::
+
 
 #### Ingress
 
@@ -366,8 +370,10 @@ minikube stop
 
 > **Tool:** Helm v3 · **Introduced:** 2019 · **Latest:** 3.15 (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern
 
-!!! warning "🔴 Helm 2 is deprecated"
-    **Helm 2** (Introduced 2016 · **Deprecated:** November 2020) used a server-side component called **Tiller** with serious security issues (cluster-admin required). If any guide mentions Tiller, it is outdated.
+:::warning 🔴 Helm 2 is deprecated
+**Helm 2** (Introduced 2016 · **Deprecated:** November 2020) used a server-side component called **Tiller** with serious security issues (cluster-admin required). If any guide mentions Tiller, it is outdated.
+:::
+
 
 ```bash
 # Add chart repositories

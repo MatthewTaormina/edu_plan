@@ -2,9 +2,9 @@
 
 > Multi-concept projects that combine skills from across domains. These are what you show employers and use as portfolio pieces.
 
-!!! tip "Why projects matter"
-    Each project here deliberately combines **3+ concepts**. Single-concept exercises are easy to dismiss. Real projects prove you can integrate knowledge — which is the actual job.
-
+:::tip Why projects matter
+Each project here deliberately combines **3+ concepts**. Single-concept exercises are easy to dismiss. Real projects prove you can integrate knowledge — which is the actual job.
+:::
 ---
 
 ## Project Index
@@ -21,6 +21,7 @@
 
 ---
 
-!!! warning "Coming in v0.5"
-    Full project briefs (specs, requirements, rubrics) are coming in Sprint 5.
-    The path files already reference these projects with enough info to start.
+:::warning Coming in v0.5
+Full project briefs (specs, requirements, rubrics) are coming in Sprint 5.
+The path files already reference these projects with enough info to start.
+:::

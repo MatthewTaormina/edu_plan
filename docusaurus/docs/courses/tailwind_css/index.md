@@ -48,7 +48,7 @@ import TabItem from '@theme/TabItem';
 
 - [Tailwind CSS Docs](https://tailwindcss.com/docs) — excellent, searchable reference
 - [Tailwind CSS Playground](https://play.tailwindcss.com/) — try utilities live
-- [Wiki: HTML & CSS](../../domains/web_dev/html_css.md) — underlying CSS concepts
+- [Wiki: HTML & CSS](../../domains/web_dev/html_css.mdx) — underlying CSS concepts
 
 
 </TabItem>

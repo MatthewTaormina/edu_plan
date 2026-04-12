@@ -14,18 +14,14 @@ Traditional servers (Apache, Python's `socket`) create a new **thread per reques
 
 Node.js uses a **single thread** with an **event loop**. I/O operations are handed off to the OS; the event loop continues processing other work. When the OS completes the I/O, a callback is queued.
 
-```
-Request arrives
-  ↓
-Event loop picks it up
-  ↓
-Start I/O (read file, query DB) → hands off to OS
-  ↓                                   ↓
-Handle other requests          OS completes I/O
-                                       ↓
-                              Callback queued on event loop
-                                       ↓
-                              Event loop processes callback
+```mermaid
+flowchart TD
+    Req[Request arrives] --> EL[Event loop picks it up]
+    EL --> IO[Start I/O query DB / read file]
+    IO -->|hands off to OS| OS[OS completes I/O]
+    IO -->|continues| Handle[Handle other requests]
+    OS --> CB[Callback queued on event loop]
+    CB --> Process[Event loop processes callback]
 ```
 
 **Result:** A single Node.js process can handle thousands of concurrent connections with minimal memory compared to a thread-per-request model.

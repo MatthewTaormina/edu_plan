@@ -117,8 +117,10 @@ Status icons:
 When introducing a legacy tool or pattern:
 
 ```markdown
-!!! warning "🟡 Legacy Tool"
-    **Webpack** — Created 2012 · Still in active use in 2024
+:::warning 🟡 Legacy Tool
+**Webpack** — Created 2012 · Still in active use in 2024
+:::
+
     Modern alternative: **Vite** (2020+) for bundling, or **esbuild** for libraries.
     Include this unit because: you will encounter Webpack in existing projects and job codebases.
     Skip to [Vite →](vite.md) if starting a fresh project.
@@ -129,8 +131,10 @@ When introducing a legacy tool or pattern:
 When a modern alternative exists:
 
 ```markdown
-!!! tip "✅ Modern Best Practice"
-    Use **Vite** for new projects (2020+). It is 10-100x faster than Webpack in
+:::tip ✅ Modern Best Practice
+Use **Vite** for new projects (2020+). It is 10-100x faster than Webpack in
+:::
+
     development due to native ES modules. Only use Webpack if joining an existing project.
 ```
 
@@ -139,15 +143,17 @@ When a modern alternative exists:
 For foundational concepts (e.g., raw pointers before smart pointers, raw SQL before ORMs, manual HTTP before fetch):
 
 ```markdown
-!!! note "🔵 Foundation Concept"
-    This section teaches the underlying mechanism. Modern code uses abstractions
+:::note 🔵 Foundation Concept
+This section teaches the underlying mechanism. Modern code uses abstractions
+:::
+
     (smart pointers, ORMs, async libraries) that wrap this — but you must understand
     the foundation to debug when the abstraction breaks.
 ```
 
 Then immediately follow with the modern approach:
 
-```markdown
+````markdown
 <Tabs>
 <TabItem value="foundation-manual" label="Foundation (Manual)">
 
@@ -157,7 +163,6 @@ int* arr = malloc(sizeof(int) * 10);
 // ... use arr ...
 free(arr);
 ```
-
 
 </TabItem>
 <TabItem value="modern-preferred" label="Modern (Preferred)">
@@ -170,8 +175,7 @@ let arr = vec![0i32; 10];
 
 </TabItem>
 </Tabs>
-
-```
+````
 
 ### Writing Tabs for Legacy + Modern
 
@@ -250,35 +254,55 @@ The cutoff is not strict — it's a signal about maturity and current relevance:
 ## Admonition Usage
 
 ```markdown
-!!! tip "Research Question 🔍"
-    Bounded optional exploration question.
+:::tip Research Question 🔍
+Bounded optional exploration question.
+:::
 
-!!! note "🔵 Foundation Concept"
-    Core concept that modern tooling wraps — teach this so the abstraction makes sense.
 
-!!! note "Key Insight"
-    Important concept that clarifies a common confusion.
+:::note 🔵 Foundation Concept
+Core concept that modern tooling wraps — teach this so the abstraction makes sense.
+:::
 
-!!! warning "🟡 Legacy Tool"
-    Tool/pattern created before 2020, still common. Created YYYY · Status: supported/unsupported.
 
-!!! warning "Common Mistake"
-    Something beginners consistently get wrong.
+:::note Key Insight
+Important concept that clarifies a common confusion.
+:::
 
-!!! danger "🔴 Deprecated"
-    This tool/pattern is abandoned or officially end-of-life. Do not use for new work.
 
-!!! danger "Do Not..."
-    Anti-patterns that cause bugs or security issues.
+:::warning 🟡 Legacy Tool
+Tool/pattern created before 2020, still common. Created YYYY · Status: supported/unsupported.
+:::
 
-!!! success "✅ Modern Best Practice"
-    Created 2020+. Prefer this over the legacy approach.
 
-!!! success "You've Got It When..."
-    Concrete signal the learner has understood the concept.
+:::warning Common Mistake
+Something beginners consistently get wrong.
+:::
 
-!!! info "Language Note"
-    Notes about how this concept differs across languages.
+
+:::danger 🔴 Deprecated
+This tool/pattern is abandoned or officially end-of-life. Do not use for new work.
+:::
+
+
+:::danger Do Not...
+Anti-patterns that cause bugs or security issues.
+:::
+
+
+:::success ✅ Modern Best Practice
+Created 2020+. Prefer this over the legacy approach.
+:::
+
+
+:::success You've Got It When...
+Concrete signal the learner has understood the concept.
+:::
+
+
+:::info Language Note
+Notes about how this concept differs across languages.
+:::
+
 ```
 
 ---
@@ -320,7 +344,7 @@ docs/
   domains/
     foundations/
       programming_basics.md   // snake_case
-      data_structures.md
+      data_structures.mdx
   paths/
     beginner.md
   meta/

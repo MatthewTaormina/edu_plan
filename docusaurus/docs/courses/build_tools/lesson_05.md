@@ -18,7 +18,7 @@
 
 ### The Testing Pyramid
 
-```
+```text
             ╱ E2E ╲            Fewer, slower, more realistic
            ╱─────────╲        (Playwright, Cypress)
           ╱ Integration ╲

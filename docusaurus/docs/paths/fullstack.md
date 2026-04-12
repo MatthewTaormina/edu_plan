@@ -126,7 +126,7 @@ You do **not** need the PHP/Laravel optional track unless you specifically want 
 | Topic | Resource |
 |-------|---------|
 | Linux CLI basics | [Linux CLI Wiki](../domains/devops/linux_cli.md) |
-| Docker + Compose | [Docker Wiki](../domains/devops/docker.md) |
+| Docker + Compose | [Docker Wiki](../domains/devops/docker.mdx) |
 | GitHub Actions CI/CD | [CI/CD Wiki](../domains/devops/ci_cd.md) |
 
 #### ✅ Stage 6 Exit Checkpoint

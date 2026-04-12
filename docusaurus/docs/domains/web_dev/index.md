@@ -8,7 +8,7 @@
 
 | Unit | Topic | Estimated Time | Status |
 |------|-------|---------------|--------|
-| [`html_css.md`](html_css.md) | Structure, styles, layout, responsive | 2 weeks | 📋 Planned |
+| [`html_css.mdx`](html_css.mdx) | Structure, styles, layout, responsive | 2 weeks | 📋 Planned |
 | [`javascript_core.md`](javascript_core.md) | JS language, DOM, async, ES6+ | 4 weeks | 📋 Planned |
 | [`typescript.md`](typescript.md) | Type system, interfaces, generics | 2 weeks | 📋 Planned |
 | [`frontend_frameworks.md`](frontend_frameworks.md) | React (primary), Vue/Svelte (reference) | 4 weeks | 📋 Planned |

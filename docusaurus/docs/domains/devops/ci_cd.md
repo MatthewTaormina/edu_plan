@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 > **Tool:** GitLab CI/CD · **Introduced:** 2015 · **Latest:** 17.x (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — primary recommendation for GitLab-hosted or self-hosted  
 > **Tool:** Jenkins · **Introduced:** 2011 · **Latest:** 2.x (actively maintained) · **Deprecated:** N/A · **Status:** 🟡 Legacy — widely deployed in enterprises; new projects should prefer GitHub Actions/GitLab CI
 
-> **Prerequisites:** [Git Workflow](git_workflow.md), [Docker](docker.md)  
+> **Prerequisites:** [Git Workflow](git_workflow.md), [Docker](docker.mdx)  
 > **Who needs this:** Anyone shipping software. CI/CD is how professional teams move fast without breaking things — automated builds, tests, and deployments on every commit.
 
 ---
@@ -253,8 +253,10 @@ jobs:
 
 ### 5. Secrets and Environment Variables
 
-!!! danger "Never Hardcode Secrets"
-    API keys, passwords, and tokens hardcoded in workflow files are **public** — GitHub scans for them and will warn you, but the exposure already happened.
+:::danger Never Hardcode Secrets
+API keys, passwords, and tokens hardcoded in workflow files are **public** — GitHub scans for them and will warn you, but the exposure already happened.
+:::
+
 
 ```yaml
 # Using secrets (set in: repo → Settings → Secrets and variables → Actions)
@@ -394,8 +396,10 @@ jobs:
 
 ### 9. GitLab CI/CD — Equivalent for Comparison
 
-!!! note "🔵 Foundation Concept"
-    GitHub Actions and GitLab CI use different YAML structures but the same mental model: events → jobs → steps. Learning one makes the other trivial to pick up.
+:::note 🔵 Foundation Concept
+GitHub Actions and GitLab CI use different YAML structures but the same mental model: events → jobs → steps. Learning one makes the other trivial to pick up.
+:::
+
 
 > **Tool:** GitLab CI/CD · **Introduced:** 2015 · **Latest:** 17.x (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern
 
@@ -473,8 +477,10 @@ deploy-production:
 
 ### 10. Legacy CI — Jenkins
 
-!!! warning "🟡 Legacy Tool"
-    **Jenkins** · **Introduced:** 2011 (as Hudson 2005) · **Latest:** 2.x (actively maintained, 2024) · **Deprecated:** N/A (maintained, but declining adoption for new projects)  
+:::warning 🟡 Legacy Tool
+**Jenkins** · **Introduced:** 2011 (as Hudson 2005) · **Latest:** 2.x (actively maintained, 2024) · **Deprecated:** N/A (maintained, but declining adoption for new projects)
+:::
+
     Include here because: you will encounter Jenkins in enterprise environments and older devops setups.  
     Consider Jenkins if: self-hosted with a complex plugin ecosystem; on-prem requirements; no GitHub/GitLab.  
     **Modern alternative:** GitHub Actions (cloud-hosted) or GitLab CI (self-hosted). Both support Linux and Windows runners natively.

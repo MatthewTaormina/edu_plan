@@ -1,7 +1,7 @@
 # Lesson 03 — Flexbox & Grid with Tailwind
 
 > **Course:** Tailwind CSS · **Time:** 45 minutes
-> **📖 Wiki:** [HTML & CSS — Flexbox & Grid](../../domains/web_dev/html_css.md)
+> **📖 Wiki:** [HTML & CSS — Flexbox & Grid](../../domains/web_dev/html_css.mdx)
 > **🔗 Official Docs:** [Flexbox](https://tailwindcss.com/docs/flex) · [Grid](https://tailwindcss.com/docs/grid-template-columns)
 
 ---

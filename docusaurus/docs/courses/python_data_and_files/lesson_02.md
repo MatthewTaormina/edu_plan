@@ -45,13 +45,13 @@ with open("hello.txt", "r") as file:
 | `"b"` | Binary mode — combine with others: `"rb"`, `"wb"` |
 | `"r+"` | Read and write |
 
-!!! warning "Encoding"
-    Always specify `encoding="utf-8"` when reading/writing text files to avoid platform differences:
-    ```python
-    with open("notes.txt", "r", encoding="utf-8") as f:
-        content = f.read()
-    ```
-
+:::warning Encoding
+Always specify `encoding="utf-8"` when reading/writing text files to avoid platform differences:
+```python
+with open("notes.txt", "r", encoding="utf-8") as f:
+    content = f.read()
+```
+:::
 ---
 
 ## pathlib — The Modern Way to Handle Paths
@@ -100,10 +100,10 @@ path.write_text("Hello from pathlib!\n", encoding="utf-8")
 content = path.read_text(encoding="utf-8")
 ```
 
-!!! note "🟡 Legacy: os.path"
-    `os.path.join()`, `os.path.exists()` etc. still work but are verbose.
-    Use `pathlib.Path` for all new code.
-
+:::note 🟡 Legacy: os.path
+`os.path.join()`, `os.path.exists()` etc. still work but are verbose.
+Use `pathlib.Path` for all new code.
+:::
 ---
 
 ## Working with JSON

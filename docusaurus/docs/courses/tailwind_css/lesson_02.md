@@ -1,7 +1,7 @@
 # Lesson 02 — Typography, Color & Spacing
 
 > **Course:** Tailwind CSS · **Time:** 45 minutes
-> **📖 Wiki:** [HTML & CSS](../../domains/web_dev/html_css.md)
+> **📖 Wiki:** [HTML & CSS](../../domains/web_dev/html_css.mdx)
 > **🔗 Official Docs:** [Typography](https://tailwindcss.com/docs/font-size) · [Colors](https://tailwindcss.com/docs/background-color) · [Spacing](https://tailwindcss.com/docs/padding)
 
 ---

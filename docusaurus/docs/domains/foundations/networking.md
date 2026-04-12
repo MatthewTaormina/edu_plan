@@ -48,7 +48,7 @@ Every device on a network has an **IP address** — a unique identifier for rout
 
 **IPv4** addresses are 32 bits, written as 4 octets in decimal:
 
-```
+```text
 192.168.1.1
 │   │   │ └── Host portion (varies by subnet mask)
 │   │   └──── Network portion

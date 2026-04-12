@@ -20,7 +20,7 @@ Build a **Kanban-style Project Manager** with:
 
 ## Architecture
 
-```
+```text
 src/app/
 ├── features/
 │   ├── projects/

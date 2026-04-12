@@ -10,15 +10,19 @@ import TabItem from '@theme/TabItem';
 > **Tool:** Ansible · **Introduced:** 2012 · **Latest:** 9.x (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — still the dominant agentless configuration management tool  
 > **Tool:** Pulumi · **Introduced:** 2018 · **Latest:** 3.x (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — IaC in real programming languages (Python, TypeScript, Go, Rust)
 
-!!! warning "🟡 Legacy Tools — acknowledged, not taught here"
-    **Chef** · Introduced 2009 · Still maintained · Status: 🟡 Legacy — replaced by Ansible in most new projects  
+:::warning 🟡 Legacy Tools — acknowledged, not taught here
+**Chef** · Introduced 2009 · Still maintained · Status: 🟡 Legacy — replaced by Ansible in most new projects
+:::
+
     **Puppet** · Introduced 2005 · Still maintained · Status: 🟡 Legacy — agent-based model was dominant pre-2015; Ansible's agentless approach won
 
-> **Prerequisites:** [Linux CLI](linux_cli.md), [Git Workflow](git_workflow.md), [Docker](docker.md)  
+> **Prerequisites:** [Linux CLI](linux_cli.md), [Git Workflow](git_workflow.md), [Docker](docker.mdx)  
 > **Who needs this:** Anyone who manages cloud infrastructure. IaC applies the same principles to infrastructure that version control applies to code — every change is tracked, reviewable, repeatable, and automated.
 
-!!! note "🔵 Foundation Concept"
-    Before IaC, infrastructure was configured manually by clicking through cloud consoles or running ad-hoc commands — **ClickOps**. This creates "snowflake servers": unique, undocumented, impossible to reproduce. IaC replaces this with declarative files you commit to Git.
+:::note 🔵 Foundation Concept
+Before IaC, infrastructure was configured manually by clicking through cloud consoles or running ad-hoc commands — **ClickOps**. This creates "snowflake servers": unique, undocumented, impossible to reproduce. IaC replaces this with declarative files you commit to Git.
+:::
+
 
 ---
 
@@ -74,8 +78,10 @@ In practice: **Terraform provisions infrastructure; Ansible configures what runs
 > **Tool:** Terraform · **Introduced:** 2014 · **Latest:** 1.8 (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern  
 > **Tool:** OpenTofu · **Introduced:** 2023 (CNCF fork after HashiCorp BSL licence, Aug 2023) · **Latest:** 1.7 (2024) · **Status:** 🟢 Modern — drop-in Terraform replacement; syntax identical
 
-!!! tip "Terraform vs OpenTofu"
-    HashiCorp changed Terraform's licence from MPL (open source) to BSL (not open source) in August 2023. **OpenTofu** is the Linux Foundation fork that kept the MPL licence. For new projects with a preference for genuine open source, OpenTofu is a good choice. Syntax is identical.
+:::tip Terraform vs OpenTofu
+HashiCorp changed Terraform's licence from MPL (open source) to BSL (not open source) in August 2023. **OpenTofu** is the Linux Foundation fork that kept the MPL licence. For new projects with a preference for genuine open source, OpenTofu is a good choice. Syntax is identical.
+:::
+
 
 **How Terraform works:**
 

@@ -52,11 +52,11 @@ print(type(name))         # <class 'str'>
 print(type(is_logged_in)) # <class 'bool'>
 ```
 
-!!! note "Python is dynamically typed"
-    You don't declare the type — Python works it out from the value.
-    `age = 25` is an `int`. `age = "twenty-five"` would make it a `str`.
-    The type of a variable can change — though it's usually a sign of confusion if it does.
-
+:::note Python is dynamically typed
+You don't declare the type — Python works it out from the value.
+`age = 25` is an `int`. `age = "twenty-five"` would make it a `str`.
+The type of a variable can change — though it's usually a sign of confusion if it does.
+:::
 ---
 
 ## Strings in Detail
@@ -101,16 +101,16 @@ print(f"My name is {name} and I am {age} years old.")
 print(f"Next year I will be {age + 1}.")
 ```
 
-!!! warning "🟡 Older string formatting — you may see these"
-    ```python
-    # % formatting (Python 2 era, 🟡 legacy — still works, avoid in new code)
-    print("Hello, %s" % name)
+:::warning 🟡 Older string formatting — you may see these
+```python
+# % formatting (Python 2 era, 🟡 legacy — still works, avoid in new code)
+print("Hello, %s" % name)
 
-    # .format() (Python 3.0+, 🟡 common but verbose — prefer f-strings)
-    print("Hello, {}".format(name))
-    ```
-    Use **f-strings** for all new code.
-
+# .format() (Python 3.0+, 🟡 common but verbose — prefer f-strings)
+print("Hello, {}".format(name))
+```
+Use **f-strings** for all new code.
+:::
 ### Useful string methods
 
 ```python

@@ -74,10 +74,10 @@ This creates 7 methods automatically:
 | GET | /posts | index | posts.index |
 | GET | /posts/create | create | posts.create |
 | POST | /posts | store | posts.store |
-| GET | /posts/{post} | show | posts.show |
-| GET | /posts/{post}/edit | edit | posts.edit |
-| PUT/PATCH | /posts/{post} | update | posts.update |
-| DELETE | /posts/{post} | destroy | posts.destroy |
+| GET | `/posts/{post}` | show | posts.show |
+| GET | `/posts/{post}/edit` | edit | posts.edit |
+| PUT/PATCH | `/posts/{post}` | update | posts.update |
+| DELETE | `/posts/{post}` | destroy | posts.destroy |
 
 ```php
 // Register all 7 routes in one line

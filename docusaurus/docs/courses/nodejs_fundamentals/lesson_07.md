@@ -17,7 +17,7 @@ Build a **command-line file processing tool** called `fileops` that:
 
 ## Project Structure
 
-```
+```text
 fileops/
 ├── src/
 │   ├── index.js          ← Entry point, CLI arg parsing

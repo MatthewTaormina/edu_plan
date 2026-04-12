@@ -28,7 +28,7 @@ Activate it with `display: flex` on the **parent** (the flex container).
 
 ### The Two Axes
 
-```
+```text
 flex-direction: row (default)
 
 Main axis ────────────────────────────────────────────►

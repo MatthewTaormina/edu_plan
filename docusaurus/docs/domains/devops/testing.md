@@ -11,8 +11,10 @@ import TabItem from '@theme/TabItem';
 > **Tool:** k6 · **Introduced:** 2017 · **Latest:** 0.51 (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — load and performance testing  
 > **Tool:** Playwright · **Introduced:** 2020 · **Latest:** 1.43 (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — end-to-end browser testing (cross-platform: Windows + Linux + macOS)
 
-!!! warning "🟡 Legacy — acknowledged"
-    **Selenium** · Introduced 2004 · Still maintained · Status: 🟡 Legacy — superseded by Playwright and Cypress for new projects; still common in enterprise. **Cypress** · Introduced 2015 · Still maintained · Status: 🟡 — strong community but Playwright's cross-browser support is more complete.
+:::warning 🟡 Legacy — acknowledged
+**Selenium** · Introduced 2004 · Still maintained · Status: 🟡 Legacy — superseded by Playwright and Cypress for new projects; still common in enterprise. **Cypress** · Introduced 2015 · Still maintained · Status: 🟡 — strong community but Playwright's cross-browser support is more complete.
+:::
+
 
 > **Prerequisites:** [Git Workflow](git_workflow.md), [CI/CD](ci_cd.md) (testing feeds directly into pipelines)  
 > **Who needs this:** Every developer and every DevOps engineer. Untested code is a ticking clock. Tests are how you change code with confidence.

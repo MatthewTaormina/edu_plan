@@ -10,7 +10,7 @@
 |------|-------|---------------|--------|
 | [`linux_cli.md`](linux_cli.md) | Shell, filesystem, scripting, SSH | 3 weeks | 📋 Planned |
 | [`git_workflow.md`](git_workflow.md) | Branching, PRs, GitFlow, hooks | 1 week | 📋 Planned |
-| [`docker.md`](docker.md) | Images, containers, Compose, networking | 3 weeks | 📋 Planned |
+| [`docker.mdx`](docker.mdx) | Images, containers, Compose, networking | 3 weeks | 📋 Planned |
 | [`kubernetes.md`](kubernetes.md) | Pods, deployments, services, Helm | 5 weeks | 📋 Planned |
 | [`ci_cd.md`](ci_cd.md) | GitHub Actions, pipelines, deployment | 3 weeks | 📋 Planned |
 | [`iac.md`](iac.md) | Terraform, Ansible, IaC principles | 3 weeks | 📋 Planned |

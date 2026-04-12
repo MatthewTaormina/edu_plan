@@ -8,24 +8,19 @@
 
 ## Dependency Map
 
-```
-Beginner Path (Python focus)
-          ↓
-Python Intermediate ──────────────────────────┐
-          ↓                                    ↓
-ML Fundamentals (optional but valuable)   APIs & HTTP
-          ↓                                    ↓
-LLM Fundamentals ←────────────────────────────┘
-          ↓
-Prompt Engineering
-          ↓
-AI APIs Integration (OpenAI, Anthropic, Ollama)
-          ↓
-LangChain / LlamaIndex / Agents
-          ↓                     ↓
-RAG Pipelines            AI Automation
-          ↓
-AI Application Projects
+```mermaid
+flowchart TD
+    Beg[Beginner Path Python focus] --> PyInt[Python Intermediate]
+    PyInt --> ML[ML Fundamentals optional but valuable]
+    PyInt --> APIs[APIs & HTTP]
+    ML --> LLM[LLM Fundamentals]
+    APIs --> LLM
+    LLM --> PE[Prompt Engineering]
+    PE --> AI[AI APIs Integration OpenAI, Anthropic, Ollama]
+    AI --> Lang[LangChain / LlamaIndex / Agents]
+    Lang --> RAG[RAG Pipelines]
+    Lang --> Auto[AI Automation]
+    RAG --> Proj[AI Application Projects]
 ```
 
 ---

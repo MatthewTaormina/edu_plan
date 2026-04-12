@@ -26,8 +26,10 @@ Python was created by **Guido van Rossum** and first released in **1991**. Despi
 🟢 current and actively maintained — it's the most widely used language in data science, DevOps,
 automation, and backend development. Python 3.x (released 2008) is the version taught here.
 
-!!! warning "🔴 Python 2 is deprecated"
-    Python 2 reached end-of-life on **January 1, 2020**. Any guide, book, or tutorial using
+:::warning 🔴 Python 2 is deprecated
+Python 2 reached end-of-life on **January 1, 2020**. Any guide, book, or tutorial using
+:::
+
     `print "hello"` (without parentheses) is outdated. Python 3.10+ is the minimum to use today.
 
 ---

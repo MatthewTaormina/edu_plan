@@ -21,7 +21,7 @@ Build a **multi-page admin dashboard** integrating every concept from this cours
 
 ## Architecture
 
-```
+```text
 src/
 ├── api/            ← All fetch functions
 │   ├── users.ts

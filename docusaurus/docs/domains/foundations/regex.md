@@ -217,8 +217,10 @@ https?://[\w.-]+(?:/[\w./?=%&-]*)?
 ^[a-z0-9]+(?:-[a-z0-9]+)*$
 ```
 
-!!! warning "Don't Parse HTML with Regex"
-    Regex cannot reliably parse HTML. HTML is not a regular language — it's hierarchical. Use a proper HTML parser (BeautifulSoup in Python, DOMParser in JS). This is one of the most famous "when not to use regex" rules in programming.
+:::warning Don't Parse HTML with Regex
+Regex cannot reliably parse HTML. HTML is not a regular language — it's hierarchical. Use a proper HTML parser (BeautifulSoup in Python, DOMParser in JS). This is one of the most famous "when not to use regex" rules in programming.
+:::
+
 
 ---
 
@@ -487,4 +489,4 @@ Write unit tests for each validator with valid AND invalid inputs.
 
 ## ➡️ Next Unit
 
-→ [Protocols & Standards](protocols_and_standards.md) — or return to your path
+→ [Protocols & Standards](protocols_and_standards.mdx) — or return to your path

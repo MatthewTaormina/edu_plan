@@ -89,11 +89,11 @@ while True:
 print(f"You chose: {answer}")
 ```
 
-!!! warning "Infinite loops"
-    A `while` loop that never reaches `False` runs forever.
-    Always make sure the condition can become `False`, or use `break`.
-    Press **Ctrl+C** to stop a running program.
-
+:::warning Infinite loops
+A `while` loop that never reaches `False` runs forever.
+Always make sure the condition can become `False`, or use `break`.
+Press **Ctrl+C** to stop a running program.
+:::
 ---
 
 ## break and continue

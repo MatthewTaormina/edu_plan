@@ -8,24 +8,21 @@
 
 ## Dependency Map
 
-```
-Beginner Foundations
-         ↓
-  Linux CLI & Shell ──────────────────────────────────┐
-         ↓                                             ↓
-   Git Advanced ←──────────────────────────    Networking Basics
-         ↓                                             ↓
-      Docker                                    Security Basics
-         ↓                        ←─────────────────/
-   Kubernetes (K8s)
-         ↓              ↓
-   CI/CD Pipelines   Cloud Fundamentals
-         ↓              ↓
-   Infrastructure as Code (Terraform)
-         ↓
-   Monitoring + Observability
-         ↓
-   Capstone: Deploy a production-ready app
+```mermaid
+flowchart TD
+    Beginner[Beginner Foundations] --> Linux[Linux CLI & Shell]
+    Linux --> Git[Git Advanced]
+    Linux --> Net[Networking Basics]
+    Git --> Docker[Docker]
+    Net --> Security[Security Basics]
+    Security --> Docker
+    Docker --> K8s[Kubernetes]
+    K8s --> CI[CI/CD Pipelines]
+    K8s --> Cloud[Cloud Fundamentals]
+    CI --> IaC[Infrastructure as Code]
+    Cloud --> IaC
+    IaC --> Monitor[Monitoring + Observability]
+    Monitor --> Capstone[Capstone: Deploy a production-ready app]
 ```
 
 ---
@@ -78,7 +75,7 @@ Beginner Foundations
 ### Milestone 3 — Docker 🐳
 *~3 weeks*
 
-- [ ] [`domains/devops/docker.md`](../domains/devops/docker.md)
+- [ ] [`domains/devops/docker.mdx`](../domains/devops/docker.mdx)
   - What containers are (vs VMs)
   - Dockerfile syntax and best practices
   - Image layers and caching

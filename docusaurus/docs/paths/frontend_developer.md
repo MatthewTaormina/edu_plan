@@ -124,7 +124,7 @@ App Router, server components, data fetching strategies (SSG/ISR/dynamic), Route
 
 | Topic | Wiki page |
 |-------|-----------|
-| HTML & CSS fundamentals | [HTML & CSS](../domains/web_dev/html_css.md) |
+| HTML & CSS fundamentals | [HTML & CSS](../domains/web_dev/html_css.mdx) |
 | JavaScript concepts | [JavaScript Core](../domains/web_dev/javascript_core.md) |
 | TypeScript | [TypeScript](../domains/web_dev/typescript.md) |
 | React / Angular | [Frontend Frameworks](../domains/web_dev/frontend_frameworks.md) |

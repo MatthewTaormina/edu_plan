@@ -48,6 +48,9 @@ const config: Config = {
     ],
   ],
 
+
+  clientModules: ['./src/prism/pseudocode.js'],
+
   themeConfig: {
     colorMode: {
       defaultMode: 'dark',

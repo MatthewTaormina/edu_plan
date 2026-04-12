@@ -583,8 +583,10 @@ fn main() {
 | Shared state with high read ratio | `RwLock` | Allows many concurrent readers |
 | Real-time system, no GC pauses | Rust or C++ | Deterministic timing |
 
-!!! warning "Python's GIL"
-    The **Global Interpreter Lock** means only one Python thread executes Python bytecode at a time. `ThreadPoolExecutor` helps for I/O-bound tasks (threads release GIL while waiting for I/O) but NOT for CPU-bound work. Use `ProcessPoolExecutor` or libraries like NumPy that release the GIL internally.
+:::warning Python's GIL
+The **Global Interpreter Lock** means only one Python thread executes Python bytecode at a time. `ThreadPoolExecutor` helps for I/O-bound tasks (threads release GIL while waiting for I/O) but NOT for CPU-bound work. Use `ProcessPoolExecutor` or libraries like NumPy that release the GIL internally.
+:::
+
 
 ---
 

@@ -2,9 +2,9 @@
 
 > Design and operate cloud-native systems at scale.
 
-!!! warning "Coming in a future sprint"
-    This domain is planned and will be expanded significantly. See the structure below.
-
+:::warning Coming in a future sprint
+This domain is planned and will be expanded significantly. See the structure below.
+:::
 ---
 
 ## Planned Structure

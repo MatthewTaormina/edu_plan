@@ -207,8 +207,10 @@ SIMD (AVX2 — 256-bit register):
 - NumPy, BLAS, etc. use SIMD internally — this is why vectorized Python math is fast
 - Rust's `std::simd` (nightly) and the `packed_simd` crate for explicit control
 
-!!! tip "Research Question 🔍"
-    What is the difference between Intel and AMD CPU architectures? Does the same software run the same speed on both? Look up "x86-64" — what does it mean that both are compatible?
+:::tip Research Question 🔍
+What is the difference between Intel and AMD CPU architectures? Does the same software run the same speed on both? Look up "x86-64" — what does it mean that both are compatible?
+:::
+
 
 ---
 

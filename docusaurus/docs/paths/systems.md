@@ -8,20 +8,17 @@
 
 ## Dependency Map
 
-```
-Beginner Foundations (Python)
-          ↓
-   C Fundamentals ────────────────────────────────┐
-          ↓                                        ↓
-   Memory Management ←── OS Concepts          Assembly Basics
-          ↓                                        ↓
-   Concurrency Basics                        (Optional deep dive)
-          ↓
-   Rust Fundamentals
-          ↓
-   Rust Advanced (async, unsafe, FFI)
-          ↓
-   Systems Projects (VM, runtime, etc.)
+```mermaid
+flowchart TD
+    Beg[Beginner Foundations Python] --> CF[C Fundamentals]
+    CF --> MM[Memory Management]
+    CF --> Asm[Assembly Basics]
+    OS[OS Concepts] --> MM
+    MM --> CB[Concurrency Basics]
+    Asm --> Opt["(Optional deep dive)"]
+    CB --> RF[Rust Fundamentals]
+    RF --> RA[Rust Advanced async, unsafe, FFI]
+    RA --> Proj[Systems Projects VM, runtime, etc.]
 ```
 
 ---

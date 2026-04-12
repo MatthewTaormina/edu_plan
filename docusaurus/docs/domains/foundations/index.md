@@ -10,7 +10,7 @@
 | Unit | Topic | Estimated Time | Status |
 |------|-------|---------------|--------|
 | [`programming_basics.md`](programming_basics.md) | Variables, control flow, functions | 4 weeks | 📋 Planned |
-| [`data_structures.md`](data_structures.md) | Arrays, lists, trees, graphs, hash maps | 4 weeks | 📋 Planned |
+| [`data_structures.mdx`](data_structures.mdx) | Arrays, lists, trees, graphs, hash maps | 4 weeks | 📋 Planned |
 | [`algorithms.md`](algorithms.md) | Sorting, searching, complexity analysis | 3 weeks | 📋 Planned |
 | [`memory_management.md`](memory_management.md) | Stack, heap, GC, pointers, ownership | 3 weeks | 📋 Planned |
 | [`concurrency.md`](concurrency.md) | Threads, async, parallelism, deadlocks | 3 weeks | 📋 Planned |

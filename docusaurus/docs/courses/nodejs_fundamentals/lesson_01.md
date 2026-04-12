@@ -25,7 +25,7 @@ Node.js is a **JavaScript runtime** — not a language, not a framework. It take
 - Built-in modules (`fs`, `http`, `crypto`, `path`, etc.)
 - The `npm` package ecosystem
 
-```
+```text
 Browser environment          Node.js environment
 ──────────────────           ───────────────────
 V8 engine                    V8 engine

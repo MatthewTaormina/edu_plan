@@ -103,11 +103,15 @@ WHILE n > 1 DO
 | Two recursive calls | O(2ⁿ) often |
 | Hash table lookup | O(1) average |
 
-!!! tip "Research Question 🔍"
-    What is the difference between **best case**, **worst case**, and **average case** complexity? Why do we usually care about worst case? Look up "Quicksort worst case" — when does it degrade from O(n log n) to O(n²)?
+:::tip Research Question 🔍
+What is the difference between **best case**, **worst case**, and **average case** complexity? Why do we usually care about worst case? Look up "Quicksort worst case" — when does it degrade from O(n log n) to O(n²)?
+:::
 
-!!! note "Space Complexity"
-    Big-O also applies to **memory**. An algorithm that creates a copy of the input is O(n) space. One that sorts in-place might be O(1) space (no extra memory). Always consider both time and space.
+
+:::note Space Complexity
+Big-O also applies to **memory**. An algorithm that creates a copy of the input is O(n) space. One that sorts in-place might be O(1) space (no extra memory). Always consider both time and space.
+:::
+
 
 ---
 
@@ -305,8 +309,10 @@ nums.binary_search(&7);  // → Ok(3)
 </TabItem>
 </Tabs>
 
-!!! warning "Common Mistake"
-    Using `mid = (left + right) / 2` can cause **integer overflow** in languages with fixed-size integers (C, Rust, Java) when left and right are large numbers. Always use `left + (right - left) / 2`.
+:::warning Common Mistake
+Using `mid = (left + right) / 2` can cause **integer overflow** in languages with fixed-size integers (C, Rust, Java) when left and right are large numbers. Always use `left + (right - left) / 2`.
+:::
+
 
 ---
 
@@ -672,8 +678,10 @@ function fibonacci(n: number): number {
 </TabItem>
 </Tabs>
 
-!!! warning "Stack Overflow"
-    Deep recursion uses the **call stack** — each call adds a frame. If you recurse too deeply without hitting a base case, you get a Stack Overflow. Most languages have a recursion depth limit (Python: ~1000, JS: ~10,000). Iterative solutions avoid this.
+:::warning Stack Overflow
+Deep recursion uses the **call stack** — each call adds a frame. If you recurse too deeply without hitting a base case, you get a Stack Overflow. Most languages have a recursion depth limit (Python: ~1000, JS: ~10,000). Iterative solutions avoid this.
+:::
+
 
 ---
 
@@ -801,8 +809,10 @@ function fib(n: number): number {
 </TabItem>
 </Tabs>
 
-!!! tip "Research Question 🔍"
-    What is the **0/1 Knapsack problem**? It's the canonical DP problem. Can you solve it? (Search "knapsack problem dynamic programming" and try to implement it before looking at the solution.)
+:::tip Research Question 🔍
+What is the **0/1 Knapsack problem**? It's the canonical DP problem. Can you solve it? (Search "knapsack problem dynamic programming" and try to implement it before looking at the solution.)
+:::
+
 
 ---
 

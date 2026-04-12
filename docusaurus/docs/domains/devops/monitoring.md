@@ -10,12 +10,14 @@ import TabItem from '@theme/TabItem';
 > **Tool:** OpenTelemetry · **Introduced:** 2019 (merger of OpenCensus + OpenTracing) · **Latest:** 1.x (stable 2021+) · **Deprecated:** N/A · **Status:** 🟢 Modern — the unified standard for telemetry  
 > **Tool:** Loki · **Introduced:** 2018 · **Latest:** 3.x (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — log aggregation designed to pair with Prometheus/Grafana
 
-!!! warning "🟡 Legacy Tools — acknowledged"
-    **Nagios** · Introduced 1999 · Status: 🟡 Legacy — check-based monitoring; replaced by Prometheus in most new projects  
+:::warning 🟡 Legacy Tools — acknowledged
+**Nagios** · Introduced 1999 · Status: 🟡 Legacy — check-based monitoring; replaced by Prometheus in most new projects
+:::
+
     **Zabbix** · Introduced 2001 · Still maintained · Status: 🟡 Legacy — agent-based, common in enterprise on-prem  
     **Splunk** · Introduced 2003 · Status: 🟡 Legacy for new builds (expensive; open-source stack now dominant); still common in large enterprises
 
-> **Prerequisites:** [Docker](docker.md), [Kubernetes](kubernetes.md) (for cluster monitoring)  
+> **Prerequisites:** [Docker](docker.mdx), [Kubernetes](kubernetes.md) (for cluster monitoring)  
 > **Who needs this:** Anyone running production software. "You can't manage what you can't measure." If your service goes down at 3 AM, observability is what tells you why.
 
 ---
@@ -39,8 +41,10 @@ By the end of this unit, you will be able to:
 
 ### 1. The Three Pillars of Observability
 
-!!! note "🔵 Foundation Concept"
-    **Monitoring** tells you *something is wrong*. **Observability** tells you *why*.
+:::note 🔵 Foundation Concept
+**Monitoring** tells you *something is wrong*. **Observability** tells you *why*.
+:::
+
     The difference matters at 3 AM when an alert fires.
 
 ```
@@ -374,8 +378,10 @@ log.error("db_query_failed", duration_ms=duration, error=str(error))
 > **Tool:** OpenTelemetry · **Introduced:** 2019 · **Status:** 🟢 Modern — CNCF incubating project, the vendor-neutral standard  
 > **Predecessor:** OpenTracing (2016, deprecated 2021) + OpenCensus (2018, deprecated 2019)
 
-!!! warning "🔴 OpenTracing and OpenCensus are deprecated"
-    Both are discontinued in favour of OpenTelemetry. If you see guides using `opentracing` or `opencensus` libraries directly, they are outdated.
+:::warning 🔴 OpenTracing and OpenCensus are deprecated
+Both are discontinued in favour of OpenTelemetry. If you see guides using `opentracing` or `opencensus` libraries directly, they are outdated.
+:::
+
 
 A **trace** follows a single request through multiple services. Each step is a **span**.
 

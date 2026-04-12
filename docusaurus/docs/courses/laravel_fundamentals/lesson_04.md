@@ -18,7 +18,7 @@
 
 ### The Laravel Request Lifecycle
 
-```
+```text
 Browser Request
     ↓
 public/index.php          ← Web root (all requests enter here)

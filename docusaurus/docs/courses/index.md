@@ -39,7 +39,7 @@ There are two types:
 
 ## How Courses Work
 
-```
+```text
 Course Index
   ├── Lesson 01  → Concept → Example → Try It
   ├── Lesson 02  → Builds on previous
