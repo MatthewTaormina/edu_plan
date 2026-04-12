@@ -1,0 +1,481 @@
+---
+title: Vue Reference
+description: Vue 3 Composition API, reactive refs and computed, components, props, emits, lifecycle, Vue Router, Pinia state management, and Nuxt.
+sidebar_label: Vue
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Vue
+
+> **Tool:** Vue · **Introduced:** 2014 · **Latest:** Vue 3.x (2020 — current generation) · **Status:** 🟢 Modern
+
+Vue is a **progressive frontend framework**. "Progressive" means you can adopt it incrementally — add it to one page of an existing app, or build a full SPA. Vue has a gentle learning curve, excellent documentation, and a strong ecosystem. Vue 3 is the current version and uses the **Composition API** as its primary style.
+
+> **Prerequisite:** [JavaScript](../core/javascript) · [Frontend Frameworks Overview](./index)
+
+---
+
+## Single-File Components (SFC)
+
+Vue's primary format is the `.vue` Single-File Component — one file per component containing template, script, and styles:
+
+```vue
+<!-- UserCard.vue -->
+<script setup lang="ts">
+// <script setup> is the Composition API with compiler sugar — less boilerplate
+import { computed } from 'vue'
+import type { User } from '@/types'
+
+// Props
+const props = defineProps<{
+    user: User
+    size?: 'sm' | 'lg'
+}>()
+
+// Emit events
+const emit = defineEmits<{
+    liked: [userId: string]
+    deleted: [userId: string]
+}>()
+
+// Computed
+const initials = computed(() =>
+    props.user.name.split(' ').map(n => n[0]).join('').toUpperCase()
+)
+</script>
+
+<template>
+    <article class="card" :class="`card--${size ?? 'sm'}`">
+        <div class="card__avatar">{{ initials }}</div>
+        <h2 class="card__name">{{ user.name }}</h2>
+        <p class="card__email">{{ user.email }}</p>
+        <div class="card__actions">
+            <button @click="emit('liked', user.id)">Like</button>
+            <button @click="emit('deleted', user.id)">Delete</button>
+        </div>
+    </article>
+</template>
+
+<style scoped>
+/* Scoped styles — only apply to elements in this component */
+.card { border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; }
+.card--lg { padding: 2rem; }
+</style>
+```
+
+---
+
+## Reactivity with `ref` and `reactive`
+
+```typescript
+import { ref, reactive, computed, watch, watchEffect } from 'vue'
+
+// ref() — reactive wrapper for a single value (primitives or objects)
+const count = ref(0)
+count.value++              // Access/mutate via .value in <script>
+// In <template>, .value is automatic: {{ count }}
+
+// reactive() — makes a whole object reactive (no .value needed)
+const state = reactive({
+    users: [] as User[],
+    isLoading: false,
+    error: null as Error | null,
+})
+state.isLoading = true     // Direct property mutation — Vue tracks it
+
+// computed() — derived value, cached until dependencies change
+const total = computed(() => cart.items.reduce((sum, i) => sum + i.price, 0))
+
+// watch() — run a callback when a specific reactive source changes
+watch(count, (newValue, oldValue) => {
+    console.log(`count changed: ${oldValue} → ${newValue}`)
+})
+
+// watch multiple sources
+watch([count, state], ([newCount, newState]) => { ... })
+
+// Immediate + deep watch
+watch(() => state.users, (users) => {
+    saveToCache(users)
+}, { deep: true, immediate: true })
+
+// watchEffect() — runs immediately, tracks whatever reactive values it reads
+watchEffect(() => {
+    // Re-runs whenever count or selectedCategory changes
+    document.title = `${count.value} items in ${selectedCategory.value}`
+})
+```
+
+---
+
+## Template Syntax
+
+```html
+<!-- Interpolation -->
+<p>Hello, {{ user.name }}!</p>
+
+<!-- v-bind — dynamic attribute (shorthand: :) -->
+<img :src="user.avatarUrl" :alt="user.name">
+<button :disabled="isLoading" :class="{ 'btn--loading': isLoading }">Save</button>
+
+<!-- v-on — event listener (shorthand: @) -->
+<button @click="handleClick">Click me</button>
+<input @input="onInput" @keyup.enter="onEnter">
+<form @submit.prevent="onSubmit">  <!-- .prevent = event.preventDefault() -->
+
+<!-- v-model — two-way binding -->
+<input v-model="searchTerm" placeholder="Search">
+<select v-model="selectedRole">
+    <option value="admin">Admin</option>
+    <option value="user">User</option>
+</select>
+<input type="checkbox" v-model="isChecked">
+
+<!-- v-if / v-else-if / v-else -->
+<p v-if="user">Hello, {{ user.name }}</p>
+<p v-else-if="isLoading">Loading...</p>
+<p v-else>Please log in</p>
+
+<!-- v-show — keeps element in DOM, toggles display -->
+<div v-show="isVisible">Always rendered, visibility toggled</div>
+
+<!-- v-for — list rendering (always use :key) -->
+<li v-for="item in items" :key="item.id">
+    {{ item.name }}
+</li>
+<li v-for="(item, index) in items" :key="item.id">
+    {{ index + 1 }}. {{ item.name }}
+</li>
+
+<!-- v-for with object -->
+<span v-for="(value, key) in user" :key="key">{{ key }}: {{ value }}</span>
+```
+
+---
+
+## Props, Emits, Define Macros
+
+```vue
+<script setup lang="ts">
+// Props with TypeScript generics (preferred)
+const props = defineProps<{
+    title: string
+    count?: number            // Optional
+    items: string[]
+}>()
+
+// Props with defaults (use withDefaults for TS)
+const props = withDefaults(
+    defineProps<{ count?: number; variant?: 'primary' | 'secondary' }>(),
+    { count: 0, variant: 'primary' }
+)
+
+// Emits with TypeScript
+const emit = defineEmits<{
+    submit: [data: FormData]
+    cancel: []
+    update: [field: string, value: unknown]
+}>()
+
+// Expose methods/values to parent (used with ref on component)
+defineExpose({ reset, validate })
+
+// Global props from outside (e.g. route params via useRoute)
+const route = useRoute()
+const id    = computed(() => route.params.id as string)
+</script>
+```
+
+---
+
+## Lifecycle Hooks
+
+```typescript
+import {
+    onBeforeMount, onMounted, onBeforeUpdate, onUpdated,
+    onBeforeUnmount, onUnmounted
+} from 'vue'
+
+// In <script setup>, lifecycle hooks are called at the top level
+onMounted(() => {
+    // DOM is ready — safe to access refs, start timers, fetch data
+    inputRef.value?.focus()
+})
+
+onUnmounted(() => {
+    // Cleanup: stop timers, close WebSocket connections, abort requests
+    clearInterval(timer)
+    ws.close()
+})
+```
+
+---
+
+## Composables (Custom Hooks)
+
+Vue's equivalent of React's custom hooks — extract reusable stateful logic:
+
+```typescript
+// composables/useFetch.ts
+import { ref, watchEffect, toValue, type Ref } from 'vue'
+
+export function useFetch<T>(url: string | Ref<string>) {
+    const data    = ref<T | null>(null)
+    const error   = ref<Error | null>(null)
+    const loading = ref(false)
+
+    watchEffect(async (onCleanup) => {
+        loading.value = true
+        data.value    = null
+        error.value   = null
+
+        const controller = new AbortController()
+        onCleanup(() => controller.abort())  // Cancel if url changes or component unmounts
+
+        try {
+            const response = await fetch(toValue(url), { signal: controller.signal })
+            if (!response.ok) throw new Error(`HTTP ${response.status}`)
+            data.value = await response.json()
+        } catch (e) {
+            if (!(e instanceof DOMException && e.name === 'AbortError')) {
+                error.value = e as Error
+            }
+        } finally {
+            loading.value = false
+        }
+    })
+
+    return { data, error, loading }
+}
+
+// Usage in a component
+const userId = ref('123')
+const { data: user, loading, error } = useFetch<User>(
+    computed(() => `/api/users/${userId.value}`)
+)
+```
+
+---
+
+## Vue Router
+
+```typescript
+// router/index.ts
+import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes: [
+        {
+            path: '/',
+            redirect: '/dashboard'
+        },
+        {
+            path: '/dashboard',
+            component: () => import('@/views/DashboardView.vue'),  // Lazy loaded
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/users',
+            component: () => import('@/views/UsersView.vue'),
+            children: [
+                { path: '',   component: () => import('@/views/UserListView.vue') },
+                { path: ':id',component: () => import('@/views/UserDetailView.vue') }
+            ]
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            component: () => import('@/views/NotFoundView.vue')
+        }
+    ]
+})
+
+// Navigation guard
+router.beforeEach((to, from) => {
+    const auth = useAuthStore()
+    if (to.meta.requiresAuth && !auth.isLoggedIn) {
+        return { path: '/login', query: { redirect: to.fullPath } }
+    }
+})
+
+export default router
+```
+
+```vue
+<!-- In a component -->
+<script setup>
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route  = useRoute()
+
+const id = computed(() => route.params.id)
+
+function goBack() {
+    router.back()
+}
+
+function goToUser(id: string) {
+    router.push(`/users/${id}`)
+    // Or: router.push({ name: 'user-detail', params: { id } })
+}
+</script>
+
+<template>
+    <!-- Router view -->
+    <RouterView />
+
+    <!-- Navigation links -->
+    <RouterLink to="/dashboard">Dashboard</RouterLink>
+    <RouterLink :to="{ name: 'user-detail', params: { id: '42' } }">User 42</RouterLink>
+    <!-- active-class applies when the link matches the current route -->
+    <RouterLink to="/users" active-class="nav__link--active">Users</RouterLink>
+</template>
+```
+
+---
+
+## Pinia — State Management
+
+Pinia is Vue's official state management library (replaces Vuex). Stores are defined as composable functions.
+
+```typescript
+// stores/cart.ts
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+
+// Composition API store (recommended)
+export const useCartStore = defineStore('cart', () => {
+    // State
+    const items = ref<CartItem[]>([])
+    const discountCode = ref<string | null>(null)
+
+    // Getters (computed)
+    const total = computed(() =>
+        items.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    )
+    const itemCount = computed(() => items.value.length)
+
+    // Actions
+    function addItem(item: CartItem) {
+        const existing = items.value.find(i => i.id === item.id)
+        if (existing) {
+            existing.quantity++
+        } else {
+            items.value.push({ ...item, quantity: 1 })
+        }
+    }
+
+    function removeItem(id: string) {
+        items.value = items.value.filter(i => i.id !== id)
+    }
+
+    async function checkout(): Promise<Order> {
+        const order = await api.post('/orders', { items: items.value })
+        items.value = []  // Clear cart after successful checkout
+        return order
+    }
+
+    return { items, discountCode, total, itemCount, addItem, removeItem, checkout }
+})
+
+// Usage in a component
+const cart = useCartStore()
+cart.addItem(product)
+console.log(cart.total)  // No .value needed — Pinia auto-unwraps
+```
+
+**Pinia DevTools:** Full support in Vue DevTools — inspect state, replay actions, time-travel.
+
+---
+
+## Provide / Inject — Dependency Injection
+
+Pass values from a parent to deeply nested children without prop drilling:
+
+```typescript
+// Parent component
+import { provide, ref } from 'vue'
+
+const theme = ref<'light' | 'dark'>('light')
+provide('theme', theme)
+provide('toggleTheme', () => {
+    theme.value = theme.value === 'light' ? 'dark' : 'light'
+})
+
+// Any descendant component
+import { inject } from 'vue'
+
+const theme = inject<Ref<'light' | 'dark'>>('theme')
+const toggleTheme = inject<() => void>('toggleTheme')
+```
+
+For type safety, use `InjectionKey`:
+
+```typescript
+// injection-keys.ts
+import type { InjectionKey, Ref } from 'vue'
+export const themeKey = Symbol('theme') as InjectionKey<Ref<'light' | 'dark'>>
+
+// Provider
+provide(themeKey, theme)
+
+// Consumer — fully typed
+const theme = inject(themeKey)  // Ref<'light' | 'dark'> | undefined
+```
+
+---
+
+## Nuxt — Meta-Framework
+
+Nuxt adds SSR, file-based routing, auto-imports, and more to Vue apps.
+
+```bash
+npx nuxi@latest init my-app
+cd my-app && npm install && npm run dev
+```
+
+```
+pages/
+├── index.vue         → /
+├── users/
+│   ├── index.vue     → /users
+│   └── [id].vue      → /users/:id   (dynamic route)
+└── [...slug].vue     → /* (catch-all)
+```
+
+Key Nuxt features:
+- **`useFetch` / `useAsyncData`** — SSR-aware data fetching with automatic hydration
+- **Auto-imports** — Vue, composables, components auto-imported (no explicit import)
+- **Server routes** — `server/api/users.ts` creates `/api/users` API endpoint
+- **Nitro** — server engine (runs on Node.js, Cloudflare Workers, Vercel Edge, etc.)
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary">
+
+- [Vue 3 Guide](https://vuejs.org/guide/introduction) — official docs, comprehensive
+- [Pinia Docs](https://pinia.vuejs.org/) — official state management
+- [Vue Router Docs](https://router.vuejs.org/) — official routing
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Nuxt Docs](https://nuxt.com/docs) — if using SSR / full-stack Vue
+- [VueUse](https://vueuse.org/) — collection of 200+ essential composables
+- [Vue School](https://vueschool.io/) — free and paid video courses
+
+</TabItem>
+<TabItem value="courses" label="External Courses">
+
+- 🎓 **[Vue Mastery](https://www.vuemastery.com/)** — endorsed by the Vue core team (PAID)
+- 🎓 **[Frontend Masters: Vue](https://frontendmasters.com/learn/vue/)** — (PAID)
+
+</TabItem>
+</Tabs>

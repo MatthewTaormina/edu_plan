@@ -1,0 +1,566 @@
+---
+title: Angular Reference
+description: Angular modules, components, dependency injection, signals, change detection, the CLI, forms, routing, NgRx, and Angular Universal.
+sidebar_label: Angular
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Angular
+
+> **Tool:** Angular · **Introduced:** 2016 (Angular 2, rewrite of AngularJS) · **Latest:** Angular 19 (2024) · **Status:** 🟢 Modern
+
+Angular is a **complete, opinionated application framework** maintained by Google. Unlike React (a library) or Vue (a progressive framework), Angular ships everything: routing, forms, HTTP client, i18n, testing utilities, and a CLI. TypeScript is **required** — not optional.
+
+> **Prerequisite:** [TypeScript](../typescript) · [Frontend Frameworks Overview](./index)
+> **Course:** [Angular Fundamentals](../../courses/angular_fundamentals/index)
+
+---
+
+## Architecture Overview
+
+Angular applications are built from **NgModules** (classic) or **standalone components** (modern, default since Angular 17):
+
+```
+Application
+├── main.ts              ← Bootstrap entry point
+├── app.component.ts     ← Root component
+├── app.routes.ts        ← Route definitions
+└── features/
+    ├── users/
+    │   ├── user-list/
+    │   │   ├── user-list.component.ts
+    │   │   ├── user-list.component.html
+    │   │   └── user-list.component.scss
+    │   └── user.service.ts
+    └── products/
+```
+
+---
+
+## The Angular CLI
+
+The CLI generates, serves, builds, and tests Angular applications. It's not optional — it's central to how Angular projects are managed.
+
+```bash
+# Install globally
+npm install -g @angular/cli
+
+# Create new project
+ng new my-app --routing --style scss --standalone
+
+# Generate components, services, pipes...
+ng generate component features/users/user-list   # Alias: ng g c
+ng generate service features/users/user          # Alias: ng g s
+ng generate pipe shared/format-date              # Alias: ng g p
+ng generate guard auth                           # Route guard
+
+# Development server
+ng serve                           # http://localhost:4200
+
+# Build for production
+ng build                           # Output: dist/my-app/
+
+# Testing
+ng test                            # Unit tests (Jasmine + Karma)
+ng e2e                             # End-to-end tests
+```
+
+---
+
+## Standalone Components (Angular 14+, Default Angular 17+)
+
+Standalone components don't require an NgModule. They declare their dependencies directly.
+
+```typescript
+import { Component, OnInit, inject } from '@angular/core';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { UserService } from '../user.service';
+import { User } from '../user.model';
+
+@Component({
+    selector: 'app-user-list',
+    standalone: true,
+    imports: [NgFor, NgIf, RouterLink, AsyncPipe], // Import what this component needs
+    template: `
+        <h1>Users</h1>
+        <p *ngIf="isLoading">Loading...</p>
+        <ul>
+            <li *ngFor="let user of users">
+                <a [routerLink]="['/users', user.id]">{{ user.name }}</a>
+            </li>
+        </ul>
+    `
+})
+export class UserListComponent implements OnInit {
+    // Modern: constructor-free injection with inject()
+    private userService = inject(UserService);
+
+    users: User[] = [];
+    isLoading = true;
+
+    ngOnInit() {
+        this.userService.getAll().subscribe(users => {
+            this.users = users;
+            this.isLoading = false;
+        });
+    }
+}
+```
+
+---
+
+## Template Syntax
+
+Angular templates are HTML with additional directives and binding syntax:
+
+```html
+<!-- Property binding: sets a DOM property -->
+<img [src]="user.avatarUrl" [alt]="user.name">
+<button [disabled]="isLoading">Save</button>
+
+<!-- Event binding: listens to DOM events -->
+<button (click)="handleSave()">Save</button>
+<input (keyup.enter)="search()" (input)="onInputChange($event)">
+
+<!-- Two-way binding: input ↔ model (requires FormsModule) -->
+<input [(ngModel)]="searchTerm" placeholder="Search...">
+
+<!-- Interpolation: evaluate and render -->
+<p>Welcome, {{ user.name }}! You have {{ notifications.length }} notifications.</p>
+
+<!-- Structural directives (change the DOM structure) -->
+<p *ngIf="user; else notLoggedIn">Hello, {{ user.name }}</p>
+<ng-template #notLoggedIn><p>Please log in.</p></ng-template>
+
+<li *ngFor="let item of items; index as i; trackBy: trackById">
+    {{ i + 1 }}. {{ item.name }}
+</li>
+
+<!-- ngSwitch -->
+<div [ngSwitch]="status">
+    <p *ngSwitchCase="'loading'">Loading...</p>
+    <p *ngSwitchCase="'success'">Done!</p>
+    <p *ngSwitchDefault>Unknown state</p>
+</div>
+```
+
+### New Control Flow (Angular 17+)
+
+Angular 17 introduced a new built-in control flow syntax that replaces structural directives:
+
+```html
+<!-- @if / @else -->
+@if (user) {
+    <p>Hello, {{ user.name }}!</p>
+} @else {
+    <p>Please log in.</p>
+}
+
+<!-- @for (replaces *ngFor, requires track) -->
+@for (item of items; track item.id) {
+    <li>{{ item.name }}</li>
+} @empty {
+    <li>No items found.</li>
+}
+
+<!-- @switch -->
+@switch (status) {
+    @case ('loading') { <spinner /> }
+    @case ('error') { <error-message /> }
+    @default { <content /> }
+}
+```
+
+---
+
+## Dependency Injection
+
+Angular's DI system is one of its most powerful features. Services are created once (singleton by default) and injected wherever needed.
+
+```typescript
+// user.service.ts
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+@Injectable({
+    providedIn: 'root'   // Singleton — one instance for the entire app
+})
+export class UserService {
+    private http = inject(HttpClient);
+    private baseUrl = '/api/users';
+
+    getAll(): Observable<User[]> {
+        return this.http.get<User[]>(this.baseUrl);
+    }
+
+    getById(id: string): Observable<User> {
+        return this.http.get<User>(`${this.baseUrl}/${id}`);
+    }
+
+    create(user: Partial<User>): Observable<User> {
+        return this.http.post<User>(this.baseUrl, user);
+    }
+
+    update(id: string, changes: Partial<User>): Observable<User> {
+        return this.http.patch<User>(`${this.baseUrl}/${id}`, changes);
+    }
+
+    delete(id: string): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    }
+}
+```
+
+**Injection scopes:**
+
+| `providedIn` | Scope |
+|-------------|-------|
+| `'root'` | Application-wide singleton (most common) |
+| `'platform'` | Shared across micro-frontends |
+| `EnvironmentInjector` | Feature-level (lazy loaded routes) |
+| `ElementInjector` | Component-level (new instance per component) |
+
+---
+
+## Signals (Angular 16+)
+
+Signals are Angular's modern reactivity primitive — explicit, fine-grained tracking without Zone.js.
+
+```typescript
+import { Component, signal, computed, effect } from '@angular/core';
+
+@Component({ ... })
+export class CounterComponent {
+    // signal() — writable reactive value
+    count = signal(0);
+
+    // computed() — derived value, automatically updates
+    doubled = computed(() => this.count() * 2);
+    isEven  = computed(() => this.count() % 2 === 0);
+
+    constructor() {
+        // effect() — runs whenever its signals change (like useEffect in React)
+        effect(() => {
+            console.log(`Count changed to: ${this.count()}`);
+            // Effects automatically clean up on component destroy
+        });
+    }
+
+    increment() {
+        // Call setter to update — reads are just function calls: this.count()
+        this.count.update(n => n + 1);
+    }
+
+    reset() {
+        this.count.set(0);  // Direct set
+    }
+}
+```
+
+**Signals vs RxJS:**
+- **Signals** — synchronous values with automatic dependency tracking. Use for UI state.
+- **RxJS Observables** — async streams (HTTP, WebSockets, complex event handling). Use for async operations.
+
+They work together: `toSignal(observable)` converts an Observable → Signal.
+
+---
+
+## RxJS and Observables
+
+Angular's HttpClient returns Observables. RxJS operators pipe them into useful shapes.
+
+```typescript
+import { HttpClient } from '@angular/common/http';
+import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
+import { map, filter, debounceTime, switchMap, catchError, of } from 'rxjs/operators';
+
+@Component({
+    template: `
+        <input (input)="search$.next($any($event.target).value)">
+        <ul>
+            @for (result of results$ | async; track result.id) {
+                <li>{{ result.name }}</li>
+            }
+        </ul>
+    `
+})
+export class SearchComponent {
+    private http = inject(HttpClient);
+
+    search$ = new BehaviorSubject('');
+
+    results$ = this.search$.pipe(
+        debounceTime(300),                       // Wait 300ms after user stops typing
+        filter(term => term.length >= 3),        // Skip short queries
+        switchMap(term =>                        // Cancel previous request, start new
+            this.http.get<Result[]>(`/api/search?q=${term}`).pipe(
+                catchError(() => of([]))         // Return empty on error
+            )
+        ),
+    );
+}
+```
+
+**Common RxJS operators:**
+
+| Operator | Use case |
+|----------|---------|
+| `map` | Transform each value |
+| `filter` | Drop values not matching predicate |
+| `switchMap` | Cancel previous inner observable (search) |
+| `mergeMap` | Run inner observables in parallel |
+| `concatMap` | Queue inner observables in order |
+| `debounceTime` | Delay, drop intermediates (typing) |
+| `distinctUntilChanged` | Skip duplicate consecutive values |
+| `catchError` | Handle errors, return fallback |
+| `takeUntilDestroyed` | Auto-complete on component destroy |
+
+---
+
+## Component Inputs and Outputs
+
+```typescript
+import { Component, Input, Output, EventEmitter, input, output } from '@angular/core';
+import { User } from '../user.model';
+
+// ── Modern signal-based inputs (Angular 17.1+) ────────────────────
+@Component({
+    selector: 'app-user-card',
+    template: `
+        <div class="card">
+            <h2>{{ user().name }}</h2>         <!-- Signal: user() -->
+            <button (click)="liked.emit(user().id)">Like</button>
+        </div>
+    `
+})
+export class UserCardComponent {
+    user   = input.required<User>();           // Required signal input
+    size   = input<'sm' | 'lg'>('sm');        // Optional with default
+    liked  = output<string>();                 // Signal output (replaces EventEmitter)
+}
+
+// ── Classic decorator-based inputs ────────────────────────────────
+@Component({ ... })
+export class UserCardComponent {
+    @Input({ required: true }) user!: User;
+    @Input() size: 'sm' | 'lg' = 'sm';
+    @Output() liked = new EventEmitter<string>();
+}
+
+// Parent usage
+<app-user-card [user]="currentUser" (liked)="handleLike($event)" />
+```
+
+---
+
+## Lifecycle Hooks
+
+```typescript
+import {
+    OnInit, OnChanges, OnDestroy, AfterViewInit,
+    SimpleChanges, Component, inject
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+@Component({ ... })
+export class MyComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+    // Modern: inject DestroyRef and use takeUntilDestroyed
+    private destroyRef = inject(DestroyRef);
+
+    ngOnChanges(changes: SimpleChanges) {
+        // Runs when @Input() values change
+        if (changes['userId']) {
+            this.reload(changes['userId'].currentValue);
+        }
+    }
+
+    ngOnInit() {
+        // Runs once — inputs are set, but view not yet rendered
+        this.service.data$.pipe(
+            takeUntilDestroyed(this.destroyRef)  // Auto-unsubscribe
+        ).subscribe(d => this.data = d);
+    }
+
+    ngAfterViewInit() {
+        // Runs after view and child components are rendered
+        // Safe to access @ViewChild references here
+    }
+
+    ngOnDestroy() {
+        // Cleanup: cancel subscriptions, clear timeouts
+        // Prefer takeUntilDestroyed over manual cleanup
+    }
+}
+```
+
+---
+
+## Routing
+
+```typescript
+// app.routes.ts
+import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
+
+export const routes: Routes = [
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    {
+        path: 'dashboard',
+        loadComponent: () =>
+            import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+    },
+    {
+        path: 'users',
+        canActivate: [authGuard],      // Route guard
+        children: [
+            { path: '',   loadComponent: () => import('./features/users/user-list/user-list.component') },
+            { path: ':id',loadComponent: () => import('./features/users/user-detail/user-detail.component') },
+        ]
+    },
+    { path: '**', loadComponent: () => import('./features/not-found/not-found.component') }
+];
+
+// Reading route params in a component
+import { ActivatedRoute } from '@angular/router';
+export class UserDetailComponent {
+    private route = inject(ActivatedRoute);
+
+    ngOnInit() {
+        this.route.paramMap.subscribe(params => {
+            const id = params.get('id')!;
+            this.loadUser(id);
+        });
+    }
+}
+```
+
+### Route Guards
+
+```typescript
+// auth.guard.ts
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
+export const authGuard: CanActivateFn = (route, state) => {
+    const auth   = inject(AuthService);
+    const router = inject(Router);
+
+    if (auth.isLoggedIn()) return true;
+
+    return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+};
+```
+
+---
+
+## Reactive Forms
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+
+@Component({
+    standalone: true,
+    imports: [ReactiveFormsModule, NgIf],
+    template: `
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <input formControlName="email" placeholder="Email">
+            <span *ngIf="email.invalid && email.touched">
+                {{ email.hasError('required') ? 'Email required' : 'Invalid email' }}
+            </span>
+
+            <input formControlName="password" type="password" placeholder="Password">
+
+            <button type="submit" [disabled]="form.invalid">Sign In</button>
+        </form>
+    `
+})
+export class LoginFormComponent {
+    private fb = inject(FormBuilder);
+
+    form: FormGroup = this.fb.group({
+        email:    ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+    });
+
+    get email() { return this.form.get('email')!; }
+
+    onSubmit() {
+        if (this.form.invalid) return;
+        console.log(this.form.value); // { email: '...', password: '...' }
+    }
+}
+```
+
+---
+
+## NgRx — State Management at Scale
+
+NgRx is Redux for Angular, using RxJS. Use it when global state has complex transitions, many consumers, or you need DevTools / time-travel debugging.
+
+```typescript
+// counter.actions.ts
+import { createAction, props } from '@ngrx/store';
+export const increment = createAction('[Counter] Increment');
+export const decrement = createAction('[Counter] Decrement');
+export const reset     = createAction('[Counter] Reset', props<{ value: number }>());
+
+// counter.reducer.ts
+import { createReducer, on } from '@ngrx/store';
+const initialState = { count: 0 };
+export const counterReducer = createReducer(
+    initialState,
+    on(increment, state => ({ ...state, count: state.count + 1 })),
+    on(decrement, state => ({ ...state, count: state.count - 1 })),
+    on(reset,     (state, { value }) => ({ ...state, count: value })),
+);
+
+// In a component
+store.dispatch(increment());
+store.dispatch(reset({ value: 0 }));
+const count$ = store.select(state => state.counter.count);
+```
+
+---
+
+## Angular Universal (SSR)
+
+Angular Universal renders Angular server-side. Since Angular 17, SSR is built-in:
+
+```bash
+ng new my-app --ssr          # New project with SSR
+ng add @angular/ssr          # Add to existing project
+```
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary">
+
+- [Angular Docs](https://angular.dev/) — new official docs (2023 rewrite)
+- [Angular CLI Reference](https://angular.dev/tools/cli)
+- [RxJS Docs](https://rxjs.dev/) — official operator reference
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [NgRx Docs](https://ngrx.io/docs) — state management library
+- [Angular University Blog](https://blog.angular-university.io/) — deep dives on Angular internals
+- [RxJS Marbles](https://rxmarbles.com/) — interactive operator visualizations
+
+</TabItem>
+<TabItem value="courses" label="External Courses">
+
+- 🎓 **[Angular University — Complete Angular course](https://angular-university.io/)** — (PAID)
+- 🎓 **[Frontend Masters: Angular](https://frontendmasters.com/learn/angular/)** — (PAID)
+
+</TabItem>
+</Tabs>

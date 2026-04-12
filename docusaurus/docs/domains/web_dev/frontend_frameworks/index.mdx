@@ -1,0 +1,240 @@
+---
+title: Frontend Frameworks
+description: Why frontend frameworks exist, the component model, reactivity systems, props/data flow, lifecycle, state management, routing, and a comparison of React, Angular, Vue, and Svelte.
+sidebar_label: Frontend Frameworks
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Frontend Frameworks
+
+> **Status:** 🟢 Modern — React, Angular, and Vue are all actively maintained and dominant in the job market.
+
+This page is the **encyclopedic reference** for frontend framework *concepts*. For framework-specific depth, see the sub-pages:
+- [React](./react) · [Angular](./angular) · [Vue](./vue)
+
+> **Prerequisite:** [JavaScript](../core/javascript) · [TypeScript](../typescript)
+
+---
+
+## Why Frameworks Exist
+
+Vanilla JavaScript struggles as applications grow:
+
+| Problem | Framework Solution |
+|---------|-------------------|
+| Manual DOM updates get out of sync with data | **Reactivity** — UI auto-updates when state changes |
+| No standard way to split code into pieces | **Component model** — encapsulated, reusable pieces |
+| Every page requires a full reload | **Client-side routing** — page transitions without reload |
+| Global state management is ad-hoc | **State management** — structured patterns for shared data |
+| Inconsistent team conventions | **Opinionated structure** — one way to do things |
+
+---
+
+## The Component Model
+
+All modern frameworks share the concept of **components** — self-contained units of UI that combine structure, logic, and (optionally) style.
+
+```
+Application
+├── AppShell            ← Root component
+│   ├── Navbar          ← Navigation component
+│   ├── Sidebar         ← Sidebar component
+│   └── Main
+│       ├── ArticleList ← Container (fetches data)
+│       │   ├── ArticleCard  ← Presentational (displays data)
+│       │   └── ArticleCard
+│       └── Pagination
+```
+
+**Presentational vs Container components:**
+- **Presentational:** receive data via props, render UI, emit events. No side effects.
+- **Container:** fetch data, manage state, pass data down to presentational children.
+
+---
+
+## Reactivity Models
+
+Each framework takes a different approach to the core problem: *when data changes, how does the UI know?*
+
+### React — Explicit State Updates + Virtual DOM
+
+You call a state setter to trigger a re-render. React diffs a **Virtual DOM** (an in-memory description of the UI) against the previous version and applies the minimum real DOM changes.
+
+```jsx
+function Counter() {
+    const [count, setCount] = useState(0);
+    return <button onClick={() => setCount(count + 1)}>{count}</button>;
+}
+```
+
+### Angular — Zone.js + Signals
+
+Angular traditionally uses **Zone.js** to automatically detect when async operations complete and trigger change detection. Angular 17+ **Signals** give fine-grained, explicit reactivity similar to React hooks.
+
+```typescript
+// Angular Signals (v17+)
+count = signal(0);
+doubled = computed(() => this.count() * 2);
+
+increment() { this.count.update(n => n + 1); }
+```
+
+### Vue — Reactive Proxies
+
+Vue wraps your state in a JavaScript `Proxy`. Any property read or write is tracked automatically — only the components that consumed a changed value re-render.
+
+```javascript
+// Vue Composition API
+const count = ref(0);
+const doubled = computed(() => count.value * 2);
+```
+
+### Svelte — Compile-Time Reactivity
+
+Svelte has no virtual DOM. The Svelte compiler analyses your `<script>` block and generates minimal, surgical DOM update calls at compile time. `let count = 0; count++` literally compiles into a DOM update — zero runtime overhead.
+
+---
+
+## Props and Data Flow
+
+Data flows **down** via props. Events flow **up** via callbacks or emitters.
+
+```
+Parent Component
+  │
+  │  props (data flowing DOWN)
+  ▼
+Child Component
+  │
+  │  events / callbacks (data flowing UP)
+  ▼
+Parent Component
+```
+
+| Framework | Passing data down | Emitting data up |
+|-----------|-----------------|-----------------|
+| React | props | callback props (`onSubmit`, `onChange`) |
+| Angular | `@Input()` | `@Output()` + `EventEmitter` |
+| Vue | `:prop-name` binding | `$emit('event-name', payload)` |
+| Svelte | `export let propName` | `createEventDispatcher()` |
+
+---
+
+## Component Lifecycle
+
+Every component goes through creation, updates, and destruction. Each framework provides hooks to run code at these points.
+
+| Phase | React | Angular | Vue |
+|-------|-------|---------|-----|
+| Setup / Mount | `useEffect(() => {}, [])` | `ngOnInit()` | `onMounted()` |
+| On state/prop change | `useEffect(() => {}, [dep])` | `ngOnChanges()` | `watch(dep, fn)` |
+| Before destroy | `useEffect(() => { return cleanup }, [])` | `ngOnDestroy()` | `onUnmounted()` |
+
+---
+
+## State Management
+
+State comes in three scopes:
+
+| Scope | Where it lives | Solution |
+|-------|---------------|---------|
+| **Local** — one component | Component itself | `useState`, `signal`, `ref` |
+| **Shared** — a subtree | Ancestor component | React Context, Angular Service, Vue `provide/inject` |
+| **Global** — many unrelated parts | External store | Redux Toolkit, Zustand, Pinia, NgRx |
+
+**When to use an external store:**
+- Multiple unrelated components need the same data
+- Complex state transitions (shopping cart, multi-step forms)
+- You need DevTools / time-travel debugging
+
+See framework sub-pages for ecosystem-specific recommendations.
+
+---
+
+## Routing
+
+Client-side routing intercepts navigation events and swaps component trees without a page reload.
+
+| Framework | Router |
+|-----------|--------|
+| React | React Router v6 / TanStack Router |
+| Angular | `@angular/router` (built-in) |
+| Vue | Vue Router (official) |
+
+Routing handles: URL matching, path parameters (`/users/:id`), query strings, nested routes, redirects, lazy-loaded route chunks, and route guards (authentication).
+
+---
+
+## SSR and Meta-Frameworks
+
+Frameworks can run server-side to pre-render HTML — improving initial load performance and SEO.
+
+| Framework | Meta-Framework |
+|-----------|---------------|
+| React | **Next.js** · Remix |
+| Angular | **Angular Universal** (built-in) |
+| Vue | **Nuxt.js** |
+| Svelte | **SvelteKit** |
+
+See [SSR vs CSR](../ssr_csr) for a full treatment of rendering strategies.
+
+---
+
+## Framework Comparison
+
+| | React | Angular | Vue | Svelte |
+|-|-------|---------|-----|--------|
+| **Language** | JS/TS | TypeScript (required) | JS/TS | JS/TS |
+| **Reactivity** | Virtual DOM + explicit state | Zone.js / Signals | Reactive Proxy | Compile-time |
+| **Template syntax** | JSX (JS-in-HTML) | HTML + directives | HTML + JSX option | HTML superset |
+| **Bundle size (core)** | ~42 KB | ~150 KB | ~22 KB | ~2 KB |
+| **Opinionation** | Low | High (batteries included) | Medium | Low |
+| **TypeScript** | Opt-in | Required | Opt-in | Opt-in |
+| **Job market** | ⭐⭐⭐ Very high | ⭐⭐ High (enterprise) | ⭐⭐ Medium | ⭐ Growing |
+| **Best for** | SPAs, diverse teams | Enterprise teams | Progressive enhancement | Performance-critical |
+| **Learning curve** | Medium | Steep | Gentle | Gentle |
+
+**Svelte note:** Svelte is a compile-time framework with a very small runtime footprint and excellent performance. It's growing in popularity but has a smaller ecosystem and job market than React or Vue. If you need deep depth on Svelte, see [SvelteKit docs](https://kit.svelte.dev/).
+
+---
+
+## Build Pipeline
+
+All three frameworks ship as src files that need to be bundled before deployment. See [Build Tools](../build_tools) for how this works.
+
+```
+Source files (.jsx/.tsx/.vue) → Bundler (Vite) → Optimised JS/CSS bundles → CDN/Server
+```
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="react" label="React">
+
+- [React Docs — Learn React](https://react.dev/learn) — official, interactive
+- See [React sub-page](./react) for full reference
+
+</TabItem>
+<TabItem value="angular" label="Angular">
+
+- [Angular Docs](https://angular.dev/overview) — comprehensive official guide
+- See [Angular sub-page](./angular) for full reference
+
+</TabItem>
+<TabItem value="vue" label="Vue">
+
+- [Vue 3 Guide](https://vuejs.org/guide/introduction)
+- See [Vue sub-page](./vue) for full reference
+
+</TabItem>
+<TabItem value="svelte" label="Svelte">
+
+- [Svelte Tutorial](https://learn.svelte.dev/)
+- [SvelteKit Docs](https://kit.svelte.dev/docs/introduction)
+
+</TabItem>
+</Tabs>
