@@ -324,7 +324,48 @@ const sidebars: SidebarsConfig = {
             'domains/foundations/protocols_and_standards/standards_bodies',
           ],
         },
-        'domains/foundations/hardware_fundamentals',
+        {
+          type: 'category',
+          label: 'Hardware Fundamentals',
+          link: { type: 'doc', id: 'domains/foundations/hardware_fundamentals/index' },
+          items: [
+            {
+              type: 'category',
+              label: 'CPU',
+              link: { type: 'doc', id: 'domains/foundations/hardware_fundamentals/cpu/index' },
+              items: [
+                'domains/foundations/hardware_fundamentals/cpu/cores_and_threads',
+                'domains/foundations/hardware_fundamentals/cpu/cache',
+                'domains/foundations/hardware_fundamentals/cpu/pipeline',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'GPU',
+              link: { type: 'doc', id: 'domains/foundations/hardware_fundamentals/gpu/index' },
+              items: [
+                'domains/foundations/hardware_fundamentals/gpu/compute',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Motherboard',
+              link: { type: 'doc', id: 'domains/foundations/hardware_fundamentals/motherboard/index' },
+              items: [
+                'domains/foundations/hardware_fundamentals/motherboard/pcie',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Storage',
+              link: { type: 'doc', id: 'domains/foundations/hardware_fundamentals/storage/index' },
+              items: [
+                'domains/foundations/hardware_fundamentals/storage/ssd',
+                'domains/foundations/hardware_fundamentals/storage/hdd',
+              ],
+            },
+          ],
+        },
         'domains/foundations/memory_management',
         'domains/foundations/concurrency',
         'domains/foundations/networking',
