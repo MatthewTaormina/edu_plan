@@ -96,4 +96,4 @@ While studying, these Wiki pages are useful to dip into:
 
 - [Programming Basics](../domains/foundations/programming_basics.md)
 - [Data Structures](../domains/foundations/data_structures.mdx)
-- [Algorithms](../domains/foundations/algorithms.md)
+- [Algorithms](../domains/foundations/algorithms/index.md)

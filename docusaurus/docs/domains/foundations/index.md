@@ -11,7 +11,7 @@
 |------|-------|---------------|--------|
 | [`programming_basics.md`](programming_basics.md) | Variables, control flow, functions | 4 weeks | 📋 Planned |
 | [`data_structures.mdx`](data_structures.mdx) | Arrays, lists, trees, graphs, hash maps | 4 weeks | 📋 Planned |
-| [`algorithms.md`](algorithms.md) | Sorting, searching, complexity analysis | 3 weeks | 📋 Planned |
+| [Algorithms](algorithms/index.md) | Sorting, searching, complexity, graph traversal, pathfinding | 4–6 weeks | 📋 Planned |
 | [`memory_management.md`](memory_management.md) | Stack, heap, GC, pointers, ownership | 3 weeks | 📋 Planned |
 | [`concurrency.md`](concurrency.md) | Threads, async, parallelism, deadlocks | 3 weeks | 📋 Planned |
 | [`networking.md`](networking.md) | TCP/IP, HTTP, DNS, TLS | 2 weeks | 📋 Planned |

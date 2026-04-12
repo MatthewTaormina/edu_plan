@@ -285,7 +285,22 @@ const sidebars: SidebarsConfig = {
       items: [
         'domains/foundations/programming_basics',
         'domains/foundations/data_structures',
-        'domains/foundations/algorithms',
+        {
+          type: 'category',
+          label: 'Algorithms',
+          link: { type: 'doc', id: 'domains/foundations/algorithms/index' },
+          items: [
+            'domains/foundations/algorithms/complexity',
+            'domains/foundations/algorithms/search',
+            'domains/foundations/algorithms/sorting',
+            'domains/foundations/algorithms/recursion',
+            'domains/foundations/algorithms/graph',
+            'domains/foundations/algorithms/pathfinding',
+            'domains/foundations/algorithms/greedy',
+            'domains/foundations/algorithms/backtracking',
+            'domains/foundations/algorithms/string',
+          ],
+        },
         'domains/foundations/regex',
         'domains/foundations/protocols_and_standards',
         'domains/foundations/hardware_fundamentals',
