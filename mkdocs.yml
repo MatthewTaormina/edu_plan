@@ -152,6 +152,38 @@ nav:
       - courses/python_professional/index.md
       - "Lesson 01 — Modules and Virtual Environments": courses/python_professional/lesson_01.md
       - "Lesson 02 — Building CLI Tools": courses/python_professional/lesson_02.md
+    - "HTML Fundamentals":
+      - courses/html_fundamentals/index.md
+      - "Lesson 01 — The Web Document": courses/html_fundamentals/lesson_01.md
+      - "Lesson 02 — Text & Flow": courses/html_fundamentals/lesson_02.md
+      - "Lesson 03 — Anchors & Navigation": courses/html_fundamentals/lesson_03.md
+      - "Lesson 04 — Immersive Media": courses/html_fundamentals/lesson_04.md
+      - "Lesson 05 — Table Data": courses/html_fundamentals/lesson_05.md
+      - "Lesson 06 — Forms & Input": courses/html_fundamentals/lesson_06.md
+      - "Lesson 07 — Semantic Architecture": courses/html_fundamentals/lesson_07.md
+      - "Lesson 08 — Capstone": courses/html_fundamentals/lesson_08.md
+    - "CSS Fundamentals":
+      - courses/css_fundamentals/index.md
+      - "Lesson 01 — The Cascade & Selectors": courses/css_fundamentals/lesson_01.md
+      - "Lesson 02 — Color & Typography": courses/css_fundamentals/lesson_02.md
+      - "Lesson 03 — The Box Model Deep-Dive": courses/css_fundamentals/lesson_03.md
+      - "Lesson 04 — Document Flow & Positioning": courses/css_fundamentals/lesson_04.md
+      - "Lesson 05 — Flexbox Layouts": courses/css_fundamentals/lesson_05.md
+      - "Lesson 06 — Grid Layouts": courses/css_fundamentals/lesson_06.md
+      - "Lesson 07 — Responsive Paradigms": courses/css_fundamentals/lesson_07.md
+      - "Lesson 08 — Animations & Transitions": courses/css_fundamentals/lesson_08.md
+      - "Lesson 09 — Capstone": courses/css_fundamentals/lesson_09.md
+    - "Vanilla JavaScript Fundamentals":
+      - courses/javascript_fundamentals/index.md
+      - "Lesson 01 — Execution Context": courses/javascript_fundamentals/lesson_01.md
+      - "Lesson 02 — Querying the DOM": courses/javascript_fundamentals/lesson_02.md
+      - "Lesson 03 — DOM Manipulation": courses/javascript_fundamentals/lesson_03.md
+      - "Lesson 04 — Event Driven Architecture": courses/javascript_fundamentals/lesson_04.md
+      - "Lesson 05 — State & Storage": courses/javascript_fundamentals/lesson_05.md
+      - "Lesson 06 — Form Handling": courses/javascript_fundamentals/lesson_06.md
+      - "Lesson 07 — Time & Asynchrony": courses/javascript_fundamentals/lesson_07.md
+      - "Lesson 08 — Network Requests": courses/javascript_fundamentals/lesson_08.md
+      - "Lesson 09 — Capstone": courses/javascript_fundamentals/lesson_09.md
   - Wiki:
     - "Foundations":
       - domains/foundations/index.md
