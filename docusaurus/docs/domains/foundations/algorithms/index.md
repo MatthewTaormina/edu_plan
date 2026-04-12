@@ -22,6 +22,7 @@ By the end of this section, you will be able to:
 - [ ] Find shortest paths with Dijkstra and A*
 - [ ] Apply greedy and backtracking strategies to constraint problems
 - [ ] Use string matching algorithms efficiently
+- [ ] Compute vector similarity and implement nearest-neighbour search and clustering
 
 ---
 
@@ -59,6 +60,7 @@ By the end of this section, you will be able to:
 | [Greedy Algorithms](./greedy) | Activity selection, coin change, Huffman encoding |
 | [Backtracking](./backtracking) | N-Queens, sudoku solver, subset sum |
 | [String Algorithms](./string) | KMP, Rabin-Karp, edit distance (Levenshtein) |
+| [Vector Algorithms](./vectors) | Cosine similarity, kNN search, ANN indexes, k-Means, DBSCAN |
 
 ---
 

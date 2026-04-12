@@ -299,6 +299,7 @@ const sidebars: SidebarsConfig = {
             'domains/foundations/algorithms/greedy',
             'domains/foundations/algorithms/backtracking',
             'domains/foundations/algorithms/string',
+            'domains/foundations/algorithms/vectors',
           ],
         },
         'domains/foundations/regex',
