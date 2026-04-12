@@ -1,0 +1,51 @@
+---
+title: Build Tools
+description: Why bundlers and dev servers exist, Vite vs Webpack, the modern build pipeline, and when to use each tool.
+sidebar_label: Build Tools
+---
+
+# Build Tools
+
+> **Status:** Ecosystem in transition — Vite 🟢 Modern (2020+) · Webpack 🟡 Legacy (dominant in older projects)
+
+Browser-native JavaScript can now use ES modules directly (`<script type="module">`), but production apps still need a **build step** for performance, compatibility, and developer experience. Build tools handle this.
+
+---
+
+## Why Build Tools Exist
+
+Raw source files have several problems in production:
+
+| Problem | Tool Solution |
+|---------|--------------|
+| Dozens of separate `.js`/`.css` files = slow network (HTTP/1.1 era) | **Bundling** — combine into fewer, larger files |
+| Modern JS syntax breaks in older browsers | **Transpilation** — Babel/esbuild converts ES2024 → ES5 |
+| 600 KB React library is huge | **Tree-shaking** — remove unused exports |
+| TypeScript isn't native JavaScript | **Compilation** — TS → JS |
+| `.vue` and `.jsx` aren't native either | **Transform** — custom file formats → JS + CSS |
+| Hard-coding URLs, API hosts per environment | **Env vars** — inject at build time |
+| Slow feedback loop during development | **Dev server + HMR** — instant updates without full reload |
+
+---
+
+## Bundler vs Dev Server vs Transpiler
+
+These terms are often conflated — they're distinct responsibilities:
+
+| Term | What it does | Example |
+|------|-------------|---------|
+| **Bundler** | Combines modules into output files | Rollup, esbuild |
+| **Dev Server** | Serves files locally with hot reload | Vite's dev server |
+| **Transpiler** | Converts one JS syntax to another | Babel, esbuild |
+| **Build Tool** (umbrella) | Orchestrates all of the above | Vite, Webpack |
+
+Vite uses **esbuild** for transpilation (very fast, Rust-based) and **Rollup** for production bundling. Webpack does everything itself with a custom engine.
+
+---
+
+## In This Section
+
+| Page | What it covers |
+|------|----------------|
+| [Vite](./vite) | Modern dev server + bundler — use for all new projects |
+| [Webpack](./webpack) | Legacy bundler — understanding it for existing codebases |

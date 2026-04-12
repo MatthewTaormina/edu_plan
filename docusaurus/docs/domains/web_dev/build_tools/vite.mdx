@@ -1,0 +1,349 @@
+---
+title: Vite Reference
+description: Vite configuration, plugins, HMR, environment variables, library mode, and production builds.
+sidebar_label: Vite
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Vite
+
+> **Tool:** Vite · **Introduced:** 2020 (Evan You, Vue creator) · **Latest:** Vite 6 (2024) · **Status:** 🟢 Modern
+
+Vite is the **standard build tool for modern frontend development**. It is framework-agnostic — officially supported by React, Vue, Svelte, Solid, and others. It replaced Webpack for new projects because of dramatically faster dev startup and hot-module replacement.
+
+> **Prerequisite:** [Build Tools Overview](./index) · [Node Core](../node_core)
+
+---
+
+## Why Vite is Fast
+
+Traditional bundlers (Webpack) bundle all source files before the dev server can start. On large apps this takes 10–60+ seconds. Vite's speed comes from two architectural decisions:
+
+**1. Native ES Modules in the dev server**
+Vite serves source files *as-is* to the browser using native `<script type="module">`. The browser resolves imports itself. No bundling at startup — the server is ready in milliseconds.
+
+**2. esbuild for transpilation**
+Dependencies (from `node_modules`) are pre-bundled once using **esbuild** — a Go-based transpiler that is 10–100× faster than Babel.
+
+```
+Traditional (Webpack dev server):
+  Scan all files → Bundle everything → Start server → Ready (10–60s)
+
+Vite dev server:
+  Start server immediately → Serve on request → Fast (< 300ms)
+  Browser requests file → Transform just that file → Returned in ms
+```
+
+**Production builds still use Rollup** for optimal tree-shaking and code splitting. esbuild's tree-shaking is less mature for complex cases.
+
+---
+
+## Getting Started
+
+```bash
+# Create a new project (choose your framework)
+npm create vite@latest my-app -- --template react-ts
+npm create vite@latest my-app -- --template vue-ts
+npm create vite@latest my-app -- --template vanilla-ts
+
+# Available templates:
+# vanilla, vanilla-ts, vue, vue-ts, react, react-ts,
+# react-swc, react-swc-ts, preact, svelte, svelte-ts, solid
+
+cd my-app && npm install && npm run dev
+```
+
+---
+
+## `vite.config.ts`
+
+```typescript
+import { defineConfig, loadEnv } from 'vite'
+import react from '@vitejs/plugin-react'
+import path from 'node:path'
+
+export default defineConfig(({ command, mode }) => {
+    // Load env file based on mode (development/production)
+    const env = loadEnv(mode, process.cwd(), '')
+
+    return {
+        plugins: [
+            react(),  // Or vue(), svelte(), etc.
+        ],
+
+        // Path aliases — import from '@/components/Button' instead of '../../components/Button'
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, './src'),
+                '@components': path.resolve(__dirname, './src/components'),
+            }
+        },
+
+        // Dev server configuration
+        server: {
+            port: 3000,
+            open: true,          // Open browser on start
+            proxy: {
+                // Proxy /api to your backend (avoids CORS in development)
+                '/api': {
+                    target: 'http://localhost:8080',
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/api/, ''),
+                }
+            }
+        },
+
+        // Production build options
+        build: {
+            outDir: 'dist',
+            sourcemap: true,          // Generate source maps
+            minify: 'esbuild',        // 'esbuild' (fast) or 'terser' (smaller)
+            target: 'es2020',         // Browser target
+            rollupOptions: {
+                output: {
+                    // Code splitting — group vendor libraries into separate chunks
+                    manualChunks: {
+                        'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+                        'query':        ['@tanstack/react-query'],
+                    }
+                }
+            }
+        },
+
+        // CSS options
+        css: {
+            modules: {
+                localsConvention: 'camelCase'  // .my-class → styles.myClass
+            },
+            preprocessorOptions: {
+                scss: {
+                    additionalData: `@import "@/styles/variables.scss";`
+                }
+            }
+        }
+    }
+})
+```
+
+---
+
+## Environment Variables
+
+Vite loads `.env` files automatically. Variables **must be prefixed with `VITE_`** to be exposed to client code (anything else stays server-only).
+
+```bash
+# .env                  — all modes
+# .env.development      — development only
+# .env.production       — production only
+# .env.local            — local overrides (git-ignored)
+
+VITE_API_URL=https://api.example.com
+VITE_APP_TITLE=My App
+DATABASE_URL=postgres://...      # NOT exposed to client
+```
+
+```typescript
+// Access in client code
+const apiUrl = import.meta.env.VITE_API_URL;
+const isDev  = import.meta.env.DEV;     // true in development
+const isProd = import.meta.env.PROD;    // true in production
+const mode   = import.meta.env.MODE;   // 'development' | 'production' | custom
+
+// TypeScript types for env vars (create vite-env.d.ts)
+interface ImportMetaEnv {
+    readonly VITE_API_URL: string;
+    readonly VITE_APP_TITLE: string;
+}
+interface ImportMeta {
+    readonly env: ImportMetaEnv;
+}
+```
+
+---
+
+## Hot Module Replacement (HMR)
+
+Vite's HMR updates only the changed module in the browser — no full page reload, no lost state.
+
+```typescript
+// Vite exposes HMR API for custom integrations
+if (import.meta.hot) {
+    // Accept updates for this module
+    import.meta.hot.accept((newModule) => {
+        // Called when this file changes
+    });
+
+    // Accept updates from a dependency
+    import.meta.hot.accept('./utils.ts', (newUtils) => {
+        // Called when utils.ts changes
+    });
+
+    // Dispose side-effects before hot update
+    import.meta.hot.dispose((data) => {
+        clearInterval(data.timer);
+    });
+}
+```
+
+In practice, you don't write HMR code yourself — framework plugins (React Fast Refresh, Vue HMR) handle it automatically.
+
+---
+
+## Plugins
+
+Vite's plugin system extends Rollup's. Most useful plugins:
+
+```typescript
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'           // React + Fast Refresh
+// import vue from '@vitejs/plugin-vue'             // Vue SFC support
+import { VitePWA } from 'vite-plugin-pwa'          // Service worker + manifest
+import { visualizer } from 'rollup-plugin-visualizer' // Bundle size visualizer
+import svgr from 'vite-plugin-svgr'                // Import SVGs as React components
+
+export default defineConfig({
+    plugins: [
+        react(),
+
+        svgr(),  // import Logo from './logo.svg' → React component
+
+        VitePWA({
+            registerType: 'autoUpdate',
+            manifest: {
+                name: 'My App',
+                short_name: 'App',
+                theme_color: '#ffffff',
+            }
+        }),
+
+        // Generates dist/stats.html showing what's in your bundle
+        visualizer({ open: true, filename: 'dist/stats.html' }),
+    ]
+})
+```
+
+**Official plugins** (`@vitejs/plugin-*`):
+- `@vitejs/plugin-react` — React + Fast Refresh
+- `@vitejs/plugin-react-swc` — React + SWC (faster than Babel)
+- `@vitejs/plugin-vue` — Vue SFC support
+- `@vitejs/plugin-vue-jsx` — Vue JSX support
+
+---
+
+## Library Mode
+
+Build a reusable library (not an app):
+
+```typescript
+import { defineConfig } from 'vite'
+import { resolve } from 'path'
+import dts from 'vite-plugin-dts'  // Generate .d.ts files
+
+export default defineConfig({
+    plugins: [dts()],
+    build: {
+        lib: {
+            entry:    resolve(__dirname, 'src/index.ts'),
+            name:     'MyLibrary',
+            fileName: 'my-library',
+            formats:  ['es', 'cjs']    // ES module + CommonJS
+        },
+        rollupOptions: {
+            // Don't bundle peer dependencies
+            external: ['react', 'react-dom'],
+            output: {
+                globals: {
+                    react: 'React',
+                    'react-dom': 'ReactDOM'
+                }
+            }
+        }
+    }
+})
+```
+
+---
+
+## Vitest — Testing
+
+Vitest is Vite's native test runner — same config, same transforms, no separate build setup:
+
+```typescript
+// vitest.config.ts (or add to vite.config.ts)
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+    test: {
+        environment: 'jsdom',       // Browser-like env for DOM testing
+        globals: true,              // No need to import describe/it/expect
+        setupFiles: ['./src/test/setup.ts'],
+        coverage: {
+            provider: 'v8',
+            reporter: ['text', 'lcov'],
+        }
+    }
+})
+```
+
+```typescript
+// math.test.ts
+import { describe, it, expect } from 'vitest'
+import { add } from './math'
+
+describe('add', () => {
+    it('adds two numbers', () => {
+        expect(add(2, 3)).toBe(5)
+    })
+
+    it('handles negative numbers', () => {
+        expect(add(-1, 1)).toBe(0)
+    })
+})
+```
+
+```bash
+npm run test           # Watch mode
+npm run test -- --run  # Single run (CI)
+npm run test -- --coverage
+```
+
+---
+
+## Production Build
+
+```bash
+npm run build          # Outputs to dist/
+npm run preview        # Local preview of the production build
+```
+
+Output structure:
+```
+dist/
+├── index.html                  ← Entry point with injected asset links
+├── assets/
+│   ├── index-Bx2kDNkZ.js      ← Main bundle (hashed filename for cache busting)
+│   ├── react-vendor-Q8xdkj.js ← React chunk (separate, long-cached)
+│   └── index-jHn2mKwA.css     ← Extracted CSS
+└── favicon.ico
+```
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary">
+
+- [Vite Official Docs](https://vitejs.dev/) — comprehensive, well-written
+- [Vite Plugin Ecosystem](https://github.com/vitejs/awesome-vite) — curated list of plugins
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Rollup Docs](https://rollupjs.org/) — Vite's production bundler
+- [esbuild Docs](https://esbuild.github.io/) — Vite's transpiler
+
+</TabItem>
+</Tabs>

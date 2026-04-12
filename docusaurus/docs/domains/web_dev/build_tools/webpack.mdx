@@ -1,0 +1,309 @@
+---
+title: Webpack Reference
+description: Webpack entry/output, loaders, plugins, code splitting, and why Vite has replaced it for new projects.
+sidebar_label: Webpack
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Webpack
+
+> **Tool:** Webpack · **Introduced:** 2012 · **Latest:** Webpack 5 (2020) · **Status:** 🟡 Legacy
+
+> [!WARNING]
+> **Webpack is legacy for new projects.** [Vite](./vite) is the modern replacement and should be used for any new frontend project. This page exists because Webpack is ubiquitous in existing codebases — you will encounter it and need to understand it.
+
+Webpack is a **static module bundler**. Given an entry point, it builds a dependency graph of all modules and packages them into one or more output bundles.
+
+> **Prerequisite:** [Build Tools Overview](./index) · [Node Core](../node_core)
+
+---
+
+## Why Webpack Became Legacy
+
+| Problem | Impact |
+|---------|--------|
+| Bundles everything before the dev server starts | Cold start 10–60s on large projects |
+| CommonJS-first — ESM support is bolted on | Tree-shaking less effective |
+| Configuration is verbose and error-prone | High learning curve; lots of boilerplate |
+| Transpilation via Babel (slow) | Rebuilds take seconds |
+
+Vite solves all of these. In 2024, most new projects use Vite. Frameworks like Create React App (which used Webpack internally) are deprecated in favour of Vite-based tools.
+
+**When you'll still encounter Webpack:**
+- Legacy monorepos started before 2021
+- Projects using Create React App (deprecated but still running)
+- Custom build pipelines not yet migrated
+- Libraries with complex Webpack-specific plugin chains
+
+---
+
+## Core Concepts
+
+### Entry and Output
+
+```javascript
+// webpack.config.js
+const path = require('path');
+
+module.exports = {
+    // Entry — where Webpack starts building the dependency graph
+    entry: './src/index.js',
+    // Multiple entry points (for multi-page apps)
+    entry: {
+        main:    './src/main.js',
+        admin:   './src/admin.js',
+        polyfills: './src/polyfills.js',
+    },
+
+    // Output — where bundles are written
+    output: {
+        path:     path.resolve(__dirname, 'dist'),
+        filename: '[name].[contenthash].js',  // Hashed for cache busting
+        clean:    true,                        // Delete dist/ before each build
+        publicPath: '/',                       // URL prefix for assets
+    },
+
+    mode: 'production', // 'development' | 'production' | 'none'
+    devtool: 'source-map',
+};
+```
+
+### Loaders — Transform Non-JS Files
+
+Webpack only understands JavaScript by default. Loaders tell it how to handle other file types.
+
+```javascript
+module.exports = {
+    module: {
+        rules: [
+            // Transpile TypeScript and modern JS with Babel
+            {
+                test: /\.(ts|tsx|js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',      // Modern JS → compatible JS
+                            '@babel/preset-typescript',
+                            ['@babel/preset-react', { runtime: 'automatic' }]
+                        ]
+                    }
+                }
+            },
+            // CSS — extract to a separate file (MiniCssExtractPlugin)
+            {
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,  // Extract to .css file
+                    // OR: 'style-loader'          // Inject into <style> tags
+                    'css-loader',                  // Resolves @import and url()
+                    'postcss-loader',              // PostCSS / Autoprefixer
+                ]
+            },
+            // Sass/SCSS
+            {
+                test: /\.(scss|sass)$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+            },
+            // Images and fonts — copy to dist/ and return URL
+            {
+                test: /\.(png|jpg|gif|svg|webp)$/,
+                type: 'asset/resource',           // Webpack 5 built-in (replaces file-loader)
+                generator: {
+                    filename: 'images/[name].[hash][ext]'
+                }
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'fonts/[name].[hash][ext]'
+                }
+            }
+        ]
+    }
+};
+```
+
+### Plugins — Beyond Loaders
+
+Plugins operate on the bundle itself — injecting HTML, extracting CSS, optimising, and more.
+
+```javascript
+const HtmlWebpackPlugin       = require('html-webpack-plugin');
+const MiniCssExtractPlugin    = require('mini-css-extract-plugin');
+const CssMinimizerPlugin      = require('css-minimizer-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const Dotenv                   = require('dotenv-webpack');
+
+module.exports = {
+    plugins: [
+        // Generate index.html with injected <script> and <link> tags
+        new HtmlWebpackPlugin({
+            template: './public/index.html',
+            title: 'My App',
+            favicon: './public/favicon.ico',
+        }),
+
+        // Extract CSS into separate files (rather than injecting via JS)
+        new MiniCssExtractPlugin({
+            filename: 'styles/[name].[contenthash].css',
+        }),
+
+        // Load .env into process.env (only values used in code are bundled)
+        new Dotenv({ safe: true }),
+
+        // Visualise bundle contents (run with ANALYZE=true npm run build)
+        ...(process.env.ANALYZE ? [new BundleAnalyzerPlugin()] : []),
+    ],
+
+    optimization: {
+        minimizer: [
+            '...', // Keep default JS minifier (Terser)
+            new CssMinimizerPlugin(),
+        ],
+
+        // Code splitting — separate vendor libraries into their own chunk
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test:   /node_modules/,
+                    name:   'vendors',
+                    chunks: 'all',
+                }
+            }
+        },
+
+        // Stable module IDs — prevents vendor chunk hash changing when app code changes
+        moduleIds: 'deterministic',
+    }
+};
+```
+
+---
+
+## Dev Server
+
+```javascript
+module.exports = {
+    devServer: {
+        port: 3000,
+        open: true,
+        hot: true,            // Enable HMR
+        historyApiFallback: true, // SPA — always serve index.html (React Router etc.)
+
+        proxy: [{
+            context: ['/api'],
+            target: 'http://localhost:8080',
+            changeOrigin: true,
+        }],
+
+        static: {
+            directory: path.join(__dirname, 'public'),
+        }
+    }
+};
+```
+
+---
+
+## Code Splitting
+
+```javascript
+// Dynamic import — Webpack automatically code-splits at this boundary
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+
+// Multiple entry points split automatically
+// With splitChunks — shared code extracted into commons chunk
+// With tree-shaking — unused exports removed (requires ESM modules: "sideEffects": false in package.json)
+```
+
+---
+
+## Resolve — Module Resolution
+
+```javascript
+module.exports = {
+    resolve: {
+        // Path aliases (like Vite's resolve.alias)
+        alias: {
+            '@': path.resolve(__dirname, 'src'),
+        },
+        // Extensions to try when importing without extension
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+        // Prefer ESM builds of dual-mode packages
+        mainFields: ['browser', 'module', 'main'],
+    }
+};
+```
+
+---
+
+## Environment Configuration Pattern
+
+Webpack configs are often split into base + environment-specific files:
+
+```
+webpack/
+├── webpack.common.js     ← Shared: entry, output, loaders
+├── webpack.dev.js        ← Dev server, source maps, no minification
+└── webpack.prod.js       ← Minification, optimisation, hashing
+
+// webpack.prod.js
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
+
+module.exports = merge(common, {
+    mode: 'production',
+    devtool: 'source-map',
+    // production-only plugins/optimizations...
+});
+```
+
+---
+
+## Common Pitfalls
+
+| Symptom | Likely cause | Fix |
+|---------|-------------|-----|
+| Slow builds | Babel on node_modules | `exclude: /node_modules/` in loader rules |
+| Bundle size bloat | Moment.js, lodash (full import) | Use `import { debounce } from 'lodash-es'` + tree-shaking |
+| Vendor hash changes on app change | Module IDs not stable | Set `moduleIds: 'deterministic'` |
+| CSS not loading after build | Loader order wrong | CSS loaders run right-to-left: sass → css → extract |
+| `__dirname` not correct | Webpack polyfills it | `resolve.fallback: { path: false }` if using node:path in browser |
+| Circular dependencies | Hard to debug | Use `circular-dependency-plugin` |
+
+---
+
+## Migrating from Webpack to Vite
+
+1. Remove `webpack`, `webpack-cli`, `webpack-dev-server`, all loaders and plugins from `devDependencies`
+2. Remove `webpack.config.js`, `.babelrc`
+3. Install Vite + framework plugin: `npm install -D vite @vitejs/plugin-react`
+4. Create `vite.config.ts`
+5. Update `package.json` scripts: `"dev": "vite"`, `"build": "vite build"`
+6. Move `public/index.html` to project root; add `<script type="module" src="/src/main.tsx">` directly
+7. Update env var references: `process.env.REACT_APP_*` → `import.meta.env.VITE_*`
+8. Update path aliases in `vite.config.ts`
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary">
+
+- [Webpack 5 Docs](https://webpack.js.org/concepts/) — official documentation
+- [Webpack Config Reference](https://webpack.js.org/configuration/) — all options
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) — visualise what's in your bundle
+- [Vite Migration Guide](https://vitejs.dev/guide/migration) — if you're migrating
+
+</TabItem>
+</Tabs>
