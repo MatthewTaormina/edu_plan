@@ -1,6 +1,6 @@
 ---
 title: Data Structures
-description: Arrays, linked lists, stacks, queues, hash tables, trees, and graphs with implementations in Python, TypeScript, Rust, and C.
+description: Arrays, linked lists, stacks, queues, deques, hash tables, trees, heaps, and graphs — with explanations and implementations in Python, TypeScript, Rust, and C.
 sidebar_label: Data Structures
 ---
 
@@ -36,7 +36,10 @@ By the end of this unit, you will be able to:
 - [ ] Traverse a binary tree using recursion
 - [ ] Choose the right data structure for a given problem
 - [ ] State the time complexity of insert/delete/search for each structure
-- [ ] Implement at least 3 structures without using built-in helpers
+- [ ] Explain the difference between a queue, a deque, and a heap — and when to use each
+- [ ] Describe how a heap enforces its property and what problem it solves efficiently
+- [ ] Choose the right data structure for a given problem
+- [ ] State the time complexity of insert/delete/search for each structure
 
 ---
 
@@ -56,6 +59,10 @@ The core question is always: **"What do I need to do most often?"**
 | Process in FIFO order (queues, BFS) | Queue | Restricted access = strong guarantee |
 | Look up items by a key instantly | Hash Table | Hash function → direct bucket |
 | Search hierarchical relationships | Tree | Divide and conquer by structure |
+| Add/remove from **both** ends efficiently | Deque | Doubly-ended — O(1) at front and back |
+| Always access the smallest (or largest) item | Heap / Priority Queue | Tree-shaped; root is always min/max |
+| Look up items by a key instantly | Hash Table | Hash function → direct bucket |
+| Search hierarchical relationships | Tree / BST | Divide and conquer by structure |
 | Model connections between things | Graph | Nodes + edges = any relationship |
 
 Before writing any significant program, ask: *What operations will I do most? What structure makes those fast?*
@@ -711,7 +718,7 @@ Using `list.pop(0)` (Python) or `array.shift()` (JavaScript/TS) for a queue. Bot
 
 ---
 
-### 6. Hash Tables
+### 7. Hash Tables
 
 A **hash table** maps keys to values with average O(1) lookup, insert, and delete.
 
@@ -892,7 +899,7 @@ When does a hash table's worst-case O(n) actually occur? What is a "hash collisi
 
 ---
 
-### 7. Trees
+### 8. Trees
 
 A **tree** is a hierarchical structure. Every node has one parent (except root) and zero or more children. Trees are acyclic.
 
@@ -1064,7 +1071,7 @@ What happens to BST search performance when you insert elements in sorted order?
 
 ---
 
-### 8. Graphs
+### 9. Graphs
 
 A **graph** is nodes connected by edges. Unlike trees, graphs can have cycles and any connection structure.
 
@@ -1222,6 +1229,212 @@ What is the difference between BFS and DFS in terms of what they find? When woul
 
 ---
 
+---
+
+### 10. Heaps
+
+A **heap** is a **tree-shaped data structure** that efficiently answers one question: *"What is the smallest (or largest) item right now?"*
+
+- **Min-heap:** the root is always the smallest element
+- **Max-heap:** the root is always the largest element
+- **Priority queue** is the abstract interface; a heap is the typical implementation
+
+```mermaid
+flowchart TD
+    R["1 (min)"]
+    A["3"]
+    B["5"]
+    C["4"]
+    D["8"]
+    E["6"]
+    F["9"]
+    R --> A --> C
+    A --> D
+    R --> B --> E
+    B --> F
+```
+
+**Heap invariant:** every parent is ≤ all its children (min-heap). The tree is also *complete* — all levels are filled left-to-right. This lets you store the heap in a **plain array** with no pointers: the parent of index `i` is `(i-1)//2`, children are `2i+1` and `2i+2`.
+
+**Real uses:** priority queues, Dijkstra's shortest path, task scheduling by priority, top-K problems (k largest elements from a stream).
+
+**Core operations:**
+
+| Operation | Time | Notes |
+|-----------|------|-------|
+| peek min/max | O(1) | Root is always at index 0 |
+| push (insert) | O(log n) | Bubble up to restore invariant |
+| pop min/max | O(log n) | Sift down after removing root |
+| heapify (build from list) | O(n) | Faster than inserting one-by-one |
+| search arbitrary value | O(n) | Heaps are not sorted — use a BST for that |
+
+**How it works in code:** You almost never implement a heap from scratch — every language provides one. The interesting part is *how* the array trick works: storing a complete binary tree in an array (no pointers needed) and maintaining the heap property by "bubbling up" after insert or "sifting down" after pop. For practical work, learn to use the language's built-in and understand when a heap beats a sorted list (answer: when you insert and delete the min frequently, rather than sorting once).
+
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
+
+```pseudocode
+// Abstract usage — min-heap / priority queue
+heap ← NEW MinHeap<Int>
+
+push(heap, 5)
+push(heap, 1)
+push(heap, 3)
+push(heap, 2)
+
+peek(heap)   // → 1  (always the minimum, O(1))
+pop(heap)    // → 1  (removes and returns minimum, O(log n))
+peek(heap)   // → 2  (next minimum)
+
+// Classic use: process tasks by priority
+task_queue ← NEW MinHeap<Pair<Priority, Task>>
+push(task_queue, (1, "High priority task"))
+push(task_queue, (5, "Low priority task"))
+push(task_queue, (2, "Medium priority task"))
+
+WHILE NOT is_empty(task_queue) DO
+    (priority, task) ← pop(task_queue)   // always lowest number first
+    process(task)
+END WHILE
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import heapq
+
+# heapq implements a MIN-heap on a plain Python list
+nums = [5, 1, 3, 2, 4]
+heapq.heapify(nums)             # O(n) — convert in-place
+
+print(nums[0])                  # 1 — peek min (always index 0, O(1))
+print(heapq.heappop(nums))      # 1 — pop min, O(log n)
+print(heapq.heappop(nums))      # 2
+
+heapq.heappush(nums, 0)         # insert, O(log n)
+print(nums[0])                  # 0 — new minimum
+
+# MAX-heap: negate values (Python only has min-heap)
+max_heap = [-x for x in [5, 1, 3, 2, 4]]
+heapq.heapify(max_heap)
+print(-heapq.heappop(max_heap)) # 5 — largest element
+
+# Priority queue: tuples are sorted by first element
+tasks = []
+heapq.heappush(tasks, (5, "low priority"))
+heapq.heappush(tasks, (1, "urgent!"))
+heapq.heappush(tasks, (3, "medium"))
+
+while tasks:
+    priority, task = heapq.heappop(tasks)
+    print(f"[{priority}] {task}")
+# Output: [1] urgent!, [3] medium, [5] low priority
+
+# Top-K largest from a large stream
+def top_k_largest(nums: list[int], k: int) -> list[int]:
+    return heapq.nlargest(k, nums)   # O(n log k)
+```
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+// TypeScript has no built-in heap — minimal min-heap implementation
+class MinHeap<T> {
+    private data: T[] = [];
+    private compare: (a: T, b: T) => number;
+
+    constructor(compare: (a: T, b: T) => number = (a: any, b: any) => a - b) {
+        this.compare = compare;
+    }
+
+    push(value: T): void {
+        this.data.push(value);
+        this.bubbleUp(this.data.length - 1);
+    }
+
+    pop(): T | undefined {
+        if (!this.data.length) return undefined;
+        const min = this.data[0];
+        const last = this.data.pop()!;
+        if (this.data.length) { this.data[0] = last; this.siftDown(0); }
+        return min;
+    }
+
+    peek(): T | undefined { return this.data[0]; }
+    size(): number { return this.data.length; }
+
+    private parent(i: number) { return Math.floor((i - 1) / 2); }
+    private left(i: number)   { return 2 * i + 1; }
+    private right(i: number)  { return 2 * i + 2; }
+
+    private bubbleUp(i: number): void {
+        while (i > 0) {
+            const p = this.parent(i);
+            if (this.compare(this.data[i], this.data[p]) >= 0) break;
+            [this.data[i], this.data[p]] = [this.data[p], this.data[i]];
+            i = p;
+        }
+    }
+
+    private siftDown(i: number): void {
+        const n = this.data.length;
+        while (true) {
+            let s = i;
+            const l = this.left(i), r = this.right(i);
+            if (l < n && this.compare(this.data[l], this.data[s]) < 0) s = l;
+            if (r < n && this.compare(this.data[r], this.data[s]) < 0) s = r;
+            if (s === i) break;
+            [this.data[i], this.data[s]] = [this.data[s], this.data[i]];
+            i = s;
+        }
+    }
+}
+
+const heap = new MinHeap<number>();
+[5, 1, 3, 2, 4].forEach(n => heap.push(n));
+console.log(heap.pop()); // 1
+console.log(heap.pop()); // 2
+
+// Priority queue with objects
+const pq = new MinHeap<{ priority: number; task: string }>(
+    (a, b) => a.priority - b.priority
+);
+pq.push({ priority: 5, task: 'low' });
+pq.push({ priority: 1, task: 'urgent' });
+console.log(pq.pop()?.task); // 'urgent'
+```
+
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+use std::collections::BinaryHeap;
+use std::cmp::Reverse;
+
+// Rust's BinaryHeap is a MAX-heap
+let mut max_heap = BinaryHeap::new();
+max_heap.push(5);
+max_heap.push(1);
+max_heap.push(3);
+println!("{:?}", max_heap.peek());  // Some(5)
+println!("{:?}", max_heap.pop());   // Some(5)
+
+// MIN-heap: wrap values in Reverse
+let mut min_heap: BinaryHeap<Reverse<i32>> = BinaryHeap::new();
+for x in [5, 1, 3, 2, 4] { min_heap.push(Reverse(x)); }
+println!("{:?}", min_heap.pop());   // Some(Reverse(1)) — smallest first
+```
+
+</TabItem>
+</Tabs>
+
+:::tip[Research Question 🔍]
+Why is `heapify` O(n) even though inserting n items one-by-one is O(n log n)? What is the difference between a heap and a sorted array for a priority queue? When would you choose each? Look up **Dijkstra's algorithm** — how does it use a heap?
+:::
+
+
 ## 📚 Resources
 
 <Tabs>
@@ -1257,7 +1470,7 @@ These assignments can be done in **any language**. Pick the one you're learning.
 :::
 
 ### Assignment 1 — Implement Them All
-**Combines:** Linked list, stack, queue, hash table, BST  
+**Combines:** Linked list, stack, queue, deque, hash table, BST  
 **Language:** Your choice
 
 Implement all five structures **without** using built-in collection types for the core logic:
@@ -1370,7 +1583,7 @@ Load a CSV of friendships (`alice,bob` = they are friends) and implement:
 - [ ] Can traverse a BST inorder, preorder, and postorder
 - [ ] Can write BFS and DFS without looking them up
 - [ ] Can explain what a hash collision is and how chaining resolves it
-- [ ] Know the Big-O of insert/delete/search for all 5 structures (can say from memory)
+- [ ] Know the Big-O of insert/delete/search for all 8 structures (can say from memory)
 - [ ] All 3 assignments committed to GitHub with a README
 
 ---
