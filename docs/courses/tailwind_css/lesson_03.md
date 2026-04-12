@@ -1,0 +1,148 @@
+# Lesson 03 — Flexbox & Grid with Tailwind
+
+> **Course:** Tailwind CSS · **Time:** 45 minutes
+> **📖 Wiki:** [HTML & CSS — Flexbox & Grid](../../domains/web_dev/html_css.md)
+> **🔗 Official Docs:** [Flexbox](https://tailwindcss.com/docs/flex) · [Grid](https://tailwindcss.com/docs/grid-template-columns)
+
+---
+
+## 🎯 Learning Objectives
+
+- [ ] Build flex rows and columns with alignment and distribution
+- [ ] Build grid layouts with auto-fit columns
+- [ ] Combine flex and grid for real-world page sections
+- [ ] Use `flex-1`, `shrink-0`, and `grow` for responsive sizing
+
+---
+
+## 📖 Concepts
+
+### Flexbox Utilities
+
+```html
+<!-- Basic flex container -->
+<div class="flex">                  <!-- display: flex -->
+<div class="flex flex-col">         <!-- flex-direction: column -->
+<div class="inline-flex">          <!-- display: inline-flex -->
+
+<!-- Main axis (justify) — how children are distributed along the flex direction -->
+<div class="flex justify-start">    <!-- default -->
+<div class="flex justify-center">
+<div class="flex justify-end">
+<div class="flex justify-between">  <!-- Space between each item -->
+<div class="flex justify-around">
+<div class="flex justify-evenly">
+
+<!-- Cross axis (items) — how children align perpendicular to flex direction -->
+<div class="flex items-start">
+<div class="flex items-center">     <!-- vertically center in a row -->
+<div class="flex items-end">
+<div class="flex items-stretch">    <!-- default — fill height -->
+<div class="flex items-baseline">
+
+<!-- Gap -->
+<div class="flex gap-4">            <!-- 1rem between all children -->
+<div class="flex gap-x-6 gap-y-2"> <!-- separate horizontal / vertical -->
+
+<!-- Child sizing -->
+<div class="flex">
+    <div class="flex-none w-48">    <!-- fixed width, won't shrink -->
+    <div class="flex-1">           <!-- take all remaining space -->
+    <div class="flex-none w-24">   <!-- fixed width again -->
+</div>
+
+<!-- Wrapping -->
+<div class="flex flex-wrap gap-4">  <!-- wrap to next line at container edge -->
+```
+
+### Real Navbar Pattern
+
+```html
+<header class="flex items-center justify-between px-6 py-4 bg-slate-900 text-white">
+    <!-- Left: Logo -->
+    <a href="/" class="flex items-center gap-2 font-bold text-xl">
+        <img src="/logo.svg" alt="" class="w-8 h-8" aria-hidden="true">
+        MyApp
+    </a>
+
+    <!-- Center: Navigation -->
+    <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="/features" class="hover:text-white transition-colors">Features</a>
+        <a href="/pricing"  class="hover:text-white transition-colors">Pricing</a>
+        <a href="/docs"     class="hover:text-white transition-colors">Docs</a>
+    </nav>
+
+    <!-- Right: CTA -->
+    <div class="flex items-center gap-3">
+        <a href="/login" class="text-sm text-slate-300 hover:text-white">Log in</a>
+        <a href="/signup" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+            Get started
+        </a>
+    </div>
+</header>
+```
+
+### Grid Utilities
+
+```html
+<!-- Explicit column count -->
+<div class="grid grid-cols-1 gap-6">              <!-- 1 column -->
+<div class="grid grid-cols-2 gap-6">              <!-- 2 columns, equal -->
+<div class="grid grid-cols-3 gap-6">              <!-- 3 columns -->
+<div class="grid grid-cols-12 gap-4">             <!-- 12-column layout grid -->
+
+<!-- Auto-responsive columns (no media queries needed!) -->
+<div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6">
+    <!-- Each card is at least 280px; as many fit per row as space allows -->
+
+<!-- Spanning columns -->
+<div class="grid grid-cols-12 gap-4">
+    <aside class="col-span-3">Sidebar (3/12)</aside>
+    <main  class="col-span-9">Content (9/12)</main>
+</div>
+
+<!-- Named areas with arbitrary values (Tailwind JIT) -->
+<div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
+    <header>Header</header>
+    <main>Main content</main>
+    <footer>Footer</footer>
+</div>
+```
+
+### Card Grid
+
+```html
+<!-- Auto-fit card grid -->
+<section class="py-16 px-6">
+    <h2 class="text-3xl font-bold text-center mb-10">Features</h2>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8 max-w-6xl mx-auto">
+
+        <!-- Feature card — repeated 3x -->
+        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 flex flex-col gap-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600" ...></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">Feature Title</h3>
+            <p class="text-gray-500 leading-relaxed flex-1">
+                Feature description goes here.
+            </p>
+            <a href="#" class="text-blue-600 text-sm font-medium hover:underline self-start">
+                Learn more →
+            </a>
+        </div>
+    </div>
+</section>
+```
+
+---
+
+## ✅ Milestone Checklist
+
+- [ ] I built a navbar using `flex justify-between items-center`
+- [ ] I built a responsive card grid using `auto-fit minmax`
+- [ ] I understand `flex-1`, `flex-none`, and `flex-shrink-0`
+- [ ] I combined grid and flex (grid for the page, flex inside cards)
+
+## ➡️ Next Unit
+
+[Lesson 04 — Responsive Design](./lesson_04.md)
