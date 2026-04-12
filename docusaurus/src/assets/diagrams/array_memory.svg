@@ -1,8 +1,56 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 72" width="100%" style="max-width:500px;display:block;margin:1remauto" aria-label="Array with 5 cells indexed 0-4">
   <style>
-    .ac { fill: var(--ifm-card-background-color, #1e1e2e); stroke: var(--ifm-color-primary, #7c3aed); stroke-width: 2; }
-    .av { font: bold 18px monospace; fill: var(--ifm-font-color-base, #cdd6f4); dominant-baseline: middle; text-anchor: middle; }
-    .ai { font: bold 12px monospace; fill: var(--ifm-color-primary, #a78bfa); text-anchor: middle; }
+  /* ── Light mode (default) ── */
+  :root {
+    --d-bg:       #f4f4f8;
+    --d-card:     #ffffff;
+    --d-border:   #7c3aed;
+    --d-primary:  #7c3aed;
+    --d-accent:   #a78bfa;
+    --d-text:     #1a1a2e;
+    --d-muted:    #6b7280;
+    --d-l1-fill: #dbeafe; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #dcfce7; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #fef3c7; --d-l3-stroke: #d97706;
+    --d-l4-fill: #fce7f3; --d-l4-stroke: #db2777;
+    --d-sem:      #c4b5fd;
+  }
+  /* ── Dark mode via OS (IDE preview) ── */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:       #1e1e2e;
+      --d-card:     #27273f;
+      --d-border:   #a78bfa;
+      --d-primary:  #a78bfa;
+      --d-accent:   #c4b5fd;
+      --d-text:     #cdd6f4;
+      --d-muted:    #8b92a8;
+      --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+      --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+      --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+      --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+      --d-sem:      #4c3f75;
+    }
+  }
+  /* ── Dark mode via Docusaurus toggle ── */
+  :root[data-theme="dark"] {
+    --d-bg:       #1e1e2e;
+    --d-card:     #27273f;
+    --d-border:   #a78bfa;
+    --d-primary:  #a78bfa;
+    --d-accent:   #c4b5fd;
+    --d-text:     #cdd6f4;
+    --d-muted:    #8b92a8;
+    --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+    --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+    --d-sem:      #4c3f75;
+  }
+
+    .ac { fill: var(--d-card); stroke: var(--d-primary); stroke-width: 2; }
+    .av { font: bold 18px monospace; fill: var(--d-text); dominant-baseline: middle; text-anchor: middle; }
+    .ai { font: bold 12px monospace; fill: var(--d-primary); text-anchor: middle; }
   </style>
   <rect class="ac" x="4"   y="8" width="78" height="44" rx="6"/><text class="av" x="43"  y="30">10</text><text class="ai" x="43"  y="64">[0]</text>
   <rect class="ac" x="90"  y="8" width="78" height="44" rx="6"/><text class="av" x="129" y="30">20</text><text class="ai" x="129" y="64">[1]</text>

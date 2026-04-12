@@ -1,26 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" class="diagram-svg" role="img" aria-label="Hash table: key is hashed to a bucket index, and the value is stored there">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 180"  class="diagram-svg" role="img" aria-label="Hash table: key is hashed to a bucket index, and the value is stored there">
     <style>
-      .ht-key    { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
-      .ht-hash   { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 2; }
-      .ht-bucket { fill: var(--diagram-layer-3-fill); stroke: var(--diagram-layer-3-stroke); stroke-width: 2; }
-      .ht-val    { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
-      .ht-arr    { stroke: var(--diagram-text-muted); stroke-width: 1.5; fill: none; marker-end: url(#ht-arrow); }
-      .ht-txt    { fill: var(--diagram-text);       font: 13px monospace; text-anchor: middle; dominant-baseline: middle; }
-      .ht-lbl    { fill: var(--diagram-text-muted); font: 10px var(--ifm-font-family-base); text-anchor: middle; }
+  /* ── Light mode (default) ── */
+  :root {
+    --d-bg:       #f4f4f8;
+    --d-card:     #ffffff;
+    --d-border:   #7c3aed;
+    --d-primary:  #7c3aed;
+    --d-accent:   #a78bfa;
+    --d-text:     #1a1a2e;
+    --d-muted:    #6b7280;
+    --d-l1-fill: #dbeafe; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #dcfce7; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #fef3c7; --d-l3-stroke: #d97706;
+    --d-l4-fill: #fce7f3; --d-l4-stroke: #db2777;
+    --d-sem:      #c4b5fd;
+  }
+  /* ── Dark mode via OS (IDE preview) ── */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:       #1e1e2e;
+      --d-card:     #27273f;
+      --d-border:   #a78bfa;
+      --d-primary:  #a78bfa;
+      --d-accent:   #c4b5fd;
+      --d-text:     #cdd6f4;
+      --d-muted:    #8b92a8;
+      --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+      --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+      --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+      --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+      --d-sem:      #4c3f75;
+    }
+  }
+  /* ── Dark mode via Docusaurus toggle ── */
+  :root[data-theme="dark"] {
+    --d-bg:       #1e1e2e;
+    --d-card:     #27273f;
+    --d-border:   #a78bfa;
+    --d-primary:  #a78bfa;
+    --d-accent:   #c4b5fd;
+    --d-text:     #cdd6f4;
+    --d-muted:    #8b92a8;
+    --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+    --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+    --d-sem:      #4c3f75;
+  }
+
+      .ht-key    { fill: var(--d-l1-fill); stroke: var(--d-l1-stroke); stroke-width: 2; }
+      .ht-hash   { fill: var(--d-l4-fill); stroke: var(--d-l4-stroke); stroke-width: 2; }
+      .ht-bucket { fill: var(--d-l3-fill); stroke: var(--d-l3-stroke); stroke-width: 2; }
+      .ht-val    { fill: var(--d-l2-fill); stroke: var(--d-l2-stroke); stroke-width: 2; }
+      .ht-arr    { stroke: var(--d-muted); stroke-width: 1.5; fill: none; marker-end: url(#ht-arrow); }
+      .ht-txt    { fill: var(--d-text);       font: 13px monospace; text-anchor: middle; dominant-baseline: middle; }
+      .ht-lbl    { fill: var(--d-muted); font: 10px system-ui,sans-serif; text-anchor: middle; }
     </style>
     <defs>
       <marker id="ht-arrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-        <polygon points="0 0, 7 2.5, 0 5" fill="var(--diagram-text-muted)" />
+        <polygon points="0 0, 7 2.5, 0 5" fill="var(--d-muted)" />
       </marker>
     </defs>
 
-    {/* Column headers */}
+    
     <text x="80"  y="16" class="ht-lbl">key</text>
     <text x="220" y="16" class="ht-lbl">hash(key)</text>
     <text x="370" y="16" class="ht-lbl">bucket index</text>
     <text x="530" y="16" class="ht-lbl">value</text>
 
-    {/* Row 1 */}
+    
     <rect x="20"  y="30" width="120" height="32" class="ht-key"   rx="4"/>
     <text x="80"  y="47" class="ht-txt">&quot;name&quot;</text>
     <line x1="140" y1="46" x2="158" y2="46" class="ht-arr"/>
@@ -33,7 +81,7 @@
     <rect x="440" y="30" width="120" height="32" class="ht-val"   rx="4"/>
     <text x="500" y="47" class="ht-txt">&quot;Alice&quot;</text>
 
-    {/* Row 2 */}
+    
     <rect x="20"  y="74" width="120" height="32" class="ht-key"   rx="4"/>
     <text x="80"  y="91" class="ht-txt">&quot;age&quot;</text>
     <line x1="140" y1="90" x2="158" y2="90" class="ht-arr"/>
@@ -46,7 +94,7 @@
     <rect x="440" y="74" width="120" height="32" class="ht-val"   rx="4"/>
     <text x="500" y="91" class="ht-txt">25</text>
 
-    {/* Row 3 */}
+    
     <rect x="20"  y="118" width="120" height="32" class="ht-key"   rx="4"/>
     <text x="80"  y="135" class="ht-txt">&quot;city&quot;</text>
     <line x1="140" y1="134" x2="158" y2="134" class="ht-arr"/>
@@ -59,6 +107,6 @@
     <rect x="440" y="118" width="120" height="32" class="ht-val"   rx="4"/>
     <text x="500" y="135" class="ht-txt">&quot;Toronto&quot;</text>
 
-    {/* bottom note */}
+    
     <text x="340" y="168" class="ht-lbl" style="font-size:11px">Each key hashes to a unique bucket index → O(1) average lookup, no searching</text>
   </svg>

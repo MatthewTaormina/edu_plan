@@ -1,47 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" class="diagram-svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500"  class="diagram-svg">
     <style>
-      .bg-page    { fill: var(--diagram-semantic-page);    stroke: var(--diagram-semantic-stroke); stroke-width: 2; }
-        .bg-header  { fill: var(--diagram-semantic-header);  stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
-        .bg-nav     { fill: var(--diagram-semantic-nav);     stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
-        .bg-main    { fill: var(--diagram-semantic-main);    stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
-        .bg-article { fill: var(--diagram-semantic-article); stroke: var(--diagram-layer-2-stroke); stroke-width: 1.5; }
-        .bg-aside   { fill: var(--diagram-semantic-aside);   stroke: var(--diagram-layer-3-stroke); stroke-width: 2; }
-        .bg-footer  { fill: var(--diagram-semantic-footer);  stroke: var(--diagram-semantic-stroke); stroke-width: 2; }
-        .dg-tag  { fill: var(--diagram-text);       font-family: monospace;                  font-weight: 700; font-size: 15px; text-anchor: middle; }
-        .dg-desc { fill: var(--diagram-text-muted); font-family: var(--ifm-font-family-base); font-size: 12px;  text-anchor: middle; }
+  /* ── Light mode (default) ── */
+  :root {
+    --d-bg:       #f4f4f8;
+    --d-card:     #ffffff;
+    --d-border:   #7c3aed;
+    --d-primary:  #7c3aed;
+    --d-accent:   #a78bfa;
+    --d-text:     #1a1a2e;
+    --d-muted:    #6b7280;
+    --d-l1-fill: #dbeafe; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #dcfce7; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #fef3c7; --d-l3-stroke: #d97706;
+    --d-l4-fill: #fce7f3; --d-l4-stroke: #db2777;
+    --d-sem:      #c4b5fd;
+  }
+  /* ── Dark mode via OS (IDE preview) ── */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:       #1e1e2e;
+      --d-card:     #27273f;
+      --d-border:   #a78bfa;
+      --d-primary:  #a78bfa;
+      --d-accent:   #c4b5fd;
+      --d-text:     #cdd6f4;
+      --d-muted:    #8b92a8;
+      --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+      --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+      --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+      --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+      --d-sem:      #4c3f75;
+    }
+  }
+  /* ── Dark mode via Docusaurus toggle ── */
+  :root[data-theme="dark"] {
+    --d-bg:       #1e1e2e;
+    --d-card:     #27273f;
+    --d-border:   #a78bfa;
+    --d-primary:  #a78bfa;
+    --d-accent:   #c4b5fd;
+    --d-text:     #cdd6f4;
+    --d-muted:    #8b92a8;
+    --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+    --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+    --d-sem:      #4c3f75;
+  }
+
+      .bg-page    { fill: var(--diagram-semantic-page);    stroke: var(--d-sem); stroke-width: 2; }
+        .bg-header  { fill: var(--diagram-semantic-header);  stroke: var(--d-l1-stroke); stroke-width: 2; }
+        .bg-nav     { fill: var(--diagram-semantic-nav);     stroke: var(--d-l1-stroke); stroke-width: 2; }
+        .bg-main    { fill: var(--diagram-semantic-main);    stroke: var(--d-l2-stroke); stroke-width: 2; }
+        .bg-article { fill: var(--diagram-semantic-article); stroke: var(--d-l2-stroke); stroke-width: 1.5; }
+        .bg-aside   { fill: var(--diagram-semantic-aside);   stroke: var(--d-l3-stroke); stroke-width: 2; }
+        .bg-footer  { fill: var(--diagram-semantic-footer);  stroke: var(--d-sem); stroke-width: 2; }
+        .dg-tag  { fill: var(--d-text);       font-family: monospace;                  font-weight: 700; font-size: 15px; text-anchor: middle; }
+        .dg-desc { fill: var(--d-muted); font-family: system-ui,sans-serif; font-size: 12px;  text-anchor: middle; }
     </style>
     
-    {/* Body/Page */}
+    
     <rect x="50" y="20" width="700" height="460" class="bg-page" />
     <text x="80" y="50" class="dg-tag">&lt;body&gt;</text>
 
-    {/* Header */}
+    
     <rect x="80" y="60" width="640" height="60" class="bg-header" rx="4"/>
     <text x="210" y="88" class="dg-tag">&lt;header&gt;</text>
     <text x="210" y="106" class="dg-desc">Site logo, brand</text>
 
-    {/* Nav */}
+    
     <rect x="400" y="66" width="300" height="48" class="bg-nav" rx="4"/>
     <text x="550" y="88" class="dg-tag">&lt;nav&gt;</text>
     <text x="550" y="105" class="dg-desc">Navigation links</text>
 
-    {/* Main */}
+    
     <rect x="80" y="140" width="450" height="250" class="bg-main" rx="4"/>
     <text x="160" y="165" class="dg-tag">&lt;main&gt;</text>
 
-    {/* Article */}
+    
     <rect x="100" y="185" width="410" height="185" class="bg-article" rx="4"/>
     <text x="305" y="250" class="dg-tag">&lt;article&gt;</text>
     <text x="305" y="270" class="dg-desc">Independent, reusable content</text>
     <text x="305" y="288" class="dg-desc">(e.g., Blog post, news item)</text>
 
-    {/* Aside */}
+    
     <rect x="548" y="140" width="172" height="250" class="bg-aside" rx="4"/>
     <text x="634" y="250" class="dg-tag">&lt;aside&gt;</text>
     <text x="634" y="268" class="dg-desc">Related content,</text>
     <text x="634" y="284" class="dg-desc">sidebar, ads</text>
 
-    {/* Footer */}
+    
     <rect x="80" y="410" width="640" height="50" class="bg-footer" rx="4"/>
     <text x="400" y="440" class="dg-tag">&lt;footer&gt;</text>
     <text x="400" y="455" class="dg-desc">Copyright, secondary links, contact info</text>
