@@ -9,8 +9,6 @@ import TabItem from '@theme/TabItem';
 import YouTubeEmbed from '@site/src/components/YouTubeEmbed';
 import QuizQuestion from '@site/src/components/QuizQuestion';
 import MilestoneChecklist from '@site/src/components/MilestoneChecklist';
-import DomTree from '@site/src/assets/diagrams/dom_tree.svg';
-import CssBoxModel from '@site/src/assets/diagrams/css_box_model.svg';
 
 > **Domain:** Web Development · **Status:** 🔵 Foundation (HTML, 1991 · CSS, 1996) — the permanent bedrock of the web
 >
@@ -72,7 +70,7 @@ Every HTML document is a tree of nodes — the **Document Object Model (DOM)**. 
 Semantic elements tell the browser (and assistive technologies) what the content *means*, not just how it looks.
 
 <div className="svg-graphic-container margin-bottom--lg text--center">
-  <DomTree />
+  <img src="/img/diagrams/dom_tree.svg" alt="Dom Tree" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
 </div>
 
 **Use semantic elements instead of generic `<div>` everywhere:**
@@ -117,7 +115,7 @@ Never skip heading levels for visual reasons. Screen readers build a document ou
 Every element in CSS is a rectangular box. The box model defines how its dimensions are calculated.
 
 <div className="svg-graphic-container margin-bottom--lg text--center">
-  <CssBoxModel />
+  <img src="/img/diagrams/css_box_model.svg" alt="Css Box Model" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
 </div>
 
 ```css

@@ -9,12 +9,6 @@ import TabItem from '@theme/TabItem';
 import YouTubeEmbed from '@site/src/components/YouTubeEmbed';
 import QuizQuestion from '@site/src/components/QuizQuestion';
 import MilestoneChecklist from '@site/src/components/MilestoneChecklist';
-import ArrayMemory from '@site/src/assets/diagrams/array_memory.svg';
-import StackStates from '@site/src/assets/diagrams/stack_states.svg';
-import QueueFifo from '@site/src/assets/diagrams/queue_fifo.svg';
-import HashTable from '@site/src/assets/diagrams/hash_table.svg';
-import BstTree from '@site/src/assets/diagrams/bst_tree.svg';
-import GraphNodes from '@site/src/assets/diagrams/graph_nodes.svg';
 
 # Data Structures
 
@@ -72,7 +66,7 @@ Before writing any significant program, ask: *What operations will I do most? Wh
 
 An **array** is a contiguous block of memory where each element is the same size and directly accessible by index.
 
-<ArrayMemory />
+<img src="/img/diagrams/array_memory.svg" alt="Array Memory" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
 
 `array[2]` → `base_address + (2 × element_size)` → **30**
 
@@ -474,7 +468,7 @@ What is a **doubly linked list**? When would you use it vs. singly linked? What 
 A **stack** is LIFO — **Last In, First Out**. Like a stack of plates — you can only add or take from the top.
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <StackStates />
+  <img src="/img/diagrams/stack_states.svg" alt="Stack States" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
 </div>
 
 **Real uses:** undo/redo, browser back button, call stack, parenthesis matching, expression evaluation.
@@ -617,7 +611,7 @@ function isBalanced(text: string): boolean {
 A **queue** is FIFO — **First In, First Out**. Like a line at a store — new arrivals join the back, service happens at the front.
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <QueueFifo />
+  <img src="/img/diagrams/queue_fifo.svg" alt="Queue Fifo" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
 </div>
 
 **Real uses:** task schedulers, web server request handling, BFS graph traversal, print queues.
@@ -724,7 +718,7 @@ A **hash table** maps keys to values with average O(1) lookup, insert, and delet
 **Concept — how it works:**
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <HashTable />
+  <img src="/img/diagrams/hash_table.svg" alt="Hash Table" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
 </div>
 
 Lookup `table["name"]`:
@@ -903,7 +897,7 @@ When does a hash table's worst-case O(n) actually occur? What is a "hash collisi
 A **tree** is a hierarchical structure. Every node has one parent (except root) and zero or more children. Trees are acyclic.
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <BstTree />
+  <img src="/img/diagrams/bst_tree.svg" alt="Bst Tree" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
 </div>
 
 **Binary Search Tree (BST) rule:** for every node, ALL values in the left subtree are smaller, ALL values in the right subtree are larger. This makes search O(log n) for balanced trees.
@@ -1075,7 +1069,7 @@ What happens to BST search performance when you insert elements in sorted order?
 A **graph** is nodes connected by edges. Unlike trees, graphs can have cycles and any connection structure.
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <GraphNodes />
+  <img src="/img/diagrams/graph_nodes.svg" alt="Graph Nodes" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
 </div>
 
 **Types:** directed (edges have direction), undirected (bidirectional), weighted (edges have costs).
