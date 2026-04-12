@@ -478,9 +478,3 @@ Simulate a complete open-source contribution workflow:
 > You can navigate any codebase's history, collaborate with any team,
 > and recover from any mistake. These skills apply for the rest of your career —
 > every language, every framework, every company.
-
-**Log this in your kanban:** Move `devops/git_workflow` to ✅ Done.
-
-## ➡️ Next Unit
-
-→ [Docker](docker.mdx)

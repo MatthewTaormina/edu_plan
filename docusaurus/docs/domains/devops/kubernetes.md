@@ -475,9 +475,3 @@ Using `kind` locally:
 >
 > Kubernetes is the platform that runs the majority of the world's cloud-native software.
 > You can now deploy, scale, update, and debug containerised applications with confidence.
-
-**Log this in your kanban:** Move `devops/kubernetes` to ✅ Done.
-
-## ➡️ Next Unit
-
-→ [Infrastructure as Code](iac.md)

@@ -560,9 +560,3 @@ Combine Terraform + Ansible in a CI/CD workflow:
 >
 > Everything is in Git, reviewable, reproducible, and automated.
 > You've crossed the line from "DevOps engineer" to "platform engineer."
-
-**Log this in your kanban:** Move `devops/iac` to ✅ Done.
-
-## ➡️ Next Unit
-
-→ [Monitoring & Observability](monitoring.md)

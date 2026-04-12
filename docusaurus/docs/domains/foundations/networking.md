@@ -609,8 +609,3 @@ Build a basic TCP port scanner:
 > **You can now navigate the network layer.**
 >
 > When a service "can't connect" you'll know exactly which tool to reach for and which layer to blame.
-> This is one of the most underrated skills in software — most developers stop at "it works on my machine."
-
-## ➡️ Next
-
-→ [OS Concepts](os_concepts) · [DevOps: Linux CLI](../devops/linux_cli)

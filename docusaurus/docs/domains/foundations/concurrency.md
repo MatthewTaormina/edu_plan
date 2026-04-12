@@ -680,8 +680,3 @@ Implement a producer-consumer pipeline with three stages:
 **Log this in your kanban:** Move `foundations/concurrency` to ✅ Done.
 
 ## ➡️ Next Steps
-
-The Foundations domain is now complete. Choose your path:
-- → [🟢 Beginner Path](../../paths/beginner.md) — continue the guided sequence
-- → [Linux CLI](../devops/linux_cli.md) — essential for any server work
-- → [Git Workflow](../devops/git_workflow.md) — version control for every project

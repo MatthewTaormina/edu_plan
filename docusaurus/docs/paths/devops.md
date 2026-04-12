@@ -32,7 +32,7 @@ flowchart TD
 ### Milestone 1 — Linux & Shell Mastery 🐧
 *~3 weeks*
 
-- [ ] [`domains/devops/linux_cli.md`](../domains/devops/linux_cli.md)
+- [ ] [Linux CLI Wiki](../domains/devops/linux_cli.md)
   - Filesystem navigation and manipulation
   - Users, permissions, sudo
   - Processes (ps, htop, kill, systemd)
@@ -60,7 +60,7 @@ flowchart TD
 ### Milestone 2 — Git Advanced & Collaboration Workflows 🌿
 *~1 week*
 
-- [ ] [`domains/devops/git_workflow.md`](../domains/devops/git_workflow.md)
+- [ ] [Git Workflow Wiki](../domains/devops/git_workflow.md)
   - GitFlow and trunk-based development
   - Rebase vs merge
   - Interactive rebase (clean up commits)
@@ -75,7 +75,7 @@ flowchart TD
 ### Milestone 3 — Docker 🐳
 *~3 weeks*
 
-- [ ] [`domains/devops/docker.mdx`](../domains/devops/docker.mdx)
+- [ ] [Docker Wiki](../domains/devops/docker.mdx)
   - What containers are (vs VMs)
   - Dockerfile syntax and best practices
   - Image layers and caching
@@ -101,7 +101,7 @@ flowchart TD
 ### Milestone 4 — Networking Basics 🌐
 *~2 weeks*
 
-- [ ] [`domains/foundations/networking.md`](../domains/foundations/networking.md)
+- [ ] [Networking Wiki](../domains/foundations/networking.md)
   - OSI model (focus on layers 3–7 in practice)
   - IP addressing, subnets, CIDR
   - TCP vs UDP
@@ -122,7 +122,7 @@ flowchart TD
 ### Milestone 5 — Kubernetes ☸️
 *~5 weeks*
 
-- [ ] [`domains/devops/kubernetes.md`](../domains/devops/kubernetes.md)
+- [ ] [Kubernetes Wiki](../domains/devops/kubernetes.md)
   - Pods, Deployments, Services, ConfigMaps, Secrets
   - Namespaces and RBAC basics
   - Persistent volumes
@@ -149,7 +149,7 @@ flowchart TD
 ### Milestone 6 — CI/CD Pipelines ⚙️
 *~3 weeks*
 
-- [ ] [`domains/devops/ci_cd.md`](../domains/devops/ci_cd.md)
+- [ ] [CI/CD Wiki](../domains/devops/ci_cd.md)
   - What CI/CD is and why it matters
   - GitHub Actions deep dive
     - Workflows, jobs, steps
@@ -172,7 +172,7 @@ flowchart TD
 ### Milestone 7 — Cloud Fundamentals ☁️
 *~3 weeks*
 
-- [ ] [`domains/cloud/fundamentals.md`](../domains/cloud/fundamentals.md)
+- [ ] [Cloud Fundamentals Wiki](../domains/cloud/fundamentals.md)
   - Cloud concepts: regions, AZs, pricing models
   - Compute: VMs, containers, serverless
   - Storage: object storage, block storage, databases
@@ -190,7 +190,7 @@ flowchart TD
 ### Milestone 8 — Infrastructure as Code 🏗️
 *~3 weeks*
 
-- [ ] [`domains/devops/iac.md`](../domains/devops/iac.md)
+- [ ] [Infrastructure as Code Wiki](../domains/devops/iac.md)
   - Why IaC (reproducible, versioned infrastructure)
   - Terraform: providers, resources, state, modules
   - Terraform Cloud (free tier)

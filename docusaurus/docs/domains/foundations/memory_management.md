@@ -496,7 +496,3 @@ Implement a simple mark-and-sweep garbage collector:
 > and understanding why languages make the trade-offs they do.
 
 **Log this in your kanban:** Move `foundations/memory_management` to ✅ Done.
-
-## ➡️ Next Unit
-
-→ [Concurrency](concurrency.md)

@@ -554,11 +554,3 @@ Using a bank account table (`id, owner, balance`):
     "Completed all three assignments",
   ]}
 />
-
----
-
-## ➡️ Next
-
-- [Database Design](./design) — normalization, ER diagrams, patterns
-- [NoSQL](./nosql) — when not to use SQL
-- [Performance](./performance) — EXPLAIN ANALYZE, query optimization, connection pooling

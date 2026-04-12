@@ -488,5 +488,3 @@ Write unit tests for each validator with valid AND invalid inputs.
 ---
 
 ## ➡️ Next Unit
-
-→ [Protocols & Standards](protocols_and_standards.mdx) — or return to your path

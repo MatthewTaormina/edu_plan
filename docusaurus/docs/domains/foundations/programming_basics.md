@@ -514,10 +514,4 @@ Before moving on, confirm you can do all of these **without looking up syntax**:
 
 **Log this in your kanban:** Move `foundations/programming_basics` to ✅ Done.
 
----
 
-## ➡️ Next Unit
-
-→ [Data Structures](data_structures.mdx)
-
-**Or if you're on the Beginner Path:** continue to [Milestone 3 — Data Structures & Algorithms](../../paths/beginner.md#milestone-3--data-structures--algorithms-basics-)

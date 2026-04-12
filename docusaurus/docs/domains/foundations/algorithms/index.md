@@ -71,9 +71,3 @@ By the end of this section, you will be able to:
 > and when O(n²) is perfectly fine.
 
 **Log this in your kanban:** Move `foundations/algorithms` to ✅ Done.
-
----
-
-## ➡️ Next Unit
-
-→ [Memory Management](../memory_management.md)

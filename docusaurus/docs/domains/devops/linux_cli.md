@@ -554,9 +554,3 @@ A production-style automated backup:
 >
 > Every server you ever touch will give you a shell prompt. You're ready for it.
 > Docker containers, cloud VMs, CI pipelines — they're all just Linux under the hood.
-
-**Log this in your kanban:** Move `devops/linux_cli` to ✅ Done.
-
-## ➡️ Next Unit
-
-→ [Git Workflow](git_workflow.md)

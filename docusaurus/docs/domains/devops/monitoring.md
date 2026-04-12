@@ -605,9 +605,3 @@ Simulate a production incident:
 >
 > When something breaks at 3 AM, you'll know it before your users do,
 > you'll know which service caused it, and you'll have the data to explain why.
-
-**Log this in your kanban:** Move `devops/monitoring` to ✅ Done.
-
-## ➡️ Next Unit
-
-→ [Testing](testing.md)

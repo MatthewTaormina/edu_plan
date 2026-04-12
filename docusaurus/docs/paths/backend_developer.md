@@ -97,9 +97,9 @@ PHP powers ~77% of websites. Even Node.js-focused developers benefit from readin
 
 | Topic | Resource |
 |-------|---------|
-| Git & version control | [Git Fundamentals](../domains/devops/git_workflow.md) |
-| Linux server basics | [Linux CLI](../domains/devops/index.md) |
-| Docker containers | [Docker Fundamentals](../domains/devops/docker.mdx) |
+| Git & version control | [Git Workflow Wiki](../domains/devops/git_workflow.md) |
+| Linux server basics | [Linux CLI Wiki](../domains/devops/linux_cli.md) |
+| Docker containers | [Docker Wiki](../domains/devops/docker.mdx) |
 | Environment & secrets | Lesson 05 of Node.js Fundamentals |
 | CI/CD basics | Coming soon |
 
@@ -111,9 +111,9 @@ These wiki pages are cross-linked from lessons. Bookmark them:
 
 | Topic | Page |
 |-------|------|
-| Node.js runtime & event loop | [domains/web_dev/nodejs.md](../domains/web_dev/nodejs.md) |
-| HTTP servers & middleware | [domains/web_dev/http_server.md](../domains/web_dev/http_server.md) |
-| REST API design | [domains/web_dev/rest_api.md](../domains/web_dev/rest_api.md) |
+| Node.js runtime & event loop | [Node.js Wiki](../domains/web_dev/nodejs.md) |
+| HTTP servers & middleware | [HTTP Server Wiki](../domains/web_dev/http_server.md) |
+| REST API design | [REST API Wiki](../domains/web_dev/rest_api.md) |
 
 ---
 

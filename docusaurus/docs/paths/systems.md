@@ -30,7 +30,7 @@ flowchart TD
 
 **Why C?** C is the lingua franca of systems. Understanding C makes Rust, Go, and OS concepts click.
 
-- [ ] [`domains/systems_programming/c_fundamentals.md`](../domains/systems_programming/c_fundamentals.md)
+- [ ] [C Fundamentals Wiki](../domains/systems_programming/c_fundamentals.md)
   - Compilation process (preprocessing, compiling, linking)
   - Pointers and pointer arithmetic
   - Stack vs heap allocation (malloc/free)
@@ -55,7 +55,7 @@ flowchart TD
 ### Milestone 2 — Memory Management Deep Dive 🧠
 *~3 weeks*
 
-- [ ] [`domains/foundations/memory_management.md`](../domains/foundations/memory_management.md)
+- [ ] [Memory Management Wiki](../domains/foundations/memory_management.md)
   - Stack frames and the call stack
   - Heap allocation strategies
   - Memory leaks and dangling pointers
@@ -75,7 +75,7 @@ flowchart TD
 ### Milestone 3 — OS Concepts 🖥️
 *~3 weeks*
 
-- [ ] [`domains/foundations/os_concepts.md`](../domains/foundations/os_concepts.md)
+- [ ] [OS Concepts Wiki](../domains/foundations/os_concepts.md)
   - Processes and threads
   - System calls
   - File descriptors and I/O
@@ -98,7 +98,7 @@ flowchart TD
 ### Milestone 4 — Rust Fundamentals 🦀
 *~6 weeks*
 
-- [ ] [`domains/systems_programming/rust_fundamentals.md`](../domains/systems_programming/rust_fundamentals.md)
+- [ ] [Rust Fundamentals Wiki](../domains/systems_programming/rust_fundamentals.md)
   - Ownership, borrowing, lifetimes
   - Structs, enums, pattern matching
   - The Result and Option types
@@ -125,7 +125,7 @@ flowchart TD
 ### Milestone 5 — Concurrency 🔀
 *~3 weeks*
 
-- [ ] [`domains/foundations/concurrency.md`](../domains/foundations/concurrency.md)
+- [ ] [Concurrency Wiki](../domains/foundations/concurrency.md)
   - Threads and race conditions
   - Mutexes, semaphores, deadlocks
   - Async I/O and event loops
@@ -142,7 +142,7 @@ flowchart TD
 ### Milestone 6 — Assembly Basics (Optional but recommended) ⚙️
 *~3 weeks*
 
-- [ ] [`domains/systems_programming/assembly_basics.md`](../domains/systems_programming/assembly_basics.md)
+- [ ] [Assembly Basics Wiki](../domains/systems_programming/assembly_basics.md)
   - x86/x64 register model
   - Common instructions (mov, add, cmp, jmp, call)
   - The stack frame and calling conventions

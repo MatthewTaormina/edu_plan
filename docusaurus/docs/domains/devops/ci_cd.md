@@ -626,9 +626,3 @@ Create a shared workflow your other repos could call:
 >
 > CI/CD is what separates "it works on my machine" from "it works in production."
 > Every commit you push is now automatically tested, built, and deployable.
-
-**Log this in your kanban:** Move `devops/ci_cd` to ✅ Done.
-
-## ➡️ Next Unit
-
-→ [Kubernetes](kubernetes.md)

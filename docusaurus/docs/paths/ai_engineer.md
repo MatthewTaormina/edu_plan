@@ -55,7 +55,7 @@ ML fundamentals (training models, neural network math) are included as optional 
 
 Skip if your goal is AI engineering, not research. Come back later.
 
-- [ ] [`domains/ai_ml/foundations.md`](../domains/ai_ml/foundations.md)
+- [ ] [ML Foundations Wiki](../domains/ai_ml/foundations.md)
   - Linear algebra intuition (vectors, matrices, dot products)
   - Probability basics (distributions, Bayes)
   - What is training? Loss functions, gradient descent
@@ -70,7 +70,7 @@ Skip if your goal is AI engineering, not research. Come back later.
 ### Milestone 3 — LLM Fundamentals 🧠
 *~2 weeks*
 
-- [ ] [`domains/ai_ml/llm_engineering.md`](../domains/ai_ml/llm_engineering.md)
+- [ ] [LLM Engineering Wiki](../domains/ai_ml/llm_engineering.md)
   - What is a transformer? (Intuition, not math)
   - Tokens, context windows, embeddings
   - Temperature, top-p, system prompts
