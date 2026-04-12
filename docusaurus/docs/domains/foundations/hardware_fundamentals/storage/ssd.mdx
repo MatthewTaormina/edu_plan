@@ -6,7 +6,7 @@ import TabItem from '@theme/TabItem';
 > **Part of:** [Storage](./index) · [Hardware Fundamentals](../index)
 
 > **Tool:** NVMe · **Introduced:** 2013 (NVMe 1.0) · **Latest:** NVMe 2.0 (2021) · **Deprecated:** AHCI (for SSDs) 🟡 · **Status:** 🟢 Modern
-> **Tool:** SATA SSD · **Introduced:** 2007 · **Latest:** SATA III (6 Gbps) · **Deprecated:** N/A · **Status:** 🟡 Legacy (still common, but NVMe is the modern choice)
+> **Tool:** SATA SSD · **Introduced:** 2007 · **Latest:** SATA III (6 Gbps) · **Status:** 🟡 Legacy (still common, but NVMe is the modern choice for new builds)
 
 Solid-state drives store data in **NAND flash memory** — no moving parts, no seek time, and dramatically lower latency than HDDs. The primary differences between SSDs come down to interface (NVMe vs SATA), NAND cell type, and the firmware sophistication of the controller.
 
@@ -14,32 +14,24 @@ Solid-state drives store data in **NAND flash memory** — no moving parts, no s
 
 ## NVMe vs SATA SSD
 
-```mermaid
-graph LR
-    subgraph NVMe["NVMe (Modern)"]
-        NV_PROTO["Protocol: NVMe\n(designed for flash)"]
-        NV_IF["Interface: PCIe 4.0 x4"]
-        NV_SEQ["Sequential read: ~7 GB/s"]
-        NV_RAND["Random 4K read: ~1M IOPS"]
-        NV_LAT["Latency: ~50–100 μs"]
-    end
+The interface is the biggest performance differentiator — NVMe uses PCIe lanes (designed for flash), while SATA uses a protocol originally built for spinning hard disks.
 
-    subgraph SATA_SSD["SATA SSD (Legacy)"]
-        SA_PROTO["Protocol: AHCI\n(designed for HDDs)"]
-        SA_IF["Interface: SATA III (6 Gbps)"]
-        SA_SEQ["Sequential read: ~550 MB/s"]
-        SA_RAND["Random 4K read: ~100K IOPS"]
-        SA_LAT["Latency: ~100–200 μs"]
-    end
-
-    NVMe -->|"~13× faster sequential\n~10× more IOPS"| SATA_SSD
-```
+| Spec | NVMe (PCIe 4.0 × 4) | SATA SSD |
+|------|---------------------|---------|
+| **Protocol** | NVMe — built for low-latency flash | AHCI — built for HDDs, adapted for SSDs |
+| **Interface** | PCIe 4.0 × 4 lanes | SATA III (6 Gbps physical limit) |
+| **Sequential read** | ~7,000 MB/s | ~550 MB/s |
+| **Sequential write** | ~6,500 MB/s | ~520 MB/s |
+| **Random 4K read** | ~1,000,000 IOPS | ~100,000 IOPS |
+| **Latency** | ~50–100 μs | ~100–200 μs |
+| **Form factor** | M.2 (NVMe key) or U.2 | M.2 (SATA key) or 2.5" SATA |
+| **Cost per GB** | Higher | Lower |
 
 **When SATA SSD is still fine:**
 - Budget builds where cost-per-GB matters
 - Older systems without M.2 NVMe slots
 - External enclosures where PCIe bandwidth isn't available
-- Workloads that are already RAM-bound (the SSD speed doesn't matter if hot data is in RAM)
+- Workloads that are RAM-bound (hot data lives in RAM — the SSD speed doesn't matter)
 
 ---
 
@@ -47,86 +39,73 @@ graph LR
 
 NAND flash stores bits by trapping electrons in floating-gate transistors. The number of bits stored per cell determines the trade-off between capacity, speed, and endurance:
 
-```mermaid
-graph LR
-    SLC["SLC\nSingle-Level Cell\n1 bit per cell"]
-    MLC["MLC\nMulti-Level Cell\n2 bits per cell"]
-    TLC["TLC\nTriple-Level Cell\n3 bits per cell"]
-    QLC["QLC\nQuad-Level Cell\n4 bits per cell"]
+| Type | Bits / cell | P/E cycles | Speed | Cost / GB | Best for |
+|------|------------|-----------|-------|----------|---------|
+| **SLC** | 1 | ~100,000 | Fastest | Very high | Enterprise write-heavy (WAL, logging) |
+| **MLC (pMLC)** | 2 | ~10,000 | Fast | High | Enterprise / prosumer (Samsung 983 DCT) |
+| **TLC** | 3 | 1,000–3,000 | Good | Medium | Consumer SSDs — the mainstream standard |
+| **QLC** | 4 | 300–1,000 | Slower on writes | Lowest | High-capacity read-heavy / archive |
 
-    SLC -->|"Less durable\nMore capacity"| MLC --> TLC --> QLC
+**P/E cycle:** Program/Erase cycle — how many times a cell can be written before it wears out. SSD controllers use **wear levelling** to spread writes evenly across all cells so no single group dies early.
 
-    SLC --- S1["Fastest\nHighest endurance\n~100K P/E cycles\nMost expensive"]
-    TLC --- T1["Good balance\n~1,000–3,000 P/E cycles\nConsumer standard"]
-    QLC --- Q1["Cheapest per GB\n~300–1,000 P/E cycles\nBest for cold reads"]
-```
-
-| Type | Bits/cell | P/E cycles | Typical use |
-|------|----------|-----------|------------|
-| SLC | 1 | ~100,000 | Enterprise write-intensive (WAL, databases) |
-| MLC (pMLC) | 2 | ~10,000 | Enterprise — Samsung 983 DCT, etc. |
-| TLC | 3 | 1,000–3,000 | Consumer SSDs, prosumer NAS |
-| QLC | 4 | 300–1,000 | High-capacity consumer / read-heavy NAS |
-
-**P/E cycle:** Program/Erase cycle — how many times a cell can be written before it degrades. SSD controllers use **wear levelling** to distribute writes evenly across all cells.
+The trade-off is simple: more bits per cell = cheaper and larger, but fewer write cycles before the cell degrades.
 
 ---
 
 ## How SSDs Handle Writes — The Write Cliff
 
-NAND flash cannot overwrite existing data in-place. It must **erase** a full block (~256 KB) before writing new data. This creates a write performance cliff when the SSD is nearly full:
+NAND flash cannot overwrite existing data in-place. It must **erase** a full block (~256 KB) before writing new pages. This creates a write performance cliff when the SSD fills up:
 
 ```mermaid
 sequenceDiagram
     participant OS
-    participant SSD_CTRL as "SSD Controller"
+    participant CTRL as "SSD Controller"
     participant NAND
 
-    OS->>SSD_CTRL: Write 4 KB to LBA 1000
-    SSD_CTRL->>NAND: Write to empty page in Block A
-    Note over SSD_CTRL: Fast — free pages available (SSD has space)
+    OS->>CTRL: Write 4 KB
+    CTRL->>NAND: Write to a free page in Block A
+    Note over CTRL: Fast — free pages available
 
-    Note over OS,NAND: (Drive fills up — no free pages)
+    Note over OS,NAND: Drive fills up. No free pages remain.
 
-    OS->>SSD_CTRL: Write 4 KB to LBA 2000
-    SSD_CTRL->>NAND: Read entire Block B (256 KB) to DRAM cache
-    SSD_CTRL->>NAND: Erase Block B (slow — ~1–3 ms per block)
-    SSD_CTRL->>NAND: Write modified block back
-    Note over SSD_CTRL: Slow — Read-Modify-Write amplification
+    OS->>CTRL: Write 4 KB
+    CTRL->>NAND: Read all 256 KB of Block B into DRAM buffer
+    CTRL->>NAND: Erase Block B (~1–3 ms)
+    CTRL->>NAND: Write modified data back to Block B
+    Note over CTRL: Slow — Read-Modify-Write on every write
 ```
 
-**Write amplification:** The ratio of data actually written to NAND vs. data the OS requested. A drive in good health has write amplification close to 1. A full drive doing excessive garbage collection can have write amplification of 10×+.
+**Write amplification:** The ratio of actual NAND writes to OS-requested writes. A healthy drive has write amplification near 1×. A full drive with constant garbage collection can reach 10× or higher — significantly shortening drive life and degrading write throughput.
 
 **Best practices:**
-- Keep SSDs under ~80% capacity to maintain performance
-- Enable TRIM (OS command that tells the SSD which pages are free, allowing background garbage collection)
-- Check drive health with `smartctl` (Linux) or CrystalDiskInfo (Windows)
+- Keep SSDs below ~80% capacity to maintain performance and preserve free space for garbage collection
+- Enable TRIM — the OS notifies the SSD which pages are deleted, allowing background cleanup
+- Check drive health regularly with `smartctl` (Linux) or CrystalDiskInfo (Windows)
 
 ---
 
 ## Wear Levelling and Endurance Ratings
 
-Modern SSDs use the controller to distribute writes evenly across all NAND cells, preventing any single cell from wearing out early.
+Modern SSDs distribute writes evenly across all NAND cells so no single area wears out prematurely.
 
-**TBW (Terabytes Written):** The manufacturer's rated endurance. A drive with 600 TBW can sustain 600 TB of writes over its lifetime.
+**TBW (Terabytes Written):** The manufacturer's lifetime write endurance. For example, 600 TBW means the drive is rated for 600 TB of total writes.
 
-**DWPD (Drive Writes Per Day):** TBW ÷ (SSD capacity × warranty years). A 1 TB drive with 600 TBW over 5 years = 600 / (1 × 5 × 365) ≈ 0.33 DWPD — typical for consumer SSDs.
-
-Enterprise SSDs targeted at database WAL logs often have 3–10 DWPD.
+**DWPD (Drive Writes Per Day):** `TBW ÷ (capacity × warranty years)`. A 1 TB drive with 600 TBW over 5 years = `600 ÷ (1 × 5 × 365)` ≈ **0.33 DWPD** — typical for a consumer drive. Enterprise SSDs for database WAL logs often target 3–10 DWPD.
 
 ---
 
 ## Enterprise vs Consumer SSDs
 
-```mermaid
-graph TD
-    WL{Workload type?}
-    WL -->|Database WAL\nWrite-intensive server| ENT["Enterprise SSD\nSLC or pMLC NAND\nHigh DWPD / TBW\nPower loss protection (capacitor)\nConsistent QoS — no write cliff\nExamples: Samsung PM9A3, Micron 9400"]
-    WL -->|Developer machine\nDesktop / laptop| CON["Consumer SSD\nTLC or QLC NAND\nLow DWPD\nNo power loss protection\nExcellent value\nExamples: Samsung 990 Pro, WD Black SN850X"]
-    WL -->|High-capacity NAS\nMedia storage| NAS["QLC NAS SSD\nHigh capacity / low cost\nRead-optimised\nExamples: Seagate IronWolf 125 SSD"]
-```
+| | Enterprise SSD | Consumer SSD | NAS / QLC SSD |
+|--|---------------|-------------|--------------|
+| **NAND type** | SLC or pMLC | TLC or QLC | QLC |
+| **DWPD** | 3–10+ | 0.1–0.5 | 0.1–0.3 |
+| **Power loss protection** | ✅ Supercapacitor included | ❌ None | ❌ None |
+| **Write consistency** | Consistent — no write cliff | Variable — degrades when full | Variable |
+| **Examples** | Samsung PM9A3, Micron 9400 | Samsung 990 Pro, WD Black SN850X | Seagate IronWolf 125 SSD |
+| **Price / TB** | $300–600+ | $60–120 | $80–100 |
 
-**Power loss protection (PLP):** Enterprise SSDs include supercapacitors that allow the drive to flush its DRAM write cache to NAND if power is suddenly lost. Consumer drives without PLP can corrupt data if power is cut mid-write — fine for desktops, dangerous for servers without UPS.
+**Power loss protection (PLP):** Enterprise SSDs include supercapacitors that give the drive enough power to flush its DRAM write cache to NAND if power is cut suddenly. Consumer drives without PLP can lose or corrupt buffered writes during an unexpected shutdown — acceptable on a desktop, dangerous on a server without a UPS.
 
 ---
 
@@ -137,34 +116,38 @@ graph TD
 
 ```bash
 # Install smartmontools
-sudo apt install smartmontools   # (or equivalent)
+sudo apt install smartmontools
 
-# Check NVMe health
-sudo nvme smart-log /dev/nvme0   # Temperature, wear indicator, error counts
+# NVMe health summary
+sudo nvme smart-log /dev/nvme0
+# Key fields:
+#   "percentage_used"     — 0 = new, 100 = at rated endurance
+#   "data_units_written"  — total writes (× 512 KB per unit)
+#   "media_errors"        — should be 0
 
-# SMART data for SATA SSD
+# SATA SSD full SMART dump
 sudo smartctl -a /dev/sda
-
-# Key fields to watch:
-# "Percentage Used" (NVMe) — 0% = new, 100% = at rated endurance
-# "Data Units Written" (NVMe) — total TB written (multiply by 512 KB)
-# "Reallocated Sector Count" (SATA SMART) — should be 0; non-zero = dying drive
+# Key attributes:
+#   ID 5  — Reallocated_Sector_Ct  → non-zero is a warning sign
+#   ID 177 — Wear_Leveling_Count   → SSD-specific, counts P/E cycles
+#   ID 187 — Reported_Uncorrect    → should be 0
 ```
 
 </TabItem>
 <TabItem value="windows" label="Windows">
 
 ```powershell
-# Built-in SMART check (limited)
+# Basic health via PowerShell
 Get-StorageReliabilityCounter -PhysicalDisk (Get-PhysicalDisk) |
   Select-Object DeviceId, Wear, Temperature, ReadErrorsTotal, WriteErrorsTotal
 
-# Better option: CrystalDiskInfo (free, GUI)
-# Shows full SMART attributes, wear level, temperature, power-on hours
-# Download: https://crystalmark.info/en/software/crystaldiskinfo/
+# NVMe drive status
+Get-PhysicalDisk | Where-Object BusType -eq NVMe |
+  Select-Object FriendlyName, HealthStatus, OperationalStatus
 
-# NVMe drive info via PowerShell
-Get-PhysicalDisk | Where-Object BusType -eq NVMe | Select-Object FriendlyName, HealthStatus, OperationalStatus
+# CrystalDiskInfo (free GUI — recommended)
+# Shows full SMART attributes, wear level, temperature, power-on hours
+# https://crystalmark.info/en/software/crystaldiskinfo/
 ```
 
 </TabItem>
@@ -173,5 +156,5 @@ Get-PhysicalDisk | Where-Object BusType -eq NVMe | Select-Object FriendlyName, H
 ---
 
 :::tip[Research Question 🔍]
-Look up **3D NAND** (also called V-NAND by Samsung). Traditional NAND is 2D — cells arranged flat on a wafer. 3D NAND stacks layers vertically (96L, 128L, 176L, 232L...). Why does stacking layers improve density and cost — and does it also improve cell endurance compared to planar NAND?
+Look up **3D NAND** (also called V-NAND by Samsung). Traditional NAND is 2D — cells arranged flat on a wafer. 3D NAND stacks layers vertically (96L, 128L, 176L, 232L+). Why does stacking layers improve density and cost — and does it also improve cell endurance compared to planar NAND?
 :::

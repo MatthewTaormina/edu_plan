@@ -50,49 +50,34 @@ graph TD
 
 ## RPM and What It Means
 
-```mermaid
-graph LR
-    RPM5["5,400 RPM\nNAS / Laptop HDDs\nQuieter, lower power\nAvg rotational latency: ~5.6 ms"]
-    RPM7["7,200 RPM\nDesktop / Server standard\nAvg rotational latency: ~4.2 ms"]
-    RPM10["10,000 RPM\nEnterprise SAS (legacy)\nAvg rotational latency: ~3 ms"]
-    RPM15["15,000 RPM\nHigh-end enterprise SAS\nAvg rotational latency: ~2 ms"]
+Higher RPM means the correct sector arrives under the read head faster, reducing rotational latency:
 
-    RPM5 -->|"Faster"| RPM7 -->|"Faster"| RPM10 -->|"Faster"| RPM15
-```
+| RPM | Market | Avg rotational latency | Use case |
+|-----|--------|----------------------|----------|
+| 5,400 | NAS / Laptop HDDs | ~5.6 ms | Quiet, power-efficient — light workloads |
+| 7,200 | Desktop / Server | ~4.2 ms | Standard across most consumer and enterprise drives |
+| 10,000 | Enterprise SAS (legacy) | ~3 ms | OLTP databases — largely superseded by SSDs |
+| 15,000 | High-end enterprise SAS | ~2 ms | Highest HDD IOPS — still beaten by any SSD |
 
-15K RPM drives (SAS) have mostly been superseded by SSDs in enterprise contexts — an NVMe SSD at ~0.07 ms random latency still beats a 15K drive (~2 ms) by 28×.
+15K RPM drives have mostly been replaced by SSDs in enterprise settings. An NVMe SSD at ~0.07 ms random latency still beats a 15K drive (~2 ms) by **28×**.
 
 ---
 
 ## CMR vs SMR — Recording Technology
 
-Modern HDDs use two different recording techniques that have significant implications for write performance:
+Modern HDDs use one of two write geometries, and the difference matters significantly for write-intensive workloads:
 
-```mermaid
-graph TD
-    subgraph CMR["CMR — Conventional Magnetic Recording\n(also called PMR)"]
-        direction LR
-        T1CMR["Track 1"]
-        T2CMR["Track 2"]
-        T3CMR["Track 3"]
-        T1CMR --- T2CMR --- T3CMR
-        CMRNOTE["Tracks are independent\nOverwrite any track at any time\nPredictable random write performance"]
-    end
+| | CMR (Conventional Magnetic Recording) | SMR (Shingled Magnetic Recording) |
+|--|--------------------------------------|-----------------------------------|
+| **Also called** | PMR (Perpendicular Magnetic Recording) | — |
+| **Track layout** | Non-overlapping independent tracks | Tracks overlap like roof shingles |
+| **Density** | Lower — wastes space between tracks | Higher — more GB per platter |
+| **Overwrite** | Overwrite any track directly | Must read, erase, and rewrite an entire band (~20 MB) |
+| **Random write perf** | Consistent | Degrades significantly under sustained random writes |
+| **NAS / RAID suitability** | ✅ Safe — predictable rebuild times | ⚠️ Risky — very slow RAID rebuilds |
+| **Examples** | WD Red Plus, Seagate IronWolf, Toshiba N300 | WD Blue (some SKUs), Seagate Barracuda (some SKUs) |
 
-    subgraph SMR["SMR — Shingled Magnetic Recording"]
-        direction LR
-        T1SMR["Track 1"]
-        T2SMR["Track 2 (overlaps)"]
-        T3SMR["Track 3 (overlaps)"]
-        T1SMR -.->|"overlaps"| T2SMR -.->|"overlaps"| T3SMR
-        SMRNOTE["Tracks overlap like shingles\nHigher density — more GB per platter\nBut: overwriting zone requires\nread-modify-write of entire band\nBad for random writes / NAS RAID"]
-    end
-```
-
-**Why SMR matters:** Many budget HDDs quietly use SMR to achieve higher capacities cheaply. In NAS RAID arrays, SMR drives can cause extended rebuild times and poor write performance under load. Always verify CMR vs SMR before buying NAS drives.
-
-**CMR NAS drive examples:** Western Digital Red Plus, Seagate IronWolf (non-Pro), Toshiba N300.
-**SMR consumer examples:** WD Blue (some models), Seagate Barracuda (some models) — check manufacturer spec sheets.
+**Why SMR matters:** Many budget HDDs ship with SMR quietly — the box may just say "SMR" in fine print, or not mention it at all. In a NAS with RAID 5/6, an SMR drive can cause a rebuild to take days instead of hours and may fail the rebuild entirely under load. Always verify the recording technology in the manufacturer's spec sheet before buying drives for a NAS or server.
 
 ---
 

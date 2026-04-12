@@ -13,21 +13,18 @@ The CPU cache is the single most impactful hardware concept for application-leve
 
 Every level is faster, more expensive, and smaller than the one below it. The CPU always tries the nearest level first.
 
-```mermaid
-graph TD
-    REG["Registers\n~1 KB / core\n~0.3 ns\nFastest"]
-    L1["L1 Cache (private / core)\n32–64 KB / core\n~1–4 ns\n~1 TB/s bandwidth"]
-    L2["L2 Cache (private / core)\n256 KB – 4 MB / core\n~4–12 ns\n~hundreds GB/s"]
-    L3["L3 Cache (shared)\n8 MB – 192 MB total\n~30–40 ns\n~hundreds GB/s"]
-    RAM["RAM — DRAM\nGBs\n~60–100 ns\n~50–100 GB/s"]
-    NVME["NVMe SSD\nTBs\n~50–100 μs\n~5–7 GB/s"]
-    SATA["SATA SSD\nTBs\n~100–200 μs\n~500 MB/s"]
-    HDD["HDD\nTBs\n~5–15 ms\n~150 MB/s"]
+| Level | Size | Latency | Bandwidth | Scope |
+|-------|------|---------|----------|-------|
+| **Registers** | ~1 KB / core | ~0.3 ns | Fastest possible | Per core |
+| **L1 Cache** | 32–64 KB / core | ~1–4 ns | ~1 TB/s | Per core (private) |
+| **L2 Cache** | 256 KB – 4 MB / core | ~4–12 ns | ~hundreds GB/s | Per core (private) |
+| **L3 Cache** | 8 MB – 192 MB total | ~30–40 ns | ~hundreds GB/s | Shared across all cores |
+| **RAM (DRAM)** | GBs | ~60–100 ns | ~50–100 GB/s | Whole system |
+| **NVMe SSD** | TBs | ~50–100 μs | ~5–7 GB/s | Persistent |
+| **SATA SSD** | TBs | ~100–200 μs | ~500 MB/s | Persistent |
+| **HDD** | TBs | ~5–15 ms | ~150 MB/s | Persistent |
 
-    REG --> L1 --> L2 --> L3 --> RAM --> NVME --> SATA --> HDD
-```
-
-**The key insight:** L1 cache is roughly **100× faster than RAM**. A cache miss that falls all the way to RAM stalls the CPU for 60–100 nanoseconds — enough time for 200+ wasted cycles. Programs whose working data fits in L3 run dramatically faster than those that spill to RAM constantly.
+**The key insight:** L1 cache is roughly **100× faster than RAM**. A cache miss that reaches RAM stalls the CPU for 60–100 ns — enough wasted time for 200+ idle cycles. A cache miss that reaches an SSD is 1,000× slower still. Programs whose working data fits in L3 run dramatically faster than those that constantly spill to RAM.
 
 ---
 
@@ -35,25 +32,18 @@ graph TD
 
 The CPU never moves individual bytes between cache levels. It moves **cache lines** — fixed 64-byte blocks. When you read a single `int` (4 bytes), the CPU fetches the entire 64-byte line containing it.
 
-```mermaid
-graph LR
-    subgraph "Memory (RAM)"
-        B0["byte 0"]
-        B1["byte 1"]
-        Bn["..."]
-        B63["byte 63"]
-        B64["byte 64"]
-        B127["byte 127"]
-    end
-    CL0["Cache Line 0\n64 bytes"]
-    CL1["Cache Line 1\n64 bytes"]
-    B0 & B1 & Bn & B63 --> CL0
-    B64 & B127 --> CL1
-    CL0 --> L1["L1 Cache"]
-    CL1 --> L1
+```
+RAM:  [ byte 0 | byte 1 | byte 2 | ... | byte 63 ] ← Cache Line 0 (64 bytes)
+      [ byte 64 | byte 65 | ...          | byte 127 ] ← Cache Line 1
+
+Read arr[0] → entire Cache Line 0 loads into L1
+Read arr[1] → already in L1 (free!)
+Read arr[16] → triggers Cache Line 1 to load
 ```
 
-**Consequence:** accessing `array[0]` brings `array[0]` through `array[15]` (for a 4-byte int array) into L1 cache simultaneously. Accessing `array[1]` immediately after is effectively free.
+For a `float32` array (4 bytes each), one cache line holds **16 elements**. Read one, get the next 15 for free. This is the hardware prefetcher's best-case scenario.
+
+**Consequence:** the order you access memory matters as much as the amount you access.
 
 ---
 
@@ -160,15 +150,17 @@ struct PaddedCounter {
 
 ## L3 Cache and Its Impact on Real Workloads
 
-AMD's 3D V-Cache products (e.g., Ryzen 7 9800X3D with 96 MB L3) demonstrate how dramatically cache size affects cache-sensitive workloads:
+AMD's 3D V-Cache products (e.g., Ryzen 7 9800X3D with 96 MB L3) demonstrate how dramatically cache size affects performance:
 
-```mermaid
-graph LR
-    OS["Working\ndata set size"] --> CMP{Fits in L3?}
-    CMP -->|Yes| Fast["Served from L3\n~30–40 ns latency\nExcellent performance"]
-    CMP -->|No| RAM["Must go to RAM\n~60–100 ns latency\nPerformance degrades"]
-    RAM --> DB["Especially painful:\nDatabases, game engines,\nbranchy workloads with\nlarge lookup tables"]
-```
+| Working set fits in... | Latency | Result |
+|------------------------|---------|--------|
+| L1 cache | ~1–4 ns | Best-case — runs at full throughput |
+| L2 cache | ~4–12 ns | Still fast — minimal stalls |
+| L3 cache | ~30–40 ns | Acceptable — big but still on-chip |
+| RAM only (L3 overflow) | ~60–100 ns | 2–3× slower — starts to hurt |
+| NVMe (extreme case) | ~50,000 ns | 1,000× slower — catastrophic for hot paths |
+
+Workloads that benefit most from large L3: game engines (large lookup tables), databases (buffer pool hot pages), branchy algorithms with large jump tables. This is exactly why the Ryzen X3D gaming benchmarks are so dramatic — game working sets frequently sit right at the L3 boundary.
 
 ---
 

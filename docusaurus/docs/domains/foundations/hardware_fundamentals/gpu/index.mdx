@@ -15,81 +15,37 @@ The **GPU** was designed to render graphics — a task requiring millions of ide
 
 The fundamental design difference explains everything about when to use each:
 
-```mermaid
-graph LR
-    subgraph CPU["CPU — Latency-Optimised"]
-        direction TB
-        F1["Few, powerful cores\n(8–96)"]
-        F2["Large caches\nL1/L2/L3"]
-        F3["Complex branch\nprediction & OoOE"]
-        F4["Good at:\nSequential logic\nComplex control flow\nLow-latency tasks"]
-    end
+| | CPU | GPU |
+|--|-----|-----|
+| **Core count** | Few, powerful (8–96) | Thousands, simple (4,000–18,000 CUDA cores) |
+| **Cache** | Large per-core L1/L2/L3 | Small per-core; large shared VRAM pool |
+| **Control flow** | Deep branch prediction, OoOE | Minimal — simple in-order execution per thread |
+| **Design goal** | Low latency on serial tasks | High throughput on parallel tasks |
+| **Good for** | Complex logic, branchy algorithms, OS kernel | Same operation on millions of data elements |
+| **Bad for** | Thousands of independent simple threads | Irregular control flow, pointer-chasing |
 
-    subgraph GPU["GPU — Throughput-Optimised"]
-        direction TB
-        G1["Thousands of simple cores\n(4,000–18,000 CUDA cores)"]
-        G2["Small per-core cache\nLarge shared memory pool"]
-        G3["Minimal branch logic\nSimple in-order execution"]
-        G4["Good at:\nIdentical operations on\nlarge data arrays\nHigh-throughput maths"]
-    end
-
-    CPU <-->|"PCIe Bus\n(data transfer\nbottleneck)"| GPU
-```
-
-**Rule of thumb:** Use the CPU for control flow and coordination; use the GPU for bulk parallel computation.
+**Rule of thumb:** Use the CPU for control flow and coordination. Use the GPU for bulk parallel computation where the same operation runs on every element of a large dataset.
 
 ---
 
 ## Anatomy of a GPU
 
-```mermaid
-graph TD
-    subgraph GPU["GPU Die (e.g. NVIDIA RTX 4090)"]
-        GPC["GPC — Graphics Processing Cluster\n(top-level grouping)"]
-        GPC --> SM0["SM — Streaming Multiprocessor\n(128 CUDA cores each)"]
-        GPC --> SM1["SM — Streaming Multiprocessor"]
-        GPC --> SMN["... 128 SMs total"]
-
-        SM0 --> WARP["Warp Scheduler\n(32 threads executed in lockstep)"]
-        WARP --> ALU["CUDA Cores (ALU/FPU)"]
-        WARP --> L1SM["L1 Cache / Shared Memory\n128 KB per SM"]
-
-        ALU --> L2["L2 Cache\n~72 MB"]
-        L2 --> VRAM["GDDR6X VRAM\n24 GB — 1 TB/s bandwidth"]
-    end
-
-    VRAM <-->|PCIe 4.0 x16\n~32 GB/s| SYSRAM["System RAM\n(CPU side)"]
-```
+At the hardware level, a GPU is a collection of simple, small compute units that all execute the same instruction on different data simultaneously — SIMT (Single Instruction, Multiple Threads).
 
 | Component | What it does |
 |-----------|-------------|
-| **SM (Streaming Multiprocessor)** | The basic compute unit — analogous to a CPU core but far simpler |
-| **CUDA Core** | A single ALU/FPU. Executes one float operation per clock |
-| **Warp** | 32 threads that execute the same instruction in lockstep (SIMT — Single Instruction, Multiple Threads) |
-| **Shared Memory** | Fast, programmer-managed scratchpad inside each SM — analogous to L1 cache but explicitly controlled |
-| **VRAM** | Dedicated GPU memory — extremely high bandwidth (~1 TB/s) but separate from system RAM |
-| **GDDR6X** | High-bandwidth DRAM designed for GPUs. Much faster bandwidth than DDR5 but higher latency and cost per GB |
+| **SM (Streaming Multiprocessor)** | The basic compute unit — analogous to a CPU core but far simpler. An RTX 4090 has 128 SMs. |
+| **CUDA Core** | A single ALU/FPU inside an SM. Executes one float operation per clock. |
+| **Warp** | 32 threads that execute the same instruction in lockstep. The fundamental scheduling unit. |
+| **Tensor Core** | Dedicated matrix-multiply unit inside each SM — critical for ML training. |
+| **Shared Memory** | Fast programmer-managed scratchpad inside each SM (~128 KB). Analogous to L1 cache but you control it explicitly. |
+| **L2 Cache** | Shared across all SMs on the die. ~72 MB on RTX 4090. |
+| **VRAM (GDDR6X)** | Dedicated GPU memory. Very high bandwidth (~1 TB/s) but separate from system RAM. RTX 4090 has 24 GB. |
+| **PCIe Interface** | The bridge between GPU and CPU. Data must copy across PCIe (~32–64 GB/s) — this is the bottleneck for data-heavy workloads. |
 
 ---
 
 ## Discrete vs Integrated GPU
-
-```mermaid
-graph LR
-    subgraph Discrete["Discrete GPU — Dedicated card"]
-        DGPU["Separate GPU chip"]
-        DVRAM["Dedicated VRAM\n(8–24 GB GDDR6X)"]
-        DGPU --- DVRAM
-        DGPU <-->|"PCIe x16\nData must copy\nacross PCI bus"| DCPU["CPU + System RAM"]
-    end
-
-    subgraph Integrated["Integrated GPU — On-package"]
-        IGPU["GPU cores on same die\nor package as CPU"]
-        IRAM["Shared System RAM\n(no dedicated VRAM)"]
-        IGPU <-->|"Unified memory\nno copy needed\nbut lower bandwidth"| IRAM
-    end
-```
-
 | | Discrete GPU | Integrated GPU |
 |---|---|---|
 | **Examples** | NVIDIA RTX 4090, AMD RX 7900 XTX | Intel Iris Xe, Apple M4, AMD Radeon 890M |

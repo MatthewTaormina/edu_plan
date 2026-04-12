@@ -80,13 +80,18 @@ graph TD
 <Tabs>
 <TabItem value="intel" label="Intel">
 
-```mermaid
-graph LR
-    Name["Core i9-14900K"]
-    Name --> Tier["Tier\ni3 = entry\ni5 = mid\ni7 = high\ni9 = enthusiast"]
-    Name --> Gen["Generation prefix\n14 = 14th gen"]
-    Name --> Model["Model number\n900 = top of tier"]
-    Name --> Suffix["Suffix\nK = unlocked\nH = high-perf mobile\nU = ultra-low power\nT = low TDP"]
+```
+Core i9 - 14900 K
+│    │     │   │  └── Suffix
+│    │     │   │        K  = unlocked / overclockable
+│    │     │   │        H  = high-performance mobile
+│    │     │   │        U  = ultra-low power (thin & light)
+│    │     │   │        T  = low TDP (mini PCs)
+│    │     │   └── Model tier within generation (900 = top of i9)
+│    │     └── Generation (14 = 14th gen)
+│    └── Tier
+│          i3 = entry  │  i5 = mid  │  i7 = high  │  i9 = enthusiast
+└── Brand
 ```
 
 **Generations:** 12th (Alder Lake, 2021) → 13th (Raptor Lake) → 14th (Raptor Lake Refresh) → 15th (Arrow Lake, 2024)
@@ -96,13 +101,17 @@ Intel introduced **hybrid architecture** in 12th gen: **P-cores** (performance, 
 </TabItem>
 <TabItem value="amd" label="AMD">
 
-```mermaid
-graph LR
-    Name["Ryzen 9 9950X"]
-    Name --> Tier["Tier\n3 = entry\n5 = mid\n7 = high\n9 = enthusiast"]
-    Name --> Gen["Generation\n9xxx = Zen 5 (2024)\n7xxx = Zen 4"]
-    Name --> Model["Model\n950 = top of tier"]
-    Name --> Suffix["Suffix\nX = high performance\nX3D = 3D V-Cache\nG = integrated GPU"]
+```
+Ryzen 9  9950 X
+│      │  │  │  └── Suffix
+│      │  │  │        X   = high performance
+│      │  │  │        X3D = 3D V-Cache stacked on die
+│      │  │  │        G   = integrated Radeon GPU
+│      │  │  └── Tier within generation (950 = top of Ryzen 9)
+│      │  └── Generation (9xxx = Zen 5, 7xxx = Zen 4, 5xxx = Zen 3)
+│      └── Tier
+│            3 = entry  │  5 = mid  │  7 = high  │  9 = enthusiast
+└── Brand
 ```
 
 AMD uses **chiplet design** — separate compute dies (CCD) + I/O die (IOD) in one package, connected by AMD Infinity Fabric.
