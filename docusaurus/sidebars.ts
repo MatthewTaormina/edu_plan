@@ -353,6 +353,8 @@ const sidebars: SidebarsConfig = {
               link: { type: 'doc', id: 'domains/foundations/hardware_fundamentals/motherboard/index' },
               items: [
                 'domains/foundations/hardware_fundamentals/motherboard/pcie',
+                'domains/foundations/hardware_fundamentals/motherboard/vrm',
+                'domains/foundations/hardware_fundamentals/motherboard/connectivity',
               ],
             },
             {

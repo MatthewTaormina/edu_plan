@@ -1,0 +1,152 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Connectivity & I/O
+
+> **Part of:** [Motherboard](./index) · [Hardware Fundamentals](../index)
+
+A modern motherboard is a hub for a surprising number of I/O standards. Understanding what each port does — and crucially, where the bandwidth comes from — determines how to build and troubleshoot systems.
+
+---
+
+## USB Standards
+
+USB version names are notoriously confusing. The USB-IF renamed everything in 2019, but vendors still use both old and new names interchangeably.
+
+| Marketing name | USB-IF name | Speed | Common use |
+|---------------|------------|-------|-----------|
+| USB 2.0 | USB 2.0 | 480 Mb/s (~60 MB/s) | Keyboards, mice, most dongles |
+| USB 3.0 / USB 3.1 Gen 1 / USB 3.2 Gen 1 | USB 3.2 Gen 1 | 5 Gb/s (~500 MB/s) | Flash drives, older SSDs |
+| USB 3.1 Gen 2 / USB 3.2 Gen 2 | USB 3.2 Gen 2 | 10 Gb/s (~1,000 MB/s) | Fast external SSDs |
+| USB 3.2 Gen 2×2 | USB 3.2 Gen 2×2 | 20 Gb/s | High-speed external storage |
+| USB 4 Gen 2×2 | USB4 20 | 20 Gb/s | Thunderbolt 3 compatible |
+| USB 4 Gen 3×2 | USB4 40 | 40 Gb/s | Thunderbolt 4 compatible |
+| USB 4 Gen 4 | USB4 80 | 80 Gb/s | Thunderbolt 5 compatible |
+
+**Connector types:**
+- **USB-A** — the classic rectangular plug (2.0 through 3.2 Gen 2)
+- **USB-C** — the oval reversible connector (can carry USB 2.0 all the way up to USB4 Gen 4, or Thunderbolt — the connector alone tells you nothing about speed)
+- **USB-B** — square plug on printers/hubs (older devices)
+- **Micro-USB / Mini-USB** — legacy mobile devices
+
+**Key rule:** A USB-C port on the back of your PC could be USB 2.0 speeds (480 Mb/s) or 40 Gb/s Thunderbolt. Always check the spec sheet or look for the Thunderbolt lightning bolt icon.
+
+---
+
+## Thunderbolt
+
+Thunderbolt is Intel's high-bandwidth peripheral standard, now co-developed with USB4. It runs over USB-C connectors but is a distinct protocol with higher guarantees.
+
+| Version | Speed | PCIe lanes | Display support | Compatible with |
+|---------|-------|-----------|----------------|----------------|
+| **TB3** | 40 Gb/s | PCIe 3.0 ×4 | Up to 2× 4K | USB-C |
+| **TB4** | 40 Gb/s | PCIe 3.0 ×4 | Up to 2× 4K (or 1× 8K) | USB4 Gen 2×2, USB-C |
+| **TB5** | 120 Gb/s (80 Gb/s base) | PCIe 4.0 ×4 | Up to 3× 4K 144Hz | USB4 Gen 4, USB-C |
+
+**What Thunderbolt enables that USB alone cannot:**
+- **PCIe tunnelling:** External GPU enclosures, PCIe NVMe docks, professional audio interfaces
+- **Daisy chaining:** Up to 6 devices on one TB4 cable
+- **Certified cables:** TB4 cables must pass strict timing/signal quality tests — cheap cables won't work
+
+**macOS note:** All Apple Silicon Macs include Thunderbolt 3/4/5 natively. On Windows/Linux, Thunderbolt support depends on the motherboard having a dedicated Intel JHL controller or an Intel CPU with integrated TB support.
+
+---
+
+## Ethernet / Wired Networking
+
+| Standard | Speed | Notes |
+|---------|-------|-------|
+| **Gigabit Ethernet (1GbE)** | 1,000 Mb/s (~125 MB/s) | Obsolete for new builds — still common on budget boards |
+| **2.5 Gigabit Ethernet (2.5GbE)** | 2,500 Mb/s (~310 MB/s) | Consumer standard since ~2021. Mid-range boards and above. |
+| **5 Gigabit Ethernet (5GbE)** | 5,000 Mb/s | Rare on motherboards — niche step between 2.5G and 10G |
+| **10 Gigabit Ethernet (10GbE)** | 10,000 Mb/s (~1,250 MB/s) | High-end boards — pairs well with 10G NAS |
+
+**Real-world numbers:** Wired 2.5GbE will saturate a typical Wi-Fi 6/6E connection and handles NAS workloads easily. 10GbE is useful for video editors pulling large files off a shared NAS or network storage at near-SSD speeds.
+
+**Common onboard controllers:**
+- Intel I225-V / I226-V — 2.5GbE (common on Intel and AMD boards)
+- Intel I219-V — 1GbE
+- Realtek RTL8125 — 2.5GbE (budget alternative)
+- Marvell AQC107 / AQC113 — 10GbE (high-end boards)
+
+---
+
+## Wi-Fi
+
+Wi-Fi modules on modern motherboards are typically M.2-form-factor cards using the CNVi (Intel) or PCIe interface internally:
+
+| Standard | Protocol | Max theoretical throughput | Key features |
+|---------|---------|--------------------------|-------------|
+| **Wi-Fi 5** | 802.11ac | 3.5 Gbps | 5 GHz only, MU-MIMO |
+| **Wi-Fi 6** | 802.11ax | 9.6 Gbps | 2.4 & 5 GHz, OFDMA, 1024-QAM |
+| **Wi-Fi 6E** | 802.11ax | 9.6 Gbps | + 6 GHz band (less interference) |
+| **Wi-Fi 7** | 802.11be | 46 Gbps | Multi-link operation, 320 MHz channels |
+
+**Practical rule:** Real-world Wi-Fi 6E throughput is ~1.5–2.5 Gbps at close range, typically 300–900 Mbps at typical home distances. For desktop builds within cable reach, wired 2.5GbE always beats wireless — lower latency, no interference, no congestion.
+
+**Antennas:** Wi-Fi modules require external antenna connectors — the two small SMA connectors on the rear I/O that you attach the bundled antenna to. Skipping the antenna drops signal quality significantly.
+
+---
+
+## Rear I/O Panel — Port Identification Guide
+
+```
+┌──────────────────────────────────────────────────────────┐
+│ [PS/2] [USB2][USB2]  [USB-A 3.2] [USB-A 3.2] [USB-C TB4]│
+│                                                           │
+│ [HDMI]  [DP] [DP]     [2.5GbE RJ-45]   [WIFI ANTENNAS]  │
+│                                                           │
+│        [LINE OUT] [LINE IN] [MIC]  [SPDIF OPT]           │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Colour coding (legacy, not always followed):**
+- Blue = USB 3.0 (5 Gbps)
+- Black = USB 2.0
+- Teal / light blue = USB 3.2 Gen 2 (10 Gbps)
+- Green port = Line Out (speakers/headphones)
+- Pink port = Microphone In
+- Blue port = Line In (recording from external source)
+
+---
+
+## Internal Headers
+
+These are the connectors on the motherboard surface that you plug case cables into:
+
+| Header | Function | Location on board |
+|--------|---------|------------------|
+| **Front Panel (F_PANEL)** | Power button, reset button, power LED, HDD activity LED | Bottom-right area |
+| **USB 2.0 Header** | Front-panel USB-A 2.0 ports | Bottom edge |
+| **USB 3.2 Gen 1 Header (19-pin)** | Front-panel USB-A 5 Gbps | Mid-right edge |
+| **USB-C Front Panel Header** | Front-panel USB-C | Mid-edge (Type-E connector) |
+| **ARGB Header (3-pin, 5V)** | Addressable RGB lighting | Multiple locations |
+| **RGB Header (4-pin, 12V)** | Non-addressable RGB | Multiple locations |
+| **TPM Header** | Discrete Trusted Platform Module | Near chipset |
+| **Thunderbolt Header** | Add-in TB expansion card | Top area |
+| **SATA power / reset** | Some boards expose reset via JBAT header | Near battery |
+
+**Front panel wiring:** The front panel connector is almost always the most frustrating part of a new build — tiny individual 1-pin or 2-pin connectors that must be placed exactly right for power/reset buttons and LEDs. Refer to your motherboard manual's front panel diagram (it's always in there).
+
+---
+
+## Onboard Audio
+
+Integrated audio codecs do a good job for most users. The analog circuitry is physically separated from the digital section of the board by a ground plane isolation cut (visible as a gap in the PCB layers) to reduce noise pickup.
+
+| Codec | Board tier | SNR | Notes |
+|-------|-----------|-----|-------|
+| Realtek ALC897 | Budget | ~90 dB | Acceptable for headsets |
+| Realtek ALC1220 | Mid-range | ~120 dB | Good for most headphones up to ~150Ω |
+| ESS ES9218 / SABRE DAC | High-end | 120–130 dB | Asus SupremeFX, Gigabyte AMP-UP |
+
+**When onboard audio isn't enough:**
+- High-impedance headphones (>150Ω, e.g. Sennheiser HD600) benefit from a dedicated headphone amplifier
+- Recording/podcasting benefits from a USB audio interface (dedicated ADC, lower noise floor)
+- Audiophile setups use an external DAC/amp stack or a PCIe sound card (e.g. ASUS Xonar)
+
+---
+
+:::tip[Research Question 🔍]
+Look up **DisplayPort Alt Mode** and **HDMI Alt Mode** over USB-C. How can a USB-C port with the same physical connector carry a 4K 120Hz video signal to a monitor *and* 10 Gbps data to a hard drive simultaneously? What determines whether a USB-C port on a laptop or desktop supports display output?
+:::
