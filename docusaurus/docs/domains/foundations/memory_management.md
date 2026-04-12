@@ -22,6 +22,8 @@ By the end of this unit, you will be able to:
 - [ ] Describe Rust's ownership model and explain why it prevents memory bugs at compile time
 - [ ] Use memory diagnostic tools (`valgrind`, Windows Application Verifier, AddressSanitizer)
 - [ ] Understand RAII and smart pointers
+- [ ] Explain how virtual memory, pages, and the MMU translate virtual addresses to physical RAM
+- [ ] Describe how allocators subdivide OS memory into blocks and manage free lists
 
 ---
 
@@ -76,7 +78,110 @@ void example() {
 
 ---
 
-### 2. Manual Memory Management (C)
+### 2. Virtual Memory & Paging
+
+Modern OSes give each process its own **virtual address space** — a private, contiguous range of addresses (0 to 2⁴⁸ bytes on 64-bit Linux). Programs never address physical RAM directly. The CPU's **Memory Management Unit (MMU)** translates every virtual address to a physical one on the fly.
+
+**Why virtual memory exists:**
+
+| Benefit | What it enables |
+|---------|----------------|
+| **Isolation** | Process A cannot read Process B's memory — separate virtual spaces |
+| **Overcommit** | `malloc(16GB)` succeeds on a 4GB machine — pages only consume RAM when touched |
+| **Shared libraries** | `libc` is mapped once in physical RAM, reused across all processes |
+| **`mmap`** | Files can be accessed as memory; the OS pages them in on demand |
+
+**Pages: The unit of memory management**
+
+Memory is allocated in fixed-size chunks called **pages** — 4 KB on x86-64, 16 KB on Apple Silicon. The OS never hands out individual bytes; it maps and unmaps entire pages.
+
+**Page tables: How translation works**
+
+Each process has a **page table** mapping virtual page numbers → physical frame numbers. On x86-64 this is a 4-level structure the MMU walks automatically:
+
+```
+Virtual address → [MMU walks 4-level page table] → Physical address
+0x7FFE4000      →  virtual page 0x7FFE4            →  physical frame 0x3A8
+                                                   →  physical address 0x3A8000
+```
+
+**TLB — Translation Lookaside Buffer**
+
+Walking 4 levels of page table per memory access would be brutal. The CPU caches recent translations in the **TLB** (~1,500 entries on modern Intel). Code with random access patterns (hash tables, pointer-chasing linked lists) causes **TLB misses** — a real, measurable performance cost in hot loops.
+
+**Page faults**
+
+When you access a virtual address with no physical RAM mapped, the MMU triggers a **page fault** — a hardware interrupt handled by the kernel:
+
+| Fault type | Cause | OS response |
+|------------|-------|-------------|
+| **Minor** | Page valid but not yet in RAM (e.g. first write to `malloc`'d memory) | Map a physical frame → resume — fast (~µs) |
+| **Major** | Page was swapped out to disk | Read from swap → map → resume — slow (~ms) |
+| **Invalid** | Unmapped address or permission violation | Send `SIGSEGV` → program crashes |
+
+**Process address space layout**
+
+| Region | Contents | Growth direction |
+|--------|----------|-----------------|
+| Text | Compiled machine code (read-only, shared between processes) | Fixed |
+| Data | Initialised global/static variables | Fixed |
+| BSS | Uninitialised global/static variables (zero-filled by OS) | Fixed |
+| Heap | `malloc` allocations | Grows upward via `brk`/`mmap` |
+| mmap region | Shared libraries, large `malloc`s (>128 KB), mapped files | Grows downward |
+| Stack | Call frames, local variables | Grows downward (fixed max via `ulimit -s`) |
+
+---
+
+### 3. How Allocators Work
+
+`malloc` doesn't ask the OS for memory on every call — syscalls cost microseconds. Instead, an **allocator** acts as an intermediary: it requests large memory slabs from the OS upfront, then subdivides and tracks them internally.
+
+```
+Your code  →  malloc(n)  →  Allocator (manages slabs)  →  OS (mmap / sbrk)
+```
+
+**Free lists**
+
+The allocator maintains linked lists of available blocks. On `malloc(n)` it finds a suitable block; on `free(ptr)` it returns the block to the list:
+
+```
+Free list:  [32 B] → [64 B] → [128 B] → NULL
+
+malloc(50): takes 64 B block → returns ptr
+            14 B wasted  (internal fragmentation)
+
+free(ptr):  block returned → adjacent free blocks merged (coalescing)
+```
+
+**Fragmentation**
+
+| Type | What happens |
+|------|--------------|
+| **Internal** | Allocated block larger than requested — wasted bytes inside the block |
+| **External** | Enough total free memory, but no single contiguous block large enough |
+
+Allocators fight external fragmentation with **coalescing** — merging adjacent free blocks when `free()` is called.
+
+**Size-class bins (how modern allocators stay fast)**
+
+`glibc`'s `ptmalloc` (and alternatives like `jemalloc`, `mimalloc`) sort free blocks into **bins by size class** so finding a block is O(1):
+
+| Bin type | Size range | Behaviour |
+|----------|-----------|----------|
+| Fastbins | ≤ 88 B | No coalescing — LIFO, ultra-fast |
+| Small bins | 88–512 B | Doubly-linked FIFO list |
+| Large bins | 512 B–128 KB | Sorted by size |
+| `mmap` direct | > 128 KB | Bypasses bins; goes straight to OS per allocation |
+
+**Practical consequences**
+
+- Many small, frequent `malloc` calls have real overhead — list searching, bookkeeping, coalescing
+- **Pool allocators** (Assignment 2 below) are dramatically faster for homogeneous data: allocation is just a pointer bump — no searching, no coalescing
+- `jemalloc` and `mimalloc` use **per-thread arenas** to eliminate lock contention when multiple threads allocate simultaneously
+
+---
+
+### 4. Manual Memory Management (C)
 
 In C, you manage memory yourself. The OS provides memory in large chunks via `mmap`/`sbrk`. The **allocator** (`malloc`/`free`) subdivides and tracks these chunks.
 
@@ -160,7 +265,7 @@ printf("%d\n", arr[0]);  // Could be anything — malloc does NOT zero memory
 
 ---
 
-### 3. Common Memory Bugs and Their Consequences
+### 5. Common Memory Bugs and Their Consequences
 
 | Bug | What Happens | Security Impact |
 |-----|-------------|----------------|
@@ -174,7 +279,7 @@ printf("%d\n", arr[0]);  // Could be anything — malloc does NOT zero memory
 
 ---
 
-### 4. Garbage Collection
+### 6. Garbage Collection
 
 Higher-level languages (Python, Java, Go, C#, JS) use a **garbage collector (GC)** to automatically reclaim memory that's no longer reachable.
 
@@ -218,7 +323,7 @@ b.prev = a       # Both have refcount > 0 — neither is ever freed!
 
 ---
 
-### 5. Rust Ownership Model
+### 7. Rust Ownership Model
 
 Rust eliminates entire classes of memory bugs **at compile time** — zero runtime cost. It does this through three rules:
 
@@ -268,7 +373,7 @@ let reference;
 
 ---
 
-### 6. RAII — Resource Acquisition Is Initialization
+### 8. RAII — Resource Acquisition Is Initialization
 
 A pattern that ties resource lifetime to object scope. When the object is destroyed (goes out of scope), it releases the resource.
 
@@ -356,7 +461,7 @@ if (auto locked = weak.lock()) {  // Check if still alive
 
 ---
 
-### 7. Memory Diagnostic Tools
+### 9. Memory Diagnostic Tools
 
 <Tabs>
 <TabItem value="linux-valgrind-asan" label="Linux (Valgrind + ASan)">
