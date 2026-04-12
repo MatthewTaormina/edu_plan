@@ -1,0 +1,61 @@
+---
+title: Core Web Technologies
+description: HTML, CSS, and JavaScript — the three technologies every browser understands natively.
+sidebar_label: Core Web
+---
+
+# Core Web Technologies
+
+> **Status:** 🔵 Foundation — HTML (1991), CSS (1996), JavaScript (1995) are the permanent bedrock of the web. Every browser on earth understands exactly these three languages. Nothing replaces them; everything else compiles *to* them.
+
+These three technologies have distinct and complementary roles:
+
+| Technology | Role | Runs in |
+|------------|------|---------|
+| **HTML** | Structure and meaning | Browser (parsed to DOM) |
+| **CSS** | Presentation and layout | Browser (applied to DOM) |
+| **JavaScript** | Behaviour and interactivity | Browser (V8, SpiderMonkey, etc.) |
+
+The separation is intentional. A page with only HTML is still a valid, accessible document. CSS and JavaScript are progressive enhancements — useful, but not prerequisites for content delivery.
+
+---
+
+## In This Section
+
+| Page | What it covers |
+|------|----------------|
+| [HTML](./html) | Document structure, semantic elements, forms, accessibility |
+| [CSS](./css) | Box model, cascade, Flexbox, Grid, custom properties, responsive design |
+| [JavaScript](./javascript) | Execution model, DOM, async, ES6+ modules, the prototype chain |
+
+---
+
+## How They Work Together
+
+```
+HTML document loads
+    │
+    ├── <link rel="stylesheet"> → CSS is fetched and parsed
+    │       └── CSSOM built → merged with DOM = Render Tree → painted to screen
+    │
+    └── <script> → JavaScript is fetched, parsed, and executed
+            └── JS can read/write the DOM and CSSOM
+                watch events, make network requests (fetch)
+                run on every frame (requestAnimationFrame)
+```
+
+:::tip
+**Learn HTML first, CSS second, JavaScript third.** Each layer adds complexity. A solid HTML foundation makes CSS easier — you're styling meaningful elements, not divs. A solid CSS foundation makes JavaScript easier — you know what you're manipulating.
+:::
+
+---
+
+## Prerequisites
+
+None. This is the starting point for web development.
+
+## What Comes Next
+
+- [TypeScript](../typescript) — add a type system to JavaScript
+- [Frontend Frameworks](../frontend_frameworks) — React, Angular, Vue build on top of these three
+- [Build Tools](../build_tools) — bundle and optimize the output of these files

@@ -1,0 +1,516 @@
+---
+title: CSS Reference
+description: The CSS box model, cascade, specificity, custom properties, Flexbox, Grid, responsive design, transitions, and animations.
+sidebar_label: CSS
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import YouTubeEmbed from '@site/src/components/YouTubeEmbed';
+
+# CSS
+
+> **Tool:** CSS · **Introduced:** 1996 · **Latest:** CSS4 modules (Living Standard) · **Status:** 🔵 Foundation
+
+CSS (Cascading Style Sheets) controls the **visual presentation** of HTML. It handles colours, typography, spacing, layout, animation, and responsive behaviour. Understanding CSS deeply — especially the cascade and layout systems — is what separates developers who fight CSS from those who control it.
+
+> **Prerequisite:** [HTML](./html)
+
+---
+
+<YouTubeEmbed
+  id="1Rs2ND1ryYc"
+  title="CSS Tutorial — Zero to Hero (Full Course) by freeCodeCamp"
+  caption="Full CSS course by freeCodeCamp — everything from box model through Flexbox and Grid."
+/>
+
+---
+
+## The Box Model
+
+Every element in CSS is a rectangular box. The box model defines how its dimensions are calculated.
+
+<div className="svg-graphic-container margin-bottom--lg text--center">
+  <img src="/img/diagrams/css_box_model.svg" alt="CSS box model diagram showing content, padding, border, and margin layers" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
+</div>
+
+```css
+/* The browser default: width = content only; padding and border ADD to it */
+.box {
+    width: 300px;       /* Content width */
+    padding: 20px;      /* Adds 40px total */
+    border: 2px solid;  /* Adds 4px total */
+    /* Total rendered width: 300 + 40 + 4 = 344px — confusing! */
+}
+
+/* Modern best practice: width INCLUDES padding and border */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+.box {
+    width: 300px;       /* Total width is exactly 300px */
+    padding: 20px;      /* Content area shrinks to fit */
+    border: 2px solid;
+}
+```
+
+Always set `box-sizing: border-box` globally. Every modern framework does this for exactly this reason.
+
+---
+
+## The Cascade, Specificity, and Inheritance
+
+The **cascade** resolves conflicts when multiple rules target the same element. Priority (lowest to highest):
+
+1. Browser user-agent stylesheet (defaults)
+2. Inherited styles (properties that flow down the DOM tree)
+3. Author stylesheet — by **specificity**, then by **source order**
+4. `!important` (avoid — breaks the cascade deliberately)
+
+**Specificity** is a score calculated from selector components:
+
+| Selector type | Specificity |
+|---------------|-------------|
+| Inline `style=""` | `1-0-0-0` (highest) |
+| ID `#header` | `0-1-0-0` |
+| Class `.card`, attribute `[type]`, pseudo-class `:hover` | `0-0-1-0` |
+| Element `div`, pseudo-element `::before` | `0-0-0-1` |
+| Universal `*`, combinators `>`, `+`, `~` | `0-0-0-0` |
+
+```css
+/* Specificity: 0-0-0-1 (element) */
+p { color: black; }
+
+/* Specificity: 0-0-1-0 (class) — wins over p */
+.intro { color: navy; }
+
+/* Specificity: 0-0-1-1 (class + element) — wins over .intro alone */
+p.intro { color: blue; }
+
+/* Specificity: 0-1-0-0 (ID) — wins over all of the above */
+#hero { color: white; }
+```
+
+:::tip
+**Keep specificity low.** Build with classes. Avoid IDs in CSS. Avoid deeply nested selectors. Low-specificity CSS is easier to override, debug, and maintain. If you need to raise specificity, add a class — never reach for `!important`.
+:::
+
+**Inheritance:** Some properties automatically pass to children (`color`, `font-size`, `font-family`, `line-height`). Others don't (`border`, `padding`, `margin`, `background`).
+
+```css
+body {
+    font-family: Inter, sans-serif;  /* Inherited by all text elements */
+    color: #1a1a2e;                  /* Inherited */
+}
+button {
+    /* Buttons don't inherit font by default — explicitly opt in */
+    font: inherit;
+}
+```
+
+---
+
+## CSS Custom Properties (Variables)
+
+Custom properties are the foundation of any maintainable design system. Unlike Sass variables, they're live values — they can be changed at runtime with JavaScript, overridden in media queries, and scoped to any element.
+
+```css
+/* Define on :root — available everywhere */
+:root {
+    /* Colors */
+    --color-primary:      hsl(265, 60%, 45%);
+    --color-primary-dim:  hsl(265, 60%, 35%);
+    --color-accent:       hsl(195, 90%, 50%);
+    --color-surface:      hsl(240, 10%, 8%);
+    --color-on-surface:   hsl(240, 10%, 92%);
+
+    /* Typography */
+    --font-sans:  'Inter', system-ui, sans-serif;
+    --font-mono:  'JetBrains Mono', 'Fira Code', monospace;
+    --text-sm:    0.875rem;
+    --text-base:  1rem;
+    --text-lg:    1.125rem;
+
+    /* Spacing scale */
+    --space-1: 0.25rem;  /* 4px */
+    --space-2: 0.5rem;   /* 8px */
+    --space-4: 1rem;     /* 16px */
+    --space-8: 2rem;     /* 32px */
+
+    /* Borders */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+}
+
+/* Use with var() */
+.button {
+    background-color: var(--color-primary);
+    color: var(--color-on-surface);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-sans);
+}
+
+/* Override locally — only affects this element and its children */
+.danger-button {
+    --color-primary: hsl(0, 75%, 50%);
+}
+
+/* Dark mode: just swap the variable values — no duplication */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-surface:    hsl(240, 10%, 8%);
+        --color-on-surface: hsl(240, 10%, 92%);
+    }
+}
+```
+
+---
+
+## Flexbox — One-Dimensional Layout
+
+Flexbox arranges items in **one direction**: a row or a column.
+
+```css
+.flex-container {
+    display: flex;
+    flex-direction: row;            /* or column, row-reverse, column-reverse */
+    justify-content: space-between; /* Main axis alignment */
+    align-items: center;            /* Cross axis alignment */
+    flex-wrap: wrap;                /* Allow items to wrap to the next line */
+    gap: 1rem;                      /* Space between items */
+}
+
+/* Flex item properties */
+.flex-item {
+    flex-grow: 1;     /* Take up available space proportionally */
+    flex-shrink: 0;   /* Don't shrink below flex-basis */
+    flex-basis: 200px;/* Starting size before flex calculations */
+    /* Shorthand: flex: 1 0 200px */
+}
+
+/* Common patterns */
+.navbar         { display: flex; justify-content: space-between; align-items: center; }
+.card-footer    { display: flex; gap: 0.5rem; margin-top: auto; } /* push to bottom */
+.icon-with-text { display: flex; align-items: center; gap: 0.5rem; }
+.centered       { display: flex; justify-content: center; align-items: center; }
+```
+
+**`justify-content` values:**
+
+| Value | Behaviour |
+|-------|-----------|
+| `flex-start` | Pack at start (default) |
+| `flex-end` | Pack at end |
+| `center` | Center together |
+| `space-between` | First/last at edges, equal gaps between |
+| `space-around` | Equal space around each item |
+| `space-evenly` | Equal space between all items including edges |
+
+---
+
+## CSS Grid — Two-Dimensional Layout
+
+Grid manages **rows and columns simultaneously**.
+
+```css
+.grid-container {
+    display: grid;
+
+    /* Define columns */
+    grid-template-columns: repeat(3, 1fr);                        /* 3 equal columns */
+    grid-template-columns: 250px 1fr;                             /* Sidebar + content */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive cards */
+
+    /* Define rows */
+    grid-auto-rows: minmax(100px, auto); /* Rows size to content, min 100px */
+
+    gap: 1rem;
+}
+
+/* Place items explicitly */
+.header { grid-column: 1 / -1; }              /* Span all columns */
+.sidebar{ grid-column: 1 / 2; grid-row: 2 / 4; }
+.main   { grid-column: 2 / -1; }
+
+/* Named template areas — most readable for page layouts */
+.page-layout {
+    display: grid;
+    grid-template-areas:
+        "header  header"
+        "sidebar main"
+        "footer  footer";
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+}
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+.footer  { grid-area: footer; }
+```
+
+**When to use Flexbox vs Grid:**
+
+| | Flexbox | Grid |
+|-|---------|------|
+| Direction known | One axis | Two axes needed |
+| Content-driven sizing | ✅ Natural | Works but less natural |
+| Precise grid alignment | Less natural | ✅ |
+| Navbars, toolbars | ✅ | Possible |
+| Card grids, galleries | Works | ✅ |
+| Full page layout | Works | ✅ |
+
+:::tip
+Use both on the same page. Grid for overall page structure; Flexbox for components inside those regions (navbars, card contents, button groups).
+:::
+
+---
+
+## Responsive Design
+
+**Mobile-first:** Write base styles for small screens, add complexity for larger screens with `min-width` media queries.
+
+```css
+/* Base: mobile */
+.container {
+    width: 100%;
+    padding: 1rem;
+}
+
+/* Tablet and up */
+@media (min-width: 640px) {
+    .container { max-width: 600px; margin: 0 auto; }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .container { max-width: 960px; }
+}
+
+/* Fluid typography — no media queries needed for type scale */
+h1 {
+    /* Min 1.75rem, scales with viewport, max 3rem */
+    font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
+}
+p {
+    /* Readable line length regardless of screen size */
+    max-inline-size: 70ch;
+}
+```
+
+**Container queries (2023, widely supported)** — respond to the component's own container width, not the viewport:
+
+```css
+.card-wrapper {
+    container-type: inline-size;
+    container-name: card;
+}
+
+/* Horizontal layout when the card container is wide */
+@container card (min-width: 400px) {
+    .card { display: flex; }
+}
+
+/* Stacked when the card container is narrow */
+@container card (max-width: 399px) {
+    .card { display: block; }
+}
+```
+
+:::tip
+Container queries solve the problem where a component looks right in one context but breaks in another (e.g., a card in a wide sidebar vs. a narrow sidebar). They're more reusable than viewport-based queries.
+:::
+
+---
+
+## Selectors
+
+```css
+/* Basic */
+p            { }   /* Element type */
+.card        { }   /* Class */
+#main        { }   /* ID (avoid in CSS — too specific) */
+*            { }   /* Universal */
+
+/* Combinators */
+.nav a       { }   /* Descendant — any <a> inside .nav */
+.nav > a     { }   /* Child — direct <a> children only */
+h2 + p       { }   /* Adjacent sibling — <p> immediately after <h2> */
+h2 ~ p       { }   /* General sibling — all <p>s after <h2> */
+
+/* Attribute selectors */
+[type="text"]       { }  /* Exact value */
+[href^="https"]     { }  /* Starts with */
+[href$=".pdf"]      { }  /* Ends with */
+[class*="icon"]     { }  /* Contains */
+
+/* Pseudo-classes */
+a:hover              { }  /* Mouse over */
+input:focus          { }  /* Has keyboard focus */
+li:first-child       { }  /* First child of parent */
+li:last-child        { }  /* Last child of parent */
+li:nth-child(odd)    { }  /* Every other child */
+li:not(.disabled)    { }  /* Exclusion */
+input:placeholder-shown { } /* Input with placeholder visible */
+
+/* Modern pseudo-classes */
+:is(h1, h2, h3)          { }  /* Matches any of (low specificity) */
+:where(h1, h2, h3)        { }  /* Like :is() but zero specificity */
+:has(> img)               { }  /* Parent selector — element containing img */
+
+/* Pseudo-elements */
+p::before         { content: "→ "; }  /* Insert before content */
+p::after          { content: " ←"; }  /* Insert after content */
+::selection       { background: hsl(265, 60%, 45%); color: white; }  /* Highlighted text */
+input::placeholder { color: hsl(0, 0%, 60%); }  /* Placeholder text */
+```
+
+---
+
+## Transitions and Animations
+
+```css
+/* Transition — smooth change between two states */
+.button {
+    background-color: var(--color-primary);
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background-color 200ms ease,
+                transform 150ms ease,
+                box-shadow 200ms ease;
+}
+.button:hover {
+    background-color: var(--color-primary-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* Keyframe animation — multi-step, runs automatically */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title {
+    animation: fadeInUp 600ms ease-out both;
+}
+
+/* Loading spinner */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+/* Always respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+```
+
+---
+
+## Typography
+
+```css
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 1rem;         /* 16px base */
+    line-height: 1.6;        /* Comfortable reading */
+    color: var(--color-text);
+
+    /* Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Modular type scale */
+.text-xs   { font-size: 0.75rem; }
+.text-sm   { font-size: 0.875rem; }
+.text-base { font-size: 1rem; }
+.text-lg   { font-size: 1.125rem; }
+.text-xl   { font-size: 1.25rem; }
+.text-2xl  { font-size: 1.5rem; }
+.text-3xl  { font-size: 1.875rem; }
+
+/* Load web font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Or use font-display for better performance: */
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter-Regular.woff2') format('woff2');
+    font-display: swap;  /* Show fallback immediately, swap when ready */
+}
+```
+
+---
+
+## CSS Layers (`@layer`)
+
+CSS Layers (2022) let you explicitly control the order of specificity — without fighting selector wars:
+
+```css
+/* Declare layer order — later layers win, regardless of specificity */
+@layer reset, base, components, utilities;
+
+@layer reset {
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+}
+
+@layer base {
+    body { font-family: var(--font-sans); }
+    a { color: var(--color-accent); }
+}
+
+@layer components {
+    .button { background: var(--color-primary); padding: 0.5rem 1rem; }
+}
+
+@layer utilities {
+    .text-center { text-align: center; }
+    .mt-4 { margin-top: 1rem; }
+}
+```
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary">
+
+- [MDN: CSS Reference](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference) — every property documented
+- [web.dev: Learn CSS](https://web.dev/learn/css) — structured 28-lesson course by Google
+- [CSS-Tricks: A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) — the definitive visual reference
+- [CSS-Tricks: A Complete Guide to Grid](https://css-tricks.com/snippets/css/complete-guide-grid/)
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Flexbox Froggy](https://flexboxfroggy.com/) — interactive Flexbox game
+- [Grid Garden](https://cssgridgarden.com/) — interactive Grid game
+- [Every Layout](https://every-layout.dev/) — algorithmic layouts, no media queries
+- [Defensive CSS](https://defensivecss.dev/) — practical tips to avoid common layout bugs
+
+</TabItem>
+</Tabs>
+
+---
+
+## See Also
+
+- [HTML](./html) — the structure CSS is styling
+- [JavaScript](./javascript) — dynamic style changes via the DOM
+- [Course: CSS Fundamentals](../../courses/css_fundamentals/index)

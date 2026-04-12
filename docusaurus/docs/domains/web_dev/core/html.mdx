@@ -1,0 +1,345 @@
+---
+title: HTML Reference
+description: HTML document structure, semantic elements, headings, forms, media, accessibility, and the DOM tree.
+sidebar_label: HTML
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import YouTubeEmbed from '@site/src/components/YouTubeEmbed';
+
+# HTML
+
+> **Tool:** HTML · **Introduced:** 1991 · **Latest:** HTML Living Standard (continuously updated) · **Status:** 🔵 Foundation
+
+HTML (HyperText Markup Language) defines the **structure and meaning** of web content. It is not a programming language — it is a markup language that describes the *what*, not the *how it looks* (that's CSS) or *how it behaves* (that's JavaScript).
+
+> **Prerequisite:** None.
+
+---
+
+## Document Structure
+
+Every HTML document is a tree of nodes — the **Document Object Model (DOM)**. The browser parses HTML into this tree; CSS and JavaScript then operate on it.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Metadata — not visible in the page body -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Page description for search engines">
+    <title>Page Title — shown in browser tab and search results</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <!-- All visible content goes here -->
+  </body>
+</html>
+```
+
+**Key `<head>` elements:**
+
+| Element | Purpose |
+|---------|---------|
+| `<meta charset="UTF-8">` | Character encoding — always include |
+| `<meta name="viewport" ...>` | Responsive layout on mobile — always include |
+| `<meta name="description">` | Search engine snippet |
+| `<title>` | Browser tab + search result title |
+| `<link rel="stylesheet">` | Load external CSS |
+| `<link rel="icon">` | Favicon |
+| `<script defer src="...">` | Load JS without blocking parsing |
+
+---
+
+## Semantic HTML
+
+Semantic elements tell the browser (and assistive technologies) what the content *means*, not just how it looks. They make HTML self-documenting.
+
+<div className="svg-graphic-container margin-bottom--lg text--center">
+  <img src="/img/diagrams/dom_tree.svg" alt="DOM tree showing a typical page structure with header, nav, main, article, aside, and footer elements" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
+</div>
+
+**Use semantic elements instead of generic `<div>` everywhere:**
+
+| Element | Use for |
+|---------|---------|
+| `<header>` | Site or section header (logo, site nav, hero) |
+| `<nav>` | Primary navigation links |
+| `<main>` | The primary content — **one per page** |
+| `<article>` | Self-contained composition (post, card, comment) |
+| `<section>` | Thematic grouping within a page or article |
+| `<aside>` | Tangentially related content (sidebar, pull quote) |
+| `<footer>` | Footer for page or section |
+| `<figure>` + `<figcaption>` | Media with a caption (images, code, charts) |
+| `<time datetime="2025-01-01">` | Machine-readable dates |
+| `<address>` | Contact information |
+| `<details>` + `<summary>` | Native disclosure/accordion pattern |
+| `<dialog>` | Native modal dialog |
+
+:::tip
+**`<div>` and `<span>` have no semantic meaning** — they're styling hooks. Use them only when no semantic element fits. Accessible HTML is mostly just correct HTML — semantics give you ARIA roles for free.
+:::
+
+---
+
+## Headings — One `<h1>`, Then Hierarchy
+
+```html
+<h1>Site/Page Title — ONE per page (SEO + screen reader landmark)</h1>
+  <h2>Major Section</h2>
+    <h3>Sub-section</h3>
+      <h4>Sub-sub-section (use sparingly)</h4>
+  <h2>Another Major Section</h2>
+```
+
+:::important
+Never skip heading levels for visual reasons. Screen readers build a document outline from headings. Jumping from `<h2>` to `<h4>` breaks navigation for users of assistive technology. If you need smaller text, use CSS — don't downgrade the heading level.
+:::
+
+---
+
+## Links and Navigation
+
+```html
+<!-- External link — always open in same tab unless user expects otherwise -->
+<a href="https://example.com">Visit Example</a>
+
+<!-- Open in new tab — always add rel="noopener noreferrer" for security -->
+<a href="https://example.com" target="_blank" rel="noopener noreferrer">
+  Open in new tab
+</a>
+
+<!-- In-page anchor link -->
+<a href="#section-id">Jump to section</a>
+
+<!-- Skip link — accessibility must-have; first focusable element on the page -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<main id="main-content">...</main>
+
+<!-- Email and phone -->
+<a href="mailto:hello@example.com">Email us</a>
+<a href="tel:+15551234567">+1 555 123 4567</a>
+```
+
+---
+
+## Images and Media
+
+```html
+<!-- Always include alt text that describes the content -->
+<img src="chart.png" alt="Bar chart showing 40% increase in sales Q1 2025">
+
+<!-- Decorative image — empty alt, screen reader skips it -->
+<img src="divider.svg" alt="">
+
+<!-- Responsive images — browser picks the best size -->
+<img
+  src="hero.jpg"
+  srcset="hero-480.jpg 480w, hero-800.jpg 800w, hero-1200.jpg 1200w"
+  sizes="(max-width: 600px) 480px, (max-width: 900px) 800px, 1200px"
+  alt="Team working around a laptop"
+  loading="lazy"
+  width="1200"
+  height="630"
+>
+
+<!-- Modern formats with fallback -->
+<picture>
+  <source srcset="image.avif" type="image/avif">
+  <source srcset="image.webp" type="image/webp">
+  <img src="image.jpg" alt="Description">
+</picture>
+
+<!-- Video -->
+<video controls width="720" poster="thumbnail.jpg">
+  <source src="video.webm" type="video/webm">
+  <source src="video.mp4" type="video/mp4">
+  <track kind="subtitles" src="captions.vtt" srclang="en" label="English">
+  Your browser doesn't support video.
+</video>
+```
+
+:::tip
+Always specify `width` and `height` on `<img>` elements. This tells the browser the aspect ratio before the image downloads, preventing layout shift (a Core Web Vital).
+:::
+
+---
+
+## Forms
+
+Forms are how users submit data. Each input must have an associated `<label>`.
+
+```html
+<form action="/submit" method="POST">
+
+  <!-- Label associated by 'for' + 'id' matching -->
+  <label for="name">Full Name</label>
+  <input type="text" id="name" name="name" required autocomplete="name">
+
+  <!-- Label wrapping the input (alternative pattern) -->
+  <label>
+    Email Address
+    <input type="email" name="email" required autocomplete="email"
+           aria-describedby="email-hint">
+    <span id="email-hint">We'll never share your email.</span>
+  </label>
+
+  <!-- Select -->
+  <label for="role">Role</label>
+  <select id="role" name="role">
+    <option value="">— Choose —</option>
+    <option value="dev">Developer</option>
+    <option value="designer">Designer</option>
+  </select>
+
+  <!-- Textarea -->
+  <label for="bio">Bio</label>
+  <textarea id="bio" name="bio" rows="4" maxlength="500"></textarea>
+
+  <!-- Checkboxes — each needs its own label -->
+  <fieldset>
+    <legend>Interests</legend>
+    <label><input type="checkbox" name="interest" value="frontend"> Frontend</label>
+    <label><input type="checkbox" name="interest" value="backend"> Backend</label>
+  </fieldset>
+
+  <!-- Radio buttons -->
+  <fieldset>
+    <legend>Experience Level</legend>
+    <label><input type="radio" name="level" value="beginner"> Beginner</label>
+    <label><input type="radio" name="level" value="intermediate"> Intermediate</label>
+  </fieldset>
+
+  <button type="submit">Submit</button>
+</form>
+```
+
+**Input types** (the browser validates these automatically):
+
+| Type | Use for |
+|------|---------|
+| `text` | Short freeform text |
+| `email` | Email addresses (validates format) |
+| `password` | Masked input |
+| `number` | Numeric input (with `min`, `max`, `step`) |
+| `tel` | Phone numbers (mobile shows numeric keyboard) |
+| `url` | URLs (validates format) |
+| `date` | Date picker |
+| `search` | Search fields (shows clear button in some browsers) |
+| `file` | File upload |
+| `hidden` | Hidden data sent with form (e.g., CSRF tokens) |
+| `color` | Color picker |
+| `range` | Slider |
+
+---
+
+## Tables
+
+Use tables for **tabular data** — not for layout (that's what CSS Grid and Flexbox are for).
+
+```html
+<table>
+  <caption>Q1 2025 Sales by Region</caption>
+  <thead>
+    <tr>
+      <th scope="col">Region</th>
+      <th scope="col">Revenue</th>
+      <th scope="col">Growth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">North America</th>
+      <td>$1.2M</td>
+      <td>+15%</td>
+    </tr>
+    <tr>
+      <th scope="row">Europe</th>
+      <td>$890K</td>
+      <td>+8%</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th scope="row">Total</th>
+      <td>$2.09M</td>
+      <td>+12%</td>
+    </tr>
+  </tfoot>
+</table>
+```
+
+---
+
+## Accessibility Essentials
+
+Accessible HTML is not a separate concern — it's just correct HTML.
+
+```html
+<!-- Buttons vs links — never swap their roles -->
+<button type="button">Submit form</button>         <!-- Does something -->
+<a href="/about">Learn more about us</a>           <!-- Navigates somewhere -->
+<!-- NEVER: <div onclick="..."> — no keyboard access, no screen reader role -->
+
+<!-- ARIA roles (use sparingly — HTML semantics come first) -->
+<nav aria-label="Main navigation">...</nav>
+<nav aria-label="Breadcrumb">...</nav>
+
+<!-- Interactive elements: announce state -->
+<button aria-expanded="false" aria-controls="dropdown-menu">Menu</button>
+<ul id="dropdown-menu" hidden>...</ul>
+
+<!-- Live regions — announce dynamic content changes -->
+<div aria-live="polite" aria-atomic="true" id="status-message">
+  <!-- JS updates this; screen reader announces the change -->
+</div>
+
+<!-- Focus management for dialogs -->
+<dialog id="confirm-dialog" aria-labelledby="dialog-title">
+  <h2 id="dialog-title">Confirm deletion</h2>
+  <p>This action cannot be undone.</p>
+  <button autofocus>Cancel</button>
+  <button>Delete</button>
+</dialog>
+```
+
+**Quick accessibility checklist:**
+- All images have meaningful `alt` text (empty `alt=""` for decorative)
+- All form inputs have associated `<label>` elements
+- All interactive elements are reachable with the Tab key
+- Focus outline is visible (never use `outline: none` without a replacement)
+- Color contrast ≥ 4.5:1 for body text
+- Page has exactly one `<h1>`
+- Page has a `<main>` landmark
+- `<html lang="en">` is set (or appropriate language code)
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary">
+
+- [MDN: HTML Elements Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) — every element, with examples
+- [MDN: HTML Forms Guide](https://developer.mozilla.org/en-US/docs/Learn/Forms) — comprehensive form tutorial
+- [web.dev: Learn HTML](https://web.dev/learn/html) — structured course by Google
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [The A11Y Project Checklist](https://www.a11yproject.com/checklist/) — practical accessibility audit
+- [HTML Validator (W3C)](https://validator.w3.org/) — paste any URL to check for errors
+- [Can I Use](https://caniuse.com/) — browser support table for any HTML/CSS feature
+
+</TabItem>
+</Tabs>
+
+---
+
+## See Also
+
+- [CSS](./css) — styling and layout
+- [JavaScript](./javascript) — making it interactive
+- [Course: HTML Fundamentals](../../courses/html_fundamentals/index)
