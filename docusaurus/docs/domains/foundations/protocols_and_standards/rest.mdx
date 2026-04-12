@@ -1,0 +1,146 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# REST — Representational State Transfer
+
+> **Part of:** [Protocols & Standards](./index)
+
+REST is an **architectural style** (not a protocol) for designing networked APIs. It was defined by Roy Fielding in his 2000 PhD dissertation, describing the constraints that made the web scale. Today it is the dominant API style for HTTP services.
+
+---
+
+## The Six Constraints
+
+A service is RESTful if it satisfies these constraints:
+
+| # | Constraint | What It Means |
+|---|-----------|--------------|
+| 1 | **Client-Server** | Separation of concerns — UI and data storage evolve independently |
+| 2 | **Stateless** | Each request contains all information needed. Server stores no session state. |
+| 3 | **Cacheable** | Responses must declare whether they are cacheable (`Cache-Control`, `ETag`) |
+| 4 | **Uniform Interface** | Resources are identified by URI; representations are standardised (JSON/XML); messages are self-descriptive |
+| 5 | **Layered System** | Client doesn't know if it's talking to the origin server, a load balancer, or a cache |
+| 6 | **Code on Demand** *(optional)* | Server can send executable code (e.g. JavaScript in a browser) |
+
+The most violated constraint in practice is **Stateless** — developers often keep session state server-side, breaking horizontal scalability.
+
+---
+
+## Resource Design — Nouns, Not Verbs
+
+REST uses HTTP methods to express actions, so URLs should identify *things* (resources), not *verbs*:
+
+| Pattern | Example | Notes |
+|---------|---------|-------|
+| ❌ Verb in URL | `GET /getUser?id=42` | Don't encode the action in the path |
+| ❌ Verb in URL | `POST /createUser` | Use the HTTP method instead |
+| ✅ Noun resource | `GET /users/42` | Get user 42 |
+| ✅ Create | `POST /users` | Create a new user |
+| ✅ Replace | `PUT /users/42` | Replace user 42 entirely |
+| ✅ Partial update | `PATCH /users/42` | Update user 42 partially |
+| ✅ Delete | `DELETE /users/42` | Delete user 42 |
+| ✅ Nested resource | `GET /users/42/orders` | All orders belonging to user 42 |
+| ✅ Specific nested | `GET /users/42/orders/7` | Order 7 for user 42 |
+| ✅ Filtering | `GET /users?status=active&sort=name&page=2` | Query params for filtering, not identity |
+
+---
+
+## Making REST Requests
+
+<Tabs>
+<TabItem value="python" label="Python">
+
+```python
+import httpx  # pip install httpx
+
+BASE = "https://jsonplaceholder.typicode.com"
+
+# GET — retrieve a resource
+response = httpx.get(f"{BASE}/users/1")
+response.raise_for_status()
+user = response.json()
+print(user["name"])
+
+# POST — create a resource
+new_post = {"title": "Hello", "body": "World", "userId": 1}
+response = httpx.post(f"{BASE}/posts", json=new_post)
+print(response.status_code)   # 201 Created
+print(response.json()["id"])  # ID assigned by server
+
+# PATCH — partial update
+response = httpx.patch(f"{BASE}/posts/1", json={"title": "Updated"})
+print(response.json()["title"])
+
+# DELETE
+response = httpx.delete(f"{BASE}/posts/1")
+print(response.status_code)  # 200 (or 204 No Content)
+```
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+const BASE = "https://jsonplaceholder.typicode.com";
+
+// GET — retrieve a resource
+const userRes = await fetch(`${BASE}/users/1`);
+if (!userRes.ok) throw new Error(`HTTP ${userRes.status}`);
+const user = await userRes.json();
+console.log(user.name);
+
+// POST — create a resource
+const postRes = await fetch(`${BASE}/posts`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ title: "Hello", body: "World", userId: 1 }),
+});
+const created = await postRes.json();
+console.log(created.id);    // ID assigned by server
+
+// PATCH — partial update
+await fetch(`${BASE}/posts/1`, {
+  method: "PATCH",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ title: "Updated" }),
+});
+
+// DELETE
+await fetch(`${BASE}/posts/1`, { method: "DELETE" });
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## REST vs. GraphQL vs. gRPC
+
+| | REST | GraphQL | gRPC |
+|-|------|---------|------|
+| Protocol | HTTP | HTTP | HTTP/2 |
+| Format | JSON (typically) | JSON | Protocol Buffers (binary) |
+| Schema | OpenAPI (optional) | Required (SDL) | Required (`.proto`) |
+| Query flexibility | Fixed endpoints | Client specifies shape | Fixed methods |
+| Over-fetching | Common | Eliminated | N/A (binary, efficient) |
+| Type safety | Manual / via OpenAPI | Built-in | Built-in |
+| Best for | Public APIs, CRUD services | Complex frontends needing custom shapes | Internal microservices, high-performance |
+| Tooling | Excellent | Good | Good |
+
+:::note[Which should you learn first?]
+REST. It is used in the vast majority of public APIs, is the simplest to debug (curl, browser DevTools, Postman), and every other style builds on HTTP knowledge. See the [Web Dev Wiki](../../web_dev/graphql.md) for GraphQL.
+:::
+
+---
+
+## Richardson Maturity Model
+
+A useful way to assess how "RESTful" an API actually is:
+
+| Level | Description | Example |
+|-------|-------------|---------|
+| 0 | Single endpoint, all via POST | SOAP / XML-RPC style |
+| 1 | Multiple resources (URLs) | `/users`, `/orders` |
+| 2 | HTTP methods used correctly | `GET /users`, `POST /users`, `DELETE /users/42` |
+| 3 | Hypermedia (HATEOAS) | Responses include links to related actions |
+
+Most real-world "REST" APIs reach **Level 2**. Level 3 (HATEOAS) is theoretically correct REST but rarely implemented in practice.
