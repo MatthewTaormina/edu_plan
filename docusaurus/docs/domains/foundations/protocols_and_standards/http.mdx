@@ -1,0 +1,106 @@
+# HTTP — HyperText Transfer Protocol
+
+> **Part of:** [Protocols & Standards](./index)
+
+> **Tool:** HTTP · **Introduced:** 1991 (HTTP/0.9) · **Latest:** HTTP/3 (RFC 9114, 2022) · **Status:** 🟢 Modern
+
+HTTP is the foundation of data communication on the web. It's a **request-response** protocol — one side asks, the other answers. Every website visit, API call, and webhook is HTTP.
+
+---
+
+## Request Structure
+
+```
+GET /api/users/42 HTTP/1.1               ← Request line: method, path, version
+Host: api.example.com                    ← Required header (which server)
+Accept: application/json                 ← What response formats I accept
+Authorization: Bearer eyJhb...          ← Auth token
+User-Agent: Mozilla/5.0                  ← Who is making the request
+Content-Type: application/json           ← Format of my request body
+                                         ← Blank line separates headers from body
+{"filter": "active"}                     ← Optional body (for POST/PUT/PATCH)
+```
+
+---
+
+## Response Structure
+
+```
+HTTP/1.1 200 OK                          ← Status line: version, code, reason
+Content-Type: application/json           ← Format of response body
+Content-Length: 247                      ← Size of body in bytes
+Cache-Control: max-age=60               ← Caching instructions
+Set-Cookie: session=abc123; HttpOnly    ← Set a cookie
+                                         ← Blank line
+{"id": 42, "name": "Alice", ...}        ← Response body
+```
+
+---
+
+## HTTP Methods
+
+| Method | Purpose | Body? | Idempotent? | Safe? |
+|--------|---------|-------|-------------|-------|
+| `GET` | Retrieve a resource | No | ✅ Yes | ✅ Yes |
+| `POST` | Create a new resource | Yes | ❌ No | ❌ No |
+| `PUT` | Replace a resource entirely | Yes | ✅ Yes | ❌ No |
+| `PATCH` | Partially update a resource | Yes | ❌ No | ❌ No |
+| `DELETE` | Remove a resource | No | ✅ Yes | ❌ No |
+| `HEAD` | Like GET but no body (check existence, headers) | No | ✅ Yes | ✅ Yes |
+| `OPTIONS` | List allowed methods for a resource | No | ✅ Yes | ✅ Yes |
+
+**Idempotent** — calling it multiple times has the same result as calling it once.  
+**Safe** — it has no side effects on the server (read-only).
+
+---
+
+## HTTP Status Codes
+
+| Range | Category | Common Codes |
+|-------|----------|-------------|
+| `1xx` | Informational | `100 Continue` — server received headers, keep sending |
+| `2xx` | Success | `200 OK`, `201 Created`, `204 No Content` |
+| `3xx` | Redirection | `301 Moved Permanently`, `302 Found`, `304 Not Modified` |
+| `4xx` | Client Error | `400 Bad Request`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found`, `409 Conflict`, `422 Unprocessable`, `429 Too Many Requests` |
+| `5xx` | Server Error | `500 Internal Server Error`, `502 Bad Gateway`, `503 Service Unavailable`, `504 Gateway Timeout` |
+
+**The two most-confused codes:**
+- `401 Unauthorized` — you are **not authenticated** (no valid identity)
+- `403 Forbidden` — you are authenticated but **not permitted** (wrong role/permission)
+
+---
+
+## HTTP/1.1 vs HTTP/2 vs HTTP/3
+
+| Feature | HTTP/1.1 | HTTP/2 | HTTP/3 |
+|---------|----------|--------|--------|
+| Standardised | 1997 (RFC 2616) | 2015 (RFC 7540) | 2022 (RFC 9114) |
+| Transport | TCP | TCP | QUIC (UDP-based) |
+| Request multiplexing | ❌ One at a time per connection | ✅ Multiple streams | ✅ Multiple streams |
+| Header format | Plaintext, repeated each request | Binary, compressed (HPACK) | Binary, compressed (QPACK) |
+| Server Push | ❌ No | ✅ Yes | ✅ Yes |
+| Head-of-line blocking | ✅ Yes (connection-level) | ⚠️ Partial (stream-level on TCP) | ❌ No (QUIC isolates streams) |
+| TLS | Optional | Effectively required | Built-in to QUIC |
+| Adoption | Universal fallback | Most servers | Growing (40%+ of web traffic) |
+
+:::tip[Research Question 🔍]
+What is **head-of-line blocking** and why did HTTP/2 not fully solve it? Why did HTTP/3 switch from TCP to QUIC? Start with [RFC 9114 § 2](https://www.rfc-editor.org/rfc/rfc9114) and the [Cloudflare blog on QUIC](https://blog.cloudflare.com/the-road-to-quic/).
+:::
+
+---
+
+## Important Headers Reference
+
+| Header | Direction | Purpose |
+|--------|-----------|---------|
+| `Host` | Request | Which virtual host to serve |
+| `Authorization` | Request | Auth credentials (`Bearer`, `Basic`) |
+| `Content-Type` | Both | Media type of the body (`application/json`, `text/html`) |
+| `Accept` | Request | Media types the client can handle |
+| `Cache-Control` | Both | Caching directives (`max-age`, `no-cache`, `no-store`) |
+| `ETag` | Response | Version token for conditional requests |
+| `If-None-Match` | Request | Send ETag back; server returns 304 if unchanged |
+| `Location` | Response | URL of newly created resource (after 201) or redirect target |
+| `Set-Cookie` | Response | Set a cookie on the client |
+| `Cookie` | Request | Send cookies back to server |
+| `CORS` headers | Both | Cross-origin access control (`Access-Control-Allow-Origin`) |
