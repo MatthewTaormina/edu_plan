@@ -478,16 +478,92 @@ What is a **doubly linked list**? When would you use it vs. singly linked? What 
 
 A **stack** is LIFO — **Last In, First Out**. Like a stack of plates — you can only add or take from the top.
 
-```mermaid
-flowchart LR
-    E(["Empty"])
-    P1["Push 10\n───\n10"]
-    P2["Push 20\n───\n20 ◄ TOP\n10"]
-    P3["Push 30\n───\n30 ◄ TOP\n20\n10"]
-    P4["Pop → 30\n───\n20 ◄ TOP\n10"]
-    P5["Peek → 20\n───\n20 ◄ TOP\n10"]
-    E --> P1 --> P2 --> P3 --> P4 --> P5
-```
+<div className="svg-graphic-container margin-bottom--lg">
+  <svg viewBox="0 0 780 280" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Stack state progression: Push 10, Push 20, Push 30, Pop returns 30, Peek returns 20">
+    <style>{`
+      .sk-col  { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
+      .sk-top  { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
+      .sk-op   { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 1.5; }
+      .sk-empty{ fill: var(--diagram-semantic-page); stroke: var(--diagram-semantic-stroke); stroke-width: 2; stroke-dasharray: 5 3; }
+      .sk-arr  { stroke: var(--diagram-text-muted); stroke-width: 2; fill: none; marker-end: url(#sk-arrow); }
+      .sk-title{ fill: var(--diagram-text);       font: 600 13px var(--ifm-font-family-base); text-anchor: middle; }
+      .sk-val  { fill: var(--diagram-text);       font: bold 16px monospace;                  text-anchor: middle; dominant-baseline: middle; }
+      .sk-top-lbl { fill: var(--diagram-layer-2-stroke); font: bold 11px var(--ifm-font-family-base); text-anchor: start; }
+      .sk-op-lbl  { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: middle; }
+    `}</style>
+    <defs>
+      <marker id="sk-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--diagram-text-muted)" />
+      </marker>
+    </defs>
+
+    {/* ── Column 1: Empty ── */}
+    <text x="78" y="20" className="sk-title">Empty</text>
+    <rect x="40" y="30" width="76" height="44" className="sk-empty" rx="4"/>
+    <text x="78" y="58" className="sk-op-lbl" style={{fontStyle:'italic'}}>no items</text>
+
+    {/* ── Arrow 1→2 ── */}
+    <line x1="120" y1="100" x2="148" y2="100" className="sk-arr"/>
+    <text x="134" y="92" className="sk-op-lbl">push(10)</text>
+
+    {/* ── Column 2: [10] ── */}
+    <text x="208" y="20" className="sk-title">Push 10</text>
+    <rect x="170" y="74" width="76" height="44" className="sk-top" rx="4"/>
+    <text x="208" y="99" className="sk-val">10</text>
+    <text x="250" y="87" className="sk-top-lbl">← TOP</text>
+
+    {/* ── Arrow 2→3 ── */}
+    <line x1="250" y1="100" x2="278" y2="100" className="sk-arr"/>
+    <text x="264" y="92" className="sk-op-lbl">push(20)</text>
+
+    {/* ── Column 3: [20,10] ── */}
+    <text x="338" y="20" className="sk-title">Push 20</text>
+    <rect x="300" y="30" width="76" height="44" className="sk-top" rx="4"/>
+    <text x="338" y="55" className="sk-val">20</text>
+    <text x="380" y="43" className="sk-top-lbl">← TOP</text>
+    <rect x="300" y="74" width="76" height="44" className="sk-col" rx="4"/>
+    <text x="338" y="99" className="sk-val">10</text>
+
+    {/* ── Arrow 3→4 ── */}
+    <line x1="380" y1="70" x2="408" y2="70" className="sk-arr"/>
+    <text x="394" y="62" className="sk-op-lbl">push(30)</text>
+
+    {/* ── Column 4: [30,20,10] ── */}
+    <text x="468" y="20" className="sk-title">Push 30</text>
+    <rect x="430" y="30" width="76" height="40" className="sk-top" rx="4"/>
+    <text x="468" y="52" className="sk-val">30</text>
+    <text x="510" y="43" className="sk-top-lbl">← TOP</text>
+    <rect x="430" y="70" width="76" height="40" className="sk-col" rx="4"/>
+    <text x="468" y="92" className="sk-val">20</text>
+    <rect x="430" y="110" width="76" height="40" className="sk-col" rx="4"/>
+    <text x="468" y="132" className="sk-val">10</text>
+
+    {/* ── Arrow 4→5 pop ── */}
+    <line x1="510" y1="85" x2="538" y2="85" className="sk-arr"/>
+    <text x="524" y="77" className="sk-op-lbl">pop()</text>
+    <rect x="510" y="93" width="54" height="20" className="sk-op" rx="3"/>
+    <text x="537" y="107" className="sk-op-lbl">→ 30</text>
+
+    {/* ── Column 5: [20,10] after pop ── */}
+    <text x="600" y="20" className="sk-title">After Pop</text>
+    <rect x="562" y="30" width="76" height="44" className="sk-top" rx="4"/>
+    <text x="600" y="55" className="sk-val">20</text>
+    <text x="642" y="43" className="sk-top-lbl">← TOP</text>
+    <rect x="562" y="74" width="76" height="44" className="sk-col" rx="4"/>
+    <text x="600" y="99" className="sk-val">10</text>
+
+    {/* Peek annotation */}
+    <text x="600" y="145" className="sk-op-lbl" style={{fontSize:'12px'}}>peek() → 20 (no removal)</text>
+
+    {/* Legend */}
+    <rect x="20" y="200" width="14" height="14" className="sk-top" rx="2"/>
+    <text x="40" y="212" className="sk-op-lbl" style={{fontSize:'11px'}}>TOP item</text>
+    <rect x="100" y="200" width="14" height="14" className="sk-col" rx="2"/>
+    <text x="120" y="212" className="sk-op-lbl" style={{fontSize:'11px'}}>lower items</text>
+    <rect x="190" y="200" width="14" height="14" className="sk-op" rx="2"/>
+    <text x="210" y="212" className="sk-op-lbl" style={{fontSize:'11px'}}>return value</text>
+  </svg>
+</div>
 
 **Real uses:** undo/redo, browser back button, call stack, parenthesis matching, expression evaluation.
 
@@ -628,28 +704,96 @@ function isBalanced(text: string): boolean {
 
 A **queue** is FIFO — **First In, First Out**. Like a line at a store — new arrivals join the back, service happens at the front.
 
-```mermaid
-flowchart LR
-    subgraph q4["After Dequeue"]
-        direction LR
-        F4([FRONT]) --> D20[20] --> D30[30]
-    end
-    subgraph q3["Enqueue 30"]
-        direction LR
-        F3([FRONT]) --> C10[10] --> C20[20] --> C30[30]
-    end
-    subgraph q2["Enqueue 20"]
-        direction LR
-        F2([FRONT]) --> B10[10] --> B20[20]
-    end
-    subgraph q1["Enqueue 10"]
-        direction LR
-        F1([FRONT]) --> A10[10]
-    end
-    q1 --> q2 --> q3 --> q4
-    note["Dequeue removes 10\nfrom FRONT → returns 10"]
-    q3 --> note
-```
+<div className="svg-graphic-container margin-bottom--lg">
+  <svg viewBox="0 0 820 310" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Queue FIFO: enqueue 10, 20, 30; then dequeue returns 10 from FRONT">
+    <style>{`
+      .q-node  { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
+      .q-front { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
+      .q-back  { fill: var(--diagram-layer-3-fill); stroke: var(--diagram-layer-3-stroke); stroke-width: 2; }
+      .q-gone  { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 2; stroke-dasharray: 5 3; opacity: 0.65; }
+      .q-arr   { stroke: var(--diagram-text-muted); stroke-width: 2; fill: none; marker-end: url(#q-arrow); }
+      .q-lbl   { fill: var(--diagram-text);          font: 600 12px var(--ifm-font-family-base); text-anchor: start; dominant-baseline: middle; }
+      .q-val   { fill: var(--diagram-text);          font: bold 15px monospace; text-anchor: middle; dominant-baseline: middle; }
+      .q-tag-f { fill: var(--diagram-layer-2-stroke); font: bold 10px var(--ifm-font-family-base); text-anchor: middle; }
+      .q-tag-b { fill: var(--diagram-layer-3-stroke); font: bold 10px var(--ifm-font-family-base); text-anchor: middle; }
+      .q-note  { fill: var(--diagram-text-muted); font: 10px var(--ifm-font-family-base); text-anchor: middle; }
+    `}</style>
+    <defs>
+      <marker id="q-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--diagram-text-muted)" />
+      </marker>
+    </defs>
+
+    {/* ── Row labels on far left ── */}
+    <text x="10" y="50"  className="q-lbl">enqueue(10)</text>
+    <text x="10" y="130" className="q-lbl">enqueue(20)</text>
+    <text x="10" y="210" className="q-lbl">enqueue(30)</text>
+    <text x="10" y="290" className="q-lbl">dequeue()</text>
+
+    {/* ── Divider ── */}
+    <line x1="148" y1="10" x2="148" y2="300" stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 3"/>
+
+    {/* ─── ROW 1: [10]  FRONT=10 ─── */}
+    <rect x="160" y="30" width="52" height="38" className="q-front" rx="4"/>
+    <text x="186" y="50" className="q-val">10</text>
+    <text x="186" y="73" className="q-tag-f">FRONT</text>
+    <text x="225" y="50" className="q-note" style={{textAnchor:'start', fontSize:'10px'}}>← BACK</text>
+
+    {/* ─── ROW 2: [10, 20]  ─── */}
+    <rect x="160" y="110" width="52" height="38" className="q-front" rx="4"/>
+    <text x="186" y="130" className="q-val">10</text>
+    <text x="186" y="153" className="q-tag-f">FRONT</text>
+    <line x1="213" y1="129" x2="229" y2="129" className="q-arr"/>
+    <rect x="232" y="110" width="52" height="38" className="q-back" rx="4"/>
+    <text x="258" y="130" className="q-val">20</text>
+    <text x="258" y="153" className="q-tag-b">BACK</text>
+
+    {/* ─── ROW 3: [10, 20, 30]  ─── */}
+    <rect x="160" y="190" width="52" height="38" className="q-front" rx="4"/>
+    <text x="186" y="210" className="q-val">10</text>
+    <text x="186" y="233" className="q-tag-f">FRONT</text>
+    <line x1="213" y1="209" x2="229" y2="209" className="q-arr"/>
+    <rect x="232" y="190" width="52" height="38" className="q-node" rx="4"/>
+    <text x="258" y="210" className="q-val">20</text>
+    <line x1="285" y1="209" x2="301" y2="209" className="q-arr"/>
+    <rect x="304" y="190" width="52" height="38" className="q-back" rx="4"/>
+    <text x="330" y="210" className="q-val">30</text>
+    <text x="330" y="233" className="q-tag-b">BACK</text>
+
+    {/* ─── ROW 4: dequeue result — [20, 30], 10 returned ─── */}
+    {/* 10 crossed out */}
+    <rect x="160" y="270" width="52" height="38" className="q-gone" rx="4"/>
+    <text x="186" y="290" className="q-val" style={{opacity:0.45}}>10</text>
+    <text x="186" y="313" className="q-note">removed</text>
+    {/* returned badge */}
+    <rect x="160" y="252" width="52" height="14" rx="3" fill="var(--diagram-layer-4-fill)" stroke="var(--diagram-layer-4-stroke)" strokeWidth="1"/>
+    <text x="186" y="261" className="q-note" style={{fill:'var(--diagram-layer-4-stroke)', fontWeight:'bold'}}>→ 10</text>
+
+    <line x1="213" y1="289" x2="229" y2="289" className="q-arr"/>
+    <rect x="232" y="270" width="52" height="38" className="q-front" rx="4"/>
+    <text x="258" y="290" className="q-val">20</text>
+    <text x="258" y="313" className="q-tag-f">new FRONT</text>
+    <line x1="285" y1="289" x2="301" y2="289" className="q-arr"/>
+    <rect x="304" y="270" width="52" height="38" className="q-back" rx="4"/>
+    <text x="330" y="290" className="q-val">30</text>
+    <text x="330" y="313" className="q-tag-b">BACK</text>
+
+    {/* ── Legend ── */}
+    <rect x="410" y="30" width="12" height="12" className="q-front" rx="2"/>
+    <text x="428" y="40" className="q-note" style={{textAnchor:'start'}}>FRONT — served first (dequeued)</text>
+    <rect x="410" y="52" width="12" height="12" className="q-back" rx="2"/>
+    <text x="428" y="62" className="q-note" style={{textAnchor:'start'}}>BACK — new arrivals (enqueued)</text>
+    <rect x="410" y="74" width="12" height="12" className="q-node" rx="2"/>
+    <text x="428" y="84" className="q-note" style={{textAnchor:'start'}}>middle items</text>
+    <rect x="410" y="96" width="12" height="12" className="q-gone" rx="2"/>
+    <text x="428" y="106" className="q-note" style={{textAnchor:'start'}}>dequeued / removed</text>
+
+    {/* ── FIFO rule summary ── */}
+    <text x="410" y="145" className="q-lbl" style={{fontSize:'13px'}}>FIFO: First In, First Out</text>
+    <text x="410" y="165" className="q-note" style={{textAnchor:'start', fontSize:'11px'}}>Items leave in the same order they arrived.</text>
+    <text x="410" y="182" className="q-note" style={{textAnchor:'start', fontSize:'11px'}}>The item at FRONT was enqueued first.</text>
+  </svg>
+</div>
 
 **Real uses:** task schedulers, web server request handling, BFS graph traversal, print queues.
 
