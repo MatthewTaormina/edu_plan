@@ -407,11 +407,56 @@ const sidebars: SidebarsConfig = {
       label: 'Web Development',
       link: { type: 'doc', id: 'domains/web_dev/index' },
       items: [
-        'domains/web_dev/html_css',
-        'domains/web_dev/javascript_core',
-        'domains/web_dev/typescript',
-        'domains/web_dev/frontend_frameworks',
-        'domains/web_dev/nodejs',
+        {
+          type: 'category',
+          label: 'Core Web Technologies',
+          link: { type: 'doc', id: 'domains/web_dev/core/index' },
+          items: [
+            'domains/web_dev/core/html',
+            'domains/web_dev/core/css',
+            'domains/web_dev/core/javascript',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'TypeScript',
+          link: { type: 'doc', id: 'domains/web_dev/typescript/index' },
+          items: [],
+        },
+        {
+          type: 'category',
+          label: 'Frontend Frameworks',
+          link: { type: 'doc', id: 'domains/web_dev/frontend_frameworks/index' },
+          items: [
+            'domains/web_dev/frontend_frameworks/react',
+            'domains/web_dev/frontend_frameworks/angular',
+            'domains/web_dev/frontend_frameworks/vue',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Build Tools',
+          link: { type: 'doc', id: 'domains/web_dev/build_tools/index' },
+          items: [
+            'domains/web_dev/build_tools/vite',
+            'domains/web_dev/build_tools/webpack',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Node Core',
+          link: { type: 'doc', id: 'domains/web_dev/node_core/index' },
+          items: [],
+        },
+        {
+          type: 'category',
+          label: 'Backend Frameworks',
+          link: { type: 'doc', id: 'domains/web_dev/backend_frameworks/index' },
+          items: [
+            'domains/web_dev/backend_frameworks/express',
+            'domains/web_dev/backend_frameworks/next',
+          ],
+        },
         'domains/web_dev/http_server',
         'domains/web_dev/rest_api',
         'domains/web_dev/graphql',
