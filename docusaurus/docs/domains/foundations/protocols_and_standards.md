@@ -46,20 +46,13 @@ A **standard** is a protocol that has been formally documented and ratified by a
 
 The internet is built on layers. Each layer has one job and talks only to the layers directly above and below it.
 
-```
-┌──────────────────────────────────┐
-│  Application Layer               │  HTTP, DNS, FTP, SSH, SMTP
-│  (what the app sees)             │  "GET /index.html HTTP/1.1"
-├──────────────────────────────────┤
-│  Transport Layer                 │  TCP, UDP
-│  (reliable delivery)             │  Ports, segments, flow control
-├──────────────────────────────────┤
-│  Internet Layer                  │  IP, ICMP
-│  (routing across networks)       │  IP addresses, routing
-├──────────────────────────────────┤
-│  Network Access Layer            │  Ethernet, Wi-Fi
-│  (physical transmission)         │  MAC addresses, frames
-└──────────────────────────────────┘
+```mermaid
+flowchart TD
+    A["**Application Layer**\nHTTP · DNS · SSH · SMTP · FTP\n_What the app sees_"]
+    B["**Transport Layer**\nTCP · UDP\n_Ports, segments, reliable delivery_"]
+    C["**Internet Layer**\nIP · ICMP\n_Routing across networks, IP addresses_"]
+    D["**Network Access Layer**\nEthernet · Wi-Fi\n_Physical transmission, MAC addresses_"]
+    A --> B --> C --> D
 ```
 
 **TCP vs. UDP:**
@@ -72,13 +65,14 @@ The internet is built on layers. Each layer has one job and talks only to the la
 | Use when | Correctness matters (HTTP, SSH, DB) | Speed matters (video, DNS, games) |
 
 **The Three-Way Handshake (TCP connection setup):**
-```
-Client                    Server
-  │─── SYN ──────────────→│   "I want to connect"
-  │←── SYN-ACK ───────────│   "OK, I'm ready"
-  │─── ACK ──────────────→│   "Great, let's go"
-  │                        │
-  │=== Data flowing now ===│
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: SYN — "I want to connect"
+    S->>C: SYN-ACK — "OK, I'm ready"
+    C->>S: ACK — "Great, let's go"
+    Note over C,S: Connection established — data flows
 ```
 
 ---
@@ -87,22 +81,19 @@ Client                    Server
 
 DNS is the internet's phone book. It translates human-readable names (`github.com`) into IP addresses (`140.82.114.4`) that computers use to route traffic.
 
-**Resolution chain:**
-```
-You type: https://github.com
+You type `https://github.com` — here's what happens:
 
-1. Browser checks its own cache → not found
-2. OS checks /etc/hosts (or Windows hosts file) → not found
-3. Query sent to Recursive Resolver (your ISP or 8.8.8.8)
-4. Recursive Resolver asks Root Nameserver: "Who handles .com?"
-5. Root says: "Ask the .com TLD server"
-6. Recursive Resolver asks .com TLD: "Who handles github.com?"
-7. .com TLD says: "Ask GitHub's nameserver (ns1.github.com)"
-8. Recursive Resolver asks GitHub's nameserver: "What's github.com's IP?"
-9. GitHub's nameserver returns: 140.82.114.4
-10. Recursive Resolver caches this (TTL = time to live)
-11. Browser connects to 140.82.114.4
-```
+1. Browser checks its own DNS cache → not found
+2. OS checks `/etc/hosts` (or Windows hosts file) → not found
+3. Query sent to **Recursive Resolver** (your ISP or 8.8.8.8)
+4. Recursive Resolver asks **Root Nameserver**: "Who handles `.com`?"
+5. Root says: "Ask the `.com` TLD server"
+6. Recursive Resolver asks **.com TLD**: "Who handles `github.com`?"
+7. `.com` TLD says: "Ask GitHub's nameserver (`ns1.github.com`)"
+8. Recursive Resolver asks **GitHub's nameserver**: "What's `github.com`'s IP?"
+9. GitHub's nameserver returns: `140.82.114.4`
+10. Recursive Resolver **caches** this (TTL = time to live)
+11. Browser connects to `140.82.114.4`
 
 **Common DNS record types:**
 
@@ -115,8 +106,9 @@ You type: https://github.com
 | `TXT` | Text record (verification, SPF) | Various |
 | `NS` | Authoritative nameserver | `github.com → ns1.p16.dynect.net` |
 
-!!! tip "Try It 🔍"
-    Open a terminal and run: `nslookup github.com` or `dig github.com`. You'll see the actual DNS resolution in real time. Try `dig +trace github.com` to watch the full chain.
+:::tip[Try It 🔍]
+Open a terminal and run: `nslookup github.com` or `dig github.com`. You'll see the actual DNS resolution in real time. Try `dig +trace github.com` to watch the full chain.
+:::
 
 ---
 
@@ -221,31 +213,29 @@ Set-Cookie: session=abc123; HttpOnly    ← Set a cookie
 - **Authentication** — confirms you're talking to who you think (via certificate)
 
 **Simplified TLS 1.3 handshake:**
-```
-Client                                Server
-  │─── ClientHello ──────────────────→│   "I support TLS 1.3, here are my
-  │    (supported ciphers, random)     │    supported cipher suites"
-  │                                    │
-  │←── ServerHello ───────────────────│   "Let's use cipher X, here's my
-  │    (chosen cipher, certificate)    │    certificate (signed by a CA)"
-  │                                    │
-  │  [Client verifies certificate      │
-  │   against trusted CA list]         │
-  │                                    │
-  │─── Finished (encrypted) ──────────→│   Shared secret established
-  │                                    │
-  │═══════ Encrypted data ═════════════│
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: ClientHello (supported ciphers, random nonce)
+    S->>C: ServerHello (chosen cipher, certificate)
+    Note over C: Verifies certificate against trusted CA list
+    C->>S: Finished (encrypted with shared secret)
+    Note over C,S: Encrypted channel established
 ```
 
 **Certificate chain of trust:**
-```
-Root CA (DigiCert, Let's Encrypt, etc.)   ← Trusted by OS/browser
-  └── Intermediate CA
-       └── Server Certificate (github.com)  ← What the server presents
+```mermaid
+flowchart TD
+    R["Root CA\nDigiCert / Let's Encrypt\n_Trusted by OS and browser_"]
+    I["Intermediate CA"]
+    S["Server Certificate\ngithub.com\n_What the server presents_"]
+    R --> I --> S
 ```
 
-!!! tip "Try It 🔍"
-    Click the 🔒 padlock next to any HTTPS URL in Chrome/Firefox and view the certificate. You'll see the chain, the validity period, and the cipher suite being used.
+:::tip[Try It 🔍]
+Click the 🔒 padlock next to any HTTPS URL in Chrome/Firefox and view the certificate. You'll see the chain, the validity period, and the cipher suite being used.
+:::
 
 ---
 
@@ -262,29 +252,20 @@ REST is an **architectural style** (not a protocol) for designing web APIs. It d
 
 **REST resource design:**
 
-```
-Nouns, not verbs:
+| Pattern | Example | Notes |
+|---------|---------|-------|
+| ❌ Verb in URL | `GET /getUser?id=42` | Use HTTP methods instead |
+| ✅ Noun resource | `GET /users/42` | Get user 42 |
+| ✅ Create | `POST /users` | Create a new user |
+| ✅ Replace | `PUT /users/42` | Replace user 42 entirely |
+| ✅ Partial update | `PATCH /users/42` | Update user 42 partially |
+| ✅ Delete | `DELETE /users/42` | Delete user 42 |
+| ✅ Nested resource | `GET /users/42/orders` | All orders for user 42 |
+| ✅ Filtering | `GET /users?status=active&sort=name&page=2` | Query params for filtering |
 
-❌ GET /getUser?id=42
-❌ POST /createUser
-❌ DELETE /deleteUser?id=42
-
-✅ GET    /users/42          → Get user 42
-✅ POST   /users             → Create a new user
-✅ PUT    /users/42          → Replace user 42
-✅ PATCH  /users/42          → Update user 42 partially
-✅ DELETE /users/42          → Delete user 42
-
-Nested resources:
-✅ GET /users/42/orders      → All orders for user 42
-✅ GET /users/42/orders/7    → Specific order 7 for user 42
-
-Query parameters for filtering, not resource identity:
-✅ GET /users?status=active&sort=name&page=2
-```
-
-!!! note "REST vs. GraphQL vs. gRPC"
-    REST is not the only API style. **GraphQL** lets clients specify exactly what data they need. **gRPC** uses Protocol Buffers for high-performance binary communication. REST is the most common starting point — learn it first, then explore the alternatives in the [Web Dev domain](../web_dev/graphql.md).
+:::note[REST vs. GraphQL vs. gRPC]
+REST is not the only API style. **GraphQL** lets clients specify exactly what data they need. **gRPC** uses Protocol Buffers for high-performance binary communication. REST is the most common starting point — learn it first, then explore the alternatives in the [Web Dev domain](../web_dev/graphql.md).
+:::
 
 ---
 
@@ -292,18 +273,20 @@ Query parameters for filtering, not resource identity:
 
 HTTP is request-response — the client always initiates. **WebSockets** open a persistent, bidirectional channel.
 
-```
-HTTP polling (inefficient):
-Client: "Any new messages?" → Server: "No."
-Client: "Any new messages?" → Server: "No."
-Client: "Any new messages?" → Server: "Yes, here's one."
-
-WebSocket:
-Client ──────── WS handshake ────────→ Server
-Client ←══════ persistent channel ════ Server
-Server: "New message!" (anytime, no client request needed)
-Server: "Another message!"
-Client: "Reply to message"
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    Note over C,S: HTTP Polling (inefficient)
+    C->>S: Any new messages?
+    S->>C: No.
+    C->>S: Any new messages?
+    S->>C: Yes, here is one!
+    Note over C,S: WebSocket (efficient)
+    C->>S: WS Upgrade handshake
+    S-->>C: New message! (server-initiated, no request needed)
+    S-->>C: Another message!
+    C->>S: Reply to message
 ```
 
 **When to use WebSockets:**
@@ -384,8 +367,9 @@ wss.on('connection', (ws) => {
 
 **RFCs** (Request for Comments) are the documents that define internet standards. They're freely available at [rfc-editor.org](https://www.rfc-editor.org/). Reading an RFC sounds scary — but RFC 2616 (HTTP/1.1) is surprisingly readable and is historically important.
 
-!!! tip "Research Question 🔍"
-    Read the first 5 pages of [RFC 9110 (HTTP Semantics)](https://www.rfc-editor.org/rfc/rfc9110). How are RFCs structured? What is a "MUST" vs a "SHOULD" in RFC language? (Look up "RFC 2119" — it defines these terms.)
+:::tip[Research Question 🔍]
+Read the first 5 pages of [RFC 9110 (HTTP Semantics)](https://www.rfc-editor.org/rfc/rfc9110). How are RFCs structured? What is a "MUST" vs a "SHOULD" in RFC language? (Look up "RFC 2119" — it defines these terms.)
+:::
 
 ---
 
