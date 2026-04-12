@@ -1,4 +1,22 @@
+---
+title: Data Structures
+description: Arrays, linked lists, stacks, queues, hash tables, trees, and graphs with implementations in Python, TypeScript, Rust, and C.
+sidebar_label: Data Structures
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import YouTubeEmbed from '@site/src/components/YouTubeEmbed';
+import QuizQuestion from '@site/src/components/QuizQuestion';
+import MilestoneChecklist from '@site/src/components/MilestoneChecklist';
+
 # Data Structures
+
+<YouTubeEmbed
+  id="pkYVOmU3MgA"
+  title="Data Structures Easy to Advanced - Full Tutorial by freeCodeCamp"
+  caption="freeCodeCamp full data structures course covering arrays, linked lists, trees, heaps, graphs."
+/>
 
 **Domain:** Foundations · **Time Estimate:** 3–4 weeks · **Language:** See language tabs in each section
 
@@ -70,92 +88,110 @@ This is why index access is **O(1)** — it's just arithmetic, not searching.
 | Insert at middle | O(n) | Must shift all elements right |
 | Delete from middle | O(n) | Must shift all elements left |
 
-=== "Pseudocode"
-    ```
-    // Dynamic array (auto-resizing)
-    array ← NEW List<Int>
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-    append(array, 10)       // [10]
-    append(array, 20)       // [10, 20]
-    append(array, 30)       // [10, 20, 30]
+```
+// Dynamic array (auto-resizing)
+array ← NEW List<Int>
 
-    array[1]                // → 20  (O(1))
-    length(array)           // → 3
+append(array, 10)       // [10]
+append(array, 20)       // [10, 20]
+append(array, 30)       // [10, 20, 30]
 
-    // Insert at index (shifts elements right)
-    insert(array, index=1, value=15)  // [10, 15, 20, 30]
+array[1]                // → 20  (O(1))
+length(array)           // → 3
 
-    // Remove last
-    remove_last(array)      // [10, 15, 20]
-    ```
+// Insert at index (shifts elements right)
+insert(array, index=1, value=15)  // [10, 15, 20, 30]
 
-=== "Python"
-    ```python
-    arr = []
-    arr.append(10)      # O(1) amortized
-    arr.append(20)
-    arr.append(30)
+// Remove last
+remove_last(array)      // [10, 15, 20]
+```
 
-    print(arr[1])       # 20 — O(1)
-    print(len(arr))     # 3
 
-    arr.insert(1, 15)   # O(n) — shifts right
-    arr.pop()           # O(1) — removes last
-    arr.pop(0)          # O(n) — removes first, shifts left
+</TabItem>
+<TabItem value="python" label="Python">
 
-    # Slicing creates a new list
-    arr[1:3]            # Elements at index 1 and 2
-    arr[-2:]            # Last 2 elements
-    ```
+```python
+arr = []
+arr.append(10)      # O(1) amortized
+arr.append(20)
+arr.append(30)
 
-=== "TypeScript"
-    ```typescript
-    const arr: number[] = [];
-    arr.push(10);           // O(1) amortized
-    arr.push(20);
-    arr.push(30);
+print(arr[1])       # 20 — O(1)
+print(len(arr))     # 3
 
-    console.log(arr[1]);    // 20 — O(1)
-    console.log(arr.length);// 3
+arr.insert(1, 15)   # O(n) — shifts right
+arr.pop()           # O(1) — removes last
+arr.pop(0)          # O(n) — removes first, shifts left
 
-    arr.splice(1, 0, 15);   // O(n) — insert at index 1
-    arr.pop();              // O(1) — remove last
-    arr.shift();            // O(n) — remove first (avoid for queues)
+# Slicing creates a new list
+arr[1:3]            # Elements at index 1 and 2
+arr[-2:]            # Last 2 elements
+```
 
-    arr.slice(1, 3);        // Elements at index 1 and 2 (new array)
-    ```
 
-=== "Rust"
-    ```rust
-    let mut arr: Vec<i32> = Vec::new();
-    arr.push(10);           // O(1) amortized
-    arr.push(20);
-    arr.push(30);
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
 
-    println!("{}", arr[1]); // 20 — O(1), panics if out of bounds
-    println!("{}", arr.len());
+```typescript
+const arr: number[] = [];
+arr.push(10);           // O(1) amortized
+arr.push(20);
+arr.push(30);
 
-    arr.insert(1, 15);      // O(n) — insert at index
-    arr.pop();              // O(1) — returns Option<i32>
-    arr.remove(0);          // O(n) — remove and shift
+console.log(arr[1]);    // 20 — O(1)
+console.log(arr.length);// 3
 
-    &arr[1..3]              // Slice reference (no allocation)
-    ```
+arr.splice(1, 0, 15);   // O(n) — insert at index 1
+arr.pop();              // O(1) — remove last
+arr.shift();            // O(n) — remove first (avoid for queues)
 
-=== "C"
-    ```c
-    // Static array (fixed size)
-    int arr[5] = {10, 20, 30, 40, 50};
-    printf("%d\n", arr[2]);  // 30 — O(1)
+arr.slice(1, 3);        // Elements at index 1 and 2 (new array)
+```
 
-    // Dynamic array — manual management
-    int *dynamic = malloc(5 * sizeof(int));
-    dynamic[0] = 10;
-    // ... resize requires realloc()
-    free(dynamic);           // Must free manually!
-    ```
 
-!!! tip "Research Question 🔍"
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+let mut arr: Vec<i32> = Vec::new();
+arr.push(10);           // O(1) amortized
+arr.push(20);
+arr.push(30);
+
+println!("{}", arr[1]); // 20 — O(1), panics if out of bounds
+println!("{}", arr.len());
+
+arr.insert(1, 15);      // O(n) — insert at index
+arr.pop();              // O(1) — returns Option<i32>
+arr.remove(0);          // O(n) — remove and shift
+
+&arr[1..3]              // Slice reference (no allocation)
+```
+
+
+</TabItem>
+<TabItem value="c" label="C">
+
+```c
+// Static array (fixed size)
+int arr[5] = {10, 20, 30, 40, 50};
+printf("%d\n", arr[2]);  // 30 — O(1)
+
+// Dynamic array — manual management
+int *dynamic = malloc(5 * sizeof(int));
+dynamic[0] = 10;
+// ... resize requires realloc()
+free(dynamic);           // Must free manually!
+```
+
+
+</TabItem>
+</Tabs>
+
+:::tip[Research Question 🔍]
     What happens internally when a dynamic array resizes? Why is `append()` / `push()` O(1) *amortized* rather than always O(1)? Look up "amortized analysis" and "dynamic array growth factor."
 
 ---
@@ -185,231 +221,246 @@ The cost: no random access — finding the Nth element requires walking from hea
 | Delete (with reference to node) | O(1) | Just update pointers |
 | Delete by value | O(n) | Must find it first |
 
-=== "Pseudocode"
-    ```
-    CLASS Node<T>
-        value: T
-        next: Optional<Node<T>> ← NULL
-    END CLASS
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-    CLASS LinkedList<T>
-        head: Optional<Node<T>> ← NULL
-        size: Int ← 0
+```
+CLASS Node<T>
+    value: T
+    next: Optional<Node<T>> ← NULL
+END CLASS
 
-        FUNCTION append(value: T) -> Void
-            new_node ← NEW Node(value)
-            IF self.head == NULL THEN
-                self.head ← new_node
-            ELSE
-                current ← self.head
-                WHILE current.next != NULL DO
-                    current ← current.next   // walk to end
-                END WHILE
-                current.next ← new_node      // link in
-            END IF
-            self.size ← self.size + 1
-        END FUNCTION
+CLASS LinkedList<T>
+    head: Optional<Node<T>> ← NULL
+    size: Int ← 0
 
-        FUNCTION prepend(value: T) -> Void
-            new_node ← NEW Node(value)
-            new_node.next ← self.head        // new node points to old head
-            self.head ← new_node             // head = new node
-            self.size ← self.size + 1
-        END FUNCTION
+    FUNCTION append(value: T) -> Void
+        new_node ← NEW Node(value)
+        IF self.head == NULL THEN
+            self.head ← new_node
+        ELSE
+            current ← self.head
+            WHILE current.next != NULL DO
+                current ← current.next   // walk to end
+            END WHILE
+            current.next ← new_node      // link in
+        END IF
+        self.size ← self.size + 1
+    END FUNCTION
 
-        FUNCTION delete(value: T) -> Bool
-            IF self.head == NULL THEN RETURN FALSE
+    FUNCTION prepend(value: T) -> Void
+        new_node ← NEW Node(value)
+        new_node.next ← self.head        // new node points to old head
+        self.head ← new_node             // head = new node
+        self.size ← self.size + 1
+    END FUNCTION
 
-            IF self.head.value == value THEN
-                self.head ← self.head.next   // bypass head
+    FUNCTION delete(value: T) -> Bool
+        IF self.head == NULL THEN RETURN FALSE
+
+        IF self.head.value == value THEN
+            self.head ← self.head.next   // bypass head
+            self.size ← self.size - 1
+            RETURN TRUE
+        END IF
+
+        current ← self.head
+        WHILE current.next != NULL DO
+            IF current.next.value == value THEN
+                current.next ← current.next.next  // bypass node
                 self.size ← self.size - 1
                 RETURN TRUE
             END IF
+            current ← current.next
+        END WHILE
+        RETURN FALSE
+    END FUNCTION
 
-            current ← self.head
-            WHILE current.next != NULL DO
-                IF current.next.value == value THEN
-                    current.next ← current.next.next  // bypass node
-                    self.size ← self.size - 1
-                    RETURN TRUE
-                END IF
-                current ← current.next
-            END WHILE
-            RETURN FALSE
-        END FUNCTION
+    FUNCTION contains(value: T) -> Bool
+        current ← self.head
+        WHILE current != NULL DO
+            IF current.value == value THEN RETURN TRUE
+            current ← current.next
+        END WHILE
+        RETURN FALSE
+    END FUNCTION
+END CLASS
+```
 
-        FUNCTION contains(value: T) -> Bool
-            current ← self.head
-            WHILE current != NULL DO
-                IF current.value == value THEN RETURN TRUE
-                current ← current.next
-            END WHILE
-            RETURN FALSE
-        END FUNCTION
-    END CLASS
-    ```
 
-=== "Python"
-    ```python
-    class Node:
-        def __init__(self, value):
-            self.value = value
-            self.next = None
+</TabItem>
+<TabItem value="python" label="Python">
 
-    class LinkedList:
-        def __init__(self):
-            self.head = None
-            self.size = 0
+```python
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
 
-        def append(self, value):
-            new_node = Node(value)
-            if not self.head:
-                self.head = new_node
-            else:
-                current = self.head
-                while current.next:
-                    current = current.next
-                current.next = new_node
-            self.size += 1
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        self.size = 0
 
-        def prepend(self, value):
-            new_node = Node(value)
-            new_node.next = self.head
+    def append(self, value):
+        new_node = Node(value)
+        if not self.head:
             self.head = new_node
-            self.size += 1
-
-        def delete(self, value):
-            if not self.head:
-                return False
-            if self.head.value == value:
-                self.head = self.head.next
-                self.size -= 1
-                return True
+        else:
             current = self.head
             while current.next:
-                if current.next.value == value:
-                    current.next = current.next.next
-                    self.size -= 1
-                    return True
                 current = current.next
+            current.next = new_node
+        self.size += 1
+
+    def prepend(self, value):
+        new_node = Node(value)
+        new_node.next = self.head
+        self.head = new_node
+        self.size += 1
+
+    def delete(self, value):
+        if not self.head:
             return False
+        if self.head.value == value:
+            self.head = self.head.next
+            self.size -= 1
+            return True
+        current = self.head
+        while current.next:
+            if current.next.value == value:
+                current.next = current.next.next
+                self.size -= 1
+                return True
+            current = current.next
+        return False
 
-        def contains(self, value):
-            current = self.head
-            while current:
-                if current.value == value:
-                    return True
-                current = current.next
-            return False
+    def contains(self, value):
+        current = self.head
+        while current:
+            if current.value == value:
+                return True
+            current = current.next
+        return False
 
-        def to_list(self):
-            result, current = [], self.head
-            while current:
-                result.append(current.value)
-                current = current.next
-            return result
-    ```
+    def to_list(self):
+        result, current = [], self.head
+        while current:
+            result.append(current.value)
+            current = current.next
+        return result
+```
 
-=== "TypeScript"
-    ```typescript
-    class ListNode<T> {
-        value: T;
-        next: ListNode<T> | null = null;
-        constructor(value: T) { this.value = value; }
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+class ListNode<T> {
+    value: T;
+    next: ListNode<T> | null = null;
+    constructor(value: T) { this.value = value; }
+}
+
+class LinkedList<T> {
+    private head: ListNode<T> | null = null;
+    public size: number = 0;
+
+    append(value: T): void {
+        const node = new ListNode(value);
+        if (!this.head) { this.head = node; }
+        else {
+            let current = this.head;
+            while (current.next) current = current.next;
+            current.next = node;
+        }
+        this.size++;
     }
 
-    class LinkedList<T> {
-        private head: ListNode<T> | null = null;
-        public size: number = 0;
+    prepend(value: T): void {
+        const node = new ListNode(value);
+        node.next = this.head;
+        this.head = node;
+        this.size++;
+    }
 
-        append(value: T): void {
-            const node = new ListNode(value);
-            if (!this.head) { this.head = node; }
-            else {
-                let current = this.head;
-                while (current.next) current = current.next;
-                current.next = node;
-            }
-            this.size++;
+    delete(value: T): boolean {
+        if (!this.head) return false;
+        if (this.head.value === value) {
+            this.head = this.head.next;
+            this.size--;
+            return true;
         }
-
-        prepend(value: T): void {
-            const node = new ListNode(value);
-            node.next = this.head;
-            this.head = node;
-            this.size++;
-        }
-
-        delete(value: T): boolean {
-            if (!this.head) return false;
-            if (this.head.value === value) {
-                this.head = this.head.next;
+        let current = this.head;
+        while (current.next) {
+            if (current.next.value === value) {
+                current.next = current.next.next;
                 this.size--;
                 return true;
             }
-            let current = this.head;
-            while (current.next) {
-                if (current.next.value === value) {
-                    current.next = current.next.next;
-                    this.size--;
-                    return true;
-                }
-                current = current.next;
-            }
-            return false;
+            current = current.next;
         }
-
-        contains(value: T): boolean {
-            let current = this.head;
-            while (current) {
-                if (current.value === value) return true;
-                current = current.next;
-            }
-            return false;
-        }
-    }
-    ```
-
-=== "Rust"
-    ```rust
-    // NOTE: Rust's ownership model makes linked lists tricky.
-    // This is simplified — see "Learning Rust With Entirely Too Many
-    // Linked Lists" (free online book) for the full idiomatic version.
-
-    type Link<T> = Option<Box<Node<T>>>;
-
-    struct Node<T> {
-        value: T,
-        next: Link<T>,
+        return false;
     }
 
-    struct LinkedList<T> {
-        head: Link<T>,
-        size: usize,
+    contains(value: T): boolean {
+        let current = this.head;
+        while (current) {
+            if (current.value === value) return true;
+            current = current.next;
+        }
+        return false;
+    }
+}
+```
+
+
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+// NOTE: Rust's ownership model makes linked lists tricky.
+// This is simplified — see "Learning Rust With Entirely Too Many
+// Linked Lists" (free online book) for the full idiomatic version.
+
+type Link<T> = Option<Box<Node<T>>>;
+
+struct Node<T> {
+    value: T,
+    next: Link<T>,
+}
+
+struct LinkedList<T> {
+    head: Link<T>,
+    size: usize,
+}
+
+impl<T> LinkedList<T> {
+    fn new() -> Self {
+        LinkedList { head: None, size: 0 }
     }
 
-    impl<T> LinkedList<T> {
-        fn new() -> Self {
-            LinkedList { head: None, size: 0 }
-        }
-
-        fn prepend(&mut self, value: T) {
-            let old_head = self.head.take();
-            self.head = Some(Box::new(Node { value, next: old_head }));
-            self.size += 1;
-        }
-
-        fn pop_front(&mut self) -> Option<T> {
-            self.head.take().map(|node| {
-                self.head = node.next;
-                self.size -= 1;
-                node.value
-            })
-        }
+    fn prepend(&mut self, value: T) {
+        let old_head = self.head.take();
+        self.head = Some(Box::new(Node { value, next: old_head }));
+        self.size += 1;
     }
-    ```
 
-!!! tip "Research Question 🔍"
+    fn pop_front(&mut self) -> Option<T> {
+        self.head.take().map(|node| {
+            self.head = node.next;
+            self.size -= 1;
+            node.value
+        })
+    }
+}
+```
+
+
+</TabItem>
+</Tabs>
+
+:::tip[Research Question 🔍]
     What is a **doubly linked list**? When would you use it vs. singly linked? What is a **sentinel node** and why do some implementations use one?
 
 ---
@@ -429,124 +480,136 @@ Empty      Push 10    Push 20    Push 30    Pop        Peek
 
 **Real uses:** undo/redo, browser back button, call stack, parenthesis matching, expression evaluation.
 
-=== "Pseudocode"
-    ```
-    CLASS Stack<T>
-        data: List<T> ← []
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-        FUNCTION push(value: T) -> Void
-            append(self.data, value)
-        END FUNCTION
+```
+CLASS Stack<T>
+    data: List<T> ← []
 
-        FUNCTION pop() -> T
-            IF self.is_empty() THEN
-                THROW UnderflowError("Stack is empty")
-            END IF
-            RETURN remove_last(self.data)
-        END FUNCTION
-
-        FUNCTION peek() -> T
-            IF self.is_empty() THEN
-                THROW UnderflowError("Stack is empty")
-            END IF
-            RETURN self.data[length(self.data) - 1]
-        END FUNCTION
-
-        FUNCTION is_empty() -> Bool
-            RETURN length(self.data) == 0
-        END FUNCTION
-    END CLASS
-
-    // Classic application: balanced parentheses check
-    FUNCTION is_balanced(text: String) -> Bool
-        stack ← NEW Stack<Char>
-        pairs ← {')': '(', ']': '[', '}': '{'}
-
-        FOREACH char IN text DO
-            IF char IN ['(', '[', '{'] THEN
-                stack.push(char)
-            ELSE IF char IN [')', ']', '}'] THEN
-                IF stack.is_empty() OR stack.pop() != pairs[char] THEN
-                    RETURN FALSE
-                END IF
-            END IF
-        END FOREACH
-
-        RETURN stack.is_empty()
+    FUNCTION push(value: T) -> Void
+        append(self.data, value)
     END FUNCTION
-    ```
 
-=== "Python"
-    ```python
-    class Stack:
-        def __init__(self):
-            self._data = []
+    FUNCTION pop() -> T
+        IF self.is_empty() THEN
+            THROW UnderflowError("Stack is empty")
+        END IF
+        RETURN remove_last(self.data)
+    END FUNCTION
 
-        def push(self, value):     # O(1)
-            self._data.append(value)
+    FUNCTION peek() -> T
+        IF self.is_empty() THEN
+            THROW UnderflowError("Stack is empty")
+        END IF
+        RETURN self.data[length(self.data) - 1]
+    END FUNCTION
 
-        def pop(self):             # O(1)
-            if self.is_empty():
-                raise IndexError("Stack is empty")
-            return self._data.pop()
+    FUNCTION is_empty() -> Bool
+        RETURN length(self.data) == 0
+    END FUNCTION
+END CLASS
 
-        def peek(self):            # O(1)
-            if self.is_empty():
-                raise IndexError("Stack is empty")
-            return self._data[-1]
+// Classic application: balanced parentheses check
+FUNCTION is_balanced(text: String) -> Bool
+    stack ← NEW Stack<Char>
+    pairs ← {')': '(', ']': '[', '}': '{'}
 
-        def is_empty(self):
-            return len(self._data) == 0
+    FOREACH char IN text DO
+        IF char IN ['(', '[', '{'] THEN
+            stack.push(char)
+        ELSE IF char IN [')', ']', '}'] THEN
+            IF stack.is_empty() OR stack.pop() != pairs[char] THEN
+                RETURN FALSE
+            END IF
+        END IF
+    END FOREACH
 
-    # Application: balanced brackets
-    def is_balanced(text: str) -> bool:
-        stack = Stack()
-        pairs = {')': '(', ']': '[', '}': '{'}
-        for char in text:
-            if char in '([{':
-                stack.push(char)
-            elif char in ')]}':
-                if stack.is_empty() or stack.pop() != pairs[char]:
-                    return False
-        return stack.is_empty()
+    RETURN stack.is_empty()
+END FUNCTION
+```
 
-    print(is_balanced("({[]})"))  # True
-    print(is_balanced("([)]"))    # False
-    ```
 
-=== "TypeScript"
-    ```typescript
-    class Stack<T> {
-        private data: T[] = [];
+</TabItem>
+<TabItem value="python" label="Python">
 
-        push(value: T): void { this.data.push(value); }
+```python
+class Stack:
+    def __init__(self):
+        self._data = []
 
-        pop(): T {
-            if (this.isEmpty()) throw new Error("Stack is empty");
-            return this.data.pop()!;
-        }
+    def push(self, value):     # O(1)
+        self._data.append(value)
 
-        peek(): T {
-            if (this.isEmpty()) throw new Error("Stack is empty");
-            return this.data[this.data.length - 1];
-        }
+    def pop(self):             # O(1)
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self._data.pop()
 
-        isEmpty(): boolean { return this.data.length === 0; }
-        size(): number { return this.data.length; }
+    def peek(self):            # O(1)
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self._data[-1]
+
+    def is_empty(self):
+        return len(self._data) == 0
+
+# Application: balanced brackets
+def is_balanced(text: str) -> bool:
+    stack = Stack()
+    pairs = {')': '(', ']': '[', '}': '{'}
+    for char in text:
+        if char in '([{':
+            stack.push(char)
+        elif char in ')]}':
+            if stack.is_empty() or stack.pop() != pairs[char]:
+                return False
+    return stack.is_empty()
+
+print(is_balanced("({[]})"))  # True
+print(is_balanced("([)]"))    # False
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+class Stack<T> {
+    private data: T[] = [];
+
+    push(value: T): void { this.data.push(value); }
+
+    pop(): T {
+        if (this.isEmpty()) throw new Error("Stack is empty");
+        return this.data.pop()!;
     }
 
-    function isBalanced(text: string): boolean {
-        const stack = new Stack<string>();
-        const pairs: Record<string, string> = { ')': '(', ']': '[', '}': '{' };
-        for (const char of text) {
-            if ('([{'.includes(char)) stack.push(char);
-            else if (')]}'.includes(char)) {
-                if (stack.isEmpty() || stack.pop() !== pairs[char]) return false;
-            }
-        }
-        return stack.isEmpty();
+    peek(): T {
+        if (this.isEmpty()) throw new Error("Stack is empty");
+        return this.data[this.data.length - 1];
     }
-    ```
+
+    isEmpty(): boolean { return this.data.length === 0; }
+    size(): number { return this.data.length; }
+}
+
+function isBalanced(text: string): boolean {
+    const stack = new Stack<string>();
+    const pairs: Record<string, string> = { ')': '(', ']': '[', '}': '{' };
+    for (const char of text) {
+        if ('([{'.includes(char)) stack.push(char);
+        else if (')]}'.includes(char)) {
+            if (stack.isEmpty() || stack.pop() !== pairs[char]) return false;
+        }
+    }
+    return stack.isEmpty();
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -562,84 +625,96 @@ FRONT→[10]  [10][20]   [10][20][30] [20][30]←   20
 
 **Real uses:** task schedulers, web server request handling, BFS graph traversal, print queues.
 
-=== "Pseudocode"
-    ```
-    CLASS Queue<T>
-        data: Deque<T> ← NEW Deque()   // double-ended queue internally
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-        FUNCTION enqueue(value: T) -> Void
-            append_back(self.data, value)
-        END FUNCTION
+```
+CLASS Queue<T>
+    data: Deque<T> ← NEW Deque()   // double-ended queue internally
 
-        FUNCTION dequeue() -> T
-            IF self.is_empty() THEN
-                THROW UnderflowError("Queue is empty")
-            END IF
-            RETURN remove_front(self.data)   // O(1) with deque
-        END FUNCTION
+    FUNCTION enqueue(value: T) -> Void
+        append_back(self.data, value)
+    END FUNCTION
 
-        FUNCTION front() -> T
-            IF self.is_empty() THEN
-                THROW UnderflowError("Queue is empty")
-            END IF
-            RETURN self.data[0]
-        END FUNCTION
+    FUNCTION dequeue() -> T
+        IF self.is_empty() THEN
+            THROW UnderflowError("Queue is empty")
+        END IF
+        RETURN remove_front(self.data)   // O(1) with deque
+    END FUNCTION
 
-        FUNCTION is_empty() -> Bool
-            RETURN length(self.data) == 0
-        END FUNCTION
-    END CLASS
-    ```
+    FUNCTION front() -> T
+        IF self.is_empty() THEN
+            THROW UnderflowError("Queue is empty")
+        END IF
+        RETURN self.data[0]
+    END FUNCTION
 
-=== "Python"
-    ```python
-    from collections import deque
+    FUNCTION is_empty() -> Bool
+        RETURN length(self.data) == 0
+    END FUNCTION
+END CLASS
+```
 
-    class Queue:
-        def __init__(self):
-            self._data = deque()          # NOT a list — deque matters here
 
-        def enqueue(self, value):         # O(1)
-            self._data.append(value)
+</TabItem>
+<TabItem value="python" label="Python">
 
-        def dequeue(self):                # O(1) ← this is why we use deque
-            if self.is_empty():
-                raise IndexError("Queue is empty")
-            return self._data.popleft()   # list.pop(0) would be O(n)!
+```python
+from collections import deque
 
-        def front(self):
-            if self.is_empty():
-                raise IndexError("Queue is empty")
-            return self._data[0]
+class Queue:
+    def __init__(self):
+        self._data = deque()          # NOT a list — deque matters here
 
-        def is_empty(self):
-            return len(self._data) == 0
-    ```
+    def enqueue(self, value):         # O(1)
+        self._data.append(value)
 
-=== "TypeScript"
-    ```typescript
-    // TS doesn't have a built-in deque, but array works for learning
-    class Queue<T> {
-        private data: T[] = [];
+    def dequeue(self):                # O(1) ← this is why we use deque
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self._data.popleft()   # list.pop(0) would be O(n)!
 
-        enqueue(value: T): void { this.data.push(value); }
+    def front(self):
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self._data[0]
 
-        dequeue(): T {
-            if (this.isEmpty()) throw new Error("Queue is empty");
-            return this.data.shift()!;    // O(n) — OK for learning, not production
-        }
+    def is_empty(self):
+        return len(self._data) == 0
+```
 
-        front(): T {
-            if (this.isEmpty()) throw new Error("Queue is empty");
-            return this.data[0];
-        }
 
-        isEmpty(): boolean { return this.data.length === 0; }
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+// TS doesn't have a built-in deque, but array works for learning
+class Queue<T> {
+    private data: T[] = [];
+
+    enqueue(value: T): void { this.data.push(value); }
+
+    dequeue(): T {
+        if (this.isEmpty()) throw new Error("Queue is empty");
+        return this.data.shift()!;    // O(n) — OK for learning, not production
     }
-    // For production TS: use a linked-list-based queue for O(1) dequeue
-    ```
 
-!!! warning "Common Mistake"
+    front(): T {
+        if (this.isEmpty()) throw new Error("Queue is empty");
+        return this.data[0];
+    }
+
+    isEmpty(): boolean { return this.data.length === 0; }
+}
+// For production TS: use a linked-list-based queue for O(1) dequeue
+```
+
+
+</TabItem>
+</Tabs>
+
+:::warning[Common Mistake]
     Using `list.pop(0)` (Python) or `array.shift()` (JavaScript/TS) for a queue. Both are O(n) because they shift every element. Use `collections.deque` in Python. In TypeScript/JavaScript, use a linked-list-based queue in performance-critical code.
 
 ---
@@ -664,153 +739,165 @@ A **hash table** maps keys to values with average O(1) lookup, insert, and delet
 
 **Collisions** happen when two keys hash to the same bucket. Handled by **chaining** (linked list at each bucket) or **open addressing** (find next empty bucket).
 
-=== "Pseudocode"
-    ```
-    CLASS HashTable<K, V>
-        CONSTANT CAPACITY ← 64
-        buckets: List<List<Pair<K,V>>> ← array of CAPACITY empty lists
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-        FUNCTION hash(key: K) -> Int
-            // Language-dependent — converts key to bucket index
-            RETURN some_hash_function(key) MOD CAPACITY
-        END FUNCTION
+```
+CLASS HashTable<K, V>
+    CONSTANT CAPACITY ← 64
+    buckets: List<List<Pair<K,V>>> ← array of CAPACITY empty lists
 
-        FUNCTION set(key: K, value: V) -> Void
-            index ← self.hash(key)
-            bucket ← self.buckets[index]
+    FUNCTION hash(key: K) -> Int
+        // Language-dependent — converts key to bucket index
+        RETURN some_hash_function(key) MOD CAPACITY
+    END FUNCTION
 
-            // Update if key already exists
-            FOREACH pair IN bucket DO
-                IF pair.key == key THEN
-                    pair.value ← value
-                    RETURN
-                END IF
-            END FOREACH
+    FUNCTION set(key: K, value: V) -> Void
+        index ← self.hash(key)
+        bucket ← self.buckets[index]
 
-            // Otherwise add new pair (chaining)
-            append(bucket, NEW Pair(key, value))
-        END FUNCTION
+        // Update if key already exists
+        FOREACH pair IN bucket DO
+            IF pair.key == key THEN
+                pair.value ← value
+                RETURN
+            END IF
+        END FOREACH
 
-        FUNCTION get(key: K) -> Optional<V>
-            index ← self.hash(key)
-            FOREACH pair IN self.buckets[index] DO
-                IF pair.key == key THEN RETURN pair.value
-            END FOREACH
-            RETURN NULL
-        END FUNCTION
+        // Otherwise add new pair (chaining)
+        append(bucket, NEW Pair(key, value))
+    END FUNCTION
 
-        FUNCTION delete(key: K) -> Bool
-            index ← self.hash(key)
-            bucket ← self.buckets[index]
-            FOREACH pair IN bucket DO
-                IF pair.key == key THEN
-                    remove(bucket, pair)
-                    RETURN TRUE
-                END IF
-            END FOREACH
-            RETURN FALSE
-        END FUNCTION
-    END CLASS
-    ```
+    FUNCTION get(key: K) -> Optional<V>
+        index ← self.hash(key)
+        FOREACH pair IN self.buckets[index] DO
+            IF pair.key == key THEN RETURN pair.value
+        END FOREACH
+        RETURN NULL
+    END FUNCTION
 
-=== "Python"
-    ```python
-    # Python's dict IS a hash table — but let's build one to understand it
-    class HashTable:
-        def __init__(self, capacity=64):
-            self._capacity = capacity
-            self._buckets = [[] for _ in range(capacity)]
+    FUNCTION delete(key: K) -> Bool
+        index ← self.hash(key)
+        bucket ← self.buckets[index]
+        FOREACH pair IN bucket DO
+            IF pair.key == key THEN
+                remove(bucket, pair)
+                RETURN TRUE
+            END IF
+        END FOREACH
+        RETURN FALSE
+    END FUNCTION
+END CLASS
+```
 
-        def _hash(self, key):
-            return hash(key) % self._capacity
 
-        def set(self, key, value):
-            index = self._hash(key)
-            for pair in self._buckets[index]:
-                if pair[0] == key:
-                    pair[1] = value  # Update existing
-                    return
-            self._buckets[index].append([key, value])  # Chaining
+</TabItem>
+<TabItem value="python" label="Python">
 
-        def get(self, key, default=None):
-            index = self._hash(key)
-            for pair in self._buckets[index]:
-                if pair[0] == key:
-                    return pair[1]
-            return default
+```python
+# Python's dict IS a hash table — but let's build one to understand it
+class HashTable:
+    def __init__(self, capacity=64):
+        self._capacity = capacity
+        self._buckets = [[] for _ in range(capacity)]
 
-        def delete(self, key):
-            index = self._hash(key)
-            bucket = self._buckets[index]
-            for i, pair in enumerate(bucket):
-                if pair[0] == key:
-                    bucket.pop(i)
-                    return True
-            return False
+    def _hash(self, key):
+        return hash(key) % self._capacity
 
-    # Practical patterns with Python's built-in dict
-    # Frequency counting
-    def word_freq(text):
-        counts = {}
-        for word in text.split():
-            counts[word] = counts.get(word, 0) + 1
-        return counts
+    def set(self, key, value):
+        index = self._hash(key)
+        for pair in self._buckets[index]:
+            if pair[0] == key:
+                pair[1] = value  # Update existing
+                return
+        self._buckets[index].append([key, value])  # Chaining
 
-    # Grouping
-    from collections import defaultdict
-    def group_by_length(words):
-        groups = defaultdict(list)
-        for word in words:
-            groups[len(word)].append(word)
-        return dict(groups)
-    ```
+    def get(self, key, default=None):
+        index = self._hash(key)
+        for pair in self._buckets[index]:
+            if pair[0] == key:
+                return pair[1]
+        return default
 
-=== "TypeScript"
-    ```typescript
-    class HashMap<K, V> {
-        private buckets: Array<Array<[K, V]>>;
-        private capacity: number;
+    def delete(self, key):
+        index = self._hash(key)
+        bucket = self._buckets[index]
+        for i, pair in enumerate(bucket):
+            if pair[0] == key:
+                bucket.pop(i)
+                return True
+        return False
 
-        constructor(capacity = 64) {
-            this.capacity = capacity;
-            this.buckets = Array.from({ length: capacity }, () => []);
-        }
+# Practical patterns with Python's built-in dict
+# Frequency counting
+def word_freq(text):
+    counts = {}
+    for word in text.split():
+        counts[word] = counts.get(word, 0) + 1
+    return counts
 
-        private hash(key: K): number {
-            // Simple string hash for demonstration
-            const str = String(key);
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = (hash * 31 + str.charCodeAt(i)) % this.capacity;
-            }
-            return hash;
-        }
+# Grouping
+from collections import defaultdict
+def group_by_length(words):
+    groups = defaultdict(list)
+    for word in words:
+        groups[len(word)].append(word)
+    return dict(groups)
+```
 
-        set(key: K, value: V): void {
-            const index = this.hash(key);
-            const bucket = this.buckets[index];
-            const existing = bucket.find(([k]) => k === key);
-            if (existing) { existing[1] = value; return; }
-            bucket.push([key, value]);
-        }
 
-        get(key: K): V | undefined {
-            const index = this.hash(key);
-            return this.buckets[index].find(([k]) => k === key)?.[1];
-        }
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
 
-        delete(key: K): boolean {
-            const index = this.hash(key);
-            const bucket = this.buckets[index];
-            const i = bucket.findIndex(([k]) => k === key);
-            if (i === -1) return false;
-            bucket.splice(i, 1);
-            return true;
-        }
+```typescript
+class HashMap<K, V> {
+    private buckets: Array<Array<[K, V]>>;
+    private capacity: number;
+
+    constructor(capacity = 64) {
+        this.capacity = capacity;
+        this.buckets = Array.from({ length: capacity }, () => []);
     }
-    ```
 
-!!! tip "Research Question 🔍"
+    private hash(key: K): number {
+        // Simple string hash for demonstration
+        const str = String(key);
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = (hash * 31 + str.charCodeAt(i)) % this.capacity;
+        }
+        return hash;
+    }
+
+    set(key: K, value: V): void {
+        const index = this.hash(key);
+        const bucket = this.buckets[index];
+        const existing = bucket.find(([k]) => k === key);
+        if (existing) { existing[1] = value; return; }
+        bucket.push([key, value]);
+    }
+
+    get(key: K): V | undefined {
+        const index = this.hash(key);
+        return this.buckets[index].find(([k]) => k === key)?.[1];
+    }
+
+    delete(key: K): boolean {
+        const index = this.hash(key);
+        const bucket = this.buckets[index];
+        const i = bucket.findIndex(([k]) => k === key);
+        if (i === -1) return false;
+        bucket.splice(i, 1);
+        return true;
+    }
+}
+```
+
+
+</TabItem>
+</Tabs>
+
+:::tip[Research Question 🔍]
     When does a hash table's worst-case O(n) actually occur? What is a "hash collision attack" and why do Python and Rust use hash randomization? What is the "load factor" and how does it affect performance?
 
 ---
@@ -831,151 +918,163 @@ Height = 2 (longest root-to-leaf path)
 
 **Binary Search Tree (BST) rule:** for every node, ALL values in the left subtree are smaller, ALL values in the right subtree are larger. This makes search O(log n) for balanced trees.
 
-=== "Pseudocode"
-    ```
-    CLASS BSTNode<T>
-        value: T
-        left:  Optional<BSTNode<T>> ← NULL
-        right: Optional<BSTNode<T>> ← NULL
-    END CLASS
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-    CLASS BST<T>
-        root: Optional<BSTNode<T>> ← NULL
+```
+CLASS BSTNode<T>
+    value: T
+    left:  Optional<BSTNode<T>> ← NULL
+    right: Optional<BSTNode<T>> ← NULL
+END CLASS
 
-        FUNCTION insert(value: T) -> Void
-            self.root ← self._insert(self.root, value)
-        END FUNCTION
+CLASS BST<T>
+    root: Optional<BSTNode<T>> ← NULL
 
-        FUNCTION _insert(node: Optional<BSTNode<T>>, value: T) -> BSTNode<T>
-            IF node == NULL THEN
-                RETURN NEW BSTNode(value)
-            END IF
-            IF value < node.value THEN
-                node.left ← self._insert(node.left, value)
-            ELSE IF value > node.value THEN
-                node.right ← self._insert(node.right, value)
-            END IF
-            RETURN node      // value == node.value → no duplicate
-        END FUNCTION
+    FUNCTION insert(value: T) -> Void
+        self.root ← self._insert(self.root, value)
+    END FUNCTION
 
-        FUNCTION search(value: T) -> Bool
-            RETURN self._search(self.root, value)
-        END FUNCTION
+    FUNCTION _insert(node: Optional<BSTNode<T>>, value: T) -> BSTNode<T>
+        IF node == NULL THEN
+            RETURN NEW BSTNode(value)
+        END IF
+        IF value < node.value THEN
+            node.left ← self._insert(node.left, value)
+        ELSE IF value > node.value THEN
+            node.right ← self._insert(node.right, value)
+        END IF
+        RETURN node      // value == node.value → no duplicate
+    END FUNCTION
 
-        FUNCTION _search(node: Optional<BSTNode<T>>, value: T) -> Bool
-            IF node == NULL THEN RETURN FALSE
-            IF value == node.value THEN RETURN TRUE
-            IF value < node.value THEN RETURN self._search(node.left, value)
-            RETURN self._search(node.right, value)
-        END FUNCTION
+    FUNCTION search(value: T) -> Bool
+        RETURN self._search(self.root, value)
+    END FUNCTION
 
-    // Traversals
-        FUNCTION inorder(node: Optional<BSTNode<T>>) -> Void
-            IF node == NULL THEN RETURN
-            self.inorder(node.left)    // Left first
-            PRINT node.value           // Then root
-            self.inorder(node.right)   // Then right
-            // Result: sorted ascending order!
-        END FUNCTION
+    FUNCTION _search(node: Optional<BSTNode<T>>, value: T) -> Bool
+        IF node == NULL THEN RETURN FALSE
+        IF value == node.value THEN RETURN TRUE
+        IF value < node.value THEN RETURN self._search(node.left, value)
+        RETURN self._search(node.right, value)
+    END FUNCTION
 
-        FUNCTION preorder(node: Optional<BSTNode<T>>) -> Void
-            IF node == NULL THEN RETURN
-            PRINT node.value           // Root first (useful for copying)
-            self.preorder(node.left)
-            self.preorder(node.right)
-        END FUNCTION
+// Traversals
+    FUNCTION inorder(node: Optional<BSTNode<T>>) -> Void
+        IF node == NULL THEN RETURN
+        self.inorder(node.left)    // Left first
+        PRINT node.value           // Then root
+        self.inorder(node.right)   // Then right
+        // Result: sorted ascending order!
+    END FUNCTION
 
-        FUNCTION postorder(node: Optional<BSTNode<T>>) -> Void
-            IF node == NULL THEN RETURN
-            self.postorder(node.left)
-            self.postorder(node.right)
-            PRINT node.value           // Root last (useful for deletion)
-        END FUNCTION
-    END CLASS
-    ```
+    FUNCTION preorder(node: Optional<BSTNode<T>>) -> Void
+        IF node == NULL THEN RETURN
+        PRINT node.value           // Root first (useful for copying)
+        self.preorder(node.left)
+        self.preorder(node.right)
+    END FUNCTION
 
-=== "Python"
-    ```python
-    class TreeNode:
-        def __init__(self, value):
-            self.value = value
-            self.left = None
-            self.right = None
+    FUNCTION postorder(node: Optional<BSTNode<T>>) -> Void
+        IF node == NULL THEN RETURN
+        self.postorder(node.left)
+        self.postorder(node.right)
+        PRINT node.value           // Root last (useful for deletion)
+    END FUNCTION
+END CLASS
+```
 
-    class BST:
-        def __init__(self):
-            self.root = None
 
-        def insert(self, value):
-            self.root = self._insert(self.root, value)
+</TabItem>
+<TabItem value="python" label="Python">
 
-        def _insert(self, node, value):
-            if node is None:
-                return TreeNode(value)
-            if value < node.value:
-                node.left = self._insert(node.left, value)
-            elif value > node.value:
-                node.right = self._insert(node.right, value)
-            return node  # equal = duplicate, ignore
+```python
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
 
-        def search(self, value):
-            return self._search(self.root, value)
+class BST:
+    def __init__(self):
+        self.root = None
 
-        def _search(self, node, value):
-            if node is None:
-                return False
-            if value == node.value:
-                return True
-            if value < node.value:
-                return self._search(node.left, value)
-            return self._search(node.right, value)
+    def insert(self, value):
+        self.root = self._insert(self.root, value)
 
-        def inorder(self, node=None, first=True):
-            if first: node = self.root
-            if node:
-                self.inorder(node.left, False)
-                print(node.value, end=' ')
-                self.inorder(node.right, False)
-    ```
+    def _insert(self, node, value):
+        if node is None:
+            return TreeNode(value)
+        if value < node.value:
+            node.left = self._insert(node.left, value)
+        elif value > node.value:
+            node.right = self._insert(node.right, value)
+        return node  # equal = duplicate, ignore
 
-=== "TypeScript"
-    ```typescript
-    class TreeNode<T> {
-        value: T;
-        left: TreeNode<T> | null = null;
-        right: TreeNode<T> | null = null;
-        constructor(value: T) { this.value = value; }
+    def search(self, value):
+        return self._search(self.root, value)
+
+    def _search(self, node, value):
+        if node is None:
+            return False
+        if value == node.value:
+            return True
+        if value < node.value:
+            return self._search(node.left, value)
+        return self._search(node.right, value)
+
+    def inorder(self, node=None, first=True):
+        if first: node = self.root
+        if node:
+            self.inorder(node.left, False)
+            print(node.value, end=' ')
+            self.inorder(node.right, False)
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+class TreeNode<T> {
+    value: T;
+    left: TreeNode<T> | null = null;
+    right: TreeNode<T> | null = null;
+    constructor(value: T) { this.value = value; }
+}
+
+class BST<T> {
+    private root: TreeNode<T> | null = null;
+
+    insert(value: T): void {
+        this.root = this._insert(this.root, value);
     }
 
-    class BST<T> {
-        private root: TreeNode<T> | null = null;
-
-        insert(value: T): void {
-            this.root = this._insert(this.root, value);
-        }
-
-        private _insert(node: TreeNode<T> | null, value: T): TreeNode<T> {
-            if (!node) return new TreeNode(value);
-            if (value < node.value) node.left = this._insert(node.left, value);
-            else if (value > node.value) node.right = this._insert(node.right, value);
-            return node;
-        }
-
-        inorder(): T[] {
-            const result: T[] = [];
-            const traverse = (node: TreeNode<T> | null) => {
-                if (!node) return;
-                traverse(node.left);
-                result.push(node.value);
-                traverse(node.right);
-            };
-            traverse(this.root);
-            return result;
-        }
+    private _insert(node: TreeNode<T> | null, value: T): TreeNode<T> {
+        if (!node) return new TreeNode(value);
+        if (value < node.value) node.left = this._insert(node.left, value);
+        else if (value > node.value) node.right = this._insert(node.right, value);
+        return node;
     }
-    ```
 
-!!! tip "Research Question 🔍"
+    inorder(): T[] {
+        const result: T[] = [];
+        const traverse = (node: TreeNode<T> | null) => {
+            if (!node) return;
+            traverse(node.left);
+            result.push(node.value);
+            traverse(node.right);
+        };
+        traverse(this.root);
+        return result;
+    }
+}
+```
+
+
+</TabItem>
+</Tabs>
+
+:::tip[Research Question 🔍]
     What happens to BST search performance when you insert elements in sorted order? (Try: `insert 1, 2, 3, 4, 5` — draw the tree.) What are **AVL trees** and **Red-Black trees**, and what problem do they solve?
 
 ---
@@ -995,160 +1094,184 @@ Edges: A─B  A─C  B─D  C─D  D─E
 
 **Types:** directed (edges have direction), undirected (bidirectional), weighted (edges have costs).
 
-=== "Pseudocode"
-    ```
-    // Adjacency list representation (most common)
-    graph: Map<Node, List<Node>> ← {
-        "A": ["B", "C"],
-        "B": ["A", "D"],
-        "C": ["A", "D"],
-        "D": ["B", "C", "E"],
-        "E": ["D"]
-    }
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-    // BFS — Breadth-First Search
-    // Uses a queue. Explores all neighbors before going deeper.
-    // Finds SHORTEST PATH in unweighted graphs.
-    FUNCTION bfs(graph, start: Node) -> List<Node>
-        visited ← NEW Set()
-        queue ← NEW Queue()
-        order ← NEW List()
+```
+// Adjacency list representation (most common)
+graph: Map<Node, List<Node>> ← {
+    "A": ["B", "C"],
+    "B": ["A", "D"],
+    "C": ["A", "D"],
+    "D": ["B", "C", "E"],
+    "E": ["D"]
+}
 
-        queue.enqueue(start)
-        visited.add(start)
+// BFS — Breadth-First Search
+// Uses a queue. Explores all neighbors before going deeper.
+// Finds SHORTEST PATH in unweighted graphs.
+FUNCTION bfs(graph, start: Node) -> List<Node>
+    visited ← NEW Set()
+    queue ← NEW Queue()
+    order ← NEW List()
 
-        WHILE NOT queue.is_empty() DO
-            node ← queue.dequeue()
-            append(order, node)
+    queue.enqueue(start)
+    visited.add(start)
 
-            FOREACH neighbor IN graph[node] DO
-                IF neighbor NOT IN visited THEN
-                    visited.add(neighbor)
-                    queue.enqueue(neighbor)
-                END IF
-            END FOREACH
-        END WHILE
-
-        RETURN order
-    END FUNCTION
-
-    // DFS — Depth-First Search
-    // Uses recursion (implicit stack). Goes as deep as possible first.
-    FUNCTION dfs(graph, node: Node, visited: Set = NEW Set()) -> List<Node>
-        visited.add(node)
-        result ← [node]
+    WHILE NOT queue.is_empty() DO
+        node ← queue.dequeue()
+        append(order, node)
 
         FOREACH neighbor IN graph[node] DO
             IF neighbor NOT IN visited THEN
-                result ← result + dfs(graph, neighbor, visited)
+                visited.add(neighbor)
+                queue.enqueue(neighbor)
             END IF
         END FOREACH
+    END WHILE
 
-        RETURN result
-    END FUNCTION
-    ```
+    RETURN order
+END FUNCTION
 
-=== "Python"
-    ```python
-    from collections import deque
+// DFS — Depth-First Search
+// Uses recursion (implicit stack). Goes as deep as possible first.
+FUNCTION dfs(graph, node: Node, visited: Set = NEW Set()) -> List<Node>
+    visited.add(node)
+    result ← [node]
 
-    graph = {
-        "A": ["B", "C"],
-        "B": ["A", "D"],
-        "C": ["A", "D"],
-        "D": ["B", "C", "E"],
-        "E": ["D"]
-    }
+    FOREACH neighbor IN graph[node] DO
+        IF neighbor NOT IN visited THEN
+            result ← result + dfs(graph, neighbor, visited)
+        END IF
+    END FOREACH
 
-    def bfs(graph, start):
-        visited = {start}
-        queue = deque([start])
-        order = []
-        while queue:
-            node = queue.popleft()
-            order.append(node)
-            for neighbor in graph[node]:
-                if neighbor not in visited:
-                    visited.add(neighbor)
-                    queue.append(neighbor)
-        return order
+    RETURN result
+END FUNCTION
+```
 
-    def dfs(graph, start, visited=None):
-        if visited is None:
-            visited = set()
-        visited.add(start)
-        result = [start]
-        for neighbor in graph[start]:
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+from collections import deque
+
+graph = {
+    "A": ["B", "C"],
+    "B": ["A", "D"],
+    "C": ["A", "D"],
+    "D": ["B", "C", "E"],
+    "E": ["D"]
+}
+
+def bfs(graph, start):
+    visited = {start}
+    queue = deque([start])
+    order = []
+    while queue:
+        node = queue.popleft()
+        order.append(node)
+        for neighbor in graph[node]:
             if neighbor not in visited:
-                result += dfs(graph, neighbor, visited)
-        return result
+                visited.add(neighbor)
+                queue.append(neighbor)
+    return order
 
-    print(bfs(graph, "A"))  # ['A', 'B', 'C', 'D', 'E']
-    print(dfs(graph, "A"))  # ['A', 'B', 'D', 'C', 'E'] (order may vary)
-    ```
+def dfs(graph, start, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    result = [start]
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            result += dfs(graph, neighbor, visited)
+    return result
 
-=== "TypeScript"
-    ```typescript
-    type Graph = Record<string, string[]>;
+print(bfs(graph, "A"))  # ['A', 'B', 'C', 'D', 'E']
+print(dfs(graph, "A"))  # ['A', 'B', 'D', 'C', 'E'] (order may vary)
+```
 
-    const graph: Graph = {
-        A: ["B", "C"], B: ["A", "D"],
-        C: ["A", "D"], D: ["B", "C", "E"], E: ["D"]
-    };
 
-    function bfs(graph: Graph, start: string): string[] {
-        const visited = new Set([start]);
-        const queue = [start];
-        const order: string[] = [];
-        while (queue.length) {
-            const node = queue.shift()!;
-            order.push(node);
-            for (const neighbor of graph[node]) {
-                if (!visited.has(neighbor)) {
-                    visited.add(neighbor);
-                    queue.push(neighbor);
-                }
-            }
-        }
-        return order;
-    }
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
 
-    function dfs(graph: Graph, start: string, visited = new Set<string>()): string[] {
-        visited.add(start);
-        const result = [start];
-        for (const neighbor of graph[start]) {
+```typescript
+type Graph = Record<string, string[]>;
+
+const graph: Graph = {
+    A: ["B", "C"], B: ["A", "D"],
+    C: ["A", "D"], D: ["B", "C", "E"], E: ["D"]
+};
+
+function bfs(graph: Graph, start: string): string[] {
+    const visited = new Set([start]);
+    const queue = [start];
+    const order: string[] = [];
+    while (queue.length) {
+        const node = queue.shift()!;
+        order.push(node);
+        for (const neighbor of graph[node]) {
             if (!visited.has(neighbor)) {
-                result.push(...dfs(graph, neighbor, visited));
+                visited.add(neighbor);
+                queue.push(neighbor);
             }
         }
-        return result;
     }
-    ```
+    return order;
+}
 
-!!! tip "Research Question 🔍"
+function dfs(graph: Graph, start: string, visited = new Set<string>()): string[] {
+    visited.add(start);
+    const result = [start];
+    for (const neighbor of graph[start]) {
+        if (!visited.has(neighbor)) {
+            result.push(...dfs(graph, neighbor, visited));
+        }
+    }
+    return result;
+}
+```
+
+
+</TabItem>
+</Tabs>
+
+:::tip[Research Question 🔍]
     What is the difference between BFS and DFS in terms of what they find? When would you choose one over the other? Name two real-world systems modeled as graphs (navigation? social networks?).
 
 ---
 
 ## 📚 Resources
 
-=== "Primary (Do These)"
-    - 📺 **[CS50x — Week 5: Data Structures (FREE)](https://cs50.harvard.edu/x/)** — Best visual intro, language-agnostic
-    - 🌐 **[Visualgo (FREE)](https://visualgo.net/)** — Animate every structure as you insert/delete — **bookmark this**
+<Tabs>
+<TabItem value="primary-do-these" label="Primary (Do These)">
 
-=== "Supplemental"
-    - 📺 **[NeetCode — Data Structures for Beginners (YouTube, FREE)](https://www.youtube.com/watch?v=ft0owvS5tQA)** — Concise visual walkthrough
-    - 📺 **[Coursera: Algorithms, Part I — Princeton (FREE to audit)](https://www.coursera.org/learn/algorithms-part1)** — Rigorous trees and graphs
+- 📺 **[CS50x — Week 5: Data Structures (FREE)](https://cs50.harvard.edu/x/)** — Best visual intro, language-agnostic
+- 🌐 **[Visualgo (FREE)](https://visualgo.net/)** — Animate every structure as you insert/delete — **bookmark this**
 
-=== "Practice"
-    - 🎮 **[LeetCode Easy (FREE)](https://leetcode.com/problemset/)** — Filter: Easy + Arrays/Hash Table/Linked List
-    - 🎮 **[Data Structure Visualizations — USFCA (FREE)](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)** — Animate while you code
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📺 **[NeetCode — Data Structures for Beginners (YouTube, FREE)](https://www.youtube.com/watch?v=ft0owvS5tQA)** — Concise visual walkthrough
+- 📺 **[Coursera: Algorithms, Part I — Princeton (FREE to audit)](https://www.coursera.org/learn/algorithms-part1)** — Rigorous trees and graphs
+
+
+</TabItem>
+<TabItem value="practice" label="Practice">
+
+- 🎮 **[LeetCode Easy (FREE)](https://leetcode.com/problemset/)** — Filter: Easy + Arrays/Hash Table/Linked List
+- 🎮 **[Data Structure Visualizations — USFCA (FREE)](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)** — Animate while you code
+
+
+</TabItem>
+</Tabs>
 
 ---
 
 ## 🏗️ Assignments
 
-!!! note "Language Choice"
+:::note[Language Choice]
     These assignments can be done in **any language**. Pick the one you're learning. The concepts are the same — the syntax differs. Consider implementing the same assignment in two languages to feel the difference.
 
 ### Assignment 1 — Implement Them All
@@ -1206,6 +1329,55 @@ Load a CSV of friendships (`alice,bob` = they are friends) and implement:
 - [ ] **Simple text visualization** — print adjacency list sorted alphabetically
 
 ⭐ **Stretch:** Implement Dijkstra's shortest path on a *weighted* version where friendship "strength" is a number.
+
+
+---
+
+## Quick Check
+
+<QuizQuestion
+  id="ds-q1"
+  question="An array stores 1 million integers. You need to find one specific value. What is the time complexity with no sorting?"
+  options={[
+    { label: "O(1) — arrays support direct lookup", correct: false, explanation: "O(1) lookup by INDEX (array[42]) works via arithmetic. Looking up by VALUE requires checking each element — O(n) linear search." },
+    { label: "O(n) — must check each element until found", correct: true, explanation: "Correct! Searching an unsorted array by value is O(n) — worst case you scan every element. If sorted, binary search gives O(log n)." },
+    { label: "O(log n) — arrays use binary search internally", correct: false, explanation: "Binary search only works on a SORTED array and must be applied explicitly. Unsorted arrays have no search shortcut." },
+    { label: "O(n squared) — arrays are inefficient for search", correct: false, explanation: "O(n squared) would be a nested loop. Linear search through an array is O(n)." },
+  ]}
+/>
+
+<QuizQuestion
+  id="ds-q2"
+  question="You need a collection where you frequently add to the BACK and remove from the FRONT (task queue, BFS). Which structure?"
+  options={[
+    { label: "Stack / Python list with pop()", correct: false, explanation: "A stack is LIFO — add and remove from the same end. That is the opposite of what you need." },
+    { label: "Queue / Python collections.deque", correct: true, explanation: "Correct! A queue is FIFO. Python's collections.deque supports O(1) append() and popleft(). Using list.pop(0) is O(n) — avoid it." },
+    { label: "Queue / Python list with pop(0)", correct: false, explanation: "Technically correct pattern but list.pop(0) is O(n). Use collections.deque for O(1) popleft()." },
+    { label: "Linked list / Python list", correct: false, explanation: "Python list is a dynamic array, not a linked list. Use deque for this pattern." },
+  ]}
+/>
+
+<QuizQuestion
+  id="ds-q3"
+  question="A hash table guarantees O(1) average lookup. What causes this to degrade to O(n) worst case?"
+  options={[
+    { label: "When the table is too large", correct: false, explanation: "A larger table reduces collisions. Small tables are the problem." },
+    { label: "When many keys hash to the same bucket, causing chains to degrade to linear search", correct: true, explanation: "Correct! With many collisions, chains grow long. Finding a key in a long chain is O(k). Worst case: all keys hash to one bucket giving O(n)." },
+    { label: "When the keys are strings instead of integers", correct: false, explanation: "String keys are fine. The issue is hash collisions, not key type." },
+    { label: "When using chaining instead of open addressing", correct: false, explanation: "Both strategies degrade to O(n) worst case with enough collisions." },
+  ]}
+/>
+
+<QuizQuestion
+  id="ds-q4"
+  question="In-Order traversal on a Binary Search Tree (BST) visits nodes in what order?"
+  options={[
+    { label: "Random order — trees have no traversal guarantee", correct: false, explanation: "Trees have well-defined traversal orders. In-Order is left-root-right." },
+    { label: "Ascending sorted order", correct: true, explanation: "Correct! In a BST, left children are smaller than the parent and right children are larger. In-Order (left, root, right) always produces ascending sorted output." },
+    { label: "Root first, then all left children, then all right children", correct: false, explanation: "That describes a Pre-Order style. Pre-Order is root-left-right." },
+    { label: "Bottom-up, smallest height nodes first", correct: false, explanation: "That would be level-order (BFS) from leaves, not In-Order." },
+  ]}
+/>
 
 ---
 
