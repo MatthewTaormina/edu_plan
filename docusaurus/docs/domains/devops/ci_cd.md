@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # CI/CD
 
 **Domain:** DevOps · **Time Estimate:** 2 weeks
@@ -534,17 +537,29 @@ pipeline {
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📖 **[GitHub Actions Docs (FREE)](https://docs.github.com/en/actions)** — Official, comprehensive, searchable — the first place to look
-    - 📺 **[TechWorld with Nana — GitHub Actions (YouTube, FREE)](https://www.youtube.com/watch?v=R8_veQiYBjI)** — Best practical walkthrough, covers real deployment patterns
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 📖 **[GitLab CI/CD Docs (FREE)](https://docs.gitlab.com/ee/ci/)** — Equivalent reference for GitLab
-    - 🌐 **[GitHub Marketplace — Actions (FREE)](https://github.com/marketplace?type=actions)** — Browse community actions before writing your own
+- 📖 **[GitHub Actions Docs (FREE)](https://docs.github.com/en/actions)** — Official, comprehensive, searchable — the first place to look
+- 📺 **[TechWorld with Nana — GitHub Actions (YouTube, FREE)](https://www.youtube.com/watch?v=R8_veQiYBjI)** — Best practical walkthrough, covers real deployment patterns
 
-=== "Practice"
-    - 🎮 **Start simple:** Fork any project and add a `.github/workflows/ci.yml` that runs its test suite — this is the most effective practice
-    - 📺 **[Fireship — GitHub Actions in 100 Seconds (YouTube, FREE)](https://www.youtube.com/watch?v=eB0nUzAI7M8)**
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📖 **[GitLab CI/CD Docs (FREE)](https://docs.gitlab.com/ee/ci/)** — Equivalent reference for GitLab
+- 🌐 **[GitHub Marketplace — Actions (FREE)](https://github.com/marketplace?type=actions)** — Browse community actions before writing your own
+
+
+</TabItem>
+<TabItem value="practice" label="Practice">
+
+- 🎮 **Start simple:** Fork any project and add a `.github/workflows/ci.yml` that runs its test suite — this is the most effective practice
+- 📺 **[Fireship — GitHub Actions in 100 Seconds (YouTube, FREE)](https://www.youtube.com/watch?v=eB0nUzAI7M8)**
+
+
+</TabItem>
+</Tabs>
 
 ---
 

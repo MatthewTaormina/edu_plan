@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Concurrency
 
 **Domain:** Foundations · **Time Estimate:** 2–3 weeks · **Relevant to:** All domains
@@ -71,50 +74,59 @@ write 1                     write 1
 
 This is a **race** — the increment is not atomic. The CPU instruction sequence for `counter++` is actually three instructions: LOAD, ADD, STORE. Two threads can interleave these.
 
-=== "Python (demonstrating a race)"
-    ```python
-    import threading
+<Tabs>
+<TabItem value="python-demonstrating-a-race" label="Python (demonstrating a race)">
 
-    counter = 0
+```python
+import threading
 
-    def increment(n: int):
-        global counter
-        for _ in range(n):
-            counter += 1   # NOT thread-safe: load, add, store
+counter = 0
 
-    threads = [threading.Thread(target=increment, args=(100_000,)) for _ in range(10)]
-    for t in threads: t.start()
-    for t in threads: t.join()
+def increment(n: int):
+    global counter
+    for _ in range(n):
+        counter += 1   # NOT thread-safe: load, add, store
 
-    print(counter)  # Should be 1,000,000 — but is often less!
-    # e.g., 847,293 — different every run
-    ```
+threads = [threading.Thread(target=increment, args=(100_000,)) for _ in range(10)]
+for t in threads: t.start()
+for t in threads: t.join()
 
-=== "Rust (shows compile-time prevention)"
-    ```rust
-    use std::thread;
+print(counter)  # Should be 1,000,000 — but is often less!
+# e.g., 847,293 — different every run
+```
 
-    fn main() {
-        let counter = 0; // This even won't compile if shared across threads naively
-        // Rust prevents this:
-        // thread::spawn(move || { counter += 1; }); // ERROR: can't share &mut i32
 
-        // Correct: use Arc<Mutex<T>>
-        use std::sync::{Arc, Mutex};
-        let counter = Arc::new(Mutex::new(0));
-        let mut handles = vec![];
+</TabItem>
+<TabItem value="rust-shows-compile-time-prevention" label="Rust (shows compile-time prevention)">
 
-        for _ in 0..10 {
-            let c = Arc::clone(&counter);
-            handles.push(thread::spawn(move || {
-                let mut num = c.lock().unwrap();
-                *num += 100_000_i64; // simplified
-            }));
-        }
-        for h in handles { h.join().unwrap(); }
-        println!("{}", counter.lock().unwrap()); // Always exactly 1,000,000
+```rust
+use std::thread;
+
+fn main() {
+    let counter = 0; // This even won't compile if shared across threads naively
+    // Rust prevents this:
+    // thread::spawn(move || { counter += 1; }); // ERROR: can't share &mut i32
+
+    // Correct: use Arc<Mutex<T>>
+    use std::sync::{Arc, Mutex};
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+
+    for _ in 0..10 {
+        let c = Arc::clone(&counter);
+        handles.push(thread::spawn(move || {
+            let mut num = c.lock().unwrap();
+            *num += 100_000_i64; // simplified
+        }));
     }
-    ```
+    for h in handles { h.join().unwrap(); }
+    println!("{}", counter.lock().unwrap()); // Always exactly 1,000,000
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -127,71 +139,83 @@ Thread 1: lock() → ✓ acquired → access data → unlock()
 Thread 2: lock() → ✗ blocked... waiting... → lock() → ✓ acquired → access data → unlock()
 ```
 
-=== "Python"
-    ```python
-    import threading
+<Tabs>
+<TabItem value="python" label="Python">
 
-    counter = 0
-    lock = threading.Lock()
+```python
+import threading
 
-    def safe_increment(n: int):
-        global counter
-        for _ in range(n):
-            with lock:          # Acquire lock; release when block exits (RAII)
-                counter += 1   # Only one thread here at a time
+counter = 0
+lock = threading.Lock()
 
-    threads = [threading.Thread(target=safe_increment, args=(100_000,)) for _ in range(10)]
-    for t in threads: t.start()
-    for t in threads: t.join()
-    print(counter)  # Always 1,000,000
+def safe_increment(n: int):
+    global counter
+    for _ in range(n):
+        with lock:          # Acquire lock; release when block exits (RAII)
+            counter += 1   # Only one thread here at a time
 
-    # RLock: reentrant lock (same thread can acquire multiple times)
-    rlock = threading.RLock()
+threads = [threading.Thread(target=safe_increment, args=(100_000,)) for _ in range(10)]
+for t in threads: t.start()
+for t in threads: t.join()
+print(counter)  # Always 1,000,000
 
-    # Condition: wait for a condition to be true
-    condition = threading.Condition()
-    with condition:
-        condition.wait()           # Release lock and sleep until notified
-        condition.notify_all()     # Wake all waiting threads
-    ```
+# RLock: reentrant lock (same thread can acquire multiple times)
+rlock = threading.RLock()
 
-=== "TypeScript"
-    ```typescript
-    // JavaScript/TypeScript is single-threaded (per Worker) — no mutex needed in normal code
-    // BUT: Workers can share memory, requiring atomics
+# Condition: wait for a condition to be true
+condition = threading.Condition()
+with condition:
+    condition.wait()           # Release lock and sleep until notified
+    condition.notify_all()     # Wake all waiting threads
+```
 
-    // SharedArrayBuffer + Atomics for true shared memory between Workers
-    const sab = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
-    const counter = new Int32Array(sab);
 
-    // In each worker:
-    Atomics.add(counter, 0, 1);        // Atomic increment — thread-safe
-    const val = Atomics.load(counter, 0);  // Atomic read
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
 
-    // Atomics.wait / Atomics.notify implement mutex-like patterns
-    // See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Atomics
-    ```
+```typescript
+// JavaScript/TypeScript is single-threaded (per Worker) — no mutex needed in normal code
+// BUT: Workers can share memory, requiring atomics
 
-=== "Rust"
-    ```rust
-    use std::sync::{Arc, Mutex, RwLock};
-    use std::thread;
+// SharedArrayBuffer + Atomics for true shared memory between Workers
+const sab = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+const counter = new Int32Array(sab);
 
-    // Mutex<T>: exclusive access
-    let data = Arc::new(Mutex::new(vec![1, 2, 3]));
-    let clone = Arc::clone(&data);
-    thread::spawn(move || {
-        let mut v = clone.lock().unwrap();  // Blocks until lock acquired
-        v.push(4);
-    });                                      // Lock released when guard drops
+// In each worker:
+Atomics.add(counter, 0, 1);        // Atomic increment — thread-safe
+const val = Atomics.load(counter, 0);  // Atomic read
 
-    // RwLock<T>: many readers OR one writer
-    let rwlock = Arc::new(RwLock::new(0));
-    let r = rwlock.read().unwrap();     // Multiple readers OK simultaneously
-    drop(r);
-    let mut w = rwlock.write().unwrap(); // Exclusive writer — waits for readers
-    *w = 42;
-    ```
+// Atomics.wait / Atomics.notify implement mutex-like patterns
+// See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Atomics
+```
+
+
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+use std::sync::{Arc, Mutex, RwLock};
+use std::thread;
+
+// Mutex<T>: exclusive access
+let data = Arc::new(Mutex::new(vec![1, 2, 3]));
+let clone = Arc::clone(&data);
+thread::spawn(move || {
+    let mut v = clone.lock().unwrap();  // Blocks until lock acquired
+    v.push(4);
+});                                      // Lock released when guard drops
+
+// RwLock<T>: many readers OR one writer
+let rwlock = Arc::new(RwLock::new(0));
+let r = rwlock.read().unwrap();     // Multiple readers OK simultaneously
+drop(r);
+let mut w = rwlock.write().unwrap(); // Exclusive writer — waits for readers
+*w = 42;
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -270,96 +294,108 @@ All three tasks interleave on ONE thread — no mutex needed
 (there's only one thread, so no concurrent memory access)
 ```
 
-=== "Python (asyncio)"
-    ```python
-    import asyncio
-    import aiohttp   # pip install aiohttp
+<Tabs>
+<TabItem value="python-asyncio" label="Python (asyncio)">
 
-    async def fetch(session, url: str) -> str:
-        async with session.get(url) as resp:
-            return await resp.text()
+```python
+import asyncio
+import aiohttp   # pip install aiohttp
 
-    async def main():
-        urls = [
-            "https://httpbin.org/delay/1",
-            "https://httpbin.org/delay/1",
-            "https://httpbin.org/delay/1",
-        ]
-        async with aiohttp.ClientSession() as session:
-            # All three requests run concurrently — total time ~1s, not 3s
-            results = await asyncio.gather(*[fetch(session, url) for url in urls])
-        print(f"Got {len(results)} responses")
+async def fetch(session, url: str) -> str:
+    async with session.get(url) as resp:
+        return await resp.text()
 
-    asyncio.run(main())
+async def main():
+    urls = [
+        "https://httpbin.org/delay/1",
+        "https://httpbin.org/delay/1",
+        "https://httpbin.org/delay/1",
+    ]
+    async with aiohttp.ClientSession() as session:
+        # All three requests run concurrently — total time ~1s, not 3s
+        results = await asyncio.gather(*[fetch(session, url) for url in urls])
+    print(f"Got {len(results)} responses")
 
-    # Async generator
-    async def countdown(n: int):
-        while n > 0:
-            yield n
-            await asyncio.sleep(1)
-            n -= 1
+asyncio.run(main())
 
-    async def use_countdown():
-        async for value in countdown(5):
-            print(value)
-    ```
+# Async generator
+async def countdown(n: int):
+    while n > 0:
+        yield n
+        await asyncio.sleep(1)
+        n -= 1
 
-=== "TypeScript"
-    ```typescript
-    // JS/TS async/await is built on Promises — always async-first
-    async function fetchAll(urls: string[]): Promise<string[]> {
-        // Sequential — waits for each before starting next (slow)
-        const results = [];
-        for (const url of urls) {
-            const res = await fetch(url);
-            results.push(await res.text());
-        }
-        return results;
+async def use_countdown():
+    async for value in countdown(5):
+        print(value)
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+// JS/TS async/await is built on Promises — always async-first
+async function fetchAll(urls: string[]): Promise<string[]> {
+    // Sequential — waits for each before starting next (slow)
+    const results = [];
+    for (const url of urls) {
+        const res = await fetch(url);
+        results.push(await res.text());
     }
+    return results;
+}
 
-    // Concurrent — all start at the same time (fast)
-    async function fetchAllConcurrent(urls: string[]): Promise<string[]> {
-        const promises = urls.map(url => fetch(url).then(r => r.text()));
-        return Promise.all(promises);  // Start all, wait for all to complete
-    }
+// Concurrent — all start at the same time (fast)
+async function fetchAllConcurrent(urls: string[]): Promise<string[]> {
+    const promises = urls.map(url => fetch(url).then(r => r.text()));
+    return Promise.all(promises);  // Start all, wait for all to complete
+}
 
-    // With timeout
-    async function fetchWithTimeout(url: string, ms: number): Promise<Response> {
-        const timeout = new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error('Timeout')), ms));
-        return Promise.race([fetch(url), timeout]);
-    }
+// With timeout
+async function fetchWithTimeout(url: string, ms: number): Promise<Response> {
+    const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout')), ms));
+    return Promise.race([fetch(url), timeout]);
+}
 
-    // Error handling in concurrent tasks
-    const results = await Promise.allSettled(urls.map(url => fetch(url)));
-    for (const result of results) {
-        if (result.status === 'fulfilled') console.log('OK', result.value.status);
-        else console.error('FAILED', result.reason.message);
-    }
-    ```
+// Error handling in concurrent tasks
+const results = await Promise.allSettled(urls.map(url => fetch(url)));
+for (const result of results) {
+    if (result.status === 'fulfilled') console.log('OK', result.value.status);
+    else console.error('FAILED', result.reason.message);
+}
+```
 
-=== "Rust (tokio)"
-    ```rust
-    // Add to Cargo.toml: tokio = { version = "1", features = ["full"] }
-    use tokio;
 
-    #[tokio::main]
-    async fn main() {
-        // spawn concurrent tasks
-        let task1 = tokio::spawn(fetch("http://example.com/1"));
-        let task2 = tokio::spawn(fetch("http://example.com/2"));
-        let task3 = tokio::spawn(fetch("http://example.com/3"));
+</TabItem>
+<TabItem value="rust-tokio" label="Rust (tokio)">
 
-        // await all tasks concurrently
-        let (r1, r2, r3) = tokio::join!(task1, task2, task3);
-        println!("{:?} {:?} {:?}", r1, r2, r3);
-    }
+```rust
+// Add to Cargo.toml: tokio = { version = "1", features = ["full"] }
+use tokio;
 
-    async fn fetch(url: &str) -> String {
-        // async HTTP with reqwest
-        reqwest::get(url).await.unwrap().text().await.unwrap()
-    }
-    ```
+#[tokio::main]
+async fn main() {
+    // spawn concurrent tasks
+    let task1 = tokio::spawn(fetch("http://example.com/1"));
+    let task2 = tokio::spawn(fetch("http://example.com/2"));
+    let task3 = tokio::spawn(fetch("http://example.com/3"));
+
+    // await all tasks concurrently
+    let (r1, r2, r3) = tokio::join!(task1, task2, task3);
+    println!("{:?} {:?} {:?}", r1, r2, r3);
+}
+
+async fn fetch(url: &str) -> String {
+    // async HTTP with reqwest
+    reqwest::get(url).await.unwrap().text().await.unwrap()
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -372,74 +408,86 @@ Producer thread ──[channel]──► Consumer thread
                    message queue
 ```
 
-=== "Python"
-    ```python
-    import threading, queue
+<Tabs>
+<TabItem value="python" label="Python">
 
-    work_queue: queue.Queue = queue.Queue(maxsize=100)
+```python
+import threading, queue
 
-    def producer():
-        for i in range(50):
-            work_queue.put(i)         # Blocks if queue is full
-        work_queue.put(None)          # Sentinel: tell consumer we're done
+work_queue: queue.Queue = queue.Queue(maxsize=100)
 
-    def consumer():
-        while True:
-            item = work_queue.get()   # Blocks until item available
-            if item is None:
-                break
-            print(f"Processing {item}")
-            work_queue.task_done()
+def producer():
+    for i in range(50):
+        work_queue.put(i)         # Blocks if queue is full
+    work_queue.put(None)          # Sentinel: tell consumer we're done
 
-    t_prod = threading.Thread(target=producer)
-    t_cons = threading.Thread(target=consumer)
-    t_prod.start(); t_cons.start()
-    t_prod.join(); t_cons.join()
-    ```
+def consumer():
+    while True:
+        item = work_queue.get()   # Blocks until item available
+        if item is None:
+            break
+        print(f"Processing {item}")
+        work_queue.task_done()
 
-=== "TypeScript (Node.js worker_threads)"
-    ```typescript
-    import { Worker, parentPort, workerData, isMainThread, MessageChannel } from 'worker_threads';
+t_prod = threading.Thread(target=producer)
+t_cons = threading.Thread(target=consumer)
+t_prod.start(); t_cons.start()
+t_prod.join(); t_cons.join()
+```
 
-    if (isMainThread) {
-        const worker = new Worker(__filename, { workerData: { start: 0 } });
-        worker.on('message', (result) => console.log('Result:', result));
-        worker.postMessage({ type: 'work', payload: [1, 2, 3, 4, 5] });
-    } else {
-        parentPort!.on('message', ({ type, payload }) => {
-            if (type === 'work') {
-                const sum = payload.reduce((a: number, b: number) => a + b, 0);
-                parentPort!.postMessage(sum);
-            }
-        });
-    }
-    ```
 
-=== "Rust"
-    ```rust
-    use std::sync::mpsc;  // Multiple Producer, Single Consumer channel
-    use std::thread;
+</TabItem>
+<TabItem value="typescript-node-js-worker-threads" label="TypeScript (Node.js worker_threads)">
 
-    fn main() {
-        let (tx, rx) = mpsc::channel();
-        let tx2 = tx.clone();  // Clone sender for second producer
+```typescript
+import { Worker, parentPort, workerData, isMainThread, MessageChannel } from 'worker_threads';
 
-        // Producer 1
-        thread::spawn(move || {
-            for i in 0..10 { tx.send(i).unwrap(); }
-        });
-
-        // Producer 2
-        thread::spawn(move || {
-            for i in 100..110 { tx2.send(i).unwrap(); }
-        });
-
-        // Consumer (main thread)
-        for value in rx {   // Iterates until all Senders are dropped
-            println!("Received: {}", value);
+if (isMainThread) {
+    const worker = new Worker(__filename, { workerData: { start: 0 } });
+    worker.on('message', (result) => console.log('Result:', result));
+    worker.postMessage({ type: 'work', payload: [1, 2, 3, 4, 5] });
+} else {
+    parentPort!.on('message', ({ type, payload }) => {
+        if (type === 'work') {
+            const sum = payload.reduce((a: number, b: number) => a + b, 0);
+            parentPort!.postMessage(sum);
         }
+    });
+}
+```
+
+
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+use std::sync::mpsc;  // Multiple Producer, Single Consumer channel
+use std::thread;
+
+fn main() {
+    let (tx, rx) = mpsc::channel();
+    let tx2 = tx.clone();  // Clone sender for second producer
+
+    // Producer 1
+    thread::spawn(move || {
+        for i in 0..10 { tx.send(i).unwrap(); }
+    });
+
+    // Producer 2
+    thread::spawn(move || {
+        for i in 100..110 { tx2.send(i).unwrap(); }
+    });
+
+    // Consumer (main thread)
+    for value in rx {   // Iterates until all Senders are dropped
+        println!("Received: {}", value);
     }
-    ```
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -447,65 +495,77 @@ Producer thread ──[channel]──► Consumer thread
 
 Creating a new thread for every task is expensive (~1MB stack, kernel overhead). A **thread pool** pre-creates a fixed number of threads that pick up work from a queue.
 
-=== "Python"
-    ```python
-    from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
-    import time
+<Tabs>
+<TabItem value="python" label="Python">
 
-    # I/O-bound: ThreadPoolExecutor (threads share GIL but release it for I/O)
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        urls = ["http://example.com"] * 20
-        futures = [executor.submit(fetch_url, url) for url in urls]
-        results = [f.result() for f in futures]
+```python
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+import time
 
-    # CPU-bound: ProcessPoolExecutor (bypasses GIL with separate processes)
-    def compute(n):
-        return sum(range(n))
+# I/O-bound: ThreadPoolExecutor (threads share GIL but release it for I/O)
+with ThreadPoolExecutor(max_workers=10) as executor:
+    urls = ["http://example.com"] * 20
+    futures = [executor.submit(fetch_url, url) for url in urls]
+    results = [f.result() for f in futures]
 
-    with ProcessPoolExecutor(max_workers=4) as executor:
-        results = list(executor.map(compute, [10**7] * 8))
-        # Actually uses all 4 cores simultaneously
+# CPU-bound: ProcessPoolExecutor (bypasses GIL with separate processes)
+def compute(n):
+    return sum(range(n))
 
-    # Also: asyncio.gather() for async I/O tasks (best for network I/O)
-    ```
+with ProcessPoolExecutor(max_workers=4) as executor:
+    results = list(executor.map(compute, [10**7] * 8))
+    # Actually uses all 4 cores simultaneously
 
-=== "TypeScript"
-    ```typescript
-    // In Node.js, worker_threads + a pool pattern
-    // Recommended library: piscina (thread pool for Node.js)
-    import Piscina from 'piscina';
+# Also: asyncio.gather() for async I/O tasks (best for network I/O)
+```
 
-    const pool = new Piscina({ filename: './worker.js', maxThreads: 4 });
 
-    const results = await Promise.all([
-        pool.run({ n: 1_000_000 }),
-        pool.run({ n: 2_000_000 }),
-        pool.run({ n: 3_000_000 }),
-    ]);
-    ```
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
 
-=== "Rust"
-    ```rust
-    // rayon: data parallelism made easy
-    // Cargo.toml: rayon = "1"
-    use rayon::prelude::*;
+```typescript
+// In Node.js, worker_threads + a pool pattern
+// Recommended library: piscina (thread pool for Node.js)
+import Piscina from 'piscina';
 
-    fn main() {
-        let data: Vec<i64> = (1..=1_000_000).collect();
+const pool = new Piscina({ filename: './worker.js', maxThreads: 4 });
 
-        // Parallel map + sum — automatically uses all CPU cores
-        let sum: i64 = data.par_iter().map(|&x| x * x).sum();
-        println!("Sum of squares: {}", sum);
+const results = await Promise.all([
+    pool.run({ n: 1_000_000 }),
+    pool.run({ n: 2_000_000 }),
+    pool.run({ n: 3_000_000 }),
+]);
+```
 
-        // Parallel sort
-        let mut data = data.clone();
-        data.par_sort();
 
-        // tokio::task::spawn_blocking for CPU work in async context
-        let handle = tokio::task::spawn_blocking(|| heavy_computation());
-        let result = handle.await.unwrap();
-    }
-    ```
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+// rayon: data parallelism made easy
+// Cargo.toml: rayon = "1"
+use rayon::prelude::*;
+
+fn main() {
+    let data: Vec<i64> = (1..=1_000_000).collect();
+
+    // Parallel map + sum — automatically uses all CPU cores
+    let sum: i64 = data.par_iter().map(|&x| x * x).sum();
+    println!("Sum of squares: {}", sum);
+
+    // Parallel sort
+    let mut data = data.clone();
+    data.par_sort();
+
+    // tokio::task::spawn_blocking for CPU work in async context
+    let handle = tokio::task::spawn_blocking(|| heavy_computation());
+    let result = handle.await.unwrap();
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -530,14 +590,23 @@ Creating a new thread for every task is expensive (~1MB stack, kernel overhead).
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📖 **[The Rust Book — Ch. 16: Fearless Concurrency (FREE)](https://doc.rust-lang.org/book/ch16-00-concurrency.html)** — Best intro to thread-safe concurrency
-    - 📺 **[Arjan Codes — Python asyncio (YouTube, FREE)](https://www.youtube.com/@ArjanCodes)** — Clear, modern Python async explanations
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 📖 **[asyncio Docs (Python official)](https://docs.python.org/3/library/asyncio.html)** — Complete reference
-    - 📖 **[MDN — Using Web Workers (FREE)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)** — JS concurrency in the browser context
-    - 📺 **[Jon Gjengset — Tokio Deep Dive (YouTube, FREE)](https://www.youtube.com/c/JonGjengset)** — Rust async runtime internals
+- 📖 **[The Rust Book — Ch. 16: Fearless Concurrency (FREE)](https://doc.rust-lang.org/book/ch16-00-concurrency.html)** — Best intro to thread-safe concurrency
+- 📺 **[Arjan Codes — Python asyncio (YouTube, FREE)](https://www.youtube.com/@ArjanCodes)** — Clear, modern Python async explanations
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📖 **[asyncio Docs (Python official)](https://docs.python.org/3/library/asyncio.html)** — Complete reference
+- 📖 **[MDN — Using Web Workers (FREE)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)** — JS concurrency in the browser context
+- 📺 **[Jon Gjengset — Tokio Deep Dive (YouTube, FREE)](https://www.youtube.com/c/JonGjengset)** — Rust async runtime internals
+
+
+</TabItem>
+</Tabs>
 
 ---
 

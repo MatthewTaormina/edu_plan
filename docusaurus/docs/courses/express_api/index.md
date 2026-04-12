@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Express API
 
 > **Domain:** Web Development — Backend · **Time:** 10–12 hours total · **Platform:** Windows + Linux
@@ -39,15 +42,27 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [Wiki: HTTP Servers & Middleware](../../domains/web_dev/http_server.md)
-    - [Wiki: REST APIs](../../domains/web_dev/rest_api.md)
-    - [Express.js Official Docs](https://expressjs.com/)
-    - [Zod Documentation](https://zod.dev/)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [The Odin Project — NodeJS Path](https://www.theodinproject.com/paths/full-stack-javascript) (FREE)
-    - [Fastify Docs](https://fastify.dev/) — modern Express alternative (see Lesson 01)
+- [Wiki: HTTP Servers & Middleware](../../domains/web_dev/http_server.md)
+- [Wiki: REST APIs](../../domains/web_dev/rest_api.md)
+- [Express.js Official Docs](https://expressjs.com/)
+- [Zod Documentation](https://zod.dev/)
 
-=== "External Courses"
-    - 🎓 **[Net Ninja — Node.js Crash Course](https://www.youtube.com/playlist?list=PL4cUxeGkcC9jsz4LDYc6kv3ymONOKxwBU)** (FREE, YouTube)
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [The Odin Project — NodeJS Path](https://www.theodinproject.com/paths/full-stack-javascript) (FREE)
+- [Fastify Docs](https://fastify.dev/) — modern Express alternative (see Lesson 01)
+
+
+</TabItem>
+<TabItem value="external" label="External Courses">
+
+- 🎓 **[Net Ninja — Node.js Crash Course](https://www.youtube.com/playlist?list=PL4cUxeGkcC9jsz4LDYc6kv3ymONOKxwBU)** (FREE, YouTube)
+
+
+</TabItem>
+</Tabs>

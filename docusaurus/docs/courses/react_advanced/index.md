@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # React Advanced
 
 > **Domain:** Web Development · **Time:** 8–10 hours total · **Platform:** Windows + Linux
@@ -34,11 +37,20 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [React Docs — Performance](https://react.dev/reference/react/useMemo)
-    - [React Router Docs](https://reactrouter.com/en/main)
-    - [TanStack Query Docs](https://tanstack.com/query/latest)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [Testing Library Docs](https://testing-library.com/docs/react-testing-library/intro/)
-    - [Kent C. Dodds — Epic React](https://epicreact.dev/) (PAID)
+- [React Docs — Performance](https://react.dev/reference/react/useMemo)
+- [React Router Docs](https://reactrouter.com/en/main)
+- [TanStack Query Docs](https://tanstack.com/query/latest)
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Testing Library Docs](https://testing-library.com/docs/react-testing-library/intro/)
+- [Kent C. Dodds — Epic React](https://epicreact.dev/) (PAID)
+
+
+</TabItem>
+</Tabs>

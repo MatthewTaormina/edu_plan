@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Tailwind CSS
 
 > **Domain:** Web Development · **Time:** 6–8 hours total · **Platform:** Windows + Linux
@@ -40,11 +43,20 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [Tailwind CSS Docs](https://tailwindcss.com/docs) — excellent, searchable reference
-    - [Tailwind CSS Playground](https://play.tailwindcss.com/) — try utilities live
-    - [Wiki: HTML & CSS](../../domains/web_dev/html_css.md) — underlying CSS concepts
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [Tailwind UI](https://tailwindui.com/) — official paid component library (free examples on the site)
-    - [Headless UI](https://headlessui.com/) — accessible unstyled components that pair with Tailwind
+- [Tailwind CSS Docs](https://tailwindcss.com/docs) — excellent, searchable reference
+- [Tailwind CSS Playground](https://play.tailwindcss.com/) — try utilities live
+- [Wiki: HTML & CSS](../../domains/web_dev/html_css.md) — underlying CSS concepts
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Tailwind UI](https://tailwindui.com/) — official paid component library (free examples on the site)
+- [Headless UI](https://headlessui.com/) — accessible unstyled components that pair with Tailwind
+
+
+</TabItem>
+</Tabs>

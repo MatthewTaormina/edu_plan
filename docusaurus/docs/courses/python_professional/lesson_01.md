@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Lesson 01 — Modules, Packages, and Virtual Environments
 
 **Course:** Python: Professional Tools · **Lesson:** 1 of 4 · **Time:** ~75 minutes
@@ -102,42 +105,60 @@ Every project needs its own isolated environment to avoid version conflicts.
 
 > **Tool:** `uv` · **Introduced:** 2023 (Astral) · **Status:** 🟢 Modern — 10-100x faster than pip
 
-=== "Windows"
-    ```powershell
-    uv venv               # Create .venv/
-    .venv\Scripts\activate
-    # Prompt changes: (.venv) C:\...>
+<Tabs>
+<TabItem value="windows" label="Windows">
 
-    uv pip install requests
-    uv pip install -r requirements.txt
-    deactivate
-    ```
+```powershell
+uv venv               # Create .venv/
+.venv\Scripts\activate
+# Prompt changes: (.venv) C:\...>
 
-=== "Linux"
-    ```bash
-    uv venv
-    source .venv/bin/activate
-    # Prompt changes: (.venv) user@host:~$
+uv pip install requests
+uv pip install -r requirements.txt
+deactivate
+```
 
-    uv pip install requests
-    deactivate
-    ```
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+```bash
+uv venv
+source .venv/bin/activate
+# Prompt changes: (.venv) user@host:~$
+
+uv pip install requests
+deactivate
+```
+
+
+</TabItem>
+</Tabs>
 
 ### Using `venv` (🟢 Built-in)
 
-=== "Windows"
-    ```powershell
-    python -m venv .venv
-    .venv\Scripts\activate
-    pip install requests
-    ```
+<Tabs>
+<TabItem value="windows" label="Windows">
 
-=== "Linux"
-    ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install requests
-    ```
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+pip install requests
+```
+
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install requests
+```
+
+
+</TabItem>
+</Tabs>
 
 !!! note "Always use a virtual environment"
     Installing globally (`pip install ...` without activating a venv) causes version

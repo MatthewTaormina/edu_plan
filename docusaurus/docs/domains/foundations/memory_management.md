@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Memory Management
 
 **Domain:** Foundations · **Time Estimate:** 1–2 weeks · **Relevant to:** Systems Programming, Rust, C, Performance
@@ -77,74 +80,83 @@ void example() {
 
 In C, you manage memory yourself. The OS provides memory in large chunks via `mmap`/`sbrk`. The **allocator** (`malloc`/`free`) subdivides and tracks these chunks.
 
-=== "C — Correct Usage"
-    ```c
-    #include <stdlib.h>
-    #include <string.h>
-    #include <stdio.h>
+<Tabs>
+<TabItem value="c-correct-usage" label="C — Correct Usage">
 
-    // Allocate, use, free
-    int* create_array(int size) {
-        int* arr = malloc(sizeof(int) * size);
-        if (arr == NULL) {
-            // malloc returns NULL on failure — always check!
-            fprintf(stderr, "Out of memory\n");
-            exit(1);
-        }
-        memset(arr, 0, sizeof(int) * size);  // Zero-initialize
-        return arr;
+```c
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+// Allocate, use, free
+int* create_array(int size) {
+    int* arr = malloc(sizeof(int) * size);
+    if (arr == NULL) {
+        // malloc returns NULL on failure — always check!
+        fprintf(stderr, "Out of memory\n");
+        exit(1);
     }
+    memset(arr, 0, sizeof(int) * size);  // Zero-initialize
+    return arr;
+}
 
-    int main() {
-        int* data = create_array(100);
-        data[0] = 42;
+int main() {
+    int* data = create_array(100);
+    data[0] = 42;
 
-        // ... use data ...
+    // ... use data ...
 
-        free(data);      // Must free what malloc gave us
-        data = NULL;     // Best practice: null the pointer after freeing
-        return 0;
-    }
+    free(data);      // Must free what malloc gave us
+    data = NULL;     // Best practice: null the pointer after freeing
+    return 0;
+}
 
-    // Dynamic string
-    char* copy_string(const char* src) {
-        size_t len = strlen(src) + 1;       // +1 for null terminator
-        char* copy = malloc(len);
-        if (!copy) return NULL;
-        memcpy(copy, src, len);
-        return copy;                         // Caller must free this
-    }
-    ```
+// Dynamic string
+char* copy_string(const char* src) {
+    size_t len = strlen(src) + 1;       // +1 for null terminator
+    char* copy = malloc(len);
+    if (!copy) return NULL;
+    memcpy(copy, src, len);
+    return copy;                         // Caller must free this
+}
+```
 
-=== "C — Common Bugs"
-    ```c
-    // BUG 1: Memory Leak — malloc without free
-    void leak() {
-        int* ptr = malloc(100 * sizeof(int));
-        // ... use ptr ...
-        return;  // ptr goes out of scope, but memory is NOT freed
-    }   // Repeated calls accumulate unreachable memory → crash eventually
 
-    // BUG 2: Use-After-Free — accessing freed memory
-    int* ptr = malloc(sizeof(int));
-    *ptr = 42;
-    free(ptr);
-    printf("%d\n", *ptr);  // UNDEFINED BEHAVIOR — ptr is now "dangling"
-    // Could print 42, random garbage, or crash
+</TabItem>
+<TabItem value="c-common-bugs" label="C — Common Bugs">
 
-    // BUG 3: Double-Free — freeing the same pointer twice
-    free(ptr);
-    free(ptr);  // UNDEFINED BEHAVIOR — corrupts heap metadata → usually crashes
+```c
+// BUG 1: Memory Leak — malloc without free
+void leak() {
+    int* ptr = malloc(100 * sizeof(int));
+    // ... use ptr ...
+    return;  // ptr goes out of scope, but memory is NOT freed
+}   // Repeated calls accumulate unreachable memory → crash eventually
 
-    // BUG 4: Buffer Overflow — writing past allocated bounds
-    char* buf = malloc(10);
-    strcpy(buf, "this string is way too long");  // UNDEFINED BEHAVIOR
-    // Overwrites memory beyond buf — classic security vulnerability
+// BUG 2: Use-After-Free — accessing freed memory
+int* ptr = malloc(sizeof(int));
+*ptr = 42;
+free(ptr);
+printf("%d\n", *ptr);  // UNDEFINED BEHAVIOR — ptr is now "dangling"
+// Could print 42, random garbage, or crash
 
-    // BUG 5: Using uninitialized memory
-    int* arr = malloc(10 * sizeof(int));
-    printf("%d\n", arr[0]);  // Could be anything — malloc does NOT zero memory
-    ```
+// BUG 3: Double-Free — freeing the same pointer twice
+free(ptr);
+free(ptr);  // UNDEFINED BEHAVIOR — corrupts heap metadata → usually crashes
+
+// BUG 4: Buffer Overflow — writing past allocated bounds
+char* buf = malloc(10);
+strcpy(buf, "this string is way too long");  // UNDEFINED BEHAVIOR
+// Overwrites memory beyond buf — classic security vulnerability
+
+// BUG 5: Using uninitialized memory
+int* arr = malloc(10 * sizeof(int));
+printf("%d\n", arr[0]);  // Could be anything — malloc does NOT zero memory
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -262,142 +274,172 @@ A pattern that ties resource lifetime to object scope. When the object is destro
 
 Used in: C++ (destructors), Rust (Drop trait), Python (`with` statement), C# (`using`), Java (`try-with-resources`)
 
-=== "Rust (built-in)"
-    ```rust
-    use std::fs::File;
+<Tabs>
+<TabItem value="rust-built-in" label="Rust (built-in)">
 
-    fn read_file() -> std::io::Result<()> {
-        let file = File::open("data.txt")?;
-        // ... read from file ...
-        // File is automatically closed when `file` goes out of scope
-        // No need for file.close() — RAII handles it
-        Ok(())
-    }  // file dropped here → OS file handle released
+```rust
+use std::fs::File;
 
-    // Mutex guard (RAII for locking)
-    use std::sync::Mutex;
-    let lock = Mutex::new(0);
-    {
-        let mut guard = lock.lock().unwrap();  // Acquire lock
-        *guard += 1;
-    }   // guard dropped → mutex automatically unlocked
-    // Never forget to unlock — Rust physically cannot let you
-    ```
+fn read_file() -> std::io::Result<()> {
+    let file = File::open("data.txt")?;
+    // ... read from file ...
+    // File is automatically closed when `file` goes out of scope
+    // No need for file.close() — RAII handles it
+    Ok(())
+}  // file dropped here → OS file handle released
 
-=== "Python (context managers)"
-    ```python
-    # Python's 'with' statement is RAII
-    with open("data.txt", "r") as f:
-        content = f.read()
-    # File automatically closed when 'with' block exits
-    # Even if an exception is raised inside the block
+// Mutex guard (RAII for locking)
+use std::sync::Mutex;
+let lock = Mutex::new(0);
+{
+    let mut guard = lock.lock().unwrap();  // Acquire lock
+    *guard += 1;
+}   // guard dropped → mutex automatically unlocked
+// Never forget to unlock — Rust physically cannot let you
+```
 
-    # Implement RAII pattern for custom resources
-    class DatabaseConnection:
-        def __enter__(self):
-            self.conn = connect_to_db()
-            return self.conn
 
-        def __exit__(self, exc_type, exc_val, exc_tb):
-            self.conn.close()  # Always runs, even on exception
-            return False
+</TabItem>
+<TabItem value="python-context-managers" label="Python (context managers)">
 
-    with DatabaseConnection() as conn:
-        conn.query("SELECT * FROM users")
-    # conn.close() guaranteed to have been called
-    ```
+```python
+# Python's 'with' statement is RAII
+with open("data.txt", "r") as f:
+    content = f.read()
+# File automatically closed when 'with' block exits
+# Even if an exception is raised inside the block
 
-=== "C++ (smart pointers)"
-    ```cpp
-    #include <memory>
+# Implement RAII pattern for custom resources
+class DatabaseConnection:
+    def __enter__(self):
+        self.conn = connect_to_db()
+        return self.conn
 
-    // unique_ptr: single owner, freed when out of scope (like Rust Box<T>)
-    void example() {
-        auto ptr = std::make_unique<int>(42);
-        // ... use *ptr ...
-    }   // ptr goes out of scope → delete called automatically
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.conn.close()  # Always runs, even on exception
+        return False
 
-    // shared_ptr: reference counted (like Rust Rc<T>)
-    {
-        auto shared1 = std::make_shared<int>(100);
-        auto shared2 = shared1;  // refcount = 2
-    }   // both go out of scope → refcount = 0 → deleted
+with DatabaseConnection() as conn:
+    conn.query("SELECT * FROM users")
+# conn.close() guaranteed to have been called
+```
 
-    // weak_ptr: non-owning reference (breaks circular refs)
-    std::weak_ptr<int> weak = shared1;
-    if (auto locked = weak.lock()) {  // Check if still alive
-        // use *locked
-    }
-    ```
+
+</TabItem>
+<TabItem value="c-smart-pointers" label="C++ (smart pointers)">
+
+```cpp
+#include <memory>
+
+// unique_ptr: single owner, freed when out of scope (like Rust Box<T>)
+void example() {
+    auto ptr = std::make_unique<int>(42);
+    // ... use *ptr ...
+}   // ptr goes out of scope → delete called automatically
+
+// shared_ptr: reference counted (like Rust Rc<T>)
+{
+    auto shared1 = std::make_shared<int>(100);
+    auto shared2 = shared1;  // refcount = 2
+}   // both go out of scope → refcount = 0 → deleted
+
+// weak_ptr: non-owning reference (breaks circular refs)
+std::weak_ptr<int> weak = shared1;
+if (auto locked = weak.lock()) {  // Check if still alive
+    // use *locked
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
 ### 7. Memory Diagnostic Tools
 
-=== "Linux (Valgrind + ASan)"
-    ```bash
-    # Compile with debug info
-    gcc -g -O0 -o myapp myapp.c
+<Tabs>
+<TabItem value="linux-valgrind-asan" label="Linux (Valgrind + ASan)">
 
-    # Valgrind — comprehensive memory checker
-    valgrind --leak-check=full ./myapp
-    # Reports: memory leaks, use-after-free, uninitialized reads, buffer overflows
+```bash
+# Compile with debug info
+gcc -g -O0 -o myapp myapp.c
 
-    # AddressSanitizer — faster, built into compiler (GCC/Clang)
-    gcc -g -fsanitize=address -fsanitize=undefined -o myapp myapp.c
-    ./myapp  # Crashes immediately on any memory error with detailed report
+# Valgrind — comprehensive memory checker
+valgrind --leak-check=full ./myapp
+# Reports: memory leaks, use-after-free, uninitialized reads, buffer overflows
 
-    # Valgrind output example:
-    # ==12345== Invalid write of size 4
-    # ==12345==    at 0x4005F0: main (myapp.c:13)
-    # ==12345==  Address 0x5204040 is 0 bytes after a block of size 40 alloc'd
-    # ==12345== LEAK SUMMARY: definitely lost: 4,096 bytes in 1 blocks
+# AddressSanitizer — faster, built into compiler (GCC/Clang)
+gcc -g -fsanitize=address -fsanitize=undefined -o myapp myapp.c
+./myapp  # Crashes immediately on any memory error with detailed report
 
-    # Memory usage over time
-    /usr/bin/time -v ./myapp   # Peak memory usage
-    valgrind --tool=massif ./myapp  # Memory profiling (peak, over time)
-    ms_print massif.out.*      # Display massif results
+# Valgrind output example:
+# ==12345== Invalid write of size 4
+# ==12345==    at 0x4005F0: main (myapp.c:13)
+# ==12345==  Address 0x5204040 is 0 bytes after a block of size 40 alloc'd
+# ==12345== LEAK SUMMARY: definitely lost: 4,096 bytes in 1 blocks
 
-    # For Rust programs — use built-in AddressSanitizer
-    RUSTFLAGS="-Z sanitizer=address" cargo +nightly run
-    ```
+# Memory usage over time
+/usr/bin/time -v ./myapp   # Peak memory usage
+valgrind --tool=massif ./myapp  # Memory profiling (peak, over time)
+ms_print massif.out.*      # Display massif results
 
-=== "Windows"
-    ```powershell
-    # Application Verifier — Windows built-in memory checker
-    # Download: Windows SDK → AppVerif.exe
-    # Usage: GUI tool, enable "Heaps" checks, then run your app
+# For Rust programs — use built-in AddressSanitizer
+RUSTFLAGS="-Z sanitizer=address" cargo +nightly run
+```
 
-    # Dr. Memory — cross-platform variant of Valgrind
-    winget install DrMemory.DrMemory
-    drmemory.exe -- myapp.exe
-    # Reports leaks, use-after-free, uninitialized reads
 
-    # Visual Studio's built-in memory diagnostics
-    # Debug → Windows → Memory Usage
-    # Run with diagnostic → Take Snapshot → Compare snapshots
+</TabItem>
+<TabItem value="windows" label="Windows">
 
-    # LeakSanitizer (via MSVC with /fsanitize=address)
-    # In .vcxproj or CMakeLists.txt:
-    # add_compile_options(/fsanitize=address)
-    # Requires Visual Studio 2019 16.9+ and Windows SDK 10.0.22000+
+```powershell
+# Application Verifier — Windows built-in memory checker
+# Download: Windows SDK → AppVerif.exe
+# Usage: GUI tool, enable "Heaps" checks, then run your app
 
-    # For Rust on Windows (nightly only with sanitizers):
-    # $env:RUSTFLAGS="-Z sanitizer=address"
-    # cargo +nightly test
-    ```
+# Dr. Memory — cross-platform variant of Valgrind
+winget install DrMemory.DrMemory
+drmemory.exe -- myapp.exe
+# Reports leaks, use-after-free, uninitialized reads
+
+# Visual Studio's built-in memory diagnostics
+# Debug → Windows → Memory Usage
+# Run with diagnostic → Take Snapshot → Compare snapshots
+
+# LeakSanitizer (via MSVC with /fsanitize=address)
+# In .vcxproj or CMakeLists.txt:
+# add_compile_options(/fsanitize=address)
+# Requires Visual Studio 2019 16.9+ and Windows SDK 10.0.22000+
+
+# For Rust on Windows (nightly only with sanitizers):
+# $env:RUSTFLAGS="-Z sanitizer=address"
+# cargo +nightly test
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📖 **[CS:APP (Computer Systems: A Programmer's Perspective) — Ch. 9 — Virtual Memory (FREE excerpts)](http://csapp.cs.cmu.edu/)** — The gold standard on how memory actually works
-    - 📖 **[The Rust Book — Ch. 4: Ownership (FREE)](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html)** — Best explanation of Rust's ownership model
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 📺 **[Low Level Learning — Manual Memory Management (YouTube, FREE)](https://www.youtube.com/@LowLevelLearning)** — Great visualizations of heap internals
-    - 📺 **[Jon Gjengset — Crust of Rust: Lifetime Annotations (YouTube, FREE)](https://www.youtube.com/c/JonGjengset)** — Rust lifetimes from first principles
+- 📖 **[CS:APP (Computer Systems: A Programmer's Perspective) — Ch. 9 — Virtual Memory (FREE excerpts)](http://csapp.cs.cmu.edu/)** — The gold standard on how memory actually works
+- 📖 **[The Rust Book — Ch. 4: Ownership (FREE)](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html)** — Best explanation of Rust's ownership model
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📺 **[Low Level Learning — Manual Memory Management (YouTube, FREE)](https://www.youtube.com/@LowLevelLearning)** — Great visualizations of heap internals
+- 📺 **[Jon Gjengset — Crust of Rust: Lifetime Annotations (YouTube, FREE)](https://www.youtube.com/c/JonGjengset)** — Rust lifetimes from first principles
+
+
+</TabItem>
+</Tabs>
 
 ---
 

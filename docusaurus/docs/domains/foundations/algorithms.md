@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Algorithms
 
 **Domain:** Foundations · **Time Estimate:** 3–4 weeks · **Language:** Language-agnostic concepts; tabbed examples
@@ -112,65 +115,80 @@ WHILE n > 1 DO
 
 The simplest search: check every element until you find the target. Works on **unsorted** data. O(n) time.
 
-=== "Pseudocode"
-    ```
-    FUNCTION linear_search(collection: List<T>, target: T) -> Int
-        // Returns index of target, or -1 if not found
-        FOR i FROM 0 TO length(collection) - 1 DO
-            IF collection[i] == target THEN
-                RETURN i
-            END IF
-        END FOR
-        RETURN -1
-    END FUNCTION
-    ```
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-=== "Python"
-    ```python
-    def linear_search(collection: list, target) -> int:
-        for i, item in enumerate(collection):
-            if item == target:
-                return i
-        return -1
+```
+FUNCTION linear_search(collection: List<T>, target: T) -> Int
+    // Returns index of target, or -1 if not found
+    FOR i FROM 0 TO length(collection) - 1 DO
+        IF collection[i] == target THEN
+            RETURN i
+        END IF
+    END FOR
+    RETURN -1
+END FUNCTION
+```
 
-    # Python's built-in 'in' operator uses linear search on lists
-    # and O(1) on sets/dicts
-    nums = [3, 7, 1, 9, 4]
-    print(linear_search(nums, 9))  # → 3
-    print(9 in nums)               # → True (same cost, cleaner)
-    ```
 
-=== "TypeScript"
-    ```typescript
-    function linearSearch<T>(collection: T[], target: T): number {
-        for (let i = 0; i < collection.length; i++) {
-            if (collection[i] === target) return i;
-        }
-        return -1;
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+def linear_search(collection: list, target) -> int:
+    for i, item in enumerate(collection):
+        if item == target:
+            return i
+    return -1
+
+# Python's built-in 'in' operator uses linear search on lists
+# and O(1) on sets/dicts
+nums = [3, 7, 1, 9, 4]
+print(linear_search(nums, 9))  # → 3
+print(9 in nums)               # → True (same cost, cleaner)
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+function linearSearch<T>(collection: T[], target: T): number {
+    for (let i = 0; i < collection.length; i++) {
+        if (collection[i] === target) return i;
     }
+    return -1;
+}
 
-    // Built-in equivalents
-    const nums = [3, 7, 1, 9, 4];
-    nums.indexOf(9);            // → 3
-    nums.findIndex(x => x > 8);// → 3 (first element > 8)
-    ```
+// Built-in equivalents
+const nums = [3, 7, 1, 9, 4];
+nums.indexOf(9);            // → 3
+nums.findIndex(x => x > 8);// → 3 (first element > 8)
+```
 
-=== "Rust"
-    ```rust
-    fn linear_search<T: PartialEq>(collection: &[T], target: &T) -> Option<usize> {
-        for (i, item) in collection.iter().enumerate() {
-            if item == target {
-                return Some(i);
-            }
+
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+fn linear_search<T: PartialEq>(collection: &[T], target: &T) -> Option<usize> {
+    for (i, item) in collection.iter().enumerate() {
+        if item == target {
+            return Some(i);
         }
-        None
     }
+    None
+}
 
-    // Built-in equivalents
-    let nums = vec![3, 7, 1, 9, 4];
-    nums.iter().position(|&x| x == 9);  // → Some(3)
-    nums.contains(&9);                   // → true
-    ```
+// Built-in equivalents
+let nums = vec![3, 7, 1, 9, 4];
+nums.iter().position(|&x| x == 9);  // → Some(3)
+nums.contains(&9);                   // → true
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -191,86 +209,101 @@ Find 11 in: [1, 3, 5, 7, 9, 11, 13]
              mid = index 1 → value 11 → FOUND!
 ```
 
-=== "Pseudocode"
-    ```
-    FUNCTION binary_search(sorted_list: List<T>, target: T) -> Int
-        left ← 0
-        right ← length(sorted_list) - 1
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-        WHILE left <= right DO
-            mid ← left + (right - left) / 2   // Avoids integer overflow
+```
+FUNCTION binary_search(sorted_list: List<T>, target: T) -> Int
+    left ← 0
+    right ← length(sorted_list) - 1
 
-            IF sorted_list[mid] == target THEN
-                RETURN mid                     // Found!
-            ELSE IF sorted_list[mid] < target THEN
-                left ← mid + 1                // Target is in right half
-            ELSE
-                right ← mid - 1              // Target is in left half
-            END IF
-        END WHILE
+    WHILE left <= right DO
+        mid ← left + (right - left) / 2   // Avoids integer overflow
 
-        RETURN -1    // Not found
-    END FUNCTION
-    ```
+        IF sorted_list[mid] == target THEN
+            RETURN mid                     // Found!
+        ELSE IF sorted_list[mid] < target THEN
+            left ← mid + 1                // Target is in right half
+        ELSE
+            right ← mid - 1              // Target is in left half
+        END IF
+    END WHILE
 
-=== "Python"
-    ```python
-    def binary_search(sorted_list: list, target) -> int:
-        left, right = 0, len(sorted_list) - 1
+    RETURN -1    // Not found
+END FUNCTION
+```
 
-        while left <= right:
-            mid = left + (right - left) // 2
-            if sorted_list[mid] == target:
-                return mid
-            elif sorted_list[mid] < target:
-                left = mid + 1
-            else:
-                right = mid - 1
-        return -1
 
-    # Python's built-in bisect module does this efficiently
-    import bisect
-    nums = [1, 3, 5, 7, 9, 11, 13]
-    idx = bisect.bisect_left(nums, 7)   # → 3
-    print(nums[idx] == 7)               # → True (found)
-    ```
+</TabItem>
+<TabItem value="python" label="Python">
 
-=== "TypeScript"
-    ```typescript
-    function binarySearch(sortedList: number[], target: number): number {
-        let left = 0, right = sortedList.length - 1;
+```python
+def binary_search(sorted_list: list, target) -> int:
+    left, right = 0, len(sorted_list) - 1
 
-        while (left <= right) {
-            const mid = left + Math.floor((right - left) / 2);
-            if (sortedList[mid] === target) return mid;
-            else if (sortedList[mid] < target) left = mid + 1;
-            else right = mid - 1;
-        }
-        return -1;
+    while left <= right:
+        mid = left + (right - left) // 2
+        if sorted_list[mid] == target:
+            return mid
+        elif sorted_list[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+
+# Python's built-in bisect module does this efficiently
+import bisect
+nums = [1, 3, 5, 7, 9, 11, 13]
+idx = bisect.bisect_left(nums, 7)   # → 3
+print(nums[idx] == 7)               # → True (found)
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+function binarySearch(sortedList: number[], target: number): number {
+    let left = 0, right = sortedList.length - 1;
+
+    while (left <= right) {
+        const mid = left + Math.floor((right - left) / 2);
+        if (sortedList[mid] === target) return mid;
+        else if (sortedList[mid] < target) left = mid + 1;
+        else right = mid - 1;
     }
-    ```
+    return -1;
+}
+```
 
-=== "Rust"
-    ```rust
-    fn binary_search<T: Ord>(sorted_list: &[T], target: &T) -> Option<usize> {
-        let mut left = 0;
-        let mut right = sorted_list.len();
 
-        while left < right {
-            let mid = left + (right - left) / 2;
-            match sorted_list[mid].cmp(target) {
-                std::cmp::Ordering::Equal => return Some(mid),
-                std::cmp::Ordering::Less => left = mid + 1,
-                std::cmp::Ordering::Greater => right = mid,
-            }
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+fn binary_search<T: Ord>(sorted_list: &[T], target: &T) -> Option<usize> {
+    let mut left = 0;
+    let mut right = sorted_list.len();
+
+    while left < right {
+        let mid = left + (right - left) / 2;
+        match sorted_list[mid].cmp(target) {
+            std::cmp::Ordering::Equal => return Some(mid),
+            std::cmp::Ordering::Less => left = mid + 1,
+            std::cmp::Ordering::Greater => right = mid,
         }
-        None
     }
+    None
+}
 
-    // Built-in: Vec and slices have binary_search()
-    let nums = vec![1, 3, 5, 7, 9, 11, 13];
-    nums.binary_search(&7);  // → Ok(3)
-    ```
+// Built-in: Vec and slices have binary_search()
+let nums = vec![1, 3, 5, 7, 9, 11, 13];
+nums.binary_search(&7);  // → Ok(3)
+```
+
+
+</TabItem>
+</Tabs>
 
 !!! warning "Common Mistake"
     Using `mid = (left + right) / 2` can cause **integer overflow** in languages with fixed-size integers (C, Rust, Java) when left and right are large numbers. Always use `left + (right - left) / 2`.
@@ -293,64 +326,76 @@ Pass 2: [3, 5, 1, 8, 2, 9] → [3, 1, 5, 2, 8, 9]
 
 Use bubble sort to **understand** sorting. Never use it in production on large inputs.
 
-=== "Pseudocode"
-    ```
-    FUNCTION bubble_sort(arr: List<Int>) -> Void
-        n ← length(arr)
-        FOR i FROM 0 TO n - 2 DO
-            swapped ← FALSE
-            FOR j FROM 0 TO n - i - 2 DO
-                IF arr[j] > arr[j + 1] THEN
-                    swap(arr[j], arr[j + 1])
-                    swapped ← TRUE
-                END IF
-            END FOR
-            IF NOT swapped THEN BREAK    // Already sorted — early exit
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
+
+```
+FUNCTION bubble_sort(arr: List<Int>) -> Void
+    n ← length(arr)
+    FOR i FROM 0 TO n - 2 DO
+        swapped ← FALSE
+        FOR j FROM 0 TO n - i - 2 DO
+            IF arr[j] > arr[j + 1] THEN
+                swap(arr[j], arr[j + 1])
+                swapped ← TRUE
+            END IF
         END FOR
-    END FUNCTION
-    ```
+        IF NOT swapped THEN BREAK    // Already sorted — early exit
+    END FOR
+END FUNCTION
+```
 
-=== "Python"
-    ```python
-    def bubble_sort(arr: list) -> list:
-        arr = arr.copy()  # Don't mutate original
-        n = len(arr)
-        for i in range(n - 1):
-            swapped = False
-            for j in range(n - i - 1):
-                if arr[j] > arr[j + 1]:
-                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                    swapped = True
-            if not swapped:
-                break  # Already sorted
-        return arr
 
-    # Never use bubble_sort in production — use sorted() or list.sort()
-    # Python's sort uses Timsort: O(n log n)
-    nums = [5, 3, 8, 1, 9, 2]
-    print(sorted(nums))       # → [1, 2, 3, 5, 8, 9]
-    ```
+</TabItem>
+<TabItem value="python" label="Python">
 
-=== "TypeScript"
-    ```typescript
-    function bubbleSort(arr: number[]): number[] {
-        const a = [...arr];
-        for (let i = 0; i < a.length - 1; i++) {
-            let swapped = false;
-            for (let j = 0; j < a.length - i - 1; j++) {
-                if (a[j] > a[j + 1]) {
-                    [a[j], a[j + 1]] = [a[j + 1], a[j]];
-                    swapped = true;
-                }
+```python
+def bubble_sort(arr: list) -> list:
+    arr = arr.copy()  # Don't mutate original
+    n = len(arr)
+    for i in range(n - 1):
+        swapped = False
+        for j in range(n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break  # Already sorted
+    return arr
+
+# Never use bubble_sort in production — use sorted() or list.sort()
+# Python's sort uses Timsort: O(n log n)
+nums = [5, 3, 8, 1, 9, 2]
+print(sorted(nums))       # → [1, 2, 3, 5, 8, 9]
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+function bubbleSort(arr: number[]): number[] {
+    const a = [...arr];
+    for (let i = 0; i < a.length - 1; i++) {
+        let swapped = false;
+        for (let j = 0; j < a.length - i - 1; j++) {
+            if (a[j] > a[j + 1]) {
+                [a[j], a[j + 1]] = [a[j + 1], a[j]];
+                swapped = true;
             }
-            if (!swapped) break;
         }
-        return a;
+        if (!swapped) break;
     }
+    return a;
+}
 
-    // Production: use Array.sort() with a comparator
-    [5, 3, 8, 1].sort((a, b) => a - b);  // → [1, 3, 5, 8]
-    ```
+// Production: use Array.sort() with a comparator
+[5, 3, 8, 1].sort((a, b) => a - b);  // → [1, 3, 5, 8]
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -368,92 +413,104 @@ Divide and conquer: split the array in half, sort each half recursively, merge t
 → merge: [1,2,3,4,5,7,8,9]
 ```
 
-=== "Pseudocode"
-    ```
-    FUNCTION merge_sort(arr: List<T>) -> List<T>
-        IF length(arr) <= 1 THEN
-            RETURN arr    // Base case: already sorted
-        END IF
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-        mid ← length(arr) / 2
-        left  ← merge_sort(arr[0..mid])
-        right ← merge_sort(arr[mid..end])
+```
+FUNCTION merge_sort(arr: List<T>) -> List<T>
+    IF length(arr) <= 1 THEN
+        RETURN arr    // Base case: already sorted
+    END IF
 
-        RETURN merge(left, right)
-    END FUNCTION
+    mid ← length(arr) / 2
+    left  ← merge_sort(arr[0..mid])
+    right ← merge_sort(arr[mid..end])
 
-    FUNCTION merge(left: List<T>, right: List<T>) -> List<T>
-        result ← NEW List<T>
-        i ← 0
-        j ← 0
+    RETURN merge(left, right)
+END FUNCTION
 
-        WHILE i < length(left) AND j < length(right) DO
-            IF left[i] <= right[j] THEN
-                append(result, left[i])
-                i ← i + 1
-            ELSE
-                append(result, right[j])
-                j ← j + 1
-            END IF
-        END WHILE
+FUNCTION merge(left: List<T>, right: List<T>) -> List<T>
+    result ← NEW List<T>
+    i ← 0
+    j ← 0
 
-        // Append any remaining elements
-        WHILE i < length(left) DO
+    WHILE i < length(left) AND j < length(right) DO
+        IF left[i] <= right[j] THEN
             append(result, left[i])
             i ← i + 1
-        END WHILE
-        WHILE j < length(right) DO
+        ELSE
             append(result, right[j])
             j ← j + 1
-        END WHILE
+        END IF
+    END WHILE
 
-        RETURN result
-    END FUNCTION
-    ```
+    // Append any remaining elements
+    WHILE i < length(left) DO
+        append(result, left[i])
+        i ← i + 1
+    END WHILE
+    WHILE j < length(right) DO
+        append(result, right[j])
+        j ← j + 1
+    END WHILE
 
-=== "Python"
-    ```python
-    def merge_sort(arr: list) -> list:
-        if len(arr) <= 1:
-            return arr
+    RETURN result
+END FUNCTION
+```
 
-        mid = len(arr) // 2
-        left = merge_sort(arr[:mid])
-        right = merge_sort(arr[mid:])
-        return merge(left, right)
 
-    def merge(left: list, right: list) -> list:
-        result = []
-        i = j = 0
-        while i < len(left) and j < len(right):
-            if left[i] <= right[j]:
-                result.append(left[i]); i += 1
-            else:
-                result.append(right[j]); j += 1
-        result.extend(left[i:])
-        result.extend(right[j:])
-        return result
-    ```
+</TabItem>
+<TabItem value="python" label="Python">
 
-=== "TypeScript"
-    ```typescript
-    function mergeSort(arr: number[]): number[] {
-        if (arr.length <= 1) return arr;
-        const mid = Math.floor(arr.length / 2);
-        const left = mergeSort(arr.slice(0, mid));
-        const right = mergeSort(arr.slice(mid));
-        return merge(left, right);
+```python
+def merge_sort(arr: list) -> list:
+    if len(arr) <= 1:
+        return arr
+
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+    return merge(left, right)
+
+def merge(left: list, right: list) -> list:
+    result = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i]); i += 1
+        else:
+            result.append(right[j]); j += 1
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+function mergeSort(arr: number[]): number[] {
+    if (arr.length <= 1) return arr;
+    const mid = Math.floor(arr.length / 2);
+    const left = mergeSort(arr.slice(0, mid));
+    const right = mergeSort(arr.slice(mid));
+    return merge(left, right);
+}
+
+function merge(left: number[], right: number[]): number[] {
+    const result: number[] = [];
+    let i = 0, j = 0;
+    while (i < left.length && j < right.length) {
+        result.push(left[i] <= right[j] ? left[i++] : right[j++]);
     }
+    return [...result, ...left.slice(i), ...right.slice(j)];
+}
+```
 
-    function merge(left: number[], right: number[]): number[] {
-        const result: number[] = [];
-        let i = 0, j = 0;
-        while (i < left.length && j < right.length) {
-            result.push(left[i] <= right[j] ? left[i++] : right[j++]);
-        }
-        return [...result, ...left.slice(i), ...right.slice(j)];
-    }
-    ```
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -461,54 +518,63 @@ Divide and conquer: split the array in half, sort each half recursively, merge t
 
 Pick a **pivot**, partition: everything smaller goes left, everything larger goes right. Recurse on each partition. In practice faster than merge sort due to cache efficiency — but has a bad worst case if the pivot is always the smallest/largest.
 
-=== "Pseudocode"
-    ```
-    FUNCTION quicksort(arr: List<T>, low: Int, high: Int) -> Void
-        IF low < high THEN
-            pivot_idx ← partition(arr, low, high)
-            quicksort(arr, low, pivot_idx - 1)
-            quicksort(arr, pivot_idx + 1, high)
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
+
+```
+FUNCTION quicksort(arr: List<T>, low: Int, high: Int) -> Void
+    IF low < high THEN
+        pivot_idx ← partition(arr, low, high)
+        quicksort(arr, low, pivot_idx - 1)
+        quicksort(arr, pivot_idx + 1, high)
+    END IF
+END FUNCTION
+
+FUNCTION partition(arr: List<T>, low: Int, high: Int) -> Int
+    pivot ← arr[high]    // Choose last element as pivot
+    i ← low - 1          // Index of smaller element
+
+    FOR j FROM low TO high - 1 DO
+        IF arr[j] <= pivot THEN
+            i ← i + 1
+            swap(arr[i], arr[j])
         END IF
-    END FUNCTION
+    END FOR
 
-    FUNCTION partition(arr: List<T>, low: Int, high: Int) -> Int
-        pivot ← arr[high]    // Choose last element as pivot
-        i ← low - 1          // Index of smaller element
+    swap(arr[i + 1], arr[high])    // Place pivot in correct position
+    RETURN i + 1
+END FUNCTION
+```
 
-        FOR j FROM low TO high - 1 DO
-            IF arr[j] <= pivot THEN
-                i ← i + 1
-                swap(arr[i], arr[j])
-            END IF
-        END FOR
 
-        swap(arr[i + 1], arr[high])    // Place pivot in correct position
-        RETURN i + 1
-    END FUNCTION
-    ```
+</TabItem>
+<TabItem value="python" label="Python">
 
-=== "Python"
-    ```python
-    def quicksort(arr: list, low: int = 0, high: int = None) -> list:
-        if high is None:
-            arr = arr.copy()
-            high = len(arr) - 1
-        if low < high:
-            pivot_idx = partition(arr, low, high)
-            quicksort(arr, low, pivot_idx - 1)
-            quicksort(arr, pivot_idx + 1, high)
-        return arr
+```python
+def quicksort(arr: list, low: int = 0, high: int = None) -> list:
+    if high is None:
+        arr = arr.copy()
+        high = len(arr) - 1
+    if low < high:
+        pivot_idx = partition(arr, low, high)
+        quicksort(arr, low, pivot_idx - 1)
+        quicksort(arr, pivot_idx + 1, high)
+    return arr
 
-    def partition(arr: list, low: int, high: int) -> int:
-        pivot = arr[high]
-        i = low - 1
-        for j in range(low, high):
-            if arr[j] <= pivot:
-                i += 1
-                arr[i], arr[j] = arr[j], arr[i]
-        arr[i + 1], arr[high] = arr[high], arr[i + 1]
-        return i + 1
-    ```
+def partition(arr: list, low: int, high: int) -> int:
+    pivot = arr[high]
+    i = low - 1
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -535,64 +601,76 @@ factorial(4):
   → 4 * 6 = 24
 ```
 
-=== "Pseudocode"
-    ```
-    // Classic recursion: factorial
-    FUNCTION factorial(n: Int) -> Int
-        IF n == 0 THEN RETURN 1          // Base case
-        RETURN n * factorial(n - 1)      // Recursive case
-    END FUNCTION
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-    // Classic recursion: fibonacci
-    FUNCTION fibonacci(n: Int) -> Int
-        IF n <= 1 THEN RETURN n          // Base cases: fib(0)=0, fib(1)=1
-        RETURN fibonacci(n - 1) + fibonacci(n - 2)
-    END FUNCTION
-    // WARNING: naive fibonacci is O(2^n) — exponential!
-    // See Dynamic Programming section for the O(n) solution.
+```
+// Classic recursion: factorial
+FUNCTION factorial(n: Int) -> Int
+    IF n == 0 THEN RETURN 1          // Base case
+    RETURN n * factorial(n - 1)      // Recursive case
+END FUNCTION
 
-    // Recursion: sum of a list
-    FUNCTION sum_list(arr: List<Int>, index: Int = 0) -> Int
-        IF index == length(arr) THEN RETURN 0    // Base case: empty
-        RETURN arr[index] + sum_list(arr, index + 1)
-    END FUNCTION
-    ```
+// Classic recursion: fibonacci
+FUNCTION fibonacci(n: Int) -> Int
+    IF n <= 1 THEN RETURN n          // Base cases: fib(0)=0, fib(1)=1
+    RETURN fibonacci(n - 1) + fibonacci(n - 2)
+END FUNCTION
+// WARNING: naive fibonacci is O(2^n) — exponential!
+// See Dynamic Programming section for the O(n) solution.
 
-=== "Python"
-    ```python
-    import sys
-    sys.setrecursionlimit(10000)  # Python's default limit is 1000
+// Recursion: sum of a list
+FUNCTION sum_list(arr: List<Int>, index: Int = 0) -> Int
+    IF index == length(arr) THEN RETURN 0    // Base case: empty
+    RETURN arr[index] + sum_list(arr, index + 1)
+END FUNCTION
+```
 
-    def factorial(n: int) -> int:
-        if n == 0:
-            return 1
-        return n * factorial(n - 1)
 
-    def fibonacci_naive(n: int) -> int:
-        if n <= 1:
-            return n
-        return fibonacci_naive(n - 1) + fibonacci_naive(n - 2)
-    # fibonacci_naive(40) is noticeably slow — O(2^n)
+</TabItem>
+<TabItem value="python" label="Python">
 
-    # Tail-call equivalent using accumulator pattern
-    def factorial_iter(n: int, acc: int = 1) -> int:
-        if n == 0:
-            return acc
-        return factorial_iter(n - 1, acc * n)
-    ```
+```python
+import sys
+sys.setrecursionlimit(10000)  # Python's default limit is 1000
 
-=== "TypeScript"
-    ```typescript
-    function factorial(n: number): number {
-        if (n === 0) return 1;
-        return n * factorial(n - 1);
-    }
+def factorial(n: int) -> int:
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
 
-    function fibonacci(n: number): number {
-        if (n <= 1) return n;
-        return fibonacci(n - 1) + fibonacci(n - 2);
-    }
-    ```
+def fibonacci_naive(n: int) -> int:
+    if n <= 1:
+        return n
+    return fibonacci_naive(n - 1) + fibonacci_naive(n - 2)
+# fibonacci_naive(40) is noticeably slow — O(2^n)
+
+# Tail-call equivalent using accumulator pattern
+def factorial_iter(n: int, acc: int = 1) -> int:
+    if n == 0:
+        return acc
+    return factorial_iter(n - 1, acc * n)
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+function factorial(n: number): number {
+    if (n === 0) return 1;
+    return n * factorial(n - 1);
+}
+
+function fibonacci(n: number): number {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 !!! warning "Stack Overflow"
     Deep recursion uses the **call stack** — each call adds a frame. If you recurse too deeply without hitting a base case, you get a Stack Overflow. Most languages have a recursion depth limit (Python: ~1000, JS: ~10,000). Iterative solutions avoid this.
@@ -622,94 +700,106 @@ DP fixes this: compute each value once and store it.
 
 **Memoization (top-down):** Recurse normally, cache results.
 
-=== "Pseudocode"
-    ```
-    // Memoization: top-down DP
-    FUNCTION fib_memo(n: Int, cache: Map<Int, Int> = {}) -> Int
-        IF n <= 1 THEN RETURN n
-        IF n IN cache THEN RETURN cache[n]    // Already computed!
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-        result ← fib_memo(n - 1, cache) + fib_memo(n - 2, cache)
-        cache[n] ← result
-        RETURN result
-    END FUNCTION
+```
+// Memoization: top-down DP
+FUNCTION fib_memo(n: Int, cache: Map<Int, Int> = {}) -> Int
+    IF n <= 1 THEN RETURN n
+    IF n IN cache THEN RETURN cache[n]    // Already computed!
 
-    // Tabulation: bottom-up DP
-    FUNCTION fib_tab(n: Int) -> Int
-        IF n <= 1 THEN RETURN n
+    result ← fib_memo(n - 1, cache) + fib_memo(n - 2, cache)
+    cache[n] ← result
+    RETURN result
+END FUNCTION
 
-        table ← array of size n+1, filled with 0
-        table[1] ← 1
+// Tabulation: bottom-up DP
+FUNCTION fib_tab(n: Int) -> Int
+    IF n <= 1 THEN RETURN n
 
-        FOR i FROM 2 TO n DO
-            table[i] ← table[i-1] + table[i-2]
-        END FOR
+    table ← array of size n+1, filled with 0
+    table[1] ← 1
 
-        RETURN table[n]
-    END FUNCTION
+    FOR i FROM 2 TO n DO
+        table[i] ← table[i-1] + table[i-2]
+    END FOR
 
-    // Space-optimized: only keep last 2 values
-    FUNCTION fib_optimal(n: Int) -> Int
-        IF n <= 1 THEN RETURN n
-        prev, curr ← 0, 1
-        FOR i FROM 2 TO n DO
-            prev, curr ← curr, prev + curr
-        END FOR
-        RETURN curr
-    END FUNCTION
-    ```
+    RETURN table[n]
+END FUNCTION
 
-=== "Python"
-    ```python
-    from functools import lru_cache
+// Space-optimized: only keep last 2 values
+FUNCTION fib_optimal(n: Int) -> Int
+    IF n <= 1 THEN RETURN n
+    prev, curr ← 0, 1
+    FOR i FROM 2 TO n DO
+        prev, curr ← curr, prev + curr
+    END FOR
+    RETURN curr
+END FUNCTION
+```
 
-    # Memoization with Python's built-in cache decorator
-    @lru_cache(maxsize=None)
-    def fib_memo(n: int) -> int:
-        if n <= 1:
-            return n
-        return fib_memo(n - 1) + fib_memo(n - 2)
-    # fib_memo(1000) works instantly now — O(n)
 
-    # Tabulation: bottom-up
-    def fib_tab(n: int) -> int:
-        if n <= 1:
-            return n
-        table = [0] * (n + 1)
-        table[1] = 1
-        for i in range(2, n + 1):
-            table[i] = table[i-1] + table[i-2]
-        return table[n]
+</TabItem>
+<TabItem value="python" label="Python">
 
-    # Space-optimized — O(1) space
-    def fib(n: int) -> int:
-        if n <= 1:
-            return n
-        prev, curr = 0, 1
-        for _ in range(2, n + 1):
-            prev, curr = curr, prev + curr
-        return curr
-    ```
+```python
+from functools import lru_cache
 
-=== "TypeScript"
-    ```typescript
-    // Memoization
-    function fibMemo(n: number, cache: Map<number, number> = new Map()): number {
-        if (n <= 1) return n;
-        if (cache.has(n)) return cache.get(n)!;
-        const result = fibMemo(n - 1, cache) + fibMemo(n - 2, cache);
-        cache.set(n, result);
-        return result;
-    }
+# Memoization with Python's built-in cache decorator
+@lru_cache(maxsize=None)
+def fib_memo(n: int) -> int:
+    if n <= 1:
+        return n
+    return fib_memo(n - 1) + fib_memo(n - 2)
+# fib_memo(1000) works instantly now — O(n)
 
-    // Space-optimized tabulation
-    function fib(n: number): number {
-        if (n <= 1) return n;
-        let [prev, curr] = [0, 1];
-        for (let i = 2; i <= n; i++) [prev, curr] = [curr, prev + curr];
-        return curr;
-    }
-    ```
+# Tabulation: bottom-up
+def fib_tab(n: int) -> int:
+    if n <= 1:
+        return n
+    table = [0] * (n + 1)
+    table[1] = 1
+    for i in range(2, n + 1):
+        table[i] = table[i-1] + table[i-2]
+    return table[n]
+
+# Space-optimized — O(1) space
+def fib(n: int) -> int:
+    if n <= 1:
+        return n
+    prev, curr = 0, 1
+    for _ in range(2, n + 1):
+        prev, curr = curr, prev + curr
+    return curr
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+// Memoization
+function fibMemo(n: number, cache: Map<number, number> = new Map()): number {
+    if (n <= 1) return n;
+    if (cache.has(n)) return cache.get(n)!;
+    const result = fibMemo(n - 1, cache) + fibMemo(n - 2, cache);
+    cache.set(n, result);
+    return result;
+}
+
+// Space-optimized tabulation
+function fib(n: number): number {
+    if (n <= 1) return n;
+    let [prev, curr] = [0, 1];
+    for (let i = 2; i <= n; i++) [prev, curr] = [curr, prev + curr];
+    return curr;
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 !!! tip "Research Question 🔍"
     What is the **0/1 Knapsack problem**? It's the canonical DP problem. Can you solve it? (Search "knapsack problem dynamic programming" and try to implement it before looking at the solution.)
@@ -718,17 +808,29 @@ DP fixes this: compute each value once and store it.
 
 ## 📚 Resources
 
-=== "Primary (Do These)"
-    - 📺 **[CS50x Week 3 — Algorithms (FREE)](https://cs50.harvard.edu/x/)** — Search, sort, and Big-O with visual demos
-    - 📺 **[Abdul Bari — Algorithms Playlist (YouTube, FREE)](https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O)** — Deep dives with clear Big-O derivations
+<Tabs>
+<TabItem value="primary" label="Primary (Do These)">
 
-=== "Supplemental"
-    - 📺 **[NeetCode — Dynamic Programming playlist (YouTube, FREE)](https://www.youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf)** — Best intro to DP patterns
-    - 📖 **[Visualgo — Sorting (FREE)](https://visualgo.net/en/sorting)** — Watch sorts animate in real time
+- 📺 **[CS50x Week 3 — Algorithms (FREE)](https://cs50.harvard.edu/x/)** — Search, sort, and Big-O with visual demos
+- 📺 **[Abdul Bari — Algorithms Playlist (YouTube, FREE)](https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O)** — Deep dives with clear Big-O derivations
 
-=== "Practice"
-    - 🎮 **[LeetCode — Easy + Medium (FREE)](https://leetcode.com/problemset/)** — Filter: Arrays, Sorting, Dynamic Programming
-    - 🎮 **[Advent of Code (FREE)](https://adventofcode.com/)** — Annual puzzle set, great for algorithm practice in any language
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📺 **[NeetCode — Dynamic Programming playlist (YouTube, FREE)](https://www.youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf)** — Best intro to DP patterns
+- 📖 **[Visualgo — Sorting (FREE)](https://visualgo.net/en/sorting)** — Watch sorts animate in real time
+
+
+</TabItem>
+<TabItem value="practice" label="Practice">
+
+- 🎮 **[LeetCode — Easy + Medium (FREE)](https://leetcode.com/problemset/)** — Filter: Arrays, Sorting, Dynamic Programming
+- 🎮 **[Advent of Code (FREE)](https://adventofcode.com/)** — Annual puzzle set, great for algorithm practice in any language
+
+
+</TabItem>
+</Tabs>
 
 ---
 

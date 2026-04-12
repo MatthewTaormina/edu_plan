@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Protocols & Standards
 
 **Domain:** Foundations · **Time Estimate:** 2 weeks · **Language:** Conceptual — implementation examples in multiple languages
@@ -314,48 +317,57 @@ Client: "Reply to message"
 - Regular request-response patterns (just use REST)
 - Infrequent updates (use Server-Sent Events instead — simpler, one-directional)
 
-=== "Python (server)"
-    ```python
-    # Using websockets library: pip install websockets
-    import asyncio
-    import websockets
+<Tabs>
+<TabItem value="python-server" label="Python (server)">
 
-    async def handler(websocket):
-        async for message in websocket:
-            print(f"Received: {message}")
-            await websocket.send(f"Echo: {message}")
+```python
+# Using websockets library: pip install websockets
+import asyncio
+import websockets
 
-    async def main():
-        async with websockets.serve(handler, "localhost", 8765):
-            await asyncio.Future()  # Run forever
+async def handler(websocket):
+    async for message in websocket:
+        print(f"Received: {message}")
+        await websocket.send(f"Echo: {message}")
 
-    asyncio.run(main())
-    ```
+async def main():
+    async with websockets.serve(handler, "localhost", 8765):
+        await asyncio.Future()  # Run forever
 
-=== "TypeScript (client)"
-    ```typescript
-    // Browser WebSocket API (built-in, no library needed)
-    const ws = new WebSocket('ws://localhost:8765');
+asyncio.run(main())
+```
 
-    ws.onopen = () => {
-        console.log('Connected');
-        ws.send('Hello, server!');
-    };
 
-    ws.onmessage = (event) => {
-        console.log('Received:', event.data);
-    };
+</TabItem>
+<TabItem value="ts-client" label="TypeScript (client)">
 
-    ws.onclose = () => console.log('Disconnected');
-    ws.onerror = (error) => console.error('Error:', error);
+```typescript
+// Browser WebSocket API (built-in, no library needed)
+const ws = new WebSocket('ws://localhost:8765');
 
-    // Server-side with Node.js using 'ws' package
-    import { WebSocketServer } from 'ws';
-    const wss = new WebSocketServer({ port: 8765 });
-    wss.on('connection', (ws) => {
-        ws.on('message', (data) => ws.send(`Echo: ${data}`));
-    });
-    ```
+ws.onopen = () => {
+    console.log('Connected');
+    ws.send('Hello, server!');
+};
+
+ws.onmessage = (event) => {
+    console.log('Received:', event.data);
+};
+
+ws.onclose = () => console.log('Disconnected');
+ws.onerror = (error) => console.error('Error:', error);
+
+// Server-side with Node.js using 'ws' package
+import { WebSocketServer } from 'ws';
+const wss = new WebSocketServer({ port: 8765 });
+wss.on('connection', (ws) => {
+    ws.on('message', (data) => ws.send(`Echo: ${data}`));
+});
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -379,19 +391,31 @@ Client: "Reply to message"
 
 ## 📚 Resources
 
-=== "Primary (Do These)"
-    - 📖 **[MDN — HTTP Overview (FREE)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)** — Most thorough HTTP reference, free, always up-to-date
-    - 📖 **[How DNS Works (FREE comic)](https://howdns.works/)** — Visual, fun, accurate — read this first for DNS
+<Tabs>
+<TabItem value="primary" label="Primary (Do These)">
 
-=== "Supplemental"
-    - 📖 **[High Performance Browser Networking — Ilya Grigorik (FREE online)](https://hpbn.co/)** — Deep, excellent coverage of TCP, TLS, HTTP/2
-    - 📺 **[Fireship — HTTP Crash Course (YouTube, FREE)](https://www.youtube.com/watch?v=iYM2zFP3Zn0)** — 12-minute visual intro
+- 📖 **[MDN — HTTP Overview (FREE)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)** — Most thorough HTTP reference, free, always up-to-date
+- 📖 **[How DNS Works (FREE comic)](https://howdns.works/)** — Visual, fun, accurate — read this first for DNS
 
-=== "Tools to Use"
-    - 🔧 **[Postman (FREE tier)](https://www.postman.com/)** — GUI for making HTTP requests
-    - 🔧 **curl** — CLI HTTP client, available everywhere. Learn `curl -v` for verbose output showing full request/response
-    - 🔧 **Wireshark (FREE)** — Capture and inspect real network packets
-    - 🔧 **Browser DevTools → Network tab** — See every HTTP request your browser makes in real time
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📖 **[High Performance Browser Networking — Ilya Grigorik (FREE online)](https://hpbn.co/)** — Deep, excellent coverage of TCP, TLS, HTTP/2
+- 📺 **[Fireship — HTTP Crash Course (YouTube, FREE)](https://www.youtube.com/watch?v=iYM2zFP3Zn0)** — 12-minute visual intro
+
+
+</TabItem>
+<TabItem value="tools-to-use" label="Tools to Use">
+
+- 🔧 **[Postman (FREE tier)](https://www.postman.com/)** — GUI for making HTTP requests
+- 🔧 **curl** — CLI HTTP client, available everywhere. Learn `curl -v` for verbose output showing full request/response
+- 🔧 **Wireshark (FREE)** — Capture and inspect real network packets
+- 🔧 **Browser DevTools → Network tab** — See every HTTP request your browser makes in real time
+
+
+</TabItem>
+</Tabs>
 
 ---
 

@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Next.js
 
 > **Domain:** Web Development · **Time:** 10–12 hours total · **Platform:** Windows + Linux
@@ -37,11 +40,20 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [Next.js Docs — App Router](https://nextjs.org/docs/app)
-    - [Next.js Learn — Full Course](https://nextjs.org/learn)
-    - [Wiki: SSR vs CSR](../../domains/web_dev/ssr_csr.md)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [Lee Robinson — Next.js App Router Tutorial](https://www.youtube.com/watch?v=wm5gMKuwSYk)
-    - [Vercel — Next.js Examples](https://github.com/vercel/next.js/tree/canary/examples)
+- [Next.js Docs — App Router](https://nextjs.org/docs/app)
+- [Next.js Learn — Full Course](https://nextjs.org/learn)
+- [Wiki: SSR vs CSR](../../domains/web_dev/ssr_csr.md)
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Lee Robinson — Next.js App Router Tutorial](https://www.youtube.com/watch?v=wm5gMKuwSYk)
+- [Vercel — Next.js Examples](https://github.com/vercel/next.js/tree/canary/examples)
+
+
+</TabItem>
+</Tabs>

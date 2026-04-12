@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ﻿---
 title: Pseudocode Standard
 ---
@@ -292,39 +295,57 @@ In MkDocs Material, use `===` tabs for multi-language examples.
 Always include **Pseudocode** as the first tab, then the most relevant languages.
 
 ````markdown
-=== "Pseudocode"
-    ```
-    FUNCTION example(x: Int) -> Int
-        RETURN x * 2
-    END FUNCTION
-    ```
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-=== "Python"
-    ```python
-    def example(x: int) -> int:
-        return x * 2
-    ```
+```
+FUNCTION example(x: Int) -> Int
+    RETURN x * 2
+END FUNCTION
+```
 
-=== "TypeScript"
-    ```typescript
-    function example(x: number): number {
-        return x * 2;
-    }
-    ```
 
-=== "Rust"
-    ```rust
-    fn example(x: i32) -> i32 {
-        x * 2
-    }
-    ```
+</TabItem>
+<TabItem value="python" label="Python">
 
-=== "C"
-    ```c
-    int example(int x) {
-        return x * 2;
-    }
-    ```
+```python
+def example(x: int) -> int:
+    return x * 2
+```
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+function example(x: number): number {
+    return x * 2;
+}
+```
+
+
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+fn example(x: i32) -> i32 {
+    x * 2
+}
+```
+
+
+</TabItem>
+<TabItem value="c" label="C">
+
+```c
+int example(int x) {
+    return x * 2;
+}
+```
+
+</TabItem>
+</Tabs>
+
 ````
 
 **Language tab order convention:** `Pseudocode ΓåÆ Python ΓåÆ TypeScript ΓåÆ Rust ΓåÆ C/C++ ΓåÆ Java/Kotlin ΓåÆ C#`  

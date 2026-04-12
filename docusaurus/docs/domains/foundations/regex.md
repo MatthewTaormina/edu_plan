@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Regular Expressions
 
 **Domain:** Foundations · **Time Estimate:** 1 week · **Language:** Syntax is universal; runtime is language-specific
@@ -235,156 +238,183 @@ Flags change how the pattern is applied:
 
 ### 10. Using Regex in Practice
 
-=== "Python"
-    ```python
-    import re
+<Tabs>
+<TabItem value="python" label="Python">
 
-    text = "Contact us at support@example.com or sales@company.org"
-    pattern = r'[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}'
+```python
+import re
 
-    # Test: does it match anywhere?
-    if re.search(pattern, text):
-        print("Found an email")
+text = "Contact us at support@example.com or sales@company.org"
+pattern = r'[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}'
 
-    # Find first match
-    match = re.search(pattern, text)
-    if match:
-        print(match.group())     # → "support@example.com"
-        print(match.start())     # → start index in string
-        print(match.end())       # → end index in string
+# Test: does it match anywhere?
+if re.search(pattern, text):
+    print("Found an email")
 
-    # Find ALL matches
-    emails = re.findall(pattern, text)
-    print(emails)  # → ["support@example.com", "sales@company.org"]
+# Find first match
+match = re.search(pattern, text)
+if match:
+    print(match.group())     # → "support@example.com"
+    print(match.start())     # → start index in string
+    print(match.end())       # → end index in string
 
-    # Find all matches WITH position info
-    for m in re.finditer(pattern, text):
-        print(f"Found '{m.group()}' at position {m.start()}")
+# Find ALL matches
+emails = re.findall(pattern, text)
+print(emails)  # → ["support@example.com", "sales@company.org"]
 
-    # Replace
-    redacted = re.sub(pattern, "[REDACTED]", text)
-    print(redacted)  # → "Contact us at [REDACTED] or [REDACTED]"
+# Find all matches WITH position info
+for m in re.finditer(pattern, text):
+    print(f"Found '{m.group()}' at position {m.start()}")
 
-    # Split on pattern
-    re.split(r'\s+', "hello   world\t!")  # ["hello", "world", "!"]
+# Replace
+redacted = re.sub(pattern, "[REDACTED]", text)
+print(redacted)  # → "Contact us at [REDACTED] or [REDACTED]"
 
-    # Compile pattern for reuse (faster if used often)
-    email_re = re.compile(r'[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}', re.IGNORECASE)
-    emails = email_re.findall(text)
+# Split on pattern
+re.split(r'\s+', "hello   world\t!")  # ["hello", "world", "!"]
 
-    # Named capture groups
-    date_re = re.compile(r'(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})')
-    m = date_re.match("2024-04-11")
-    if m:
-        print(m.groupdict())  # → {'year': '2024', 'month': '04', 'day': '11'}
-    ```
+# Compile pattern for reuse (faster if used often)
+email_re = re.compile(r'[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}', re.IGNORECASE)
+emails = email_re.findall(text)
 
-=== "TypeScript"
-    ```typescript
-    const text = "Contact us at support@example.com or sales@company.org";
-    const pattern = /[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/g;
+# Named capture groups
+date_re = re.compile(r'(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})')
+m = date_re.match("2024-04-11")
+if m:
+    print(m.groupdict())  # → {'year': '2024', 'month': '04', 'day': '11'}
+```
 
-    // Test: does it match?
-    /[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/.test(text);     // → true
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+const text = "Contact us at support@example.com or sales@company.org";
+const pattern = /[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/g;
+
+// Test: does it match?
+/[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/.test(text);     // → true
+
+// Find first match
+const match = text.match(/[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/);
+if (match) console.log(match[0]);                  // "support@example.com"
+
+// Find ALL matches (requires /g flag)
+const emails = text.match(pattern);
+console.log(emails);  // ["support@example.com", "sales@company.org"]
+
+// Replace
+text.replace(pattern, "[REDACTED]");
+
+// matchAll — gives position info (returns iterator)
+for (const m of text.matchAll(pattern)) {
+    console.log(`Found '${m[0]}' at index ${m.index}`);
+}
+
+// Named capture groups
+const datePattern = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+const dm = "2024-04-11".match(datePattern);
+if (dm?.groups) {
+    const { year, month, day } = dm.groups;
+    console.log(year, month, day);  // "2024" "04" "11"
+}
+```
+
+
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+```rust
+// Rust requires the 'regex' crate: add to Cargo.toml:
+// [dependencies]
+// regex = "1"
+
+use regex::Regex;
+
+fn main() {
+    let text = "Contact us at support@example.com or sales@company.org";
+    let pattern = Regex::new(r"[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}").unwrap();
+
+    // Test
+    println!("{}", pattern.is_match(text));  // true
 
     // Find first match
-    const match = text.match(/[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/);
-    if (match) console.log(match[0]);                  // "support@example.com"
+    if let Some(m) = pattern.find(text) {
+        println!("{}", m.as_str());  // "support@example.com"
+    }
 
-    // Find ALL matches (requires /g flag)
-    const emails = text.match(pattern);
-    console.log(emails);  // ["support@example.com", "sales@company.org"]
+    // Find ALL matches
+    for m in pattern.find_iter(text) {
+        println!("Found: {} at {}", m.as_str(), m.start());
+    }
 
     // Replace
-    text.replace(pattern, "[REDACTED]");
+    let redacted = pattern.replace_all(text, "[REDACTED]");
+    println!("{}", redacted);
 
-    // matchAll — gives position info (returns iterator)
-    for (const m of text.matchAll(pattern)) {
-        console.log(`Found '${m[0]}' at index ${m.index}`);
+    // Capture groups
+    let date_re = Regex::new(
+        r"(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})"
+    ).unwrap();
+    if let Some(caps) = date_re.captures("2024-04-11") {
+        println!("{}-{}-{}", &caps["year"], &caps["month"], &caps["day"]);
     }
+}
+```
 
-    // Named capture groups
-    const datePattern = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
-    const dm = "2024-04-11".match(datePattern);
-    if (dm?.groups) {
-        const { year, month, day } = dm.groups;
-        console.log(year, month, day);  // "2024" "04" "11"
-    }
-    ```
 
-=== "Rust"
-    ```rust
-    // Rust requires the 'regex' crate: add to Cargo.toml:
-    // [dependencies]
-    // regex = "1"
+</TabItem>
+<TabItem value="cli-grep-sed" label="CLI (grep / sed)">
 
-    use regex::Regex;
+```bash
+# grep: search files for a pattern
+grep -E '[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}' file.txt   # Find emails
+grep -rn 'TODO' ./src                                 # Recursive search
+grep -v 'DEBUG' app.log                               # Exclude lines with DEBUG
 
-    fn main() {
-        let text = "Contact us at support@example.com or sales@company.org";
-        let pattern = Regex::new(r"[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}").unwrap();
+# grep flags: -E (extended regex), -i (ignore case), -n (line numbers),
+#             -r (recursive), -l (filenames only), -c (count matches)
 
-        // Test
-        println!("{}", pattern.is_match(text));  // true
+# sed: find and replace in-place or output
+sed 's/foo/bar/g' file.txt              # Replace all 'foo' with 'bar'
+sed -i 's/foo/bar/g' file.txt          # In-place edit
+sed 's/\([0-9]\{4\}\)-\([0-9]\{2\}\)/\2-\1/g' dates.txt  # Rearrange dates
 
-        // Find first match
-        if let Some(m) = pattern.find(text) {
-            println!("{}", m.as_str());  // "support@example.com"
-        }
+# Extract with grep -oP (only matching, Perl-compatible regex)
+grep -oP '[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}' file.txt  # Print only emails
+```
 
-        // Find ALL matches
-        for m in pattern.find_iter(text) {
-            println!("Found: {} at {}", m.as_str(), m.start());
-        }
 
-        // Replace
-        let redacted = pattern.replace_all(text, "[REDACTED]");
-        println!("{}", redacted);
-
-        // Capture groups
-        let date_re = Regex::new(
-            r"(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})"
-        ).unwrap();
-        if let Some(caps) = date_re.captures("2024-04-11") {
-            println!("{}-{}-{}", &caps["year"], &caps["month"], &caps["day"]);
-        }
-    }
-    ```
-
-=== "CLI (grep / sed)"
-    ```bash
-    # grep: search files for a pattern
-    grep -E '[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}' file.txt   # Find emails
-    grep -rn 'TODO' ./src                                 # Recursive search
-    grep -v 'DEBUG' app.log                               # Exclude lines with DEBUG
-
-    # grep flags: -E (extended regex), -i (ignore case), -n (line numbers),
-    #             -r (recursive), -l (filenames only), -c (count matches)
-
-    # sed: find and replace in-place or output
-    sed 's/foo/bar/g' file.txt              # Replace all 'foo' with 'bar'
-    sed -i 's/foo/bar/g' file.txt          # In-place edit
-    sed 's/\([0-9]\{4\}\)-\([0-9]\{2\}\)/\2-\1/g' dates.txt  # Rearrange dates
-
-    # Extract with grep -oP (only matching, Perl-compatible regex)
-    grep -oP '[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}' file.txt  # Print only emails
-    ```
+</TabItem>
+</Tabs>
 
 ---
 
 ## 📚 Resources
 
-=== "Primary (Do These)"
-    - 🌐 **[Regex101 (FREE)](https://regex101.com/)** — Live tester with explanation of each part. Choose your language flavor. **Bookmark this now.**
-    - 📖 **[Regular-Expressions.info (FREE)](https://www.regular-expressions.info/)** — The definitive reference site. Not for reading front-to-back — use it as a lookup.
+<Tabs>
+<TabItem value="primary" label="Primary (Do These)">
 
-=== "Supplemental"
-    - 🎮 **[Regexone — Interactive Tutorial (FREE)](https://regexone.com/)** — 15-minute interactive intro, great first exposure
-    - 📺 **[Corey Schafer — Python re module (YouTube, FREE)](https://www.youtube.com/watch?v=K8L6KVGG-7o)** — Best Python-specific walkthrough
+- 🌐 **[Regex101 (FREE)](https://regex101.com/)** — Live tester with explanation of each part. Choose your language flavor. **Bookmark this now.**
+- 📖 **[Regular-Expressions.info (FREE)](https://www.regular-expressions.info/)** — The definitive reference site. Not for reading front-to-back — use it as a lookup.
 
-=== "Practice"
-    - 🎮 **[Regex Crossword (FREE)](https://regexcrossword.com/)** — Fun puzzles that build intuition fast
-    - 🎮 **[HackerRank — Regex challenges (FREE)](https://www.hackerrank.com/domains/regex)** — Practical extraction tasks
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 🎮 **[Regexone — Interactive Tutorial (FREE)](https://regexone.com/)** — 15-minute interactive intro, great first exposure
+- 📺 **[Corey Schafer — Python re module (YouTube, FREE)](https://www.youtube.com/watch?v=K8L6KVGG-7o)** — Best Python-specific walkthrough
+
+
+</TabItem>
+<TabItem value="practice" label="Practice">
+
+- 🎮 **[Regex Crossword (FREE)](https://regexcrossword.com/)** — Fun puzzles that build intuition fast
+- 🎮 **[HackerRank — Regex challenges (FREE)](https://www.hackerrank.com/domains/regex)** — Practical extraction tasks
+
+
+</TabItem>
+</Tabs>
 
 ---
 

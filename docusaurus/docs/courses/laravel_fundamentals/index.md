@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Laravel Fundamentals
 
 > **Domain:** Web Development — Backend · **Time:** 10–12 hours total · **Platform:** Windows + Linux
@@ -37,15 +40,27 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [Laravel Official Docs](https://laravel.com/docs)
-    - [Laracasts](https://laracasts.com/) — the definitive Laravel learning resource
-    - [Wiki: HTTP Servers & Middleware](../../domains/web_dev/http_server.md)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [Laravel Daily](https://laraveldaily.com/) — practical Laravel tips
-    - [spatie.be packages](https://spatie.be/open-source) — widely used Laravel packages
+- [Laravel Official Docs](https://laravel.com/docs)
+- [Laracasts](https://laracasts.com/) — the definitive Laravel learning resource
+- [Wiki: HTTP Servers & Middleware](../../domains/web_dev/http_server.md)
 
-=== "External Courses"
-    - 🎓 **[Laracasts — Laravel From Scratch](https://laracasts.com/series/30-days-to-learn-laravel-11)** (FREE, 30 days)
-    - 🎓 **[Udemy — Laravel & PHP for Beginners](https://www.udemy.com/course/php-with-laravel-for-beginners-become-a-master-in-laravel/)** (PAID)
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Laravel Daily](https://laraveldaily.com/) — practical Laravel tips
+- [spatie.be packages](https://spatie.be/open-source) — widely used Laravel packages
+
+
+</TabItem>
+<TabItem value="external" label="External Courses">
+
+- 🎓 **[Laracasts — Laravel From Scratch](https://laracasts.com/series/30-days-to-learn-laravel-11)** (FREE, 30 days)
+- 🎓 **[Udemy — Laravel & PHP for Beginners](https://www.udemy.com/course/php-with-laravel-for-beginners-become-a-master-in-laravel/)** (PAID)
+
+
+</TabItem>
+</Tabs>

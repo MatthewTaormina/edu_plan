@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # TypeScript
 
 > **Tool:** TypeScript · **Introduced:** 2012 · **Latest:** 5.x (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern
@@ -347,10 +350,19 @@ npm install --save-dev @types/node @types/react
 
 ## 📚 Resources
 
-=== "Primary"
-    - [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) — the authoritative reference
-    - [TypeScript Playground](https://www.typescriptlang.org/play) — run TS in the browser
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [Total TypeScript Free Tutorials](https://www.totaltypescript.com/tutorials) — Matt Pocock, extremely practical
-    - [Type Challenges](https://github.com/type-challenges/type-challenges) — exercises for mastering the type system
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) — the authoritative reference
+- [TypeScript Playground](https://www.typescriptlang.org/play) — run TS in the browser
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Total TypeScript Free Tutorials](https://www.totaltypescript.com/tutorials) — Matt Pocock, extremely practical
+- [Type Challenges](https://github.com/type-challenges/type-challenges) — exercises for mastering the type system
+
+
+</TabItem>
+</Tabs>

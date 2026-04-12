@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Git Workflow
 
 **Domain:** DevOps · **Time Estimate:** 1 week · **Platform:** Cross-platform
@@ -390,17 +393,29 @@ git ls-tree HEAD -- src/               # Just the src/ subtree
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📖 **[Pro Git — Scott Chacon (FREE online)](https://git-scm.com/book/en/v2)** — The definitive book. Read Ch. 1-3 now, rest as needed.
-    - 🌐 **[Oh Shit, Git!](https://ohshitgit.com/)** — Plain-English recipes for when things go wrong. Bookmark this.
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 🎮 **[Learn Git Branching (interactive, FREE)](https://learngitbranching.js.org/)** — Visualized, hands-on branching exercises
-    - 📺 **[Fireship — Git in 100 Seconds (YouTube)](https://www.youtube.com/watch?v=hwP7WQkmECE)** — Best quick overview
+- 📖 **[Pro Git — Scott Chacon (FREE online)](https://git-scm.com/book/en/v2)** — The definitive book. Read Ch. 1-3 now, rest as needed.
+- 🌐 **[Oh Shit, Git!](https://ohshitgit.com/)** — Plain-English recipes for when things go wrong. Bookmark this.
 
-=== "Reference"
-    - 📖 **[Git Reference (git-scm.com)](https://git-scm.com/docs)** — Official command reference
-    - 📖 **[Conventional Commits Spec](https://www.conventionalcommits.org/en/v1.0.0/)** — The commit message standard
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 🎮 **[Learn Git Branching (interactive, FREE)](https://learngitbranching.js.org/)** — Visualized, hands-on branching exercises
+- 📺 **[Fireship — Git in 100 Seconds (YouTube)](https://www.youtube.com/watch?v=hwP7WQkmECE)** — Best quick overview
+
+
+</TabItem>
+<TabItem value="reference" label="Reference">
+
+- 📖 **[Git Reference (git-scm.com)](https://git-scm.com/docs)** — Official command reference
+- 📖 **[Conventional Commits Spec](https://www.conventionalcommits.org/en/v1.0.0/)** — The commit message standard
+
+
+</TabItem>
+</Tabs>
 
 ---
 

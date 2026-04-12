@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # React Fundamentals
 
 > **Domain:** Web Development · **Time:** 10–12 hours total · **Platform:** Windows + Linux
@@ -40,11 +43,20 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [React Docs — Learn React](https://react.dev/learn) — official interactive guide (excellent quality)
-    - [React API Reference](https://react.dev/reference/react) — complete hook and component reference
-    - [Wiki: Frontend Frameworks](../../domains/web_dev/frontend_frameworks.md) — conceptual grounding
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [Total TypeScript — React with TypeScript](https://www.totaltypescript.com/tutorials/react-with-typescript)
-    - [Josh Comeau — Joy of React](https://www.joyofreact.com/) (PAID) — most celebrated React course
+- [React Docs — Learn React](https://react.dev/learn) — official interactive guide (excellent quality)
+- [React API Reference](https://react.dev/reference/react) — complete hook and component reference
+- [Wiki: Frontend Frameworks](../../domains/web_dev/frontend_frameworks.md) — conceptual grounding
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Total TypeScript — React with TypeScript](https://www.totaltypescript.com/tutorials/react-with-typescript)
+- [Josh Comeau — Joy of React](https://www.joyofreact.com/) (PAID) — most celebrated React course
+
+
+</TabItem>
+</Tabs>

@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Lesson 02 — Primitive, Array, Tuple & Object Types
 
 > **Course:** TypeScript Fundamentals · **Time:** 45 minutes

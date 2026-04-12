@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Testing
 
 **Domain:** DevOps · **Time Estimate:** 2 weeks
@@ -72,124 +75,133 @@ Act       Call the function under test with those inputs
 Assert    Verify the output is what you expected
 ```
 
-=== "Python (pytest)"
-    ```python
-    # pip install pytest pytest-cov
-    # pytest: Introduced 2004, Latest 8.x (2024) — 🟢 Modern
+<Tabs>
+<TabItem value="python-pytest" label="Python (pytest)">
 
-    # src/calculator.py
-    def add(a: float, b: float) -> float:
-        return a + b
+```python
+# pip install pytest pytest-cov
+# pytest: Introduced 2004, Latest 8.x (2024) — 🟢 Modern
 
-    def divide(a: float, b: float) -> float:
-        if b == 0:
-            raise ValueError("Cannot divide by zero")
-        return a / b
+# src/calculator.py
+def add(a: float, b: float) -> float:
+    return a + b
 
-    # tests/test_calculator.py
-    import pytest
-    from src.calculator import add, divide
+def divide(a: float, b: float) -> float:
+    if b == 0:
+        raise ValueError("Cannot divide by zero")
+    return a / b
 
-    # ── Basic assertions ──────────────────────────────────────
-    def test_add_two_positive_numbers():
-        # Arrange
-        a, b = 3, 4
+# tests/test_calculator.py
+import pytest
+from src.calculator import add, divide
 
-        # Act
-        result = add(a, b)
+# ── Basic assertions ──────────────────────────────────────
+def test_add_two_positive_numbers():
+    # Arrange
+    a, b = 3, 4
 
-        # Assert
-        assert result == 7
+    # Act
+    result = add(a, b)
 
-    def test_add_negative_and_positive():
-        assert add(-1, 1) == 0
+    # Assert
+    assert result == 7
 
-    def test_add_floats():
-        assert add(0.1, 0.2) == pytest.approx(0.3)   # Never use == with floats
+def test_add_negative_and_positive():
+    assert add(-1, 1) == 0
 
-    # ── Testing exceptions ────────────────────────────────────
-    def test_divide_by_zero_raises():
-        with pytest.raises(ValueError, match="Cannot divide by zero"):
-            divide(10, 0)
+def test_add_floats():
+    assert add(0.1, 0.2) == pytest.approx(0.3)   # Never use == with floats
 
-    def test_divide_normal():
-        assert divide(10, 2) == 5.0
+# ── Testing exceptions ────────────────────────────────────
+def test_divide_by_zero_raises():
+    with pytest.raises(ValueError, match="Cannot divide by zero"):
+        divide(10, 0)
 
-    # ── Parametrize — run the same test with multiple inputs ──
-    @pytest.mark.parametrize("a, b, expected", [
-        (1, 2, 3),
-        (-1, -1, -2),
-        (0, 0, 0),
-        (100, -50, 50),
-    ])
-    def test_add_parametrized(a, b, expected):
-        assert add(a, b) == expected
-    ```
+def test_divide_normal():
+    assert divide(10, 2) == 5.0
 
-    ```bash
-    # Run tests
-    pytest                          # All tests
-    pytest tests/test_calculator.py # Specific file
-    pytest -v                       # Verbose output (test names shown)
-    pytest -k "divide"              # Tests matching name pattern
-    pytest --cov=src --cov-report=term-missing  # With coverage
-    ```
+# ── Parametrize — run the same test with multiple inputs ──
+@pytest.mark.parametrize("a, b, expected", [
+    (1, 2, 3),
+    (-1, -1, -2),
+    (0, 0, 0),
+    (100, -50, 50),
+])
+def test_add_parametrized(a, b, expected):
+    assert add(a, b) == expected
+```
 
-=== "TypeScript (Vitest)"
-    ```typescript
-    // npm install -D vitest
-    // vitest: Introduced 2021, Latest 1.x (2024) — 🟢 Modern
+```bash
+# Run tests
+pytest                          # All tests
+pytest tests/test_calculator.py # Specific file
+pytest -v                       # Verbose output (test names shown)
+pytest -k "divide"              # Tests matching name pattern
+pytest --cov=src --cov-report=term-missing  # With coverage
+```
 
-    // src/calculator.ts
-    export function add(a: number, b: number): number {
-      return a + b;
-    }
 
-    export function divide(a: number, b: number): number {
-      if (b === 0) throw new Error('Cannot divide by zero');
-      return a / b;
-    }
+</TabItem>
+<TabItem value="typescript-vitest" label="TypeScript (Vitest)">
 
-    // tests/calculator.test.ts
-    import { describe, it, expect } from 'vitest';
-    import { add, divide } from '../src/calculator';
+```typescript
+// npm install -D vitest
+// vitest: Introduced 2021, Latest 1.x (2024) — 🟢 Modern
 
-    describe('add', () => {
-      it('adds two positive numbers', () => {
-        // Arrange
-        const a = 3, b = 4;
-        // Act
-        const result = add(a, b);
-        // Assert
-        expect(result).toBe(7);
-      });
+// src/calculator.ts
+export function add(a: number, b: number): number {
+  return a + b;
+}
 
-      it('handles negative numbers', () => {
-        expect(add(-1, 1)).toBe(0);
-      });
+export function divide(a: number, b: number): number {
+  if (b === 0) throw new Error('Cannot divide by zero');
+  return a / b;
+}
 
-      it('handles floating point', () => {
-        expect(add(0.1, 0.2)).toBeCloseTo(0.3);
-      });
-    });
+// tests/calculator.test.ts
+import { describe, it, expect } from 'vitest';
+import { add, divide } from '../src/calculator';
 
-    describe('divide', () => {
-      it('throws on division by zero', () => {
-        expect(() => divide(10, 0)).toThrow('Cannot divide by zero');
-      });
+describe('add', () => {
+  it('adds two positive numbers', () => {
+    // Arrange
+    const a = 3, b = 4;
+    // Act
+    const result = add(a, b);
+    // Assert
+    expect(result).toBe(7);
+  });
 
-      it('divides correctly', () => {
-        expect(divide(10, 2)).toBe(5);
-      });
-    });
-    ```
+  it('handles negative numbers', () => {
+    expect(add(-1, 1)).toBe(0);
+  });
 
-    ```bash
-    # package.json: "scripts": { "test": "vitest" }
-    npx vitest              # Watch mode
-    npx vitest run          # Single run (CI)
-    npx vitest run --coverage  # With coverage
-    ```
+  it('handles floating point', () => {
+    expect(add(0.1, 0.2)).toBeCloseTo(0.3);
+  });
+});
+
+describe('divide', () => {
+  it('throws on division by zero', () => {
+    expect(() => divide(10, 0)).toThrow('Cannot divide by zero');
+  });
+
+  it('divides correctly', () => {
+    expect(divide(10, 2)).toBe(5);
+  });
+});
+```
+
+```bash
+# package.json: "scripts": { "test": "vitest" }
+npx vitest              # Watch mode
+npx vitest run          # Single run (CI)
+npx vitest run --coverage  # With coverage
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -197,78 +209,87 @@ Assert    Verify the output is what you expected
 
 Mocks replace real dependencies (databases, APIs, email services) so tests run fast and don't need external services.
 
-=== "Python (pytest + unittest.mock)"
-    ```python
-    # src/user_service.py
-    import requests
+<Tabs>
+<TabItem value="python-pytest-unittest-mock" label="Python (pytest + unittest.mock)">
 
-    def get_user_name(user_id: int) -> str:
-        response = requests.get(f"https://api.example.com/users/{user_id}")
-        response.raise_for_status()
-        return response.json()["name"]
+```python
+# src/user_service.py
+import requests
 
-    # tests/test_user_service.py
-    from unittest.mock import patch, MagicMock
-    from src.user_service import get_user_name
+def get_user_name(user_id: int) -> str:
+    response = requests.get(f"https://api.example.com/users/{user_id}")
+    response.raise_for_status()
+    return response.json()["name"]
 
-    def test_get_user_name_returns_name():
-        # Mock the HTTP call — no network needed
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"id": 1, "name": "Alice"}
-        mock_response.raise_for_status.return_value = None
+# tests/test_user_service.py
+from unittest.mock import patch, MagicMock
+from src.user_service import get_user_name
 
-        with patch("src.user_service.requests.get", return_value=mock_response):
-            result = get_user_name(1)
+def test_get_user_name_returns_name():
+    # Mock the HTTP call — no network needed
+    mock_response = MagicMock()
+    mock_response.json.return_value = {"id": 1, "name": "Alice"}
+    mock_response.raise_for_status.return_value = None
 
-        assert result == "Alice"
+    with patch("src.user_service.requests.get", return_value=mock_response):
+        result = get_user_name(1)
 
-    def test_get_user_name_propagates_http_error():
-        mock_response = MagicMock()
-        mock_response.raise_for_status.side_effect = requests.HTTPError("404")
+    assert result == "Alice"
 
-        with patch("src.user_service.requests.get", return_value=mock_response):
-            with pytest.raises(requests.HTTPError):
-                get_user_name(999)
-    ```
+def test_get_user_name_propagates_http_error():
+    mock_response = MagicMock()
+    mock_response.raise_for_status.side_effect = requests.HTTPError("404")
 
-=== "TypeScript (Vitest vi.mock)"
-    ```typescript
-    // src/userService.ts
-    import axios from 'axios';
+    with patch("src.user_service.requests.get", return_value=mock_response):
+        with pytest.raises(requests.HTTPError):
+            get_user_name(999)
+```
 
-    export async function getUserName(userId: number): Promise<string> {
-      const response = await axios.get(`https://api.example.com/users/${userId}`);
-      return response.data.name;
-    }
 
-    // tests/userService.test.ts
-    import { describe, it, expect, vi, beforeEach } from 'vitest';
-    import axios from 'axios';
-    import { getUserName } from '../src/userService';
+</TabItem>
+<TabItem value="typescript-vitest-vi-mock" label="TypeScript (Vitest vi.mock)">
 
-    vi.mock('axios');
+```typescript
+// src/userService.ts
+import axios from 'axios';
 
-    describe('getUserName', () => {
-      beforeEach(() => {
-        vi.clearAllMocks();
-      });
+export async function getUserName(userId: number): Promise<string> {
+  const response = await axios.get(`https://api.example.com/users/${userId}`);
+  return response.data.name;
+}
 
-      it('returns user name', async () => {
-        vi.mocked(axios.get).mockResolvedValue({ data: { name: 'Alice' } });
+// tests/userService.test.ts
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import axios from 'axios';
+import { getUserName } from '../src/userService';
 
-        const name = await getUserName(1);
+vi.mock('axios');
 
-        expect(name).toBe('Alice');
-        expect(axios.get).toHaveBeenCalledWith('https://api.example.com/users/1');
-      });
+describe('getUserName', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-      it('propagates errors', async () => {
-        vi.mocked(axios.get).mockRejectedValue(new Error('Network error'));
+  it('returns user name', async () => {
+    vi.mocked(axios.get).mockResolvedValue({ data: { name: 'Alice' } });
 
-        await expect(getUserName(999)).rejects.toThrow('Network error');
-      });
-    });
-    ```
+    const name = await getUserName(1);
+
+    expect(name).toBe('Alice');
+    expect(axios.get).toHaveBeenCalledWith('https://api.example.com/users/1');
+  });
+
+  it('propagates errors', async () => {
+    vi.mocked(axios.get).mockRejectedValue(new Error('Network error'));
+
+    await expect(getUserName(999)).rejects.toThrow('Network error');
+  });
+});
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -536,18 +557,30 @@ jobs:
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📖 **[pytest Docs (FREE)](https://docs.pytest.org/)** — Comprehensive and well-structured
-    - 📖 **[Vitest Docs (FREE)](https://vitest.dev/guide/)** — Concise and excellent; covers all modern patterns
-    - 📖 **[Playwright Docs (FREE)](https://playwright.dev/docs/intro)** — Best E2E testing docs available
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 📺 **[ArjanCodes — pytest Tutorial (YouTube, FREE)](https://www.youtube.com/watch?v=cHYq1MRoyI0)** — Thorough pytest walkthrough with fixtures and parametrize
-    - 📖 **[k6 Docs (FREE)](https://k6.io/docs/)** — Load testing reference and examples
-    - 📖 **[Google SRE Book — Testing Chapter (FREE)](https://sre.google/sre-book/testing-reliability/)** — Testing from a reliability engineering perspective
+- 📖 **[pytest Docs (FREE)](https://docs.pytest.org/)** — Comprehensive and well-structured
+- 📖 **[Vitest Docs (FREE)](https://vitest.dev/guide/)** — Concise and excellent; covers all modern patterns
+- 📖 **[Playwright Docs (FREE)](https://playwright.dev/docs/intro)** — Best E2E testing docs available
 
-=== "External Courses"
-    - 🎓 **[Test-Driven Development with Python — Harry Percival (PAID book, free online)](https://www.obeythetestinggoat.com/)** — Full TDD course with Django, worth the read
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📺 **[ArjanCodes — pytest Tutorial (YouTube, FREE)](https://www.youtube.com/watch?v=cHYq1MRoyI0)** — Thorough pytest walkthrough with fixtures and parametrize
+- 📖 **[k6 Docs (FREE)](https://k6.io/docs/)** — Load testing reference and examples
+- 📖 **[Google SRE Book — Testing Chapter (FREE)](https://sre.google/sre-book/testing-reliability/)** — Testing from a reliability engineering perspective
+
+
+</TabItem>
+<TabItem value="external" label="External Courses">
+
+- 🎓 **[Test-Driven Development with Python — Harry Percival (PAID book, free online)](https://www.obeythetestinggoat.com/)** — Full TDD course with Django, worth the read
+
+
+</TabItem>
+</Tabs>
 
 ---
 

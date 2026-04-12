@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Frontend Frameworks
 
 > **Status:** 🟢 Modern — An evolving ecosystem; React, Angular, Vue, and Svelte are all actively maintained.
@@ -192,16 +195,31 @@ Frameworks can run on the server as well as the browser — see [SSR vs CSR](./s
 
 ## 📚 Resources
 
-=== "React"
-    - [React Docs — Learn React](https://react.dev/learn) — official, interactive
-    - [react.dev Reference](https://react.dev/reference/react)
+<Tabs>
+<TabItem value="react" label="React">
 
-=== "Angular"
-    - [Angular Docs](https://angular.dev/overview) — comprehensive official guide
-    - [Tour of Heroes Tutorial](https://angular.dev/tutorials/learn-angular)
+- [React Docs — Learn React](https://react.dev/learn) — official, interactive
+- [react.dev Reference](https://react.dev/reference/react)
 
-=== "Vue"
-    - [Vue 3 Guide](https://vuejs.org/guide/introduction)
 
-=== "Svelte"
-    - [Svelte Tutorial](https://learn.svelte.dev/)
+</TabItem>
+<TabItem value="angular" label="Angular">
+
+- [Angular Docs](https://angular.dev/overview) — comprehensive official guide
+- [Tour of Heroes Tutorial](https://angular.dev/tutorials/learn-angular)
+
+
+</TabItem>
+<TabItem value="vue" label="Vue">
+
+- [Vue 3 Guide](https://vuejs.org/guide/introduction)
+
+
+</TabItem>
+<TabItem value="svelte" label="Svelte">
+
+- [Svelte Tutorial](https://learn.svelte.dev/)
+
+
+</TabItem>
+</Tabs>

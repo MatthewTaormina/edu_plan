@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Lesson 01 — Your First Python Program
 
 **Course:** Python: Zero to Hero · **Lesson:** 1 of 12 · **Time:** ~45 minutes
@@ -35,17 +38,26 @@ If you haven't installed Python yet, follow the setup in the [Course Index](inde
 
 Check it's working:
 
-=== "Windows"
-    ```powershell
-    python --version
-    # Expected: Python 3.12.x (or later)
-    ```
+<Tabs>
+<TabItem value="windows" label="Windows">
 
-=== "Linux"
-    ```bash
-    python3 --version
-    # Expected: Python 3.12.x (or later)
-    ```
+```powershell
+python --version
+# Expected: Python 3.12.x (or later)
+```
+
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+```bash
+python3 --version
+# Expected: Python 3.12.x (or later)
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -64,15 +76,24 @@ print("Hello, world!")
 
 Save it. Now run it:
 
-=== "Windows"
-    ```powershell
-    python hello.py
-    ```
+<Tabs>
+<TabItem value="windows" label="Windows">
 
-=== "Linux"
-    ```bash
-    python3 hello.py
-    ```
+```powershell
+python hello.py
+```
+
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+```bash
+python3 hello.py
+```
+
+
+</TabItem>
+</Tabs>
 
 You should see:
 ```
@@ -168,15 +189,24 @@ Get into the habit: write a comment for anything that isn't immediately obvious.
 The **REPL** (Read-Evaluate-Print-Loop) is an interactive Python session — type an expression,
 see the result immediately. Useful for experimenting.
 
-=== "Windows"
-    ```powershell
-    python
-    ```
+<Tabs>
+<TabItem value="windows" label="Windows">
 
-=== "Linux"
-    ```bash
-    python3
-    ```
+```powershell
+python
+```
+
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+```bash
+python3
+```
+
+
+</TabItem>
+</Tabs>
 
 ```python
 >>> 2 + 2

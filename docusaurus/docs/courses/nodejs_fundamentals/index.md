@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Node.js Fundamentals
 
 > **Domain:** Web Development — Backend · **Time:** 8–10 hours total · **Platform:** Windows + Linux
@@ -35,14 +38,26 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [Wiki: Node.js Reference](../../domains/web_dev/nodejs.md)
-    - [Node.js Official Docs](https://nodejs.org/en/docs)
-    - [Node.js Best Practices](https://github.com/goldbergyoni/nodebestpractices)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [javascript.info — Node.js modules](https://javascript.info/modules)
-    - [The Odin Project — NodeJS Path](https://www.theodinproject.com/paths/full-stack-javascript) (FREE)
+- [Wiki: Node.js Reference](../../domains/web_dev/nodejs.md)
+- [Node.js Official Docs](https://nodejs.org/en/docs)
+- [Node.js Best Practices](https://github.com/goldbergyoni/nodebestpractices)
 
-=== "External Courses"
-    - 🎓 **[Maximilian Schwarzmüller — NodeJS Course](https://www.udemy.com/course/nodejs-the-complete-guide/)** (PAID, Udemy)
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [javascript.info — Node.js modules](https://javascript.info/modules)
+- [The Odin Project — NodeJS Path](https://www.theodinproject.com/paths/full-stack-javascript) (FREE)
+
+
+</TabItem>
+<TabItem value="external" label="External Courses">
+
+- 🎓 **[Maximilian Schwarzmüller — NodeJS Course](https://www.udemy.com/course/nodejs-the-complete-guide/)** (PAID, Udemy)
+
+
+</TabItem>
+</Tabs>

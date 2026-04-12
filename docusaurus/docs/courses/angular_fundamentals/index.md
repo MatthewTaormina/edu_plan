@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Angular Fundamentals
 
 > **Domain:** Web Development · **Time:** 12–14 hours total · **Platform:** Windows + Linux
@@ -38,11 +41,20 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [Angular Docs — Getting Started](https://angular.dev/start)
-    - [Angular Docs — Tutorial](https://angular.dev/tutorials/learn-angular)
-    - [Wiki: Frontend Frameworks](../../domains/web_dev/frontend_frameworks.md)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [Deborah Kurata — Angular: Getting Started](https://app.pluralsight.com/library/courses/angular-2-getting-started-update) (PAID)
-    - [Angular University](https://angular-university.io/)
+- [Angular Docs — Getting Started](https://angular.dev/start)
+- [Angular Docs — Tutorial](https://angular.dev/tutorials/learn-angular)
+- [Wiki: Frontend Frameworks](../../domains/web_dev/frontend_frameworks.md)
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Deborah Kurata — Angular: Getting Started](https://app.pluralsight.com/library/courses/angular-2-getting-started-update) (PAID)
+- [Angular University](https://angular-university.io/)
+
+
+</TabItem>
+</Tabs>

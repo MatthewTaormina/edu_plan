@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # HTML Fundamentals
 
 > **Domain:** Web Development · **Time:** 6–8 hours total · **Platform:** Windows + Linux
@@ -35,10 +38,19 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [MDN Web Docs: HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
-    - [HTML Standard — WHATWG](https://html.spec.whatwg.org/)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [W3C HTML Validator](https://validator.w3.org/) — always validate your output
-    - [WebAIM: Introduction to Web Accessibility](https://webaim.org/intro/)
+- [MDN Web Docs: HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
+- [HTML Standard — WHATWG](https://html.spec.whatwg.org/)
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [W3C HTML Validator](https://validator.w3.org/) — always validate your output
+- [WebAIM: Introduction to Web Accessibility](https://webaim.org/intro/)
+
+
+</TabItem>
+</Tabs>

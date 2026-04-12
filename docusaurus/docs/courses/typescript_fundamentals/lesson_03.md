@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Lesson 03 — Interfaces, Type Aliases & Unions
 
 > **Course:** TypeScript Fundamentals · **Time:** 60 minutes

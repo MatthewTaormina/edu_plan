@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Vanilla JavaScript Fundamentals
 
 > **Domain:** Web Development · **Time:** 10–12 hours total · **Platform:** Windows + Linux
@@ -39,10 +42,19 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [MDN Web Docs: JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-    - [MDN Web Docs: Intro to the DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [JavaScript.info](https://javascript.info/) — the most thorough free JS tutorial
-    - [Loupe — Event Loop Visualizer](http://latentflip.com/loupe) — visualize async execution
+- [MDN Web Docs: JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [MDN Web Docs: Intro to the DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [JavaScript.info](https://javascript.info/) — the most thorough free JS tutorial
+- [Loupe — Event Loop Visualizer](http://latentflip.com/loupe) — visualize async execution
+
+
+</TabItem>
+</Tabs>

@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Linux CLI
 
 **Domain:** DevOps · **Time Estimate:** 1–2 weeks · **Platform:** Linux (also applies to macOS and WSL2 on Windows)
@@ -460,18 +463,30 @@ set -o pipefail                   # Pipe fails if any command fails
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📖 **[The Linux Command Line — William Shotts (FREE online)](https://linuxcommand.org/tlcl.php)** — Comprehensive, beginner-friendly, free
-    - 📖 **[Bash Guide for Beginners — Machtelt Garrels (FREE)](https://tldp.org/LDP/Bash-Beginners-Guide/html/)** — Best intro to shell scripting
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 🌐 **[explainshell.com (FREE)](https://explainshell.com/)** — Paste any command, every part is explained
-    - 🌐 **[tldr pages (FREE)](https://tldr.sh/)** — Short, practical examples for 500+ commands
-    - 🌐 **[ShellCheck (FREE)](https://www.shellcheck.net/)** — Finds bugs in your bash scripts — use this always
+- 📖 **[The Linux Command Line — William Shotts (FREE online)](https://linuxcommand.org/tlcl.php)** — Comprehensive, beginner-friendly, free
+- 📖 **[Bash Guide for Beginners — Machtelt Garrels (FREE)](https://tldp.org/LDP/Bash-Beginners-Guide/html/)** — Best intro to shell scripting
 
-=== "Practice"
-    - 🎮 **[OverTheWire: Bandit (FREE)](https://overthewire.org/wargames/bandit/)** — Learn Linux CLI through a wargame — highly recommended
-    - 🎮 **[Linux Survival (FREE)](https://linuxsurvival.com/)** — Beginner interactive course
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 🌐 **[explainshell.com (FREE)](https://explainshell.com/)** — Paste any command, every part is explained
+- 🌐 **[tldr pages (FREE)](https://tldr.sh/)** — Short, practical examples for 500+ commands
+- 🌐 **[ShellCheck (FREE)](https://www.shellcheck.net/)** — Finds bugs in your bash scripts — use this always
+
+
+</TabItem>
+<TabItem value="practice" label="Practice">
+
+- 🎮 **[OverTheWire: Bandit (FREE)](https://overthewire.org/wargames/bandit/)** — Learn Linux CLI through a wargame — highly recommended
+- 🎮 **[Linux Survival (FREE)](https://linuxsurvival.com/)** — Beginner interactive course
+
+
+</TabItem>
+</Tabs>
 
 ---
 

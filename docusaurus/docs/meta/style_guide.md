@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Contributor Style Guide
 
 > How to write content for the Open Learner's Guide.
@@ -145,20 +148,29 @@ For foundational concepts (e.g., raw pointers before smart pointers, raw SQL bef
 Then immediately follow with the modern approach:
 
 ```markdown
-=== "Foundation (Manual)"
-    ```c
-    // Raw pointer management — C, C++ pre-2011
-    int* arr = malloc(sizeof(int) * 10);
-    // ... use arr ...
-    free(arr);
-    ```
+<Tabs>
+<TabItem value="foundation-manual" label="Foundation (Manual)">
 
-=== "Modern (Preferred)"
-    ```rust
-    // Rust owns and frees automatically
-    let arr = vec![0i32; 10];
-    // Freed when `arr` goes out of scope — no free() needed
-    ```
+```c
+// Raw pointer management — C, C++ pre-2011
+int* arr = malloc(sizeof(int) * 10);
+// ... use arr ...
+free(arr);
+```
+
+
+</TabItem>
+<TabItem value="modern-preferred" label="Modern (Preferred)">
+
+```rust
+// Rust owns and frees automatically
+let arr = vec![0i32; 10];
+// Freed when `arr` goes out of scope — no free() needed
+```
+
+</TabItem>
+</Tabs>
+
 ```
 
 ### Writing Tabs for Legacy + Modern

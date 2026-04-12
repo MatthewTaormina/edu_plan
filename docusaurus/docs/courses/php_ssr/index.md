@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # PHP & Server-Side Rendering
 
 > **Domain:** Web Development — Backend · **Time:** 8–10 hours total · **Platform:** Windows + Linux
@@ -37,17 +40,29 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [Wiki: HTTP Servers & Middleware](../../domains/web_dev/http_server.md)
-    - [PHP Manual](https://www.php.net/manual/en/)
-    - [PHP: The Right Way](https://phptherightway.com/)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [W3Schools PHP Tutorial](https://www.w3schools.com/php/) — Quick syntax reference
-    - [Laracasts Free PHP Beginner Series](https://laracasts.com/series/php-for-beginners) (FREE)
+- [Wiki: HTTP Servers & Middleware](../../domains/web_dev/http_server.md)
+- [PHP Manual](https://www.php.net/manual/en/)
+- [PHP: The Right Way](https://phptherightway.com/)
 
-=== "External Courses"
-    - 🎓 **[Laracasts — PHP For Beginners](https://laracasts.com/series/php-for-beginners)** (FREE)
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [W3Schools PHP Tutorial](https://www.w3schools.com/php/) — Quick syntax reference
+- [Laracasts Free PHP Beginner Series](https://laracasts.com/series/php-for-beginners) (FREE)
+
+
+</TabItem>
+<TabItem value="external" label="External Courses">
+
+- 🎓 **[Laracasts — PHP For Beginners](https://laracasts.com/series/php-for-beginners)** (FREE)
+
+
+</TabItem>
+</Tabs>
 
 ## ➡️ Next Course
 

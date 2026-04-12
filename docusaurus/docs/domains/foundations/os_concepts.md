@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # OS Concepts
 
 **Domain:** Foundations · **Time Estimate:** 2–3 weeks · **Focus:** Windows and Linux only
@@ -53,62 +56,71 @@ Process: web_server (PID 1234)
 - **Process isolation:** One process can't access another's memory (without OS permission)
 - **Thread hazard:** All threads share memory — bugs in one can corrupt data used by another
 
-=== "Linux"
-    ```bash
-    # List all processes
-    ps aux                        # All processes, BSD style
-    ps -ef                        # All processes, System V style
-    pstree                        # Show process parent/child tree
-    top                           # Interactive, sorted by CPU
-    htop                          # Better version of top
+<Tabs>
+<TabItem value="linux" label="Linux">
 
-    # Specific process info
-    ps aux | grep nginx           # Find nginx processes
-    pgrep -a nginx                # Just PIDs and names
-    pidof nginx                   # Just PIDs
+```bash
+# List all processes
+ps aux                        # All processes, BSD style
+ps -ef                        # All processes, System V style
+pstree                        # Show process parent/child tree
+top                           # Interactive, sorted by CPU
+htop                          # Better version of top
 
-    # Threads within a process
-    ps -L -p <PID>                # Show threads of a process
-    top -H -p <PID>               # Show threads in top
+# Specific process info
+ps aux | grep nginx           # Find nginx processes
+pgrep -a nginx                # Just PIDs and names
+pidof nginx                   # Just PIDs
 
-    # Process details
-    ls /proc/<PID>/               # Everything about a process (Linux exposes this as files)
-    cat /proc/<PID>/status        # Status (memory, state, parent PID)
-    cat /proc/<PID>/cmdline       # Full command line
-    ls -la /proc/<PID>/fd/        # Open file descriptors
+# Threads within a process
+ps -L -p <PID>                # Show threads of a process
+top -H -p <PID>               # Show threads in top
 
-    # Kill a process
-    kill <PID>                    # Send SIGTERM (graceful)
-    kill -9 <PID>                 # Send SIGKILL (force, no cleanup)
-    killall nginx                 # Kill all processes named nginx
-    ```
+# Process details
+ls /proc/<PID>/               # Everything about a process (Linux exposes this as files)
+cat /proc/<PID>/status        # Status (memory, state, parent PID)
+cat /proc/<PID>/cmdline       # Full command line
+ls -la /proc/<PID>/fd/        # Open file descriptors
 
-=== "Windows"
-    ```powershell
-    # List processes
-    Get-Process                                      # All processes
-    Get-Process | Sort-Object CPU -Descending        # Sort by CPU use
-    Get-Process -Name "chrome" | Select-Object *     # Specific process detail
+# Kill a process
+kill <PID>                    # Send SIGTERM (graceful)
+kill -9 <PID>                 # Send SIGKILL (force, no cleanup)
+killall nginx                 # Kill all processes named nginx
+```
 
-    # Process by ID or name
-    Get-Process -Id 1234
-    Get-Process | Where-Object {$_.WorkingSet -gt 500MB}  # Large memory users
 
-    # Threads within a process
-    (Get-Process -Id 1234).Threads
+</TabItem>
+<TabItem value="windows" label="Windows">
 
-    # Terminate
-    Stop-Process -Name "notepad"                     # Graceful
-    Stop-Process -Id 1234 -Force                     # Force kill
-    taskkill /F /PID 1234                            # Classic command
+```powershell
+# List processes
+Get-Process                                      # All processes
+Get-Process | Sort-Object CPU -Descending        # Sort by CPU use
+Get-Process -Name "chrome" | Select-Object *     # Specific process detail
 
-    # View process tree
-    # GUI: Task Manager → Details tab (right-click → Select Columns → Parent PID)
-    # CLI alternative:
-    Get-CimInstance Win32_Process |
-        Select-Object ProcessId, ParentProcessId, Name |
-        Sort-Object ParentProcessId
-    ```
+# Process by ID or name
+Get-Process -Id 1234
+Get-Process | Where-Object {$_.WorkingSet -gt 500MB}  # Large memory users
+
+# Threads within a process
+(Get-Process -Id 1234).Threads
+
+# Terminate
+Stop-Process -Name "notepad"                     # Graceful
+Stop-Process -Id 1234 -Force                     # Force kill
+taskkill /F /PID 1234                            # Classic command
+
+# View process tree
+# GUI: Task Manager → Details tab (right-click → Select Columns → Parent PID)
+# CLI alternative:
+Get-CimInstance Win32_Process |
+    Select-Object ProcessId, ParentProcessId, Name |
+    Sort-Object ParentProcessId
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -128,49 +140,58 @@ New ──→ Ready ──→ Running ──→ Terminated
                 (waiting for I/O, lock, sleep)
 ```
 
-=== "Linux"
-    ```bash
-    # Nice value: -20 (highest priority) to 19 (lowest)
-    nice -n 10 ./my_script.sh     # Start with lower priority (nicer to others)
-    renice -n 5 -p <PID>          # Change priority of running process
-    renice -n -5 -p <PID>         # Increase priority (requires root for negative values)
+<Tabs>
+<TabItem value="linux" label="Linux">
 
-    # Real-time scheduling (for latency-sensitive work)
-    chrt -f 99 ./realtime_app     # SCHED_FIFO with priority 99 (root required)
+```bash
+# Nice value: -20 (highest priority) to 19 (lowest)
+nice -n 10 ./my_script.sh     # Start with lower priority (nicer to others)
+renice -n 5 -p <PID>          # Change priority of running process
+renice -n -5 -p <PID>         # Increase priority (requires root for negative values)
 
-    # See scheduling policy of a process
-    chrt -p <PID>
+# Real-time scheduling (for latency-sensitive work)
+chrt -f 99 ./realtime_app     # SCHED_FIFO with priority 99 (root required)
 
-    # CPU affinity — pin process to specific cores
-    taskset -c 0,1 ./my_app       # Run on CPU 0 and 1 only
-    taskset -p 0x3 <PID>          # Set affinity for running process
+# See scheduling policy of a process
+chrt -p <PID>
 
-    # Load average
-    uptime                        # System load averages (1m, 5m, 15m)
-    # Load > number of CPUs means system is overloaded
-    ```
+# CPU affinity — pin process to specific cores
+taskset -c 0,1 ./my_app       # Run on CPU 0 and 1 only
+taskset -p 0x3 <PID>          # Set affinity for running process
 
-=== "Windows"
-    ```powershell
-    # Process priority classes
-    # Realtime, High, AboveNormal, Normal, BelowNormal, Idle
+# Load average
+uptime                        # System load averages (1m, 5m, 15m)
+# Load > number of CPUs means system is overloaded
+```
 
-    # Set priority of running process
-    (Get-Process -Name "notepad").PriorityClass = "High"
-    # Or via WMI:
-    $p = Get-WmiObject Win32_Process -Filter "Name='notepad.exe'"
-    $p.SetPriority(32768)    # 32768=High, 64=Normal, 64=Below Normal
 
-    # CPU affinity — pin to specific cores
-    $p = Get-Process -Id 1234
-    $p.ProcessorAffinity = 3   # Binary 11 = cores 0 and 1
+</TabItem>
+<TabItem value="windows" label="Windows">
 
-    # Start process with priority
-    Start-Process "notepad.exe" -Priority High
+```powershell
+# Process priority classes
+# Realtime, High, AboveNormal, Normal, BelowNormal, Idle
 
-    # View load
-    Get-Counter "\Processor(_Total)\% Processor Time"
-    ```
+# Set priority of running process
+(Get-Process -Name "notepad").PriorityClass = "High"
+# Or via WMI:
+$p = Get-WmiObject Win32_Process -Filter "Name='notepad.exe'"
+$p.SetPriority(32768)    # 32768=High, 64=Normal, 64=Below Normal
+
+# CPU affinity — pin to specific cores
+$p = Get-Process -Id 1234
+$p.ProcessorAffinity = 3   # Binary 11 = cores 0 and 1
+
+# Start process with priority
+Start-Process "notepad.exe" -Priority High
+
+# View load
+Get-Counter "\Processor(_Total)\% Processor Time"
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -204,49 +225,58 @@ The CPU raises a **page fault**. The OS either:
 
 **Swap / Page file:** When RAM is full, less-used pages are written to disk. Reading them back is slow (~10,000x slower than RAM). Heavy swap usage = system is struggling.
 
-=== "Linux"
-    ```bash
-    # Memory overview
-    free -h                       # RAM and swap usage
-    cat /proc/meminfo             # Detailed breakdown
-    vmstat 1                      # Virtual memory stats per second
+<Tabs>
+<TabItem value="linux" label="Linux">
 
-    # Per-process memory
-    cat /proc/<PID>/status | grep -i vm  # Virtual memory info
-    pmap <PID>                    # Memory map of a process
+```bash
+# Memory overview
+free -h                       # RAM and swap usage
+cat /proc/meminfo             # Detailed breakdown
+vmstat 1                      # Virtual memory stats per second
 
-    # Swap
-    swapon --show                 # Show swap devices
-    cat /proc/swaps               # Swap usage
+# Per-process memory
+cat /proc/<PID>/status | grep -i vm  # Virtual memory info
+pmap <PID>                    # Memory map of a process
 
-    # Page fault stats
-    ps -o pid,majflt,minflt -p <PID>  # Major (disk) and minor (RAM) faults
+# Swap
+swapon --show                 # Show swap devices
+cat /proc/swaps               # Swap usage
 
-    # Memory pressure
-    dmesg | grep -i "oom"         # Out-of-memory killer events
-    ```
+# Page fault stats
+ps -o pid,majflt,minflt -p <PID>  # Major (disk) and minor (RAM) faults
 
-=== "Windows"
-    ```powershell
-    # Memory overview
-    Get-CimInstance Win32_OperatingSystem |
-        Select-Object TotalVisibleMemorySize, FreePhysicalMemory
+# Memory pressure
+dmesg | grep -i "oom"         # Out-of-memory killer events
+```
 
-    # Page file (Windows' swap equivalent)
-    Get-CimInstance Win32_PageFileUsage
 
-    # Per-process memory
-    Get-Process | Select-Object Name, WorkingSet, VirtualMemorySize, PagedMemorySize |
-        Sort-Object WorkingSet -Descending | Select-Object -First 10
+</TabItem>
+<TabItem value="windows" label="Windows">
 
-    # Working set = physical RAM used
-    # Virtual memory = total virtual allocation (could be mostly unmapped)
-    # Paged memory = memory that's been written to page file
+```powershell
+# Memory overview
+Get-CimInstance Win32_OperatingSystem |
+    Select-Object TotalVisibleMemorySize, FreePhysicalMemory
 
-    # Memory pressure indicator
-    # Task Manager → Performance → Memory → "In Use" vs "Available"
-    # Performance tab shows committed memory vs. installed RAM
-    ```
+# Page file (Windows' swap equivalent)
+Get-CimInstance Win32_PageFileUsage
+
+# Per-process memory
+Get-Process | Select-Object Name, WorkingSet, VirtualMemorySize, PagedMemorySize |
+    Sort-Object WorkingSet -Descending | Select-Object -First 10
+
+# Working set = physical RAM used
+# Virtual memory = total virtual allocation (could be mostly unmapped)
+# Paged memory = memory that's been written to page file
+
+# Memory pressure indicator
+# Task Manager → Performance → Memory → "In Use" vs "Available"
+# Performance tab shows committed memory vs. installed RAM
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -271,62 +301,71 @@ A **file system** organizes data on storage into files and directories and manag
 
 **Inodes (Linux) and MFT entries (Windows):** Every file has a metadata entry (permissions, timestamps, size, block pointers). The filename in the directory just points to this entry.
 
-=== "Linux"
-    ```bash
-    # Disk usage
-    df -h                         # Disk usage per filesystem
-    du -sh /var/log/*             # Size of each item in /var/log
-    du -sh --max-depth=1 /home   # Top-level sizes in /home
+<Tabs>
+<TabItem value="linux" label="Linux">
 
-    # File info
-    stat filename                 # Timestamps, permissions, inode, size
-    ls -li                        # List with inode numbers
-    file filename                 # Detect file type by content
+```bash
+# Disk usage
+df -h                         # Disk usage per filesystem
+du -sh /var/log/*             # Size of each item in /var/log
+du -sh --max-depth=1 /home   # Top-level sizes in /home
 
-    # Hard links and symlinks
-    ln /etc/hosts /tmp/hosts_hardlink   # Hard link (same inode)
-    ln -s /etc/hosts /tmp/hosts_sym     # Symbolic link (pointer)
-    readlink /tmp/hosts_sym             # Show where symlink points
+# File info
+stat filename                 # Timestamps, permissions, inode, size
+ls -li                        # List with inode numbers
+file filename                 # Detect file type by content
 
-    # Mount points
-    mount                               # All mounted filesystems
-    lsblk                               # Block device tree
-    findmnt                             # Tree of mount points
+# Hard links and symlinks
+ln /etc/hosts /tmp/hosts_hardlink   # Hard link (same inode)
+ln -s /etc/hosts /tmp/hosts_sym     # Symbolic link (pointer)
+readlink /tmp/hosts_sym             # Show where symlink points
 
-    # Filesystem check and repair (unmounted only!)
-    sudo fsck /dev/sdb1
+# Mount points
+mount                               # All mounted filesystems
+lsblk                               # Block device tree
+findmnt                             # Tree of mount points
 
-    # Format (careful!)
-    sudo mkfs.ext4 /dev/sdb1
-    ```
+# Filesystem check and repair (unmounted only!)
+sudo fsck /dev/sdb1
 
-=== "Windows"
-    ```powershell
-    # Disk usage
-    Get-PSDrive                               # Drive usage summary
-    Get-ChildItem C:\ | Measure-Object -Property Length -Sum  # Folder size
+# Format (careful!)
+sudo mkfs.ext4 /dev/sdb1
+```
 
-    # File info
-    Get-Item C:\Windows\System32\notepad.exe | Select-Object *
-    (Get-Item C:\test.txt).Attributes         # File attributes
 
-    # Symlinks and junctions
-    # Must run as Administrator
-    New-Item -ItemType SymbolicLink -Path C:\link -Target C:\target
-    New-Item -ItemType Junction -Path C:\junction -Target C:\target
-    Get-Item C:\link | Select-Object LinkType, Target
+</TabItem>
+<TabItem value="windows" label="Windows">
 
-    # Volume info
-    Get-Volume                               # All volumes and health
-    Get-Partition | Get-Disk                 # Disk layout
+```powershell
+# Disk usage
+Get-PSDrive                               # Drive usage summary
+Get-ChildItem C:\ | Measure-Object -Property Length -Sum  # Folder size
 
-    # Check disk
-    chkdsk C: /f /r                         # Check and repair (reboot required for C:)
-    Repair-Volume C: -Scan
+# File info
+Get-Item C:\Windows\System32\notepad.exe | Select-Object *
+(Get-Item C:\test.txt).Attributes         # File attributes
 
-    # Format
-    Format-Volume -DriveLetter D -FileSystem NTFS -NewFileSystemLabel "Data"
-    ```
+# Symlinks and junctions
+# Must run as Administrator
+New-Item -ItemType SymbolicLink -Path C:\link -Target C:\target
+New-Item -ItemType Junction -Path C:\junction -Target C:\target
+Get-Item C:\link | Select-Object LinkType, Target
+
+# Volume info
+Get-Volume                               # All volumes and health
+Get-Partition | Get-Disk                 # Disk layout
+
+# Check disk
+chkdsk C: /f /r                         # Check and repair (reboot required for C:)
+Repair-Volume C: -Scan
+
+# Format
+Format-Volume -DriveLetter D -FileSystem NTFS -NewFileSystemLabel "Data"
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -408,83 +447,95 @@ Processes are isolated. When they need to share data or coordinate, they use IPC
 | **Signals (Linux)** | Async notifications | `SIGTERM`, `SIGKILL`, `SIGHUP` handlers |
 | **Windows Events** | Kernel objects for synchronization | Windows multi-process coordination |
 
-=== "Pseudocode"
-    ```
-    // Pipe: parent writes, child reads
-    pipe_read, pipe_write ← create_pipe()
+<Tabs>
+<TabItem value="pseudo" label="Pseudocode">
 
-    child_pid ← fork()
+```
+// Pipe: parent writes, child reads
+pipe_read, pipe_write ← create_pipe()
 
-    IF child_pid == 0 THEN    // Child process
-        close(pipe_write)
-        data ← read(pipe_read)
-        PRINT "Child received: " + data
-        close(pipe_read)
-    ELSE                      // Parent process
-        close(pipe_read)
-        write(pipe_write, "Hello from parent")
-        close(pipe_write)
-        wait_for_child(child_pid)
-    END IF
-    ```
+child_pid ← fork()
 
-=== "Python"
-    ```python
-    import subprocess
-    import os
+IF child_pid == 0 THEN    // Child process
+    close(pipe_write)
+    data ← read(pipe_read)
+    PRINT "Child received: " + data
+    close(pipe_read)
+ELSE                      // Parent process
+    close(pipe_read)
+    write(pipe_write, "Hello from parent")
+    close(pipe_write)
+    wait_for_child(child_pid)
+END IF
+```
 
-    # Simple pipe: parent to child via subprocess
-    proc = subprocess.Popen(
-        ["grep", "error"],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        text=True
-    )
-    stdout, _ = proc.communicate("info line\nerror: something failed\ninfo line")
-    print(stdout)  # "error: something failed\n"
 
-    # Named pipe (Unix FIFO)
-    import os, threading
+</TabItem>
+<TabItem value="python" label="Python">
 
-    FIFO_PATH = "/tmp/my_fifo"
-    os.mkfifo(FIFO_PATH)
+```python
+import subprocess
+import os
 
-    def writer():
-        with open(FIFO_PATH, 'w') as f:
-            f.write("hello from writer")
+# Simple pipe: parent to child via subprocess
+proc = subprocess.Popen(
+    ["grep", "error"],
+    stdin=subprocess.PIPE,
+    stdout=subprocess.PIPE,
+    text=True
+)
+stdout, _ = proc.communicate("info line\nerror: something failed\ninfo line")
+print(stdout)  # "error: something failed\n"
 
-    threading.Thread(target=writer).start()
-    with open(FIFO_PATH, 'r') as f:
-        print(f.read())  # "hello from writer"
-    os.unlink(FIFO_PATH)
+# Named pipe (Unix FIFO)
+import os, threading
 
-    # Shared memory (Python 3.8+)
-    from multiprocessing import shared_memory
-    shm = shared_memory.SharedMemory(create=True, size=1024)
-    shm.buf[:5] = b"hello"
-    # Other process can attach: shared_memory.SharedMemory(name=shm.name)
-    shm.close()
-    shm.unlink()
-    ```
+FIFO_PATH = "/tmp/my_fifo"
+os.mkfifo(FIFO_PATH)
 
-=== "Windows"
-    ```powershell
-    # Windows named pipes
-    # Server (listener)
-    $pipe = New-Object System.IO.Pipes.NamedPipeServerStream("mypipe")
-    $pipe.WaitForConnection()
-    $reader = New-Object System.IO.StreamReader($pipe)
-    Write-Host "Received: $($reader.ReadLine())"
-    $pipe.Close()
+def writer():
+    with open(FIFO_PATH, 'w') as f:
+        f.write("hello from writer")
 
-    # Client (sender) — run in another terminal
-    $client = New-Object System.IO.Pipes.NamedPipeClientStream(".", "mypipe")
-    $client.Connect()
-    $writer = New-Object System.IO.StreamWriter($client)
-    $writer.AutoFlush = $true
-    $writer.WriteLine("Hello from client")
-    $client.Close()
-    ```
+threading.Thread(target=writer).start()
+with open(FIFO_PATH, 'r') as f:
+    print(f.read())  # "hello from writer"
+os.unlink(FIFO_PATH)
+
+# Shared memory (Python 3.8+)
+from multiprocessing import shared_memory
+shm = shared_memory.SharedMemory(create=True, size=1024)
+shm.buf[:5] = b"hello"
+# Other process can attach: shared_memory.SharedMemory(name=shm.name)
+shm.close()
+shm.unlink()
+```
+
+
+</TabItem>
+<TabItem value="windows" label="Windows">
+
+```powershell
+# Windows named pipes
+# Server (listener)
+$pipe = New-Object System.IO.Pipes.NamedPipeServerStream("mypipe")
+$pipe.WaitForConnection()
+$reader = New-Object System.IO.StreamReader($pipe)
+Write-Host "Received: $($reader.ReadLine())"
+$pipe.Close()
+
+# Client (sender) — run in another terminal
+$client = New-Object System.IO.Pipes.NamedPipeClientStream(".", "mypipe")
+$client.Connect()
+$writer = New-Object System.IO.StreamWriter($client)
+$writer.AutoFlush = $true
+$writer.WriteLine("Hello from client")
+$client.Close()
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -492,155 +543,188 @@ Processes are isolated. When they need to share data or coordinate, they use IPC
 
 Long-running background processes are managed by the OS init system.
 
-=== "Linux (systemd)"
-    ```bash
-    # Service management
-    sudo systemctl start nginx         # Start service
-    sudo systemctl stop nginx          # Stop service
-    sudo systemctl restart nginx       # Restart
-    sudo systemctl reload nginx        # Reload config without restart
-    sudo systemctl enable nginx        # Start on boot
-    sudo systemctl disable nginx       # Don't start on boot
-    sudo systemctl status nginx        # Status + recent logs
+<Tabs>
+<TabItem value="linux-systemd" label="Linux (systemd)">
 
-    # Logs (via journald — systemd's logging system)
-    journalctl -u nginx                # All logs for nginx
-    journalctl -u nginx -f             # Follow (like tail -f)
-    journalctl -u nginx --since "1 hour ago"
-    journalctl -p err                  # Only error-level and above
+```bash
+# Service management
+sudo systemctl start nginx         # Start service
+sudo systemctl stop nginx          # Stop service
+sudo systemctl restart nginx       # Restart
+sudo systemctl reload nginx        # Reload config without restart
+sudo systemctl enable nginx        # Start on boot
+sudo systemctl disable nginx       # Don't start on boot
+sudo systemctl status nginx        # Status + recent logs
 
-    # Create your own service
-    # /etc/systemd/system/myapp.service
-    cat > /etc/systemd/system/myapp.service << 'EOF'
-    [Unit]
-    Description=My Application
-    After=network.target
+# Logs (via journald — systemd's logging system)
+journalctl -u nginx                # All logs for nginx
+journalctl -u nginx -f             # Follow (like tail -f)
+journalctl -u nginx --since "1 hour ago"
+journalctl -p err                  # Only error-level and above
 
-    [Service]
-    Type=simple
-    User=appuser
-    WorkingDirectory=/opt/myapp
-    ExecStart=/opt/myapp/server
-    Restart=on-failure
-    RestartSec=5s
-    Environment=PORT=8080
+# Create your own service
+# /etc/systemd/system/myapp.service
+cat > /etc/systemd/system/myapp.service << 'EOF'
+[Unit]
+Description=My Application
+After=network.target
 
-    [Install]
-    WantedBy=multi-user.target
-    EOF
+[Service]
+Type=simple
+User=appuser
+WorkingDirectory=/opt/myapp
+ExecStart=/opt/myapp/server
+Restart=on-failure
+RestartSec=5s
+Environment=PORT=8080
 
-    sudo systemctl daemon-reload       # Reload systemd config
-    sudo systemctl enable --now myapp  # Enable and start
-    ```
+[Install]
+WantedBy=multi-user.target
+EOF
 
-=== "Windows (Services)"
-    ```powershell
-    # Service management
-    Start-Service "nginx"
-    Stop-Service "nginx"
-    Restart-Service "nginx"
-    Get-Service "nginx" | Select-Object *
+sudo systemctl daemon-reload       # Reload systemd config
+sudo systemctl enable --now myapp  # Enable and start
+```
 
-    # All services
-    Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object Name, DisplayName
 
-    # Set startup type
-    Set-Service "nginx" -StartupType Automatic
-    Set-Service "nginx" -StartupType Disabled
+</TabItem>
+<TabItem value="windows-services" label="Windows (Services)">
 
-    # Create a service (from existing exe)
-    New-Service -Name "MyApp" `
-        -BinaryPathName "C:\myapp\server.exe" `
-        -DisplayName "My Application" `
-        -StartupType Automatic `
-        -Description "Our custom application service"
+```powershell
+# Service management
+Start-Service "nginx"
+Stop-Service "nginx"
+Restart-Service "nginx"
+Get-Service "nginx" | Select-Object *
 
-    # Start on creation
-    Start-Service "MyApp"
+# All services
+Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object Name, DisplayName
 
-    # View service logs → Event Viewer → Windows Logs → Application
-    Get-EventLog -LogName Application -Source "MyApp" -Newest 20
+# Set startup type
+Set-Service "nginx" -StartupType Automatic
+Set-Service "nginx" -StartupType Disabled
 
-    # NSSM — Non-Sucking Service Manager (recommended for wrapping scripts/apps)
-    winget install NSSM.NSSM
-    nssm install MyApp "C:\Python\python.exe" "C:\myapp\server.py"
-    nssm start MyApp
-    ```
+# Create a service (from existing exe)
+New-Service -Name "MyApp" `
+    -BinaryPathName "C:\myapp\server.exe" `
+    -DisplayName "My Application" `
+    -StartupType Automatic `
+    -Description "Our custom application service"
+
+# Start on creation
+Start-Service "MyApp"
+
+# View service logs → Event Viewer → Windows Logs → Application
+Get-EventLog -LogName Application -Source "MyApp" -Newest 20
+
+# NSSM — Non-Sucking Service Manager (recommended for wrapping scripts/apps)
+winget install NSSM.NSSM
+nssm install MyApp "C:\Python\python.exe" "C:\myapp\server.py"
+nssm start MyApp
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
 ### 8. Package Management
 
-=== "Linux (Debian/Ubuntu — apt)"
-    ```bash
-    sudo apt update                    # Refresh package lists
-    sudo apt upgrade                   # Upgrade installed packages
-    sudo apt install nginx             # Install package
-    sudo apt install nginx curl git    # Install multiple
-    sudo apt remove nginx              # Remove (keep config)
-    sudo apt purge nginx               # Remove + delete config
-    sudo apt autoremove                # Remove orphaned dependencies
-    sudo apt search "web server"       # Search available packages
-    apt show nginx                     # Package info
-    dpkg -l | grep nginx               # List installed packages matching
+<Tabs>
+<TabItem value="linux-debian-ubuntu-apt" label="Linux (Debian/Ubuntu — apt)">
 
-    # Add a third-party repo (example: NodeSource for Node.js)
-    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-    sudo apt install nodejs
-    ```
+```bash
+sudo apt update                    # Refresh package lists
+sudo apt upgrade                   # Upgrade installed packages
+sudo apt install nginx             # Install package
+sudo apt install nginx curl git    # Install multiple
+sudo apt remove nginx              # Remove (keep config)
+sudo apt purge nginx               # Remove + delete config
+sudo apt autoremove                # Remove orphaned dependencies
+sudo apt search "web server"       # Search available packages
+apt show nginx                     # Package info
+dpkg -l | grep nginx               # List installed packages matching
 
-=== "Linux (RHEL/Fedora/CentOS — dnf)"
-    ```bash
-    sudo dnf check-update
-    sudo dnf upgrade
-    sudo dnf install nginx
-    sudo dnf remove nginx
-    sudo dnf search nginx
-    sudo dnf info nginx
-    rpm -qa | grep nginx               # List installed RPM packages
+# Add a third-party repo (example: NodeSource for Node.js)
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install nodejs
+```
 
-    # Enable EPEL (Extra Packages for Enterprise Linux)
-    sudo dnf install epel-release
-    ```
 
-=== "Windows (winget + choco)"
-    ```powershell
-    # winget — Microsoft's official package manager (Windows 10 1709+)
-    winget search nodejs
-    winget install OpenJS.NodeJS
-    winget install Git.Git
-    winget install Microsoft.VisualStudioCode
-    winget upgrade --all               # Upgrade all installed packages
-    winget list                        # List installed packages
-    winget uninstall "Notepad++"
+</TabItem>
+<TabItem value="linux-rhel-fedora-centos-dnf" label="Linux (RHEL/Fedora/CentOS — dnf)">
 
-    # Chocolatey — community package manager, larger selection
-    # Install choco first: https://chocolatey.org/install
-    choco install nodejs git vscode -y
-    choco upgrade all -y
-    choco list --local-only
-    choco uninstall nodejs
+```bash
+sudo dnf check-update
+sudo dnf upgrade
+sudo dnf install nginx
+sudo dnf remove nginx
+sudo dnf search nginx
+sudo dnf info nginx
+rpm -qa | grep nginx               # List installed RPM packages
 
-    # Scoop — another alternative, good for dev tools
-    # https://scoop.sh/
-    scoop install git curl vim
-    ```
+# Enable EPEL (Extra Packages for Enterprise Linux)
+sudo dnf install epel-release
+```
+
+
+</TabItem>
+<TabItem value="windows-winget-choco" label="Windows (winget + choco)">
+
+```powershell
+# winget — Microsoft's official package manager (Windows 10 1709+)
+winget search nodejs
+winget install OpenJS.NodeJS
+winget install Git.Git
+winget install Microsoft.VisualStudioCode
+winget upgrade --all               # Upgrade all installed packages
+winget list                        # List installed packages
+winget uninstall "Notepad++"
+
+# Chocolatey — community package manager, larger selection
+# Install choco first: https://chocolatey.org/install
+choco install nodejs git vscode -y
+choco upgrade all -y
+choco list --local-only
+choco uninstall nodejs
+
+# Scoop — another alternative, good for dev tools
+# https://scoop.sh/
+scoop install git curl vim
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📺 **[CS50 — Week 4: Memory (FREE)](https://cs50.harvard.edu/x/)** — Best intro to virtual memory and pointers
-    - 📖 **[Linux Command Line — William Shotts (FREE online)](https://linuxcommand.org/tlcl.php)** — Comprehensive, free, excellent
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 📺 **[Low Level Learning — OS Internals (YouTube, FREE)](https://www.youtube.com/@LowLevelLearning)** — Engaging deep dives into OS concepts
-    - 📺 **[NetworkChuck — Linux for Hackers (YouTube, FREE)](https://www.youtube.com/playlist?list=PLIhvC56v63IJIujb5cyE13oLuyORZpdkL)** — Practical Linux from scratch
+- 📺 **[CS50 — Week 4: Memory (FREE)](https://cs50.harvard.edu/x/)** — Best intro to virtual memory and pointers
+- 📖 **[Linux Command Line — William Shotts (FREE online)](https://linuxcommand.org/tlcl.php)** — Comprehensive, free, excellent
 
-=== "Reference"
-    - 📖 **[The Linux man pages (FREE)](https://man7.org/linux/man-pages/)** — The authoritative reference
-    - 📖 **[Windows Sysinternals Suite (FREE)](https://learn.microsoft.com/en-us/sysinternals/)** — Process Explorer, Process Monitor, Autoruns — indispensable Windows tools
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📺 **[Low Level Learning — OS Internals (YouTube, FREE)](https://www.youtube.com/@LowLevelLearning)** — Engaging deep dives into OS concepts
+- 📺 **[NetworkChuck — Linux for Hackers (YouTube, FREE)](https://www.youtube.com/playlist?list=PLIhvC56v63IJIujb5cyE13oLuyORZpdkL)** — Practical Linux from scratch
+
+
+</TabItem>
+<TabItem value="reference" label="Reference">
+
+- 📖 **[The Linux man pages (FREE)](https://man7.org/linux/man-pages/)** — The authoritative reference
+- 📖 **[Windows Sysinternals Suite (FREE)](https://learn.microsoft.com/en-us/sysinternals/)** — Process Explorer, Process Monitor, Autoruns — indispensable Windows tools
+
+
+</TabItem>
+</Tabs>
 
 ---
 

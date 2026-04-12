@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Kubernetes
 
 **Domain:** DevOps · **Time Estimate:** 3–4 weeks
@@ -394,17 +397,29 @@ helm lint mychart/
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📖 **[Kubernetes Docs (FREE)](https://kubernetes.io/docs/)** — Start with Concepts then Tasks; best reference available
-    - 📺 **[TechWorld with Nana — Kubernetes Crash Course (YouTube, FREE)](https://www.youtube.com/watch?v=s_o8dwzRlu4)** — Best structured walkthrough, 4 hours
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 📖 **[Kubernetes: Up and Running — O'Reilly, 3rd ed. 2022 (PAID)](https://www.oreilly.com/library/view/kubernetes-up-and/9781098110192/)** — Definitive book
-    - 🌐 **[kubectl Quick Reference (FREE)](https://kubernetes.io/docs/reference/kubectl/quick-reference/)**
+- 📖 **[Kubernetes Docs (FREE)](https://kubernetes.io/docs/)** — Start with Concepts then Tasks; best reference available
+- 📺 **[TechWorld with Nana — Kubernetes Crash Course (YouTube, FREE)](https://www.youtube.com/watch?v=s_o8dwzRlu4)** — Best structured walkthrough, 4 hours
 
-=== "Practice"
-    - 🎮 **[Killercoda — Kubernetes Scenarios (FREE tier)](https://killercoda.com/kubernetes)** — Browser-based interactive labs, no install needed
-    - 🎮 **[KodeKloud — CKA Practice (PAID)](https://kodekloud.com/)** — Best prep for Certified Kubernetes Administrator
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📖 **[Kubernetes: Up and Running — O'Reilly, 3rd ed. 2022 (PAID)](https://www.oreilly.com/library/view/kubernetes-up-and/9781098110192/)** — Definitive book
+- 🌐 **[kubectl Quick Reference (FREE)](https://kubernetes.io/docs/reference/kubectl/quick-reference/)**
+
+
+</TabItem>
+<TabItem value="practice" label="Practice">
+
+- 🎮 **[Killercoda — Kubernetes Scenarios (FREE tier)](https://killercoda.com/kubernetes)** — Browser-based interactive labs, no install needed
+- 🎮 **[KodeKloud — CKA Practice (PAID)](https://kodekloud.com/)** — Best prep for Certified Kubernetes Administrator
+
+
+</TabItem>
+</Tabs>
 
 ---
 

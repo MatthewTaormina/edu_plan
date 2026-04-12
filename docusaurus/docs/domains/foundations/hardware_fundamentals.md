@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Hardware Fundamentals
 
 **Domain:** Foundations · **Time Estimate:** 1–2 weeks · **Relevant to:** Systems Programming, DevOps, Cloud, Performance
@@ -98,46 +101,58 @@ Data is moved between cache levels in **cache lines** — fixed-size blocks (typ
 
 **Why this matters for programmers:**
 
-=== "Cache-Friendly (Fast)"
-    ```
-    // Reading array elements sequentially — same cache lines
-    int sum = 0;
-    for (int i = 0; i < 1000000; i++) {
-        sum += arr[i];    // Each element is adjacent — prefetcher works great
-    }
-    // Access pattern: arr[0], arr[1], arr[2] — same cache line hit repeatedly
-    ```
+<Tabs>
+<TabItem value="cache-friendly-fast" label="Cache-Friendly (Fast)">
 
-=== "Cache-Hostile (Slow)"
-    ```
-    // Reading a 2D array column-first in C (row-major storage)
-    int sum = 0;
-    for (int col = 0; col < 1000; col++) {
-        for (int row = 0; row < 1000; row++) {
-            sum += matrix[row][col];  // Jumping 1000 elements each time!
-        }
-    }
-    // Each access is ~4KB apart — thrashes the cache
-    // The row-first version of this loop can be 5-10x faster
-    ```
+```
+// Reading array elements sequentially — same cache lines
+int sum = 0;
+for (int i = 0; i < 1000000; i++) {
+    sum += arr[i];    // Each element is adjacent — prefetcher works great
+}
+// Access pattern: arr[0], arr[1], arr[2] — same cache line hit repeatedly
+```
 
-=== "Struct Layout (Rust/C)"
-    ```rust
-    // Bad: interleaved fields, some rarely used
-    struct Entity {
-        id: u64,       // 8 bytes
-        x: f32,        // 4 bytes — used every frame
-        y: f32,        // 4 bytes — used every frame
-        name: String,  // 24 bytes — rarely used
-        active: bool,  // 1 byte — checked every frame
-    }
-    // When iterating 10,000 entities to update position,
-    // you drag all the name data into cache unnecessarily.
 
-    // Better: Data-Oriented Design — separate hot and cold data
-    struct Positions { x: Vec<f32>, y: Vec<f32> }       // Hot — updated every frame
-    struct Metadata  { names: Vec<String>, ... }         // Cold — rarely accessed
-    ```
+</TabItem>
+<TabItem value="cache-hostile-slow" label="Cache-Hostile (Slow)">
+
+```
+// Reading a 2D array column-first in C (row-major storage)
+int sum = 0;
+for (int col = 0; col < 1000; col++) {
+    for (int row = 0; row < 1000; row++) {
+        sum += matrix[row][col];  // Jumping 1000 elements each time!
+    }
+}
+// Each access is ~4KB apart — thrashes the cache
+// The row-first version of this loop can be 5-10x faster
+```
+
+
+</TabItem>
+<TabItem value="struct-layout-rust-c" label="Struct Layout (Rust/C)">
+
+```rust
+// Bad: interleaved fields, some rarely used
+struct Entity {
+    id: u64,       // 8 bytes
+    x: f32,        // 4 bytes — used every frame
+    y: f32,        // 4 bytes — used every frame
+    name: String,  // 24 bytes — rarely used
+    active: bool,  // 1 byte — checked every frame
+}
+// When iterating 10,000 entities to update position,
+// you drag all the name data into cache unnecessarily.
+
+// Better: Data-Oriented Design — separate hot and cold data
+struct Positions { x: Vec<f32>, y: Vec<f32> }       // Hot — updated every frame
+struct Metadata  { names: Vec<String>, ... }         // Cold — rarely accessed
+```
+
+
+</TabItem>
+</Tabs>
 
 **Rule of thumb:** Process data sequentially, keep related hot data together, avoid pointer-chasing (linked lists in hot loops are cache killers).
 
@@ -272,81 +287,102 @@ What is my bottleneck?
 
 ### 9. Measuring Hardware Performance
 
-=== "Linux"
-    ```bash
-    # CPU info
-    lscpu                      # CPU topology, cores, threads, cache sizes
-    cat /proc/cpuinfo          # Detailed per-core info
-    nproc                      # Number of available processors
+<Tabs>
+<TabItem value="linux" label="Linux">
 
-    # Real-time CPU usage
-    top                        # Traditional — press 1 to show per-core
-    htop                       # Better UI (install if not present)
-    mpstat -P ALL 1            # Per-core stats every 1 second
+```bash
+# CPU info
+lscpu                      # CPU topology, cores, threads, cache sizes
+cat /proc/cpuinfo          # Detailed per-core info
+nproc                      # Number of available processors
 
-    # Memory
-    free -h                    # RAM usage (human readable)
-    cat /proc/meminfo          # Detailed memory stats
-    vmstat 1                   # Virtual memory stats per second
+# Real-time CPU usage
+top                        # Traditional — press 1 to show per-core
+htop                       # Better UI (install if not present)
+mpstat -P ALL 1            # Per-core stats every 1 second
 
-    # NUMA topology
-    numactl --hardware         # NUMA nodes and distances
-    lstopo                     # Visual CPU topology (from hwloc package)
+# Memory
+free -h                    # RAM usage (human readable)
+cat /proc/meminfo          # Detailed memory stats
+vmstat 1                   # Virtual memory stats per second
 
-    # Storage I/O
-    iostat -x 1                # Per-device I/O stats
-    iotop                      # Per-process I/O (like top for disk)
-    hdparm -Tt /dev/nvme0n1   # Raw disk sequential speed test
+# NUMA topology
+numactl --hardware         # NUMA nodes and distances
+lstopo                     # Visual CPU topology (from hwloc package)
 
-    # CPU cache benchmarking
-    lscpu | grep cache         # Cache sizes
-    perf stat ./my_program     # Hardware performance counters
-    perf stat -e cache-misses,cache-references ./my_program  # Cache miss rate
-    ```
+# Storage I/O
+iostat -x 1                # Per-device I/O stats
+iotop                      # Per-process I/O (like top for disk)
+hdparm -Tt /dev/nvme0n1   # Raw disk sequential speed test
 
-=== "Windows"
-    ```powershell
-    # CPU info
-    Get-ComputerInfo -Property *processor*
-    wmic cpu get Name,NumberOfCores,NumberOfLogicalProcessors /format:list
-    (Get-CimInstance Win32_Processor).NumberOfCores
+# CPU cache benchmarking
+lscpu | grep cache         # Cache sizes
+perf stat ./my_program     # Hardware performance counters
+perf stat -e cache-misses,cache-references ./my_program  # Cache miss rate
+```
 
-    # Real-time performance
-    # Task Manager → Performance tab (GUI)
-    # Resource Monitor → CPU/Memory/Disk tabs (GUI)
-    Get-Process | Sort-Object CPU -Descending | Select-Object -First 10
 
-    # Memory
-    Get-CimInstance Win32_PhysicalMemory | Select-Object Capacity,Speed,Manufacturer
-    [math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)
-    # Task Manager → Performance → Memory (shows cache, available, in use)
+</TabItem>
+<TabItem value="windows" label="Windows">
 
-    # Storage
-    winsat disk                # Windows built-in disk benchmark
-    Get-PhysicalDisk | Select-Object FriendlyName,MediaType,BusType,Size
-    # CrystalDiskMark (free GUI) for detailed I/O benchmarks
+```powershell
+# CPU info
+Get-ComputerInfo -Property *processor*
+wmic cpu get Name,NumberOfCores,NumberOfLogicalProcessors /format:list
+(Get-CimInstance Win32_Processor).NumberOfCores
 
-    # Performance counters (like Linux perf)
-    typeperf "\Processor(_Total)\% Processor Time" -si 1  # CPU every 1 sec
-    typeperf "\Memory\Available MBytes" -si 1
-    typeperf "\PhysicalDisk(_Total)\Disk Read Bytes/sec" -si 1
-    ```
+# Real-time performance
+# Task Manager → Performance tab (GUI)
+# Resource Monitor → CPU/Memory/Disk tabs (GUI)
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 10
+
+# Memory
+Get-CimInstance Win32_PhysicalMemory | Select-Object Capacity,Speed,Manufacturer
+[math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)
+# Task Manager → Performance → Memory (shows cache, available, in use)
+
+# Storage
+winsat disk                # Windows built-in disk benchmark
+Get-PhysicalDisk | Select-Object FriendlyName,MediaType,BusType,Size
+# CrystalDiskMark (free GUI) for detailed I/O benchmarks
+
+# Performance counters (like Linux perf)
+typeperf "\Processor(_Total)\% Processor Time" -si 1  # CPU every 1 sec
+typeperf "\Memory\Available MBytes" -si 1
+typeperf "\PhysicalDisk(_Total)\Disk Read Bytes/sec" -si 1
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📺 **[Computerphile — How CPUs Work (YouTube, FREE)](https://www.youtube.com/c/Computerphile)** — Approachable videos on CPU internals
-    - 📖 **[What Every Programmer Should Know About Memory — Ulrich Drepper (FREE PDF)](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)** — The definitive guide. Dense but worth reading chapter by chapter.
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Cloud-Specific"
-    - 📖 **[AWS Instance Types (FREE)](https://aws.amazon.com/ec2/instance-types/)** — Official reference with all specs
-    - 📖 **[Cloud computing hardware - The Register (FREE)](https://www.theregister.com/data_centre/)** — Industry news about hardware in the cloud
+- 📺 **[Computerphile — How CPUs Work (YouTube, FREE)](https://www.youtube.com/c/Computerphile)** — Approachable videos on CPU internals
+- 📖 **[What Every Programmer Should Know About Memory — Ulrich Drepper (FREE PDF)](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)** — The definitive guide. Dense but worth reading chapter by chapter.
 
-=== "Tools"
-    - 🔧 **[Geekbench (Free tier)](https://www.geekbench.com/)** — Cross-platform CPU/memory benchmarks
-    - 🔧 **[hwloc / lstopo (FREE)](https://www.open-mpi.org/projects/hwloc/)** — Visualize CPU and NUMA topology
+
+</TabItem>
+<TabItem value="cloud-specific" label="Cloud-Specific">
+
+- 📖 **[AWS Instance Types (FREE)](https://aws.amazon.com/ec2/instance-types/)** — Official reference with all specs
+- 📖 **[Cloud computing hardware - The Register (FREE)](https://www.theregister.com/data_centre/)** — Industry news about hardware in the cloud
+
+
+</TabItem>
+<TabItem value="tools" label="Tools">
+
+- 🔧 **[Geekbench (Free tier)](https://www.geekbench.com/)** — Cross-platform CPU/memory benchmarks
+- 🔧 **[hwloc / lstopo (FREE)](https://www.open-mpi.org/projects/hwloc/)** — Visualize CPU and NUMA topology
+
+
+</TabItem>
+</Tabs>
 
 ---
 

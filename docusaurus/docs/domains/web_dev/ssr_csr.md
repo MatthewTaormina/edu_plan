@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # SSR vs CSR — Rendering Strategies
 
 > **Status:** 🟢 Modern — SSR/SSG are standard in production frontend architecture.
@@ -172,9 +175,18 @@ Is this page the same for all users?
 
 ## 📚 Resources
 
-=== "Primary"
-    - [Next.js Docs: Rendering](https://nextjs.org/docs/app/building-your-application/rendering) — SSR vs SSG vs ISR in practice
-    - [web.dev: Rendering on the Web](https://web.dev/articles/rendering-on-the-web) — comprehensive guide from Google
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [Patterns.dev: Rendering Patterns](https://www.patterns.dev/vanilla/rendering-patterns/) — visual deep-dive
+- [Next.js Docs: Rendering](https://nextjs.org/docs/app/building-your-application/rendering) — SSR vs SSG vs ISR in practice
+- [web.dev: Rendering on the Web](https://web.dev/articles/rendering-on-the-web) — comprehensive guide from Google
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Patterns.dev: Rendering Patterns](https://www.patterns.dev/vanilla/rendering-patterns/) — visual deep-dive
+
+
+</TabItem>
+</Tabs>

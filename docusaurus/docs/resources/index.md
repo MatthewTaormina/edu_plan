@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Official Documentation & Reference Index
 
 > A curated index of **official** and **highly trusted** reference sites, organized by topic.
@@ -15,140 +18,197 @@
 
 ## 🌐 Web Platform
 
-=== "HTML & CSS"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [MDN Web Docs — HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) | **Official** | The gold standard. Every element, attribute, example. |
-    | [MDN Web Docs — CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) | **Official** | Properties, syntax, browser support tables |
-    | [W3C HTML Spec](https://html.spec.whatwg.org/) | **Official Standard** | The actual spec — for deep technical understanding |
-    | [Can I Use](https://caniuse.com/) | Reference | Browser compatibility for HTML/CSS/JS features |
-    | [CSS Tricks](https://css-tricks.com/) | Trusted | Practical guides, flexbox/grid visual references |
+<Tabs>
+<TabItem value="html-css" label="HTML & CSS">
 
-=== "JavaScript"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [MDN — JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) | **Official** | Complete JS reference including browser APIs |
-    | [ECMAScript Spec](https://tc39.es/ecma262/) | **Official Standard** | Raw language spec — for spec authors and the curious |
-    | [TC39 Proposal Tracker](https://tc39.es/proposals/) | **Official** | Upcoming JavaScript features and their stage |
-    | [JavaScript.info](https://javascript.info/) | Trusted | Best free textbook on modern JavaScript |
-    | [Node.js Docs](https://nodejs.org/en/docs/) | **Official** | Node.js runtime API reference |
+| Resource | Type | Notes |
+|----------|------|-------|
+| [MDN Web Docs — HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) | **Official** | The gold standard. Every element, attribute, example. |
+| [MDN Web Docs — CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) | **Official** | Properties, syntax, browser support tables |
+| [W3C HTML Spec](https://html.spec.whatwg.org/) | **Official Standard** | The actual spec — for deep technical understanding |
+| [Can I Use](https://caniuse.com/) | Reference | Browser compatibility for HTML/CSS/JS features |
+| [CSS Tricks](https://css-tricks.com/) | Trusted | Practical guides, flexbox/grid visual references |
 
-=== "TypeScript"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) | **Official** | The authoritative guide |
-    | [TypeScript Playground](https://www.typescriptlang.org/play) | **Official** | Run TS in browser, check type inference |
-    | [TypeScript Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html) | **Official** | New features by version |
-    | [TS Config Reference](https://www.typescriptlang.org/tsconfig) | **Official** | Every tsconfig.json option explained |
-    | [Type Challenges](https://github.com/type-challenges/type-challenges) | Practice | Advanced type system puzzles |
+
+</TabItem>
+<TabItem value="javascript" label="JavaScript">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [MDN — JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) | **Official** | Complete JS reference including browser APIs |
+| [ECMAScript Spec](https://tc39.es/ecma262/) | **Official Standard** | Raw language spec — for spec authors and the curious |
+| [TC39 Proposal Tracker](https://tc39.es/proposals/) | **Official** | Upcoming JavaScript features and their stage |
+| [JavaScript.info](https://javascript.info/) | Trusted | Best free textbook on modern JavaScript |
+| [Node.js Docs](https://nodejs.org/en/docs/) | **Official** | Node.js runtime API reference |
+
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) | **Official** | The authoritative guide |
+| [TypeScript Playground](https://www.typescriptlang.org/play) | **Official** | Run TS in browser, check type inference |
+| [TypeScript Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html) | **Official** | New features by version |
+| [TS Config Reference](https://www.typescriptlang.org/tsconfig) | **Official** | Every tsconfig.json option explained |
+| [Type Challenges](https://github.com/type-challenges/type-challenges) | Practice | Advanced type system puzzles |
+
+
+</TabItem>
+</Tabs>
 
 ---
 
 ## 🐍 Languages
 
-=== "Python"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [Python Docs](https://docs.python.org/3/) | **Official** | Language reference, stdlib, tutorials |
-    | [Python What's New](https://docs.python.org/3/whatsnew/) | **Official** | New features per version |
-    | [PEP Index](https://peps.python.org/) | **Official** | Python Enhancement Proposals — language design decisions |
-    | [PEP 8 — Style Guide](https://peps.python.org/pep-0008/) | **Official** | The official Python coding style |
-    | [PyPI](https://pypi.org/) | **Official** | The package index — all installable packages |
-    | [Real Python](https://realpython.com/) | Trusted | Best practical Python tutorials |
+<Tabs>
+<TabItem value="python" label="Python">
 
-=== "Rust"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [The Rust Book](https://doc.rust-lang.org/book/) | **Official** | The primary learning resource — free online |
-    | [Rust Standard Lib Docs](https://doc.rust-lang.org/std/) | **Official** | Full stdlib API reference |
-    | [Rust Reference](https://doc.rust-lang.org/reference/) | **Official** | Language reference (more formal than the book) |
-    | [Rust by Example](https://doc.rust-lang.org/rust-by-example/) | **Official** | Annotated examples |
-    | [Rustonomicon](https://doc.rust-lang.org/nomicon/) | **Official** | Dark arts of unsafe Rust |
-    | [crates.io](https://crates.io/) | **Official** | Rust package registry |
-    | [Docs.rs](https://docs.rs/) | **Official** | Auto-generated docs for every crate |
+| Resource | Type | Notes |
+|----------|------|-------|
+| [Python Docs](https://docs.python.org/3/) | **Official** | Language reference, stdlib, tutorials |
+| [Python What's New](https://docs.python.org/3/whatsnew/) | **Official** | New features per version |
+| [PEP Index](https://peps.python.org/) | **Official** | Python Enhancement Proposals — language design decisions |
+| [PEP 8 — Style Guide](https://peps.python.org/pep-0008/) | **Official** | The official Python coding style |
+| [PyPI](https://pypi.org/) | **Official** | The package index — all installable packages |
+| [Real Python](https://realpython.com/) | Trusted | Best practical Python tutorials |
 
-=== "Go"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [Go Docs](https://go.dev/doc/) | **Official** | Tour, spec, stdlib all in one place |
-    | [pkg.go.dev](https://pkg.go.dev/) | **Official** | Package documentation search |
-    | [Effective Go](https://go.dev/doc/effective_go) | **Official** | Idiomatic Go patterns |
 
-=== "C / C++"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [cppreference.com](https://en.cppreference.com/) | Reference | Best C/C++ reference, more readable than standards |
-    | [C Standard (latest)](https://www.iso.org/standard/82075.html) | **Official Standard** | Paid — cppreference is the practical equivalent |
-    | [GNU libc Manual](https://www.gnu.org/software/libc/manual/) | **Official** | Complete glibc reference for Linux |
+</TabItem>
+<TabItem value="rust" label="Rust">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [The Rust Book](https://doc.rust-lang.org/book/) | **Official** | The primary learning resource — free online |
+| [Rust Standard Lib Docs](https://doc.rust-lang.org/std/) | **Official** | Full stdlib API reference |
+| [Rust Reference](https://doc.rust-lang.org/reference/) | **Official** | Language reference (more formal than the book) |
+| [Rust by Example](https://doc.rust-lang.org/rust-by-example/) | **Official** | Annotated examples |
+| [Rustonomicon](https://doc.rust-lang.org/nomicon/) | **Official** | Dark arts of unsafe Rust |
+| [crates.io](https://crates.io/) | **Official** | Rust package registry |
+| [Docs.rs](https://docs.rs/) | **Official** | Auto-generated docs for every crate |
+
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [Go Docs](https://go.dev/doc/) | **Official** | Tour, spec, stdlib all in one place |
+| [pkg.go.dev](https://pkg.go.dev/) | **Official** | Package documentation search |
+| [Effective Go](https://go.dev/doc/effective_go) | **Official** | Idiomatic Go patterns |
+
+
+</TabItem>
+<TabItem value="c-c" label="C / C++">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [cppreference.com](https://en.cppreference.com/) | Reference | Best C/C++ reference, more readable than standards |
+| [C Standard (latest)](https://www.iso.org/standard/82075.html) | **Official Standard** | Paid — cppreference is the practical equivalent |
+| [GNU libc Manual](https://www.gnu.org/software/libc/manual/) | **Official** | Complete glibc reference for Linux |
+
+
+</TabItem>
+</Tabs>
 
 ---
 
 ## 🔧 DevOps & Infrastructure
 
-=== "Docker"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [Docker Docs](https://docs.docker.com/) | **Official** | Guides, reference, best practices |
-    | [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/) | **Official** | Every Dockerfile instruction documented |
-    | [Docker Hub](https://hub.docker.com/) | **Official** | Official image registry |
-    | [Compose File Reference](https://docs.docker.com/compose/compose-file/) | **Official** | docker-compose.yml schema |
+<Tabs>
+<TabItem value="docker" label="Docker">
 
-=== "Kubernetes"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [Kubernetes Docs](https://kubernetes.io/docs/) | **Official** | Concepts, tutorials, API reference |
-    | [kubectl Cheatsheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/) | **Official** | Essential command reference |
-    | [Helm Docs](https://helm.sh/docs/) | **Official** | Kubernetes package manager |
-    | [k8s API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) | **Official** | Full API object reference |
+| Resource | Type | Notes |
+|----------|------|-------|
+| [Docker Docs](https://docs.docker.com/) | **Official** | Guides, reference, best practices |
+| [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/) | **Official** | Every Dockerfile instruction documented |
+| [Docker Hub](https://hub.docker.com/) | **Official** | Official image registry |
+| [Compose File Reference](https://docs.docker.com/compose/compose-file/) | **Official** | docker-compose.yml schema |
 
-=== "Linux"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [Linux man pages](https://man7.org/linux/man-pages/) | **Official** | Authoritative command and syscall reference |
-    | [Arch Linux Wiki](https://wiki.archlinux.org/) | Trusted | Best maintained Linux wiki, works for all distros |
-    | [systemd Docs](https://systemd.io/) | **Official** | systemd unit files, journald, networkd |
-    | [The Linux Command Line (FREE book)](https://linuxcommand.org/tlcl.php) | Trusted | Comprehensive intro by William Shotts |
 
-=== "Windows"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [Microsoft Docs (learn.microsoft.com)](https://learn.microsoft.com/) | **Official** | Covers PowerShell, Windows Server, Azure, .NET |
-    | [PowerShell Docs](https://learn.microsoft.com/en-us/powershell/) | **Official** | Complete cmdlet reference |
-    | [Sysinternals Suite](https://learn.microsoft.com/en-us/sysinternals/) | **Official (MS)** | Process Explorer, ProcMon, Autoruns, BGInfo |
-    | [Windows Commands A-Z](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands) | **Official** | Every `cmd.exe` command documented |
+</TabItem>
+<TabItem value="kubernetes" label="Kubernetes">
 
-=== "Git"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [Pro Git Book (FREE)](https://git-scm.com/book/en/v2) | **Official** | Authoritative, free, excellent |
-    | [Git Reference](https://git-scm.com/docs) | **Official** | Every git command and flag |
-    | [GitHub Docs](https://docs.github.com/) | **Official** | GitHub-specific features |
-    | [GitLab Docs](https://docs.gitlab.com/) | **Official** | GitLab CI/CD, MR workflows |
+| Resource | Type | Notes |
+|----------|------|-------|
+| [Kubernetes Docs](https://kubernetes.io/docs/) | **Official** | Concepts, tutorials, API reference |
+| [kubectl Cheatsheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/) | **Official** | Essential command reference |
+| [Helm Docs](https://helm.sh/docs/) | **Official** | Kubernetes package manager |
+| [k8s API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) | **Official** | Full API object reference |
+
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [Linux man pages](https://man7.org/linux/man-pages/) | **Official** | Authoritative command and syscall reference |
+| [Arch Linux Wiki](https://wiki.archlinux.org/) | Trusted | Best maintained Linux wiki, works for all distros |
+| [systemd Docs](https://systemd.io/) | **Official** | systemd unit files, journald, networkd |
+| [The Linux Command Line (FREE book)](https://linuxcommand.org/tlcl.php) | Trusted | Comprehensive intro by William Shotts |
+
+
+</TabItem>
+<TabItem value="windows" label="Windows">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [Microsoft Docs (learn.microsoft.com)](https://learn.microsoft.com/) | **Official** | Covers PowerShell, Windows Server, Azure, .NET |
+| [PowerShell Docs](https://learn.microsoft.com/en-us/powershell/) | **Official** | Complete cmdlet reference |
+| [Sysinternals Suite](https://learn.microsoft.com/en-us/sysinternals/) | **Official (MS)** | Process Explorer, ProcMon, Autoruns, BGInfo |
+| [Windows Commands A-Z](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands) | **Official** | Every `cmd.exe` command documented |
+
+
+</TabItem>
+<TabItem value="git" label="Git">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [Pro Git Book (FREE)](https://git-scm.com/book/en/v2) | **Official** | Authoritative, free, excellent |
+| [Git Reference](https://git-scm.com/docs) | **Official** | Every git command and flag |
+| [GitHub Docs](https://docs.github.com/) | **Official** | GitHub-specific features |
+| [GitLab Docs](https://docs.gitlab.com/) | **Official** | GitLab CI/CD, MR workflows |
+
+
+</TabItem>
+</Tabs>
 
 ---
 
 ## ☁️ Cloud Providers
 
-=== "AWS"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [AWS Documentation](https://docs.aws.amazon.com/) | **Official** | All services, all regions |
-    | [AWS Whitepapers](https://aws.amazon.com/whitepapers/) | **Official** | Architecture best practices |
-    | [AWS Pricing Calculator](https://calculator.aws/) | **Official** | Cost estimation before deployment |
-    | [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/) | **Official** | The 6 pillars: cost, reliability, security, perf, ops, sustainability |
+<Tabs>
+<TabItem value="aws" label="AWS">
 
-=== "Azure"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [Azure Docs](https://learn.microsoft.com/en-us/azure/) | **Official** | All Azure services and tutorials |
-    | [Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/) | **Official** | Reference architectures and patterns |
-    | [Azure Pricing Calculator](https://azure.microsoft.com/en-us/pricing/calculator/) | **Official** | Cost estimation |
+| Resource | Type | Notes |
+|----------|------|-------|
+| [AWS Documentation](https://docs.aws.amazon.com/) | **Official** | All services, all regions |
+| [AWS Whitepapers](https://aws.amazon.com/whitepapers/) | **Official** | Architecture best practices |
+| [AWS Pricing Calculator](https://calculator.aws/) | **Official** | Cost estimation before deployment |
+| [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/) | **Official** | The 6 pillars: cost, reliability, security, perf, ops, sustainability |
 
-=== "GCP"
-    | Resource | Type | Notes |
-    |----------|------|-------|
-    | [Google Cloud Docs](https://cloud.google.com/docs) | **Official** | All GCP services |
-    | [GCP Architecture Framework](https://cloud.google.com/architecture/framework) | **Official** | Best practices |
+
+</TabItem>
+<TabItem value="azure" label="Azure">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [Azure Docs](https://learn.microsoft.com/en-us/azure/) | **Official** | All Azure services and tutorials |
+| [Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/) | **Official** | Reference architectures and patterns |
+| [Azure Pricing Calculator](https://azure.microsoft.com/en-us/pricing/calculator/) | **Official** | Cost estimation |
+
+
+</TabItem>
+<TabItem value="gcp" label="GCP">
+
+| Resource | Type | Notes |
+|----------|------|-------|
+| [Google Cloud Docs](https://cloud.google.com/docs) | **Official** | All GCP services |
+| [GCP Architecture Framework](https://cloud.google.com/architecture/framework) | **Official** | Best practices |
+
+
+</TabItem>
+</Tabs>
 
 ---
 

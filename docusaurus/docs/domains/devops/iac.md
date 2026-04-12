@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Infrastructure as Code (IaC)
 
 **Domain:** DevOps · **Time Estimate:** 2–3 weeks
@@ -101,166 +104,178 @@ In practice: **Terraform provisions infrastructure; Ansible configures what runs
 
 ### 3. Writing Terraform
 
-=== "AWS (most common)"
-    ```hcl
-    # main.tf
+<Tabs>
+<TabItem value="aws-most-common" label="AWS (most common)">
 
-    terraform {
-      required_version = ">= 1.5"
-      required_providers {
-        aws = {
-          source  = "hashicorp/aws"
-          version = "~> 5.0"    # 5.x — released 2023
-        }
-      }
+```hcl
+# main.tf
 
-      # Remote state storage — REQUIRED for team use
-      backend "s3" {
-        bucket         = "my-terraform-state"
-        key            = "prod/terraform.tfstate"
-        region         = "us-east-1"
-        dynamodb_table = "terraform-locks"   # Prevents concurrent applies
-        encrypt        = true
-      }
+terraform {
+  required_version = ">= 1.5"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"    # 5.x — released 2023
     }
+  }
 
-    provider "aws" {
-      region = var.aws_region
-    }
+  # Remote state storage — REQUIRED for team use
+  backend "s3" {
+    bucket         = "my-terraform-state"
+    key            = "prod/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-locks"   # Prevents concurrent applies
+    encrypt        = true
+  }
+}
 
-    # ── Variables ─────────────────────────────────────────────
-    variable "aws_region" {
-      type        = string
-      default     = "us-east-1"
-      description = "AWS region to deploy into"
-    }
+provider "aws" {
+  region = var.aws_region
+}
 
-    variable "environment" {
-      type        = string
-      description = "Deployment environment: dev, staging, prod"
-      validation {
-        condition     = contains(["dev", "staging", "prod"], var.environment)
-        error_message = "Must be dev, staging, or prod."
-      }
-    }
+# ── Variables ─────────────────────────────────────────────
+variable "aws_region" {
+  type        = string
+  default     = "us-east-1"
+  description = "AWS region to deploy into"
+}
 
-    # ── VPC and Networking ────────────────────────────────────
-    resource "aws_vpc" "main" {
-      cidr_block           = "10.0.0.0/16"
-      enable_dns_hostnames = true
+variable "environment" {
+  type        = string
+  description = "Deployment environment: dev, staging, prod"
+  validation {
+    condition     = contains(["dev", "staging", "prod"], var.environment)
+    error_message = "Must be dev, staging, or prod."
+  }
+}
 
-      tags = {
-        Name        = "${var.environment}-vpc"
-        Environment = var.environment
-        ManagedBy   = "terraform"
-      }
-    }
+# ── VPC and Networking ────────────────────────────────────
+resource "aws_vpc" "main" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
 
-    resource "aws_subnet" "public" {
-      count             = 2
-      vpc_id            = aws_vpc.main.id
-      cidr_block        = cidrsubnet("10.0.0.0/16", 8, count.index)
-      availability_zone = data.aws_availability_zones.available.names[count.index]
-      map_public_ip_on_launch = true
+  tags = {
+    Name        = "${var.environment}-vpc"
+    Environment = var.environment
+    ManagedBy   = "terraform"
+  }
+}
 
-      tags = {
-        Name = "${var.environment}-public-${count.index}"
-      }
-    }
+resource "aws_subnet" "public" {
+  count             = 2
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet("10.0.0.0/16", 8, count.index)
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+  map_public_ip_on_launch = true
 
-    data "aws_availability_zones" "available" {
-      state = "available"
-    }
+  tags = {
+    Name = "${var.environment}-public-${count.index}"
+  }
+}
 
-    # ── EC2 Instance ──────────────────────────────────────────
-    data "aws_ami" "ubuntu" {
-      most_recent = true
-      owners      = ["099720109477"]   # Canonical (Ubuntu)
-      filter {
-        name   = "name"
-        values = ["ubuntu/images/hvm-ssd/ubuntu-*-22.04-amd64-server-*"]
-      }
-    }
+data "aws_availability_zones" "available" {
+  state = "available"
+}
 
-    resource "aws_instance" "app" {
-      ami             = data.aws_ami.ubuntu.id
-      instance_type   = "t3.micro"
-      subnet_id       = aws_subnet.public[0].id
-      key_name        = aws_key_pair.deployer.key_name
+# ── EC2 Instance ──────────────────────────────────────────
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"]   # Canonical (Ubuntu)
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-*-22.04-amd64-server-*"]
+  }
+}
 
-      tags = {
-        Name = "${var.environment}-app"
-      }
-    }
+resource "aws_instance" "app" {
+  ami             = data.aws_ami.ubuntu.id
+  instance_type   = "t3.micro"
+  subnet_id       = aws_subnet.public[0].id
+  key_name        = aws_key_pair.deployer.key_name
 
-    resource "aws_key_pair" "deployer" {
-      key_name   = "${var.environment}-deployer"
-      public_key = file("~/.ssh/id_ed25519.pub")
-    }
+  tags = {
+    Name = "${var.environment}-app"
+  }
+}
 
-    # ── Outputs ───────────────────────────────────────────────
-    output "instance_public_ip" {
-      value       = aws_instance.app.public_ip
-      description = "Public IP of the app server"
-    }
+resource "aws_key_pair" "deployer" {
+  key_name   = "${var.environment}-deployer"
+  public_key = file("~/.ssh/id_ed25519.pub")
+}
 
-    output "vpc_id" {
-      value = aws_vpc.main.id
-    }
-    ```
+# ── Outputs ───────────────────────────────────────────────
+output "instance_public_ip" {
+  value       = aws_instance.app.public_ip
+  description = "Public IP of the app server"
+}
 
-=== "Variables and tfvars"
-    ```hcl
-    # variables.tf — declare all variables here
-    variable "db_password" {
-      type      = string
-      sensitive = true    # Redacted from plan output and logs
-    }
+output "vpc_id" {
+  value = aws_vpc.main.id
+}
+```
 
-    variable "instance_type" {
-      type    = string
-      default = "t3.micro"
-    }
 
-    # terraform.tfvars — values for non-sensitive vars (commit this)
-    # instance_type = "t3.small"
-    # environment   = "prod"
+</TabItem>
+<TabItem value="variables-and-tfvars" label="Variables and tfvars">
 
-    # terraform.tfvars.json is also valid
-    # Never commit secrets — pass via env var or secret manager:
-    # TF_VAR_db_password=mysecret terraform apply
-    ```
+```hcl
+# variables.tf — declare all variables here
+variable "db_password" {
+  type      = string
+  sensitive = true    # Redacted from plan output and logs
+}
 
-=== "Modules — reusable components"
-    ```hcl
-    # ── Call a module ─────────────────────────────────────────
-    module "vpc" {
-      source  = "terraform-aws-modules/vpc/aws"
-      version = "~> 5.0"
+variable "instance_type" {
+  type    = string
+  default = "t3.micro"
+}
 
-      name = "${var.environment}-vpc"
-      cidr = "10.0.0.0/16"
+# terraform.tfvars — values for non-sensitive vars (commit this)
+# instance_type = "t3.small"
+# environment   = "prod"
 
-      azs             = ["us-east-1a", "us-east-1b"]
-      private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-      public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+# terraform.tfvars.json is also valid
+# Never commit secrets — pass via env var or secret manager:
+# TF_VAR_db_password=mysecret terraform apply
+```
 
-      enable_nat_gateway = true
-    }
 
-    # ── Write a module ────────────────────────────────────────
-    # modules/web_server/main.tf
-    variable "instance_type" { type = string }
-    variable "subnet_id"     { type = string }
+</TabItem>
+<TabItem value="modules-reusable-components" label="Modules — reusable components">
 
-    resource "aws_instance" "this" {
-      ami           = data.aws_ami.ubuntu.id
-      instance_type = var.instance_type
-      subnet_id     = var.subnet_id
-    }
+```hcl
+# ── Call a module ─────────────────────────────────────────
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
 
-    output "public_ip" { value = aws_instance.this.public_ip }
-    ```
+  name = "${var.environment}-vpc"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["us-east-1a", "us-east-1b"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+
+  enable_nat_gateway = true
+}
+
+# ── Write a module ────────────────────────────────────────
+# modules/web_server/main.tf
+variable "instance_type" { type = string }
+variable "subnet_id"     { type = string }
+
+resource "aws_instance" "this" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = var.instance_type
+  subnet_id     = var.subnet_id
+}
+
+output "public_ip" { value = aws_instance.this.public_ip }
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -460,16 +475,28 @@ Developer pushes PR → Review → Merge to main
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📖 **[Terraform Docs (FREE)](https://developer.hashicorp.com/terraform/docs)** — Start with "Get Started — AWS/Azure/GCP" tutorials; they are excellent
-    - 📖 **[Ansible Docs (FREE)](https://docs.ansible.com/)** — Official reference; structured well for learning
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 📺 **[TechWorld with Nana — Terraform Course (YouTube, FREE)](https://www.youtube.com/watch?v=7xngnjfIlK4)** — Best full walkthrough with AWS, 4 hours
-    - 📺 **[Jeff Geerling — Ansible 101 (YouTube, FREE)](https://www.youtube.com/playlist?list=PL2_OBreMn7FqZkvMYt6ATmgC0KAGGJNAN)** — Most thorough intro to Ansible; very practical
+- 📖 **[Terraform Docs (FREE)](https://developer.hashicorp.com/terraform/docs)** — Start with "Get Started — AWS/Azure/GCP" tutorials; they are excellent
+- 📖 **[Ansible Docs (FREE)](https://docs.ansible.com/)** — Official reference; structured well for learning
 
-=== "Practice"
-    - 🎮 **[Terraform AWS Getting Started (FREE tier)](https://developer.hashicorp.com/terraform/tutorials/aws-get-started)** — Official interactive tutorials, free with AWS free tier
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📺 **[TechWorld with Nana — Terraform Course (YouTube, FREE)](https://www.youtube.com/watch?v=7xngnjfIlK4)** — Best full walkthrough with AWS, 4 hours
+- 📺 **[Jeff Geerling — Ansible 101 (YouTube, FREE)](https://www.youtube.com/playlist?list=PL2_OBreMn7FqZkvMYt6ATmgC0KAGGJNAN)** — Most thorough intro to Ansible; very practical
+
+
+</TabItem>
+<TabItem value="practice" label="Practice">
+
+- 🎮 **[Terraform AWS Getting Started (FREE tier)](https://developer.hashicorp.com/terraform/tutorials/aws-get-started)** — Official interactive tutorials, free with AWS free tier
+
+
+</TabItem>
+</Tabs>
 
 ---
 

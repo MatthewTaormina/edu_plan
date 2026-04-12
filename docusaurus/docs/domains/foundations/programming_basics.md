@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Programming Basics
 
 **Domain:** Foundations · **Time Estimate:** 3–4 weeks · **Language Used:** Python
@@ -355,16 +358,28 @@ def get_age(value):
 
 ## 📚 Resources
 
-=== "Primary (Do These)"
-    - 📺 **[CS50P — Harvard Python Course (FREE)](https://cs50.harvard.edu/python/)** — Weeks 0–6. The gold standard. Do all problem sets.
-    - 📖 **[Python Docs: Tutorial (FREE)](https://docs.python.org/3/tutorial/)** — Chapters 3–9. Use as reference, not primary reading.
+<Tabs>
+<TabItem value="primary" label="Primary (Do These)">
 
-=== "Supplemental"
-    - 📺 **[Corey Schafer — Python Tutorials (YouTube, FREE)](https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU)** — Extremely clear explanations, great for individual topics
-    - 🎮 **[Exercism Python Track (FREE)](https://exercism.org/tracks/python)** — Practice problems with mentoring
+- 📺 **[CS50P — Harvard Python Course (FREE)](https://cs50.harvard.edu/python/)** — Weeks 0–6. The gold standard. Do all problem sets.
+- 📖 **[Python Docs: Tutorial (FREE)](https://docs.python.org/3/tutorial/)** — Chapters 3–9. Use as reference, not primary reading.
 
-=== "Reference"
-    - 📖 **[Real Python (FREE + paid)](https://realpython.com/)** — Best Python articles on the web. Search for specific topics.
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📺 **[Corey Schafer — Python Tutorials (YouTube, FREE)](https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU)** — Extremely clear explanations, great for individual topics
+- 🎮 **[Exercism Python Track (FREE)](https://exercism.org/tracks/python)** — Practice problems with mentoring
+
+
+</TabItem>
+<TabItem value="reference" label="Reference">
+
+- 📖 **[Real Python (FREE + paid)](https://realpython.com/)** — Best Python articles on the web. Search for specific topics.
+
+
+</TabItem>
+</Tabs>
 
 ---
 

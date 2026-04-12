@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # GraphQL
 
 > **Tool:** GraphQL · **Introduced:** 2015 (Facebook open-sourced) · **Latest:** 2021 spec · **Status:** 🟢 Modern (strong adoption in product teams)
@@ -249,10 +252,19 @@ function NewPostForm() {
 
 ## 📚 Resources
 
-=== "Primary"
-    - [GraphQL.org — Learn](https://graphql.org/learn/) — the official specification explained
-    - [Apollo Docs](https://www.apollographql.com/docs/react/) — Apollo Client for React
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [How to GraphQL](https://www.howtographql.com/) — free full-stack tutorial
-    - [GraphQL vs REST (Apollo Blog)](https://www.apollographql.com/blog/graphql-vs-rest) — when to use each
+- [GraphQL.org — Learn](https://graphql.org/learn/) — the official specification explained
+- [Apollo Docs](https://www.apollographql.com/docs/react/) — Apollo Client for React
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [How to GraphQL](https://www.howtographql.com/) — free full-stack tutorial
+- [GraphQL vs REST (Apollo Blog)](https://www.apollographql.com/blog/graphql-vs-rest) — when to use each
+
+
+</TabItem>
+</Tabs>

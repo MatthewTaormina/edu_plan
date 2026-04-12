@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Monitoring & Observability
 
 **Domain:** DevOps · **Time Estimate:** 2 weeks
@@ -84,89 +87,98 @@ Alertmanager        → routes firing alerts to Slack, PagerDuty, email
 | `Histogram` | Distribution of values (latency, request size) | `http_request_duration_seconds` |
 | `Summary` | Pre-computed quantiles (older pattern, prefer Histogram) | `rpc_duration_summary` |
 
-=== "Python (with prometheus-client)"
-    ```python
-    # pip install prometheus-client
-    from prometheus_client import Counter, Histogram, Gauge, start_http_server
-    import time, random
+<Tabs>
+<TabItem value="python-with-prometheus-client" label="Python (with prometheus-client)">
 
-    # Define metrics
-    REQUEST_COUNT = Counter(
-        'http_requests_total',
-        'Total HTTP requests',
-        ['method', 'endpoint', 'status_code']   # Labels
-    )
-    REQUEST_LATENCY = Histogram(
-        'http_request_duration_seconds',
-        'HTTP request latency',
-        ['endpoint'],
-        buckets=[0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0]
-    )
-    ACTIVE_CONNECTIONS = Gauge(
-        'active_connections',
-        'Currently open connections'
-    )
+```python
+# pip install prometheus-client
+from prometheus_client import Counter, Histogram, Gauge, start_http_server
+import time, random
 
-    # Use in your application
-    def handle_request(method: str, endpoint: str):
-        ACTIVE_CONNECTIONS.inc()
-        start = time.time()
-        try:
-            # ... process request ...
-            status = "200"
-        except Exception:
-            status = "500"
-        finally:
-            duration = time.time() - start
-            REQUEST_COUNT.labels(method=method, endpoint=endpoint, status_code=status).inc()
-            REQUEST_LATENCY.labels(endpoint=endpoint).observe(duration)
-            ACTIVE_CONNECTIONS.dec()
+# Define metrics
+REQUEST_COUNT = Counter(
+    'http_requests_total',
+    'Total HTTP requests',
+    ['method', 'endpoint', 'status_code']   # Labels
+)
+REQUEST_LATENCY = Histogram(
+    'http_request_duration_seconds',
+    'HTTP request latency',
+    ['endpoint'],
+    buckets=[0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0]
+)
+ACTIVE_CONNECTIONS = Gauge(
+    'active_connections',
+    'Currently open connections'
+)
 
-    # Expose /metrics endpoint on port 8001
-    start_http_server(8001)
-    ```
+# Use in your application
+def handle_request(method: str, endpoint: str):
+    ACTIVE_CONNECTIONS.inc()
+    start = time.time()
+    try:
+        # ... process request ...
+        status = "200"
+    except Exception:
+        status = "500"
+    finally:
+        duration = time.time() - start
+        REQUEST_COUNT.labels(method=method, endpoint=endpoint, status_code=status).inc()
+        REQUEST_LATENCY.labels(endpoint=endpoint).observe(duration)
+        ACTIVE_CONNECTIONS.dec()
 
-=== "TypeScript (with prom-client)"
-    ```typescript
-    // npm install prom-client
-    import { Counter, Histogram, Gauge, Registry, collectDefaultMetrics } from 'prom-client';
+# Expose /metrics endpoint on port 8001
+start_http_server(8001)
+```
 
-    const register = new Registry();
 
-    // Collect default Node.js metrics (heap, GC, event loop lag)
-    collectDefaultMetrics({ register });
+</TabItem>
+<TabItem value="typescript-with-prom-client" label="TypeScript (with prom-client)">
 
-    export const httpRequestsTotal = new Counter({
-      name: 'http_requests_total',
-      help: 'Total HTTP requests',
-      labelNames: ['method', 'route', 'status_code'],
-      registers: [register],
-    });
+```typescript
+// npm install prom-client
+import { Counter, Histogram, Gauge, Registry, collectDefaultMetrics } from 'prom-client';
 
-    export const httpLatency = new Histogram({
-      name: 'http_request_duration_seconds',
-      help: 'HTTP request latency in seconds',
-      labelNames: ['route'],
-      buckets: [0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5],
-      registers: [register],
-    });
+const register = new Registry();
 
-    // Express middleware
-    app.use((req, res, next) => {
-      const end = httpLatency.startTimer({ route: req.path });
-      res.on('finish', () => {
-        httpRequestsTotal.inc({ method: req.method, route: req.path, status_code: res.statusCode });
-        end();
-      });
-      next();
-    });
+// Collect default Node.js metrics (heap, GC, event loop lag)
+collectDefaultMetrics({ register });
 
-    // /metrics endpoint
-    app.get('/metrics', async (req, res) => {
-      res.set('Content-Type', register.contentType);
-      res.end(await register.metrics());
-    });
-    ```
+export const httpRequestsTotal = new Counter({
+  name: 'http_requests_total',
+  help: 'Total HTTP requests',
+  labelNames: ['method', 'route', 'status_code'],
+  registers: [register],
+});
+
+export const httpLatency = new Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'HTTP request latency in seconds',
+  labelNames: ['route'],
+  buckets: [0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5],
+  registers: [register],
+});
+
+// Express middleware
+app.use((req, res, next) => {
+  const end = httpLatency.startTimer({ route: req.path });
+  res.on('finish', () => {
+    httpRequestsTotal.inc({ method: req.method, route: req.path, status_code: res.statusCode });
+    end();
+  });
+  next();
+});
+
+// /metrics endpoint
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(await register.metrics());
+});
+```
+
+
+</TabItem>
+</Tabs>
 
 **Prometheus config (`prometheus.yml`):**
 
@@ -292,50 +304,59 @@ groups:
 
 Structured logs are machine-parseable (JSON) instead of free-form text. This lets you query them efficiently.
 
-=== "Python (structlog — Modern)"
-    ```python
-    # pip install structlog
-    # structlog: Introduced 2013, still actively maintained — 🟢 current
-    import structlog
+<Tabs>
+<TabItem value="python-structlog-modern" label="Python (structlog — Modern)">
 
-    log = structlog.get_logger()
+```python
+# pip install structlog
+# structlog: Introduced 2013, still actively maintained — 🟢 current
+import structlog
 
-    # Bind context that appears in all subsequent log lines
-    log = log.bind(service="api", version="1.2.0")
+log = structlog.get_logger()
 
-    log.info("request_started",
-             method="GET",
-             path="/users",
-             request_id="abc-123")
+# Bind context that appears in all subsequent log lines
+log = log.bind(service="api", version="1.2.0")
 
-    log.error("db_query_failed",
-              query="SELECT * FROM users",
-              duration_ms=5043,
-              error="connection timeout")
+log.info("request_started",
+         method="GET",
+         path="/users",
+         request_id="abc-123")
 
-    # Output (JSON):
-    # {"event": "request_started", "method": "GET", "path": "/users",
-    #  "request_id": "abc-123", "service": "api", "timestamp": "..."}
-    ```
+log.error("db_query_failed",
+          query="SELECT * FROM users",
+          duration_ms=5043,
+          error="connection timeout")
 
-=== "TypeScript (pino — Modern)"
-    ```typescript
-    // npm install pino
-    // pino: Introduced 2016, Latest 9.x (2024) — 🟢 Modern
-    import pino from 'pino';
+# Output (JSON):
+# {"event": "request_started", "method": "GET", "path": "/users",
+#  "request_id": "abc-123", "service": "api", "timestamp": "..."}
+```
 
-    const logger = pino({
-      level: process.env.LOG_LEVEL ?? 'info',
-      transport: process.env.NODE_ENV === 'development'
-        ? { target: 'pino-pretty' }    // Human-readable in dev
-        : undefined,                    // JSON in production
-    });
 
-    const childLogger = logger.child({ service: 'api', version: '1.2.0' });
+</TabItem>
+<TabItem value="typescript-pino-modern" label="TypeScript (pino — Modern)">
 
-    childLogger.info({ method: 'GET', path: '/users', requestId: 'abc-123' }, 'request_started');
-    childLogger.error({ query: 'SELECT *...', durationMs: 5043 }, 'db_query_failed');
-    ```
+```typescript
+// npm install pino
+// pino: Introduced 2016, Latest 9.x (2024) — 🟢 Modern
+import pino from 'pino';
+
+const logger = pino({
+  level: process.env.LOG_LEVEL ?? 'info',
+  transport: process.env.NODE_ENV === 'development'
+    ? { target: 'pino-pretty' }    // Human-readable in dev
+    : undefined,                    // JSON in production
+});
+
+const childLogger = logger.child({ service: 'api', version: '1.2.0' });
+
+childLogger.info({ method: 'GET', path: '/users', requestId: 'abc-123' }, 'request_started');
+childLogger.error({ query: 'SELECT *...', durationMs: 5043 }, 'db_query_failed');
+```
+
+
+</TabItem>
+</Tabs>
 
 **Avoid plain string logs in production:**
 ```python
@@ -366,57 +387,66 @@ Trace: abc-123 (total: 287ms)
 └── span: database            35ms → 287ms (252ms) ← SLOW
 ```
 
-=== "Python"
-    ```python
-    # pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp
-    from opentelemetry import trace
-    from opentelemetry.sdk.trace import TracerProvider
-    from opentelemetry.sdk.trace.export import BatchSpanProcessor
-    from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+<Tabs>
+<TabItem value="python" label="Python">
 
-    # Configure tracer
-    provider = TracerProvider()
-    provider.add_span_processor(
-        BatchSpanProcessor(OTLPSpanExporter(endpoint="http://otel-collector:4317"))
-    )
-    trace.set_tracer_provider(provider)
+```python
+# pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
-    tracer = trace.get_tracer("myapp")
+# Configure tracer
+provider = TracerProvider()
+provider.add_span_processor(
+    BatchSpanProcessor(OTLPSpanExporter(endpoint="http://otel-collector:4317"))
+)
+trace.set_tracer_provider(provider)
 
-    # Create spans
-    def get_user(user_id: int) -> dict:
-        with tracer.start_as_current_span("get_user") as span:
-            span.set_attribute("user.id", user_id)
-            span.set_attribute("db.system", "postgresql")
+tracer = trace.get_tracer("myapp")
 
-            with tracer.start_as_current_span("db.query"):
-                result = db.execute("SELECT * FROM users WHERE id = ?", user_id)
+# Create spans
+def get_user(user_id: int) -> dict:
+    with tracer.start_as_current_span("get_user") as span:
+        span.set_attribute("user.id", user_id)
+        span.set_attribute("db.system", "postgresql")
 
-            return result
-    ```
+        with tracer.start_as_current_span("db.query"):
+            result = db.execute("SELECT * FROM users WHERE id = ?", user_id)
 
-=== "TypeScript"
-    ```typescript
-    // npm install @opentelemetry/api @opentelemetry/sdk-node @opentelemetry/exporter-trace-otlp-grpc
-    import { trace, SpanStatusCode } from '@opentelemetry/api';
+        return result
+```
 
-    const tracer = trace.getTracer('myapp');
 
-    async function getUser(userId: number) {
-      return tracer.startActiveSpan('get_user', async (span) => {
-        span.setAttribute('user.id', userId);
-        try {
-          const result = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
-          return result;
-        } catch (error) {
-          span.setStatus({ code: SpanStatusCode.ERROR, message: String(error) });
-          throw error;
-        } finally {
-          span.end();
-        }
-      });
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+```typescript
+// npm install @opentelemetry/api @opentelemetry/sdk-node @opentelemetry/exporter-trace-otlp-grpc
+import { trace, SpanStatusCode } from '@opentelemetry/api';
+
+const tracer = trace.getTracer('myapp');
+
+async function getUser(userId: number) {
+  return tracer.startActiveSpan('get_user', async (span) => {
+    span.setAttribute('user.id', userId);
+    try {
+      const result = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
+      return result;
+    } catch (error) {
+      span.setStatus({ code: SpanStatusCode.ERROR, message: String(error) });
+      throw error;
+    } finally {
+      span.end();
     }
-    ```
+  });
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 
@@ -493,18 +523,30 @@ volumes:
 
 ## 📚 Resources
 
-=== "Primary"
-    - 📖 **[Prometheus Docs (FREE)](https://prometheus.io/docs/)** — Start with "Getting Started"; excellent tutorials
-    - 📖 **[Google SRE Book — Ch. 4: Service Level Objectives (FREE)](https://sre.google/sre-book/service-level-objectives/)** — Essential reading on SLIs/SLOs/error budgets
-    - 📺 **[TechWorld with Nana — Prometheus + Grafana (YouTube, FREE)](https://www.youtube.com/watch?v=QoDqxm7ybLc)** — Best hands-on walkthrough of the full stack
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - 📖 **[OpenTelemetry Docs (FREE)](https://opentelemetry.io/docs/)** — Instrumentation guides for every major language
-    - 📖 **[Loki Docs (FREE)](https://grafana.com/docs/loki/latest/)** — Log aggregation guide
+- 📖 **[Prometheus Docs (FREE)](https://prometheus.io/docs/)** — Start with "Getting Started"; excellent tutorials
+- 📖 **[Google SRE Book — Ch. 4: Service Level Objectives (FREE)](https://sre.google/sre-book/service-level-objectives/)** — Essential reading on SLIs/SLOs/error budgets
+- 📺 **[TechWorld with Nana — Prometheus + Grafana (YouTube, FREE)](https://www.youtube.com/watch?v=QoDqxm7ybLc)** — Best hands-on walkthrough of the full stack
 
-=== "Practice"
-    - 🎮 **[Grafana Play (FREE, no login)](https://play.grafana.org/)** — Live Grafana instance with real dashboards to explore
-    - 📖 **[Prometheus Cheat Sheet (FREE)](https://promlabs.com/promql-cheat-sheet/)** — PromQL quick reference
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📖 **[OpenTelemetry Docs (FREE)](https://opentelemetry.io/docs/)** — Instrumentation guides for every major language
+- 📖 **[Loki Docs (FREE)](https://grafana.com/docs/loki/latest/)** — Log aggregation guide
+
+
+</TabItem>
+<TabItem value="practice" label="Practice">
+
+- 🎮 **[Grafana Play (FREE, no login)](https://play.grafana.org/)** — Live Grafana instance with real dashboards to explore
+- 📖 **[Prometheus Cheat Sheet (FREE)](https://promlabs.com/promql-cheat-sheet/)** — PromQL quick reference
+
+
+</TabItem>
+</Tabs>
 
 ---
 

@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Python Fundamentals
 
 **Level:** Beginner · **Lessons:** 6 · **Duration:** ~6 hours · **No prerequisites**
@@ -32,22 +35,31 @@ A command-line **number guessing game** that:
 
 ## Setup
 
-=== "Windows"
-    ```powershell
-    # Python 3.12+ — https://python.org/downloads
-    # ✅ Check "Add Python to PATH" during install
-    python --version
+<Tabs>
+<TabItem value="windows" label="Windows">
 
-    # uv — fast package manager
-    powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-    ```
+```powershell
+# Python 3.12+ — https://python.org/downloads
+# ✅ Check "Add Python to PATH" during install
+python --version
 
-=== "Linux"
-    ```bash
-    python3 --version
-    # Ubuntu/Debian: sudo apt install python3
-    curl -Lsf https://astral.sh/uv/install.sh | sh
-    ```
+# uv — fast package manager
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+```bash
+python3 --version
+# Ubuntu/Debian: sudo apt install python3
+curl -Lsf https://astral.sh/uv/install.sh | sh
+```
+
+
+</TabItem>
+</Tabs>
 
 ---
 

@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Lesson 05 — Events & Forms
 
 > **Course:** React Fundamentals · **Time:** 60 minutes

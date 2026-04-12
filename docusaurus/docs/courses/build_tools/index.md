@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Build Tools & Toolchain
 
 > **Domain:** Web Development · **Time:** 4–5 hours total · **Platform:** Windows + Linux
@@ -32,11 +35,20 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [Vite Docs](https://vitejs.dev/guide/)
-    - [npm Docs](https://docs.npmjs.com/)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [pnpm Docs](https://pnpm.io/motivation)
-    - [ESLint Docs](https://eslint.org/docs/latest/)
-    - [Vitest Docs](https://vitest.dev/guide/)
+- [Vite Docs](https://vitejs.dev/guide/)
+- [npm Docs](https://docs.npmjs.com/)
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [pnpm Docs](https://pnpm.io/motivation)
+- [ESLint Docs](https://eslint.org/docs/latest/)
+- [Vitest Docs](https://vitest.dev/guide/)
+
+
+</TabItem>
+</Tabs>

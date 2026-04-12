@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # CSS Fundamentals
 
 > **Domain:** Web Development · **Time:** 8–10 hours total · **Platform:** Windows + Linux
@@ -36,11 +39,20 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [MDN Web Docs: CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
-    - [CSS-Tricks: A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
-    - [CSS-Tricks: A Complete Guide to Grid](https://css-tricks.com/snippets/css/complete-guide-grid/)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [web.dev: Learn CSS](https://web.dev/learn/css/)
-    - [Every Layout](https://every-layout.dev/) — resilient, composable CSS patterns
+- [MDN Web Docs: CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
+- [CSS-Tricks: A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+- [CSS-Tricks: A Complete Guide to Grid](https://css-tricks.com/snippets/css/complete-guide-grid/)
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [web.dev: Learn CSS](https://web.dev/learn/css/)
+- [Every Layout](https://every-layout.dev/) — resilient, composable CSS patterns
+
+
+</TabItem>
+</Tabs>

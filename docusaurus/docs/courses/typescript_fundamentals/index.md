@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # TypeScript Fundamentals
 
 > **Domain:** Web Development · **Time:** 6–8 hours total · **Platform:** Windows + Linux
@@ -35,11 +38,20 @@
 
 ## 📚 Resources
 
-=== "Primary"
-    - [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) — official reference
-    - [TypeScript Playground](https://www.typescriptlang.org/play) — run TS in the browser
-    - [Wiki: TypeScript](../../domains/web_dev/typescript.md) — in-repo reference
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [Total TypeScript Free Tutorials](https://www.totaltypescript.com/tutorials) — Matt Pocock
-    - [Type Challenges](https://github.com/type-challenges/type-challenges) — deep practice
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) — official reference
+- [TypeScript Playground](https://www.typescriptlang.org/play) — run TS in the browser
+- [Wiki: TypeScript](../../domains/web_dev/typescript.md) — in-repo reference
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [Total TypeScript Free Tutorials](https://www.totaltypescript.com/tutorials) — Matt Pocock
+- [Type Challenges](https://github.com/type-challenges/type-challenges) — deep practice
+
+
+</TabItem>
+</Tabs>

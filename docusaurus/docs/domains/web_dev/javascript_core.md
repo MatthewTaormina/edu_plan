@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # JavaScript Core Reference
 
 > **Domain:** Web Development · **Role:** Frontend / Fullstack
@@ -132,10 +135,19 @@ const user = await getUserData(123);
 ---
 ## 📚 Resources
 
-=== "Primary"
-    - [MDN Web Docs: JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-    - [MDN Web Docs: Intro to the DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
+<Tabs>
+<TabItem value="primary" label="Primary">
 
-=== "Supplemental"
-    - [JavaScript.info: The Modern JavaScript Tutorial](https://javascript.info/)
-    - [Loupe: Visualizing the Event Loop](http://latentflip.com/loupe)
+- [MDN Web Docs: JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [MDN Web Docs: Intro to the DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
+
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- [JavaScript.info: The Modern JavaScript Tutorial](https://javascript.info/)
+- [Loupe: Visualizing the Event Loop](http://latentflip.com/loupe)
+
+
+</TabItem>
+</Tabs>

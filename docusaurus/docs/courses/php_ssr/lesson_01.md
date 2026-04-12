@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Lesson 01 — PHP Runtime & Setup
 
 > **Course:** PHP & Server-Side Rendering · **Time:** 45 minutes
@@ -34,31 +37,43 @@ This "share-nothing" model is simpler to reason about — each request gets a bl
 
 ### Installation
 
-=== "Windows"
-    The easiest approach on Windows is via [XAMPP](https://www.apachefriends.org/) (bundles PHP, Apache, MySQL) or installing PHP standalone:
+<Tabs>
+<TabItem value="windows" label="Windows">
 
-    ```powershell
-    # With Chocolatey (recommended)
-    choco install php
+The easiest approach on Windows is via [XAMPP](https://www.apachefriends.org/) (bundles PHP, Apache, MySQL) or installing PHP standalone:
 
-    # Verify
-    php --version
+```powershell
+# With Chocolatey (recommended)
+choco install php
 
-    # Or download the zip from php.net and add to PATH manually
-    ```
+# Verify
+php --version
 
-=== "Linux (Ubuntu/Debian)"
-    ```bash
-    sudo apt update
-    sudo apt install php php-cli php-mbstring php-xml php-curl -y
-    php --version
-    ```
+# Or download the zip from php.net and add to PATH manually
+```
 
-=== "Linux (Fedora/RHEL)"
-    ```bash
-    sudo dnf install php php-cli php-mbstring php-xml php-curl
-    php --version
-    ```
+
+</TabItem>
+<TabItem value="linux-ubuntu-debian" label="Linux (Ubuntu/Debian)">
+
+```bash
+sudo apt update
+sudo apt install php php-cli php-mbstring php-xml php-curl -y
+php --version
+```
+
+
+</TabItem>
+<TabItem value="linux-fedora-rhel" label="Linux (Fedora/RHEL)">
+
+```bash
+sudo dnf install php php-cli php-mbstring php-xml php-curl
+php --version
+```
+
+
+</TabItem>
+</Tabs>
 
 ### The Built-in Development Server
 
