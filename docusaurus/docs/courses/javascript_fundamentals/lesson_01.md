@@ -110,8 +110,9 @@ Strict mode catches common mistakes that would silently fail in "sloppy" mode.
 // typoVariable = 42;  // ✅ Throws: "ReferenceError: typoVariable is not defined"
 ```
 
-> [!TIP]
-> Modern JavaScript modules (`type="module"`) are strict mode by default. When using modules, you don't need the `'use strict'` directive.
+:::tip
+Modern JavaScript modules (`type="module"`) are strict mode by default. When using modules, you don't need the `'use strict'` directive.
+:::
 
 ### Variable Declarations — `let`, `const`, `var`
 

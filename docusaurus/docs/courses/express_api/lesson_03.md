@@ -84,8 +84,9 @@ router.post(
 );
 ```
 
-> [!NOTE]
-> Typing `req.body` only narrowing the TypeScript view — it doesn't validate at runtime. Use Zod validation (Lesson 04) to ensure the data actually matches the type.
+:::note
+Typing `req.body` only narrowing the TypeScript view — it doesn't validate at runtime. Use Zod validation (Lesson 04) to ensure the data actually matches the type.
+:::
 
 ### Headers
 

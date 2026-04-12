@@ -174,10 +174,11 @@ async function createUser(formData: { name: string; email: string }) {
 }
 ```
 
-> [!NOTE]
-> **In Server Components**, you don't need Route Handlers to access data — call your database or API
-> directly from the server function. Route Handlers are mainly for Client Component mutations and
-> external webhook endpoints.
+:::note
+**In Server Components**, you don't need Route Handlers to access data — call your database or API
+directly from the server function. Route Handlers are mainly for Client Component mutations and
+external webhook endpoints.
+:::
 
 ---
 

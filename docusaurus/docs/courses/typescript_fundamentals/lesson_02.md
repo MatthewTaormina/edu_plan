@@ -41,8 +41,9 @@ value = "now a string";  // no error — any allows anything
 value.whoops();          // no error — any is fully trust-the-developer mode
 ```
 
-> [!WARNING]
-> `any` turns off TypeScript for that value. Every time you use `any`, you give up the safety TypeScript provides. Use `unknown` instead when you genuinely don't know the type.
+:::warning
+`any` turns off TypeScript for that value. Every time you use `any`, you give up the safety TypeScript provides. Use `unknown` instead when you genuinely don't know the type.
+:::
 
 ### `unknown` — The Safe Alternative to `any`
 

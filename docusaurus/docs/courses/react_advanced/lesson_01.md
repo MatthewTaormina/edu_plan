@@ -121,9 +121,10 @@ function DataTable({ data }: { data: Record<string, number>[] }) {
 | Expensive sort/filter on large datasets | `useMemo` |
 | Slow initial render of large list | `react-window` or `react-virtual` (virtualisation) |
 
-> [!WARNING]
-> `useMemo` and `useCallback` have their own overhead. Only add them when React DevTools
-> Profiler confirms a performance problem — premature optimisation adds complexity without benefit.
+:::warning
+`useMemo` and `useCallback` have their own overhead. Only add them when React DevTools
+Profiler confirms a performance problem — premature optimisation adds complexity without benefit.
+:::
 
 ### Profiling with React DevTools
 

@@ -76,8 +76,9 @@ This is how documentation sites and "table of contents" links work.
 </a>
 ```
 
-> [!IMPORTANT]
-> Always add `rel="noopener noreferrer"` when using `target="_blank"`. Without it, the opened page can access your page via `window.opener`, which is a security vulnerability known as **reverse tababnapping**.
+:::info
+Always add `rel="noopener noreferrer"` when using `target="_blank"`. Without it, the opened page can access your page via `window.opener`, which is a security vulnerability known as **reverse tababnapping**.
+:::
 
 ### Building a Navigation Bar
 
@@ -94,8 +95,9 @@ This is how documentation sites and "table of contents" links work.
 </header>
 ```
 
-> [!TIP]
-> Wrap navigation links in a `<ul>` inside a `<nav>`. This is semantically correct: a nav is a *list* of links. A screen reader will announce: "Navigation, list with 4 items", giving context to users who can't see the layout.
+:::tip
+Wrap navigation links in a `<ul>` inside a `<nav>`. This is semantically correct: a nav is a *list* of links. A screen reader will announce: "Navigation, list with 4 items", giving context to users who can't see the layout.
+:::
 
 ### Email and Phone Links
 

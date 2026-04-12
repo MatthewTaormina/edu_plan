@@ -31,8 +31,9 @@
 <h1 style="color: crimson;">Hello</h1>
 ```
 
-> [!TIP]
-> Always use external stylesheets in real projects. They are cached by the browser (pages load faster after the first visit) and keep structure (HTML) separate from presentation (CSS).
+:::tip
+Always use external stylesheets in real projects. They are cached by the browser (pages load faster after the first visit) and keep structure (HTML) separate from presentation (CSS).
+:::
 
 ### CSS Syntax
 
@@ -130,8 +131,9 @@ article p { color: gray; }
 p { color: red !important; }
 ```
 
-> [!TIP]
-> Keep specificity low. Write rules using classes where possible. The moment you need `!important`, it is a sign your CSS architecture has a problem.
+:::tip
+Keep specificity low. Write rules using classes where possible. The moment you need `!important`, it is a sign your CSS architecture has a problem.
+:::
 
 ### The Inheritance Chain
 

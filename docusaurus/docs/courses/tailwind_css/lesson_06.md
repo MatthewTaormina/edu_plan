@@ -81,10 +81,11 @@ When the same combination of utilities appears on 15 buttons, a change means upd
 
 ### When NOT to use `@apply`
 
-> [!WARNING]
-> `@apply` is a tool for your own component abstractions. Do not use it to recreate
-> a utility class ("`.my-flex { @apply flex; }"`). That defeats the purpose and creates 
-> maintenance overhead.
+:::warning
+`@apply` is a tool for your own component abstractions. Do not use it to recreate
+a utility class ("`.my-flex { @apply flex; }"`). That defeats the purpose and creates 
+maintenance overhead.
+:::
 
 **Use `@apply` when:**
 - The same combination appears in 3+ places in raw HTML

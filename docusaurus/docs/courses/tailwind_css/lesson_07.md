@@ -73,8 +73,9 @@ export default {
 @tailwind utilities;
 ```
 
-> [!IMPORTANT]
-> If `content` is misconfigured, Tailwind will include ALL 200,000+ utility classes in production (3MB+) instead of just the ones you use (typically 5–20KB). Always double-check it covers every file containing class names.
+:::info
+If `content` is misconfigured, Tailwind will include ALL 200,000+ utility classes in production (3MB+) instead of just the ones you use (typically 5–20KB). Always double-check it covers every file containing class names.
+:::
 
 ### Verifying the Production Bundle
 

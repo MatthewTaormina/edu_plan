@@ -75,8 +75,9 @@ const intervalId = setInterval(() => {
 }, 1000);  // Every 1 second
 ```
 
-> [!WARNING]
-> `setInterval` does NOT wait for the callback to complete before scheduling the next call. If the callback takes longer than the interval, callbacks will pile up. For long-running work, use a recursive `setTimeout` instead (shown below).
+:::warning
+`setInterval` does NOT wait for the callback to complete before scheduling the next call. If the callback takes longer than the interval, callbacks will pile up. For long-running work, use a recursive `setTimeout` instead (shown below).
+:::
 
 ### Recursive `setTimeout` (Safer Interval Pattern)
 

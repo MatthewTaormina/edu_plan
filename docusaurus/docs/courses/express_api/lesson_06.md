@@ -181,8 +181,9 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 // GET  /uploads/abc-123.jpg → served as a static file
 ```
 
-> [!WARNING]
-> In production, serve uploaded files from an object store (AWS S3, Cloudflare R2, DigitalOcean Spaces) — not from the Node.js server. Use `multer-s3` for direct-to-S3 uploads.
+:::warning
+In production, serve uploaded files from an object store (AWS S3, Cloudflare R2, DigitalOcean Spaces) — not from the Node.js server. Use `multer-s3` for direct-to-S3 uploads.
+:::
 
 ---
 

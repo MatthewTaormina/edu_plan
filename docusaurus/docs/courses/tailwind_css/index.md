@@ -8,8 +8,9 @@ import TabItem from '@theme/TabItem';
 
 > **Who needs this:** Anyone building UI with React, Angular, or any component-based framework. Tailwind is the dominant CSS strategy in modern frontend teams.
 
-> [!NOTE]
-> Tailwind CSS requires a build tool (Vite, webpack, etc.) to scan your files and purge unused styles. Complete [Build Tools & Toolchain](../build_tools/index.md) first.
+:::note
+Tailwind CSS requires a build tool (Vite, webpack, etc.) to scan your files and purge unused styles. Complete [Build Tools & Toolchain](../build_tools/index.md) first.
+:::
 
 ---
 

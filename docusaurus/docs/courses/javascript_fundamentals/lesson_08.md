@@ -41,8 +41,9 @@ fetch('https://api.example.com/users')
     });
 ```
 
-> [!IMPORTANT]
-> `fetch()` only rejects (goes to `.catch()`) on **network failures** (no internet, CORS block). A `404 Not Found` or `500 Server Error` still *resolves* the Promise — you must check `response.ok` yourself.
+:::info
+`fetch()` only rejects (goes to `.catch()`) on **network failures** (no internet, CORS block). A `404 Not Found` or `500 Server Error` still *resolves* the Promise — you must check `response.ok` yourself.
+:::
 
 ### `async/await` — The Modern Pattern
 

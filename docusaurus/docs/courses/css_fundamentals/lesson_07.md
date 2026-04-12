@@ -60,8 +60,9 @@ These are widely adopted conventions (not rules):
 | Wide (lg) | `80rem` (1280px) |
 | Ultrawide (xl) | `96rem` (1536px) |
 
-> [!TIP]
-> Use `rem` units in media queries, not `px`. If the user has changed their browser's base font size (an accessibility setting), `rem`-based breakpoints respect that preference. `px`-based breakpoints don't.
+:::tip
+Use `rem` units in media queries, not `px`. If the user has changed their browser's base font size (an accessibility setting), `rem`-based breakpoints respect that preference. `px`-based breakpoints don't.
+:::
 
 ### Relative Units
 

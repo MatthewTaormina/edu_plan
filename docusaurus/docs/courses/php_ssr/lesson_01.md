@@ -146,8 +146,9 @@ $items = ["Apple", "Banana", "Cherry"];
 </html>
 ```
 
-> [!IMPORTANT]
-> **Always** use `htmlspecialchars()` when echoing user-supplied data into HTML. This prevents Cross-Site Scripting (XSS) attacks.
+:::info
+**Always** use `htmlspecialchars()` when echoing user-supplied data into HTML. This prevents Cross-Site Scripting (XSS) attacks.
+:::
 
 ### Running PHP from CLI
 

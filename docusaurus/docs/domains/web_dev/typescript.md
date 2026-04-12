@@ -322,10 +322,11 @@ const enum HttpMethod {
 }
 ```
 
-> [!TIP]
-> Prefer string literal union types over enums for simple cases:
-> `type Status = "PENDING" | "ACTIVE" | "INACTIVE"`. They're lighter, don't require
-> imports, and work well with JSON APIs.
+:::tip
+Prefer string literal union types over enums for simple cases:
+`type Status = "PENDING" | "ACTIVE" | "INACTIVE"`. They're lighter, don't require
+imports, and work well with JSON APIs.
+:::
 
 ---
 

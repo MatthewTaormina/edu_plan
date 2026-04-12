@@ -128,8 +128,9 @@ When elements overlap (as happens with positioning), `z-index` controls which ap
 .tooltip       { z-index: 300; }  /* Should be above most things */
 ```
 
-> [!IMPORTANT]
-> `z-index` only works on positioned elements (not `position: static`). If z-index isn't working, check that you've set `position` to `relative`, `absolute`, `fixed`, or `sticky` on that element.
+:::info
+`z-index` only works on positioned elements (not `position: static`). If z-index isn't working, check that you've set `position` to `relative`, `absolute`, `fixed`, or `sticky` on that element.
+:::
 
 ### Building a Modal Overlay
 

@@ -8,8 +8,9 @@ import TabItem from '@theme/TabItem';
 
 > **Who needs this:** Anyone who wants to make web pages *do things* — respond to clicks, fetch data, remember state. JavaScript is the only programming language that runs natively in the browser.
 
-> [!NOTE]
-> This course focuses on **JavaScript as a browser language** for DOM manipulation and interactivity. General programming logic (variables, functions, loops, data structures) is covered in [Python Fundamentals](../python_fundamentals/index.md) or [Programming Basics](../../domains/foundations/programming_basics.md). Cross-reference those if you need a refresher on core logic concepts.
+:::note
+This course focuses on **JavaScript as a browser language** for DOM manipulation and interactivity. General programming logic (variables, functions, loops, data structures) is covered in [Python Fundamentals](../python_fundamentals/index.md) or [Programming Basics](../../domains/foundations/programming_basics.md). Cross-reference those if you need a refresher on core logic concepts.
+:::
 
 ---
 

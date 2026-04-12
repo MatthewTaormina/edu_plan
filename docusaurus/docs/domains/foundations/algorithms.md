@@ -690,16 +690,22 @@ Deep recursion uses the **call stack** — each call adds a frame. If you recurs
 **Dynamic programming (DP)** solves problems by breaking them into overlapping subproblems and storing the results so you never compute the same thing twice.
 
 The naive fibonacci computes `fib(3)` many times:
-```
-fib(5)
-├── fib(4)
-│   ├── fib(3)      ← computed again
-│   │   ├── fib(2)
-│   │   └── fib(1)
-│   └── fib(2)      ← computed again
-└── fib(3)          ← computed again
-    ├── fib(2)      ← computed again
-    └── fib(1)
+```mermaid
+flowchart TD
+    F5["fib(5)"] --> F4["fib(4)"]
+    F5 --> F3a["fib(3) ← duplicate"]
+    F4 --> F3b["fib(3) ← duplicate"]
+    F4 --> F2a["fib(2) ← duplicate"]
+    F3a --> F2b["fib(2) ← duplicate"]
+    F3a --> F1a["fib(1)"]
+    F3b --> F2c["fib(2) ← duplicate"]
+    F3b --> F1b["fib(1)"]
+
+    style F3a fill:#c0392b,color:#fff
+    style F3b fill:#c0392b,color:#fff
+    style F2a fill:#e67e22,color:#fff
+    style F2b fill:#e67e22,color:#fff
+    style F2c fill:#e67e22,color:#fff
 ```
 
 DP fixes this: compute each value once and store it.

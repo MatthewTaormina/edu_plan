@@ -198,9 +198,10 @@ export function useRequiredUser(): User {
 | Shopping cart | App-wide server cache (use TanStack Query instead) |
 | Feature flags | Complex state with many actions (use `useReducer` or Zustand) |
 
-> [!TIP]
-> Context is not a state management library — it's a dependency injection mechanism.
-> For complex global state, pair Context for auth/theme with Zustand for application data.
+:::tip
+Context is not a state management library — it's a dependency injection mechanism.
+For complex global state, pair Context for auth/theme with Zustand for application data.
+:::
 
 ### Multiple Contexts
 

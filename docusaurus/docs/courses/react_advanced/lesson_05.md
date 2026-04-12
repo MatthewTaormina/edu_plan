@@ -54,9 +54,10 @@ function App() {
 }
 ```
 
-> [!NOTE]
-> Error boundaries do NOT catch errors in event handlers, async code, or server-side rendering.
-> They ONLY catch errors that occur during rendering (in render functions or lifecycle effects).
+:::note
+Error boundaries do NOT catch errors in event handlers, async code, or server-side rendering.
+They ONLY catch errors that occur during rendering (in render functions or lifecycle effects).
+:::
 
 ### Granular Error Boundaries
 

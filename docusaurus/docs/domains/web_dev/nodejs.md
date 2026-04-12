@@ -26,9 +26,10 @@ flowchart TD
 
 **Result:** A single Node.js process can handle thousands of concurrent connections with minimal memory compared to a thread-per-request model.
 
-> [!NOTE]
-> Node.js is excellent for **I/O-intensive** workloads (APIs, real-time apps, file processing).
-> It is **not** ideal for **CPU-intensive** workloads (video encoding, image processing, ML inference) — those block the event loop. Use worker threads or a separate service for CPU work.
+:::note
+Node.js is excellent for **I/O-intensive** workloads (APIs, real-time apps, file processing).
+It is **not** ideal for **CPU-intensive** workloads (video encoding, image processing, ML inference) — those block the event loop. Use worker threads or a separate service for CPU work.
+:::
 
 ### The Event Loop Phases
 
@@ -206,8 +207,9 @@ npm audit                        # Check for security vulnerabilities
 }
 ```
 
-> [!TIP]
-> Node.js 18+ ships `node --watch` (built-in auto-restart). You no longer need `nodemon` for basic development.
+:::tip
+Node.js 18+ ships `node --watch` (built-in auto-restart). You no longer need `nodemon` for basic development.
+:::
 
 ---
 

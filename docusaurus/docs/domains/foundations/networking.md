@@ -157,20 +157,25 @@ route delete 10.0.0.0
 
 **NAT** is how millions of private devices share a handful of public IP addresses.
 
-```
-Your home:
-  Laptop    192.168.1.10 ─┐
-  Phone     192.168.1.11 ─┼── Router (NAT) ── Public IP: 203.0.113.5 ── Internet
-  Smart TV  192.168.1.12 ─┘
+```mermaid
+flowchart LR
+    Laptop["Laptop\n192.168.1.10"]
+    Phone["Phone\n192.168.1.11"]
+    TV["Smart TV\n192.168.1.12"]
+    NAT["Router / NAT\nPublic IP: 203.0.113.5"]
+    Internet(["Internet"])
 
-When your laptop (192.168.1.10:54321) requests google.com:
-1. Router replaces src IP:port with 203.0.113.5:40001 and records the mapping
-2. Google responds to 203.0.113.5:40001
-3. Router looks up mapping → forwards to 192.168.1.10:54321
-4. Your laptop receives the response
-
-From Google's perspective, all three devices are the same IP.
+    Laptop --> NAT
+    Phone --> NAT
+    TV --> NAT
+    NAT <--> Internet
 ```
+
+**How it works:**
+1. Router replaces `192.168.1.10:54321` → `203.0.113.5:40001` and records the mapping
+2. Google responds to `203.0.113.5:40001`
+3. Router looks up mapping → forwards to `192.168.1.10:54321`
+4. Your laptop receives the response — Google only ever sees one IP.
 
 **Port forwarding** is the reverse — mapping an inbound request on the public IP to a specific internal device:
 
@@ -311,10 +316,18 @@ Get-NetFirewallRule | Where-Object {$_.Enabled -eq "True"} |
 
 A **load balancer** distributes incoming traffic across multiple backend servers.
 
-```
-Clients ──→ Load Balancer ──→ Server 1 (50% of requests)
-                          └──→ Server 2 (50% of requests)
-                          └──→ Server 3 (failover)
+```mermaid
+flowchart LR
+    C(["Clients"])
+    LB["Load Balancer"]
+    S1["Server 1\n50% of requests"]
+    S2["Server 2\n50% of requests"]
+    S3["Server 3\nfailover"]
+
+    C --> LB
+    LB --> S1
+    LB --> S2
+    LB -.->|"standby"| S3
 ```
 
 **L4 vs L7 load balancing:**
@@ -343,13 +356,15 @@ Clients ──→ Load Balancer ──→ Server 1 (50% of requests)
 
 **VPN (Virtual Private Network):** Creates an encrypted tunnel between your device and a remote network.
 
-```
-Without VPN:
-Your device → ISP → Internet → GitHub (ISP can see traffic)
-
-With VPN:
-Your device → Encrypted tunnel → VPN Server → Internet → GitHub
-             (ISP sees only encrypted packets)
+```mermaid
+flowchart LR
+    subgraph Without_VPN["Without VPN"]
+        D1["Your device"] -->|"plaintext"| ISP1["ISP"] --> I1(["Internet"]) --> GH1["GitHub"]
+    end
+    subgraph With_VPN["With VPN"]
+        D2["Your device"] -->|"encrypted"| VPN["VPN Server"] --> I2(["Internet"]) --> GH2["GitHub"]
+        ISP2["ISP"] -.->|"sees only\nencrypted packets"| D2
+    end
 ```
 
 **Types:**
@@ -398,14 +413,16 @@ winget install WireGuard.WireGuard
 
 When something doesn't connect, work layer by layer from bottom to top:
 
-```
-Troubleshooting hierarchy:
-1. Physical/link → Is the cable plugged in? Is Wi-Fi connected?
-2. IP → Do I have an IP? Is it the right network?
-3. Routing → Can I reach the gateway?
-4. DNS → Does name resolution work?
-5. Transport → Is the port open?
-6. Application → Is the service responding correctly?
+```mermaid
+flowchart TD
+    L1["1. Physical / Link\nIs cable plugged in? Wi-Fi connected?"]
+    L2["2. IP\nDo I have an IP? Is it the right network?"]
+    L3["3. Routing\nCan I reach the gateway?"]
+    L4["4. DNS\nDoes name resolution work?"]
+    L5["5. Transport\nIs the port open?"]
+    L6["6. Application\nIs the service responding correctly?"]
+
+    L1 --> L2 --> L3 --> L4 --> L5 --> L6
 ```
 
 <Tabs>

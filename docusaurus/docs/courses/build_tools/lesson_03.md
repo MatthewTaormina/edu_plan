@@ -122,8 +122,9 @@ const isProd = import.meta.env.PROD;
 const maxRetries = Number(import.meta.env.VITE_MAX_RETRIES) || 3;
 ```
 
-> [!IMPORTANT]
-> Never put secrets (API keys, tokens) in `VITE_` variables. They are bundled into the JavaScript file and visible to anyone who opens DevTools. Secrets belong on the server.
+:::info
+Never put secrets (API keys, tokens) in `VITE_` variables. They are bundled into the JavaScript file and visible to anyone who opens DevTools. Secrets belong on the server.
+:::
 
 ### The Development Server (Why It's Fast)
 

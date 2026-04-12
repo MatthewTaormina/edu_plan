@@ -161,9 +161,10 @@ $theme = $_COOKIE['theme'] ?? 'light';
 setcookie('theme', '', time() - 3600, '/');
 ```
 
-> [!IMPORTANT]
-> Use `httponly: true` for any authentication-related cookie. This prevents JavaScript from reading it, protecting against XSS attacks.
-> Use `secure: true` in production — cookies must only travel over HTTPS.
+:::info
+Use `httponly: true` for any authentication-related cookie. This prevents JavaScript from reading it, protecting against XSS attacks.
+Use `secure: true` in production — cookies must only travel over HTTPS.
+:::
 
 ### Cookie Security Flags Summary
 

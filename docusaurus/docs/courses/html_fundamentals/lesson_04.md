@@ -138,8 +138,9 @@ The `alt` attribute is not optional — it is essential for accessibility and al
 ></iframe>
 ```
 
-> [!TIP]
-> Always give `<iframe>` elements a meaningful `title` attribute. Screen readers announce "iframe without a title" if it's missing, giving no context to the user.
+:::tip
+Always give `<iframe>` elements a meaningful `title` attribute. Screen readers announce "iframe without a title" if it's missing, giving no context to the user.
+:::
 
 ---
 
