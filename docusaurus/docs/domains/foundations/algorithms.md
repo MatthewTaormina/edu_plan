@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 **Domain:** Foundations · **Time Estimate:** 3–4 weeks · **Language:** Language-agnostic concepts; tabbed examples
 
-> **Prerequisites:** [Data Structures](data_structures.md) — you must understand arrays, linked lists, and hash tables before algorithmic analysis makes sense.
+> **Prerequisites:** [Data Structures](data_structures.mdx) — you must understand arrays, linked lists, and hash tables before algorithmic analysis makes sense.
 >
 > **Who needs this:** Everyone. Algorithms are the "how" behind every program that needs to be fast. Even if you never implement a sort yourself, understanding complexity lets you pick the right tool.
 
@@ -118,7 +118,7 @@ The simplest search: check every element until you find the target. Works on **u
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 FUNCTION linear_search(collection: List<T>, target: T) -> Int
     // Returns index of target, or -1 if not found
     FOR i FROM 0 TO length(collection) - 1 DO
@@ -212,7 +212,7 @@ Find 11 in: [1, 3, 5, 7, 9, 11, 13]
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 FUNCTION binary_search(sorted_list: List<T>, target: T) -> Int
     left ← 0
     right ← length(sorted_list) - 1
@@ -329,7 +329,7 @@ Use bubble sort to **understand** sorting. Never use it in production on large i
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 FUNCTION bubble_sort(arr: List<Int>) -> Void
     n ← length(arr)
     FOR i FROM 0 TO n - 2 DO
@@ -416,7 +416,7 @@ Divide and conquer: split the array in half, sort each half recursively, merge t
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 FUNCTION merge_sort(arr: List<T>) -> List<T>
     IF length(arr) <= 1 THEN
         RETURN arr    // Base case: already sorted
@@ -521,7 +521,7 @@ Pick a **pivot**, partition: everything smaller goes left, everything larger goe
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 FUNCTION quicksort(arr: List<T>, low: Int, high: Int) -> Void
     IF low < high THEN
         pivot_idx ← partition(arr, low, high)
@@ -604,7 +604,7 @@ factorial(4):
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 // Classic recursion: factorial
 FUNCTION factorial(n: Int) -> Int
     IF n == 0 THEN RETURN 1          // Base case
@@ -703,7 +703,7 @@ DP fixes this: compute each value once and store it.
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 // Memoization: top-down DP
 FUNCTION fib_memo(n: Int, cache: Map<Int, Int> = {}) -> Int
     IF n <= 1 THEN RETURN n

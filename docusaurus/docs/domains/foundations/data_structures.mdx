@@ -96,7 +96,7 @@ This is why index access is **O(1)** — it's just arithmetic, not searching.
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 // Dynamic array (auto-resizing)
 array ← NEW List<Int>
 
@@ -232,7 +232,7 @@ The cost: no random access — finding the Nth element requires walking from hea
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 CLASS Node<T>
     value: T
     next: Optional<Node<T>> ← NULL
@@ -570,7 +570,7 @@ A **stack** is LIFO — **Last In, First Out**. Like a stack of plates — you c
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 CLASS Stack<T>
     data: List<T> ← []
 
@@ -800,7 +800,7 @@ A **queue** is FIFO — **First In, First Out**. Like a line at a store — new 
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 CLASS Queue<T>
     data: Deque<T> ← NEW Deque()   // double-ended queue internally
 
@@ -975,7 +975,7 @@ Lookup `table["name"]`:
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 CLASS HashTable<K, V>
     CONSTANT CAPACITY ← 64
     buckets: List<List<Pair<K,V>>> ← array of CAPACITY empty lists
@@ -1210,7 +1210,7 @@ A **tree** is a hierarchical structure. Every node has one parent (except root) 
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 CLASS BSTNode<T>
     value: T
     left:  Optional<BSTNode<T>> ← NULL
@@ -1432,7 +1432,7 @@ A **graph** is nodes connected by edges. Unlike trees, graphs can have cycles an
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 // Adjacency list representation (most common)
 graph: Map<Node, List<Node>> ← {
     "A": ["B", "C"],

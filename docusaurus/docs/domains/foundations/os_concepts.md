@@ -450,7 +450,7 @@ Processes are isolated. When they need to share data or coordinate, they use IPC
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 // Pipe: parent writes, child reads
 pipe_read, pipe_write ← create_pipe()
 

@@ -57,6 +57,15 @@ const config: Config = {
 
     mermaid: {
       theme: { light: 'neutral', dark: 'dark' },
+      options: {
+        fontSize: 16,
+        fontFamily: "Inter, system-ui, sans-serif",
+        sequence: {
+          actorMargin: 100,
+          messageMargin: 50,
+          noteMargin: 20
+        }
+      }
     },
 
     navbar: {

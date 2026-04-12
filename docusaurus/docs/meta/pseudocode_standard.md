@@ -298,7 +298,7 @@ Always include **Pseudocode** as the first tab, then the most relevant languages
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
-```
+```pseudocode
 FUNCTION example(x: Int) -> Int
     RETURN x * 2
 END FUNCTION
