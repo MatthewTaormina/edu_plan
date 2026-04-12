@@ -3,13 +3,13 @@ import TabItem from '@theme/TabItem';
 
 # Sorting Algorithms
 
-**Section:** Algorithms ΓÇ║ Sorting ┬╖ **Prerequisite:** [Search Algorithms](./search.md)
+**Section:** Algorithms › Sorting · **Prerequisite:** [Search Algorithms](./search.md)
 
-> **Who needs this:** Every developer. Even if you never write a sort yourself, understanding how they differ ΓÇö stability, in-place vs auxiliary space, worst-case guarantees ΓÇö lets you choose the right tool and understand why your language's built-in sort behaves the way it does.
+> **Who needs this:** Every developer. Even if you never write a sort yourself, understanding how they differ — stability, in-place vs auxiliary space, worst-case guarantees — lets you choose the right tool and understand why your language's built-in sort behaves the way it does.
 
 ---
 
-## ≡ƒÄ» Learning Objectives
+## 🎯 Learning Objectives
 
 - [ ] Implement bubble sort, merge sort, and quicksort from scratch
 - [ ] Explain why merge sort is always O(n log n) but quicksort can degrade
@@ -19,33 +19,33 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-## ≡ƒôû Concepts
+## 📖 Concepts
 
 ### Quick Comparison
 
 | Algorithm | Best | Average | Worst | Space | Stable? | Notes |
 |-----------|------|---------|-------|-------|---------|-------|
-| **Bubble Sort** | O(n) | O(n┬▓) | O(n┬▓) | O(1) | Γ£à | Teaching only ΓÇö never use on large data |
-| **Merge Sort** | O(n log n) | O(n log n) | O(n log n) | O(n) | Γ£à | Preferred for linked lists; guaranteed worst case |
-| **Quicksort** | O(n log n) | O(n log n) | O(n┬▓) | O(log n) | Γ¥î | Fastest in practice due to cache efficiency |
-| **Heapsort** | O(n log n) | O(n log n) | O(n log n) | O(1) | Γ¥î | Guaranteed O(n log n) with O(1) space |
-| **Timsort** | O(n) | O(n log n) | O(n log n) | O(n) | Γ£à | Python `sorted()`, Java `Arrays.sort()` ΓÇö best for real data |
-| **Counting Sort** | O(n+k) | O(n+k) | O(n+k) | O(k) | Γ£à | Integer keys only; beats O(n log n) when k is small |
+| **Bubble Sort** | O(n) | O(n²) | O(n²) | O(1) | ✅ | Teaching only — never use on large data |
+| **Merge Sort** | O(n log n) | O(n log n) | O(n log n) | O(n) | ✅ | Preferred for linked lists; guaranteed worst case |
+| **Quicksort** | O(n log n) | O(n log n) | O(n²) | O(log n) | ❌ | Fastest in practice due to cache efficiency |
+| **Heapsort** | O(n log n) | O(n log n) | O(n log n) | O(1) | ❌ | Guaranteed O(n log n) with O(1) space |
+| **Timsort** | O(n) | O(n log n) | O(n log n) | O(n) | ✅ | Python `sorted()`, Java `Arrays.sort()` — best for real data |
+| **Counting Sort** | O(n+k) | O(n+k) | O(n+k) | O(k) | ✅ | Integer keys only; beats O(n log n) when k is small |
 
 *k = range of key values*
 
-**Stability** means equal elements preserve their original relative order. This matters when sorting by multiple criteria (e.g., sort by last name, then separately by first name ΓÇö the first sort's order must survive the second).
+**Stability** means equal elements preserve their original relative order. This matters when sorting by multiple criteria (e.g., sort by last name, then separately by first name — the first sort's order must survive the second).
 
 ---
 
-### 1. Bubble Sort ΓÇö O(n┬▓)
+### 1. Bubble Sort — O(n²)
 
 The simplest sort. Repeatedly swap adjacent out-of-order elements. Each pass "bubbles" the largest remaining element to its correct position.
 
 ```
-Pass 1: [5, 3, 8, 1] ΓåÆ [3, 5, 1, 8]  (8 bubbles to end)
-Pass 2: [3, 5, 1, 8] ΓåÆ [3, 1, 5, 8]  (5 bubbles to position)
-Pass 3: [3, 1, 5, 8] ΓåÆ [1, 3, 5, 8]  Γ£ô
+Pass 1: [5, 3, 8, 1] → [3, 5, 1, 8]  (8 bubbles to end)
+Pass 2: [3, 5, 1, 8] → [3, 1, 5, 8]  (5 bubbles to position)
+Pass 3: [3, 1, 5, 8] → [1, 3, 5, 8]  ✓
 ```
 
 Use bubble sort to **understand** sorting. Never use it in production on large inputs.
@@ -55,16 +55,16 @@ Use bubble sort to **understand** sorting. Never use it in production on large i
 
 ```pseudocode
 FUNCTION bubble_sort(arr: List<Int>) -> Void
-    n ΓåÉ length(arr)
+    n ← length(arr)
     FOR i FROM 0 TO n - 2 DO
-        swapped ΓåÉ FALSE
+        swapped ← FALSE
         FOR j FROM 0 TO n - i - 2 DO
             IF arr[j] > arr[j + 1] THEN
                 swap(arr[j], arr[j + 1])
-                swapped ΓåÉ TRUE
+                swapped ← TRUE
             END IF
         END FOR
-        IF NOT swapped THEN BREAK    // Already sorted ΓÇö early exit
+        IF NOT swapped THEN BREAK    // Already sorted — early exit
     END FOR
 END FUNCTION
 ```
@@ -83,10 +83,10 @@ def bubble_sort(arr: list) -> list:
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
                 swapped = True
         if not swapped:
-            break  # Already sorted ΓÇö best case O(n)
+            break  # Already sorted — best case O(n)
     return arr
 
-# Production: always use sorted() or list.sort() (Timsort ΓÇö O(n log n))
+# Production: always use sorted() or list.sort() (Timsort — O(n log n))
 nums = [5, 3, 8, 1]
 print(sorted(nums))    # [1, 3, 5, 8]
 ```
@@ -111,7 +111,7 @@ function bubbleSort(arr: number[]): number[] {
 }
 
 // Production: use Array.sort() with a comparator
-[5, 3, 8, 1].sort((a, b) => a - b);  // ΓåÆ [1, 3, 5, 8]
+[5, 3, 8, 1].sort((a, b) => a - b);  // → [1, 3, 5, 8]
 ```
 
 </TabItem>
@@ -119,16 +119,16 @@ function bubbleSort(arr: number[]): number[] {
 
 ---
 
-### 2. Merge Sort ΓÇö O(n log n), O(n) space
+### 2. Merge Sort — O(n log n), O(n) space
 
-Divide and conquer: split the array in half recursively until single elements, then merge sorted halves back up. **Guaranteed O(n log n)** ΓÇö no bad cases.
+Divide and conquer: split the array in half recursively until single elements, then merge sorted halves back up. **Guaranteed O(n log n)** — no bad cases.
 
 ```
 [5, 3, 8, 1]
-  ΓåÆ [5, 3]      [8, 1]
-  ΓåÆ [5] [3]    [8] [1]
-  ΓåÉ [3, 5]    [1, 8]
-  ΓåÉ [1, 3, 5, 8]
+  → [5, 3]      [8, 1]
+  → [5] [3]    [8] [1]
+  ← [3, 5]    [1, 8]
+  ← [1, 3, 5, 8]
 ```
 
 <Tabs>
@@ -140,23 +140,23 @@ FUNCTION merge_sort(arr: List<T>) -> List<T>
         RETURN arr    // Base case: already sorted
     END IF
 
-    mid   ΓåÉ length(arr) / 2
-    left  ΓåÉ merge_sort(arr[0..mid])
-    right ΓåÉ merge_sort(arr[mid..end])
+    mid   ← length(arr) / 2
+    left  ← merge_sort(arr[0..mid])
+    right ← merge_sort(arr[mid..end])
 
     RETURN merge(left, right)
 END FUNCTION
 
 FUNCTION merge(left: List<T>, right: List<T>) -> List<T>
-    result ΓåÉ NEW List<T>
-    i ΓåÉ 0
-    j ΓåÉ 0
+    result ← NEW List<T>
+    i ← 0
+    j ← 0
 
     WHILE i < length(left) AND j < length(right) DO
         IF left[i] <= right[j] THEN
-            append(result, left[i]);  i ΓåÉ i + 1
+            append(result, left[i]);  i ← i + 1
         ELSE
-            append(result, right[j]); j ΓåÉ j + 1
+            append(result, right[j]); j ← j + 1
         END IF
     END WHILE
 
@@ -242,13 +242,13 @@ fn merge(left: &[i64], right: &[i64]) -> Vec<i64> {
 </TabItem>
 </Tabs>
 
-**Best for:** Linked lists (no random access needed for merge), external sort (data doesn't fit in RAM ΓÇö merge from disk), when you need a **stable, guaranteed O(n log n)** sort.
+**Best for:** Linked lists (no random access needed for merge), external sort (data doesn't fit in RAM — merge from disk), when you need a **stable, guaranteed O(n log n)** sort.
 
 ---
 
-### 3. Quicksort ΓÇö O(n log n) average, O(n┬▓) worst
+### 3. Quicksort — O(n log n) average, O(n²) worst
 
-Pick a **pivot**, partition elements: smaller left, larger right. Recurse on each side. In practice **faster than merge sort** due to cache locality and in-place nature ΓÇö but can degrade to O(n┬▓) on already-sorted data with a bad pivot choice.
+Pick a **pivot**, partition elements: smaller left, larger right. Recurse on each side. In practice **faster than merge sort** due to cache locality and in-place nature — but can degrade to O(n²) on already-sorted data with a bad pivot choice.
 
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
@@ -256,19 +256,19 @@ Pick a **pivot**, partition elements: smaller left, larger right. Recurse on eac
 ```pseudocode
 FUNCTION quicksort(arr: List<T>, low: Int, high: Int) -> Void
     IF low < high THEN
-        pivot_idx ΓåÉ partition(arr, low, high)
+        pivot_idx ← partition(arr, low, high)
         quicksort(arr, low, pivot_idx - 1)
         quicksort(arr, pivot_idx + 1, high)
     END IF
 END FUNCTION
 
 FUNCTION partition(arr: List<T>, low: Int, high: Int) -> Int
-    pivot ΓåÉ arr[high]    // Last element as pivot
-    i     ΓåÉ low - 1     // Index of last element <= pivot
+    pivot ← arr[high]    // Last element as pivot
+    i     ← low - 1     // Index of last element <= pivot
 
     FOR j FROM low TO high - 1 DO
         IF arr[j] <= pivot THEN
-            i ΓåÉ i + 1
+            i ← i + 1
             swap(arr[i], arr[j])
         END IF
     END FOR
@@ -334,12 +334,12 @@ function partition(arr: number[], low: number, high: number): number {
 </Tabs>
 
 :::tip Pivot Selection
-The classic textbook implementation uses the last element as a pivot. Real quicksort implementations use **random pivot** or **median-of-three** (median of first, middle, last) to avoid the O(n┬▓) worst case on sorted input. Python's `sorted()` uses Timsort, not quicksort, specifically to avoid this.
+The classic textbook implementation uses the last element as a pivot. Real quicksort implementations use **random pivot** or **median-of-three** (median of first, middle, last) to avoid the O(n²) worst case on sorted input. Python's `sorted()` uses Timsort, not quicksort, specifically to avoid this.
 :::
 
 ---
 
-### 4. Heapsort ΓÇö O(n log n), O(1) space
+### 4. Heapsort — O(n log n), O(1) space
 
 Build a max-heap from the array, then repeatedly extract the maximum. **Guaranteed O(n log n)** with **O(1) auxiliary space** (in-place). Not stable.
 
@@ -354,60 +354,60 @@ You won't usually implement heapsort from scratch. The key insight: **heaps give
 
 ---
 
-### 5. Timsort ΓÇö The Real-World Champion
+### 5. Timsort — The Real-World Champion
 
 **Timsort** is a hybrid of merge sort and insertion sort, developed by Tim Peters for Python (2002) and now used in Java, Android, and Swift. It's O(n log n) worst case, O(n) best case (nearly sorted data), and stable.
 
 ```
 // How Timsort works (awareness level):
-// 1. Split input into "runs" ΓÇö already-sorted subsequences
+// 1. Split input into "runs" — already-sorted subsequences
 // 2. Sort short runs with insertion sort (fast for small n)
 // 3. Merge runs using merge sort
 
 // Why it wins on real data: most real-world data has pre-existing order.
-// Already-sorted input completes in O(n) ΓÇö zero comparisons needed.
+// Already-sorted input completes in O(n) — zero comparisons needed.
 ```
 
-**When you call `sorted()` in Python, `Array.sort()` in modern JS (V8 Timsort since Node 11), or `Arrays.sort()` for objects in Java ΓÇö you're using Timsort.** You don't implement it; you use it.
+**When you call `sorted()` in Python, `Array.sort()` in modern JS (V8 Timsort since Node 11), or `Arrays.sort()` for objects in Java — you're using Timsort.** You don't implement it; you use it.
 
 ---
 
-### 6. Counting Sort ΓÇö O(n+k)
+### 6. Counting Sort — O(n+k)
 
-Counting sort beats the O(n log n) comparison-sort lower bound ΓÇö **but only for integers in a small range**.
+Counting sort beats the O(n log n) comparison-sort lower bound — **but only for integers in a small range**.
 
 ```
 Array:  [4, 2, 2, 8, 3, 3, 1]
-Range:  0ΓÇô8 (k=9)
+Range:  0–8 (k=9)
 
 1. Count occurrences: counts[1]=1, counts[2]=2, counts[3]=2, counts[4]=1, counts[8]=1
 2. Reconstruct: [1, 2, 2, 3, 3, 4, 8]
 ```
 
-**When to use:** Sorting integers, characters, or enum values with a bounded range (e.g., sort exam scores 0ΓÇô100, sort ASCII characters, sort playing cards). Not useful for floats or strings.
+**When to use:** Sorting integers, characters, or enum values with a bounded range (e.g., sort exam scores 0–100, sort ASCII characters, sort playing cards). Not useful for floats or strings.
 
 ---
 
-## ≡ƒôÜ Resources
+## 📚 Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary (Do These)">
 
-- ≡ƒô║ **[Visualgo ΓÇö Sorting Animations (FREE)](https://visualgo.net/en/sorting)** ΓÇö Watch every sort animate in real time with step-by-step explanation
-- ≡ƒô║ **[Abdul Bari ΓÇö Merge Sort (YouTube, FREE)](https://www.youtube.com/watch?v=mB5HXBb_HY8)** ΓÇö Best derivation of the O(n log n) recurrence
+- 📺 **[Visualgo — Sorting Animations (FREE)](https://visualgo.net/en/sorting)** — Watch every sort animate in real time with step-by-step explanation
+- 📺 **[Abdul Bari — Merge Sort (YouTube, FREE)](https://www.youtube.com/watch?v=mB5HXBb_HY8)** — Best derivation of the O(n log n) recurrence
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- ≡ƒô║ **[Quicksort in 4 minutes (YouTube, FREE)](https://www.youtube.com/watch?v=Hoixgm4-P4M)** ΓÇö Clean visual of partitioning
-- ≡ƒô║ **[Tim Peters explains Timsort (PyCon 2016, YouTube, FREE)](https://www.youtube.com/watch?v=1wAOy88WxmY)** ΓÇö The author explains why Timsort was designed the way it was
+- 📺 **[Quicksort in 4 minutes (YouTube, FREE)](https://www.youtube.com/watch?v=Hoixgm4-P4M)** — Clean visual of partitioning
+- 📺 **[Tim Peters explains Timsort (PyCon 2016, YouTube, FREE)](https://www.youtube.com/watch?v=1wAOy88WxmY)** — The author explains why Timsort was designed the way it was
 
 </TabItem>
 <TabItem value="practice" label="Practice">
 
-- ≡ƒÄ« **[LeetCode #912 ΓÇö Sort an Array (FREE)](https://leetcode.com/problems/sort-an-array/)** ΓÇö Implement merge sort or quicksort from scratch
-- ≡ƒÄ« **[LeetCode #75 ΓÇö Sort Colors (FREE)](https://leetcode.com/problems/sort-colors/)** ΓÇö Dutch National Flag / 3-way partition problem
-- ≡ƒÄ« **[LeetCode #315 ΓÇö Count of Smaller Numbers After Self (FREE)](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)** ΓÇö Merge sort application
+- 🎮 **[LeetCode #912 — Sort an Array (FREE)](https://leetcode.com/problems/sort-an-array/)** — Implement merge sort or quicksort from scratch
+- 🎮 **[LeetCode #75 — Sort Colors (FREE)](https://leetcode.com/problems/sort-colors/)** — Dutch National Flag / 3-way partition problem
+- 🎮 **[LeetCode #315 — Count of Smaller Numbers After Self (FREE)](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)** — Merge sort application
 
 </TabItem>
 </Tabs>

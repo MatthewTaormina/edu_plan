@@ -3,15 +3,15 @@ import TabItem from '@theme/TabItem';
 
 # Regular Expressions
 
-**Domain:** Foundations ┬╖ **Time Estimate:** 1 week ┬╖ **Language:** Syntax is universal; runtime is language-specific
+**Domain:** Foundations · **Time Estimate:** 1 week · **Language:** Syntax is universal; runtime is language-specific
 
-> **Prerequisites:** [Programming Basics](programming_basics.md) ΓÇö you need to know strings.
+> **Prerequisites:** [Programming Basics](programming_basics.md) — you need to know strings.
 >
 > **Who needs this:** Everyone. Regex appears in every language, every editor, every shell, CI pipelines, log analysis tools, and security tools. It's one skill that transfers almost perfectly across the entire industry.
 
 ---
 
-## ≡ƒÄ» Learning Objectives
+## 🎯 Learning Objectives
 
 By the end of this unit, you will be able to:
 
@@ -24,7 +24,7 @@ By the end of this unit, you will be able to:
 
 ---
 
-## ≡ƒôû Concepts
+## 📖 Concepts
 
 ### 1. What Regex Is
 
@@ -35,7 +35,7 @@ A **regular expression** (regex) is a pattern that describes a set of strings. I
 - **Extract** parts of a match (`get the domain from a URL`)
 - **Replace** matched text (`redact all SSNs in a document`)
 
-Regex is **not a programming language** ΓÇö it's a mini-language for describing string patterns. The syntax is nearly identical across Python, JavaScript, Rust, Go, Java, Ruby, grep, sed, and most editors.
+Regex is **not a programming language** — it's a mini-language for describing string patterns. The syntax is nearly identical across Python, JavaScript, Rust, Go, Java, Ruby, grep, sed, and most editors.
 
 ---
 
@@ -45,9 +45,9 @@ Most characters match themselves literally:
 
 ```
 Pattern: hello
-Matches: "hello world" ΓåÆ Γ£à (contains "hello")
-         "Hello world" ΓåÆ Γ¥î (case-sensitive by default)
-         "say hello"   ΓåÆ Γ£à
+Matches: "hello world" → ✅ (contains "hello")
+         "Hello world" → ❌ (case-sensitive by default)
+         "say hello"   → ✅
 ```
 
 **Special characters (metacharacters)** have special meaning and must be escaped with `\` to match literally:
@@ -55,10 +55,10 @@ Matches: "hello world" ΓåÆ Γ£à (contains "hello")
 ```
 . * + ? ^ $ { } [ ] | ( ) \
 
-Pattern: 3.14    ΓåÉ the . matches ANY character
-Matches: "3.14", "3x14", "3!14"   ΓåÉ all match
+Pattern: 3.14    ← the . matches ANY character
+Matches: "3.14", "3x14", "3!14"   ← all match
 
-Pattern: 3\.14   ΓåÉ escaped dot = literal dot
+Pattern: 3\.14   ← escaped dot = literal dot
 Matches: "3.14" only
 ```
 
@@ -69,13 +69,13 @@ Matches: "3.14" only
 A **character class** matches any ONE character from a set:
 
 ```
-[abc]      ΓåÆ matches 'a', 'b', or 'c'
-[a-z]      ΓåÆ any lowercase letter
-[A-Z]      ΓåÆ any uppercase letter
-[0-9]      ΓåÆ any digit
-[a-zA-Z]   ΓåÆ any letter
-[a-zA-Z0-9] ΓåÆ any alphanumeric
-[^abc]     ΓåÆ any character EXCEPT a, b, or c  (^ negates inside [])
+[abc]      → matches 'a', 'b', or 'c'
+[a-z]      → any lowercase letter
+[A-Z]      → any uppercase letter
+[0-9]      → any digit
+[a-zA-Z]   → any letter
+[a-zA-Z0-9] → any alphanumeric
+[^abc]     → any character EXCEPT a, b, or c  (^ negates inside [])
 ```
 
 **Shorthand character classes:**
@@ -99,21 +99,21 @@ Quantifiers control **how many times** the preceding element repeats:
 | Quantifier | Meaning | Example | Matches |
 |------------|---------|---------|---------|
 | `*` | 0 or more | `ab*c` | "ac", "abc", "abbbbc" |
-| `+` | 1 or more | `ab+c` | "abc", "abbc" ΓÇö NOT "ac" |
+| `+` | 1 or more | `ab+c` | "abc", "abbc" — NOT "ac" |
 | `?` | 0 or 1 (optional) | `colou?r` | "color" or "colour" |
 | `{n}` | Exactly n times | `\d{4}` | "2024" |
 | `{n,}` | n or more times | `\d{2,}` | "12", "123", "1234"... |
 | `{n,m}` | Between n and m | `\d{2,4}` | "12", "123", "1234" |
 
 **Greedy vs. Lazy:**  
-By default, quantifiers are **greedy** ΓÇö they match as much as possible.  
-Add `?` after a quantifier to make it **lazy** ΓÇö match as little as possible.
+By default, quantifiers are **greedy** — they match as much as possible.  
+Add `?` after a quantifier to make it **lazy** — match as little as possible.
 
 ```
 Text:    "<b>bold</b> and <i>italic</i>"
 
-Pattern: <.+>      ΓåÉ greedy: matches entire "<b>bold</b> and <i>italic</i>"
-Pattern: <.+?>     ΓåÉ lazy: matches "<b>", then "</b>", then "<i>", then "</i>"
+Pattern: <.+>      ← greedy: matches entire "<b>bold</b> and <i>italic</i>"
+Pattern: <.+?>     ← lazy: matches "<b>", then "</b>", then "<i>", then "</i>"
 ```
 
 ---
@@ -130,33 +130,33 @@ Anchors match **positions**, not characters:
 | `\B` | Non-word boundary |
 
 ```
-Pattern: ^hello     ΓåÆ matches "hello world" but NOT "say hello"
-Pattern: world$     ΓåÆ matches "hello world" but NOT "worldwide"
-Pattern: ^hello$    ΓåÆ matches ONLY "hello" (exact, nothing else)
-Pattern: \bcat\b    ΓåÆ matches "the cat sat" but NOT "concatenate"
+Pattern: ^hello     → matches "hello world" but NOT "say hello"
+Pattern: world$     → matches "hello world" but NOT "worldwide"
+Pattern: ^hello$    → matches ONLY "hello" (exact, nothing else)
+Pattern: \bcat\b    → matches "the cat sat" but NOT "concatenate"
 ```
 
 ---
 
 ### 6. Groups and Capturing
 
-**Parentheses `()`** create **groups** ΓÇö for two purposes:
+**Parentheses `()`** create **groups** — for two purposes:
 
-1. **Grouping** ΓÇö apply a quantifier to multiple characters
-2. **Capturing** ΓÇö extract the matched text
+1. **Grouping** — apply a quantifier to multiple characters
+2. **Capturing** — extract the matched text
 
 ```
-Pattern: (ha)+      ΓåÆ matches "ha", "haha", "hahaha"
+Pattern: (ha)+      → matches "ha", "haha", "hahaha"
 Pattern: (\d{4})-(\d{2})-(\d{2})
          applied to "2024-04-11"
-         ΓåÆ Group 1 captures "2024"
-         ΓåÆ Group 2 captures "04"
-         ΓåÆ Group 3 captures "11"
+         → Group 1 captures "2024"
+         → Group 2 captures "04"
+         → Group 3 captures "11"
 ```
 
-**Non-capturing group:** `(?:...)` ΓÇö groups without capturing (more efficient):
+**Non-capturing group:** `(?:...)` — groups without capturing (more efficient):
 ```
-Pattern: (?:https?|ftp)://  ΓåÆ matches "http://" or "https://" or "ftp://"
+Pattern: (?:https?|ftp)://  → matches "http://" or "https://" or "ftp://"
                                but doesn't capture the protocol
 ```
 
@@ -165,8 +165,8 @@ Pattern: (?:https?|ftp)://  ΓåÆ matches "http://" or "https://" or "ftp://"
 # Python
 import re
 m = re.match(r'(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})', '2024-04-11')
-m.group('year')   # ΓåÆ "2024"
-m.group('month')  # ΓåÆ "04"
+m.group('year')   # → "2024"
+m.group('month')  # → "04"
 ```
 
 ---
@@ -176,19 +176,19 @@ m.group('month')  # ΓåÆ "04"
 The pipe `|` means OR:
 
 ```
-Pattern: cat|dog     ΓåÆ matches "cat" or "dog"
-Pattern: (cat|dog)s  ΓåÆ matches "cats" or "dogs"
-Pattern: https?://   ΓåÆ matches "http://" or "https://"
+Pattern: cat|dog     → matches "cat" or "dog"
+Pattern: (cat|dog)s  → matches "cats" or "dogs"
+Pattern: https?://   → matches "http://" or "https://"
 ```
 
 ---
 
 ### 8. Common Patterns (Build Your Library)
 
-These are production-ready patterns. Study the structure ΓÇö don't memorize them blindly.
+These are production-ready patterns. Study the structure — don't memorize them blindly.
 
 ```
-// Email (simplified ΓÇö full RFC is nightmarishly complex, don't bother)
+// Email (simplified — full RFC is nightmarishly complex, don't bother)
 [\w.+-]+@[\w-]+\.[a-zA-Z]{2,}
 
 // URL
@@ -218,7 +218,7 @@ https?://[\w.-]+(?:/[\w./?=%&-]*)?
 ```
 
 :::warning Don't Parse HTML with Regex
-Regex cannot reliably parse HTML. HTML is not a regular language ΓÇö it's hierarchical. Use a proper HTML parser (BeautifulSoup in Python, DOMParser in JS). This is one of the most famous "when not to use regex" rules in programming.
+Regex cannot reliably parse HTML. HTML is not a regular language — it's hierarchical. Use a proper HTML parser (BeautifulSoup in Python, DOMParser in JS). This is one of the most famous "when not to use regex" rules in programming.
 :::
 
 
@@ -256,13 +256,13 @@ if re.search(pattern, text):
 # Find first match
 match = re.search(pattern, text)
 if match:
-    print(match.group())     # ΓåÆ "support@example.com"
-    print(match.start())     # ΓåÆ start index in string
-    print(match.end())       # ΓåÆ end index in string
+    print(match.group())     # → "support@example.com"
+    print(match.start())     # → start index in string
+    print(match.end())       # → end index in string
 
 # Find ALL matches
 emails = re.findall(pattern, text)
-print(emails)  # ΓåÆ ["support@example.com", "sales@company.org"]
+print(emails)  # → ["support@example.com", "sales@company.org"]
 
 # Find all matches WITH position info
 for m in re.finditer(pattern, text):
@@ -270,7 +270,7 @@ for m in re.finditer(pattern, text):
 
 # Replace
 redacted = re.sub(pattern, "[REDACTED]", text)
-print(redacted)  # ΓåÆ "Contact us at [REDACTED] or [REDACTED]"
+print(redacted)  # → "Contact us at [REDACTED] or [REDACTED]"
 
 # Split on pattern
 re.split(r'\s+', "hello   world\t!")  # ["hello", "world", "!"]
@@ -283,7 +283,7 @@ emails = email_re.findall(text)
 date_re = re.compile(r'(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})')
 m = date_re.match("2024-04-11")
 if m:
-    print(m.groupdict())  # ΓåÆ {'year': '2024', 'month': '04', 'day': '11'}
+    print(m.groupdict())  # → {'year': '2024', 'month': '04', 'day': '11'}
 ```
 
 
@@ -295,7 +295,7 @@ const text = "Contact us at support@example.com or sales@company.org";
 const pattern = /[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/g;
 
 // Test: does it match?
-/[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/.test(text);     // ΓåÆ true
+/[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/.test(text);     // → true
 
 // Find first match
 const match = text.match(/[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/);
@@ -308,7 +308,7 @@ console.log(emails);  // ["support@example.com", "sales@company.org"]
 // Replace
 text.replace(pattern, "[REDACTED]");
 
-// matchAll ΓÇö gives position info (returns iterator)
+// matchAll — gives position info (returns iterator)
 for (const m of text.matchAll(pattern)) {
     console.log(`Found '${m[0]}' at index ${m.index}`);
 }
@@ -392,27 +392,27 @@ grep -oP '[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}' file.txt  # Print only emails
 
 ---
 
-## ≡ƒôÜ Resources
+## 📚 Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary (Do These)">
 
-- ≡ƒîÉ **[Regex101 (FREE)](https://regex101.com/)** ΓÇö Live tester with explanation of each part. Choose your language flavor. **Bookmark this now.**
-- ≡ƒôû **[Regular-Expressions.info (FREE)](https://www.regular-expressions.info/)** ΓÇö The definitive reference site. Not for reading front-to-back ΓÇö use it as a lookup.
+- 🌐 **[Regex101 (FREE)](https://regex101.com/)** — Live tester with explanation of each part. Choose your language flavor. **Bookmark this now.**
+- 📖 **[Regular-Expressions.info (FREE)](https://www.regular-expressions.info/)** — The definitive reference site. Not for reading front-to-back — use it as a lookup.
 
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- ≡ƒÄ« **[Regexone ΓÇö Interactive Tutorial (FREE)](https://regexone.com/)** ΓÇö 15-minute interactive intro, great first exposure
-- ≡ƒô║ **[Corey Schafer ΓÇö Python re module (YouTube, FREE)](https://www.youtube.com/watch?v=K8L6KVGG-7o)** ΓÇö Best Python-specific walkthrough
+- 🎮 **[Regexone — Interactive Tutorial (FREE)](https://regexone.com/)** — 15-minute interactive intro, great first exposure
+- 📺 **[Corey Schafer — Python re module (YouTube, FREE)](https://www.youtube.com/watch?v=K8L6KVGG-7o)** — Best Python-specific walkthrough
 
 
 </TabItem>
 <TabItem value="practice" label="Practice">
 
-- ≡ƒÄ« **[Regex Crossword (FREE)](https://regexcrossword.com/)** ΓÇö Fun puzzles that build intuition fast
-- ≡ƒÄ« **[HackerRank ΓÇö Regex challenges (FREE)](https://www.hackerrank.com/domains/regex)** ΓÇö Practical extraction tasks
+- 🎮 **[Regex Crossword (FREE)](https://regexcrossword.com/)** — Fun puzzles that build intuition fast
+- 🎮 **[HackerRank — Regex challenges (FREE)](https://www.hackerrank.com/domains/regex)** — Practical extraction tasks
 
 
 </TabItem>
@@ -420,9 +420,9 @@ grep -oP '[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}' file.txt  # Print only emails
 
 ---
 
-## ≡ƒÅù∩╕Å Assignments
+## 🏗️ Assignments
 
-### Assignment 1 ΓÇö Log Analyzer (Extraction)
+### Assignment 1 — Log Analyzer (Extraction)
 **Combines:** Regex, file I/O, dictionaries, sorting
 
 Parse a web server access log file and extract:
@@ -437,11 +437,11 @@ Use a real Apache/Nginx log format:
 192.168.1.1 - - [11/Apr/2024:10:22:33 +0000] "GET /api/users HTTP/1.1" 200 1234
 ```
 
-Γ¡É **Stretch:** Detect potential brute-force: any IP with >100 requests in a minute.
+⭐ **Stretch:** Detect potential brute-force: any IP with >100 requests in a minute.
 
 ---
 
-### Assignment 2 ΓÇö Data Extractor (Multi-pattern)
+### Assignment 2 — Data Extractor (Multi-pattern)
 **Combines:** Multiple regex patterns, validation, file output
 
 Build a tool that scans a text file and extracts:
@@ -455,21 +455,21 @@ Output a structured JSON report with each category and deduplicated results.
 
 ---
 
-### Assignment 3 ΓÇö Form Validator (Regex in practice)
+### Assignment 3 — Form Validator (Regex in practice)
 **Language:** Your choice (preferably TypeScript for a web context)
 
 Build a form validation library with regex-based rules:
-- [ ] `validate_email(email) ΓåÆ (valid: bool, error: str)`
-- [ ] `validate_password(pw) ΓåÆ (valid: bool, errors: list)` ΓÇö min 8 chars, 1 upper, 1 lower, 1 digit, 1 special
-- [ ] `validate_url(url) ΓåÆ bool`
-- [ ] `validate_phone(phone, country='US') ΓåÆ bool` ΓÇö handle multiple formats
-- [ ] `validate_date(date, format) ΓåÆ bool` ΓÇö at least 2 formats
+- [ ] `validate_email(email) → (valid: bool, error: str)`
+- [ ] `validate_password(pw) → (valid: bool, errors: list)` — min 8 chars, 1 upper, 1 lower, 1 digit, 1 special
+- [ ] `validate_url(url) → bool`
+- [ ] `validate_phone(phone, country='US') → bool` — handle multiple formats
+- [ ] `validate_date(date, format) → bool` — at least 2 formats
 
 Write unit tests for each validator with valid AND invalid inputs.
 
 ---
 
-## Γ£à Milestone Checklist
+## ✅ Milestone Checklist
 
 - [ ] Can write a regex for email, URL, and date without using Regex101 first
 - [ ] Can explain the difference between `*`, `+`, and `?`
@@ -479,8 +479,8 @@ Write unit tests for each validator with valid AND invalid inputs.
 
 ---
 
-## ≡ƒÅå Milestone Complete!
+## 🏆 Milestone Complete!
 
-> **Regex is now a superpower.** You can now parse, extract, and validate text in ways that would take 20 lines of manual code in one pattern. Every codebase you ever work on will have regex ΓÇö now you can read and write it.
+> **Regex is now a superpower.** You can now parse, extract, and validate text in ways that would take 20 lines of manual code in one pattern. Every codebase you ever work on will have regex — now you can read and write it.
 
-**Log this in your kanban:** Move `foundations/regex` to Γ£à Done.
+**Log this in your kanban:** Move `foundations/regex` to ✅ Done.

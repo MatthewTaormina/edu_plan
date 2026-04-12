@@ -3,16 +3,16 @@ import TabItem from '@theme/TabItem';
 
 # Testing
 
-**Domain:** DevOps ┬╖ **Time Estimate:** 2 weeks
+**Domain:** DevOps · **Time Estimate:** 2 weeks
 
-> **Tool:** pytest ┬╖ **Introduced:** 2004 ┬╖ **Latest:** 8.x (2024) ┬╖ **Deprecated:** N/A ┬╖ **Status:** ≡ƒƒó Modern ΓÇö the dominant Python test framework  
-> **Tool:** Vitest ┬╖ **Introduced:** 2021 ┬╖ **Latest:** 1.x (2024) ┬╖ **Deprecated:** N/A ┬╖ **Status:** ≡ƒƒó Modern ΓÇö fast, Vite-native test runner for TypeScript/JavaScript  
-> **Tool:** Jest ┬╖ **Introduced:** 2014 ┬╖ **Latest:** 29.x (2024) ┬╖ **Deprecated:** N/A ┬╖ **Status:** ≡ƒƒí Legacy for new Vite/TS projects ΓÇö still dominant in React; superseded by Vitest in Vite projects  
-> **Tool:** k6 ┬╖ **Introduced:** 2017 ┬╖ **Latest:** 0.51 (2024) ┬╖ **Deprecated:** N/A ┬╖ **Status:** ≡ƒƒó Modern ΓÇö load and performance testing  
-> **Tool:** Playwright ┬╖ **Introduced:** 2020 ┬╖ **Latest:** 1.43 (2024) ┬╖ **Deprecated:** N/A ┬╖ **Status:** ≡ƒƒó Modern ΓÇö end-to-end browser testing (cross-platform: Windows + Linux + macOS)
+> **Tool:** pytest · **Introduced:** 2004 · **Latest:** 8.x (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — the dominant Python test framework  
+> **Tool:** Vitest · **Introduced:** 2021 · **Latest:** 1.x (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — fast, Vite-native test runner for TypeScript/JavaScript  
+> **Tool:** Jest · **Introduced:** 2014 · **Latest:** 29.x (2024) · **Deprecated:** N/A · **Status:** 🟡 Legacy for new Vite/TS projects — still dominant in React; superseded by Vitest in Vite projects  
+> **Tool:** k6 · **Introduced:** 2017 · **Latest:** 0.51 (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — load and performance testing  
+> **Tool:** Playwright · **Introduced:** 2020 · **Latest:** 1.43 (2024) · **Deprecated:** N/A · **Status:** 🟢 Modern — end-to-end browser testing (cross-platform: Windows + Linux + macOS)
 
-:::warning ≡ƒƒí Legacy ΓÇö acknowledged
-**Selenium** ┬╖ Introduced 2004 ┬╖ Still maintained ┬╖ Status: ≡ƒƒí Legacy ΓÇö superseded by Playwright and Cypress for new projects; still common in enterprise. **Cypress** ┬╖ Introduced 2015 ┬╖ Still maintained ┬╖ Status: ≡ƒƒí ΓÇö strong community but Playwright's cross-browser support is more complete.
+:::warning 🟡 Legacy — acknowledged
+**Selenium** · Introduced 2004 · Still maintained · Status: 🟡 Legacy — superseded by Playwright and Cypress for new projects; still common in enterprise. **Cypress** · Introduced 2015 · Still maintained · Status: 🟡 — strong community but Playwright's cross-browser support is more complete.
 :::
 
 
@@ -21,13 +21,13 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-## ≡ƒÄ» Learning Objectives
+## 🎯 Learning Objectives
 
 By the end of this unit, you will be able to:
 
 - [ ] Explain the difference between unit, integration, and end-to-end tests
 - [ ] Write unit tests with pytest (Python) and Vitest (TypeScript)
-- [ ] Apply the AAA pattern ΓÇö Arrange, Act, Assert
+- [ ] Apply the AAA pattern — Arrange, Act, Assert
 - [ ] Use mocking to isolate units under test
 - [ ] Measure and interpret test coverage
 - [ ] Write a contract test to protect service boundaries
@@ -36,30 +36,30 @@ By the end of this unit, you will be able to:
 
 ---
 
-## ≡ƒôû Concepts
+## 📖 Concepts
 
 ### 1. The Testing Pyramid
 
 ```
-                    Γû▓
-                   /E2E\          Small number ΓÇö slow, brittle, high value
-                  /ΓöÇΓöÇΓöÇΓöÇΓöÇ\         Tests real browser / full system
+                    ▲
+                   /E2E\          Small number — slow, brittle, high value
+                  /─────\         Tests real browser / full system
                  /       \
-                /Integration\     Medium number ΓÇö test components together
-               /ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ\    Database, API calls, filesystem
+                /Integration\     Medium number — test components together
+               /─────────────\    Database, API calls, filesystem
               /               \
-             /   Unit Tests    \  Most tests ΓÇö fast, isolated, cheap
-            /ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ\  Test one function/class in isolation
-           ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+             /   Unit Tests    \  Most tests — fast, isolated, cheap
+            /─────────────────\  Test one function/class in isolation
+           ─────────────────────
 
-Cost: ΓùäΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+Cost: ◄─────────────────────────────────────────
       Expensive              Cheap
-Speed:ΓùäΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+Speed:◄─────────────────────────────────────────
       Slow                   Fast
 ```
 
 **Rules of thumb:**
-- Most of your tests should be **unit tests** ΓÇö they're fast and cheap to run and fix
+- Most of your tests should be **unit tests** — they're fast and cheap to run and fix
 - A smaller number of **integration tests** verify components work together
 - A handful of **E2E tests** verify critical user journeys (login, checkout, deployment)
 
@@ -69,7 +69,7 @@ Speed:ΓùäΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓ
 
 A **unit test** tests one function or class in complete isolation. Dependencies are replaced with **mocks** or **fakes**.
 
-**The AAA Pattern ΓÇö every unit test follows this:**
+**The AAA Pattern — every unit test follows this:**
 
 ```
 Arrange   Set up the inputs, create mock objects, prepare the environment
@@ -82,7 +82,7 @@ Assert    Verify the output is what you expected
 
 ```python
 # pip install pytest pytest-cov
-# pytest: Introduced 2004, Latest 8.x (2024) ΓÇö ≡ƒƒó Modern
+# pytest: Introduced 2004, Latest 8.x (2024) — 🟢 Modern
 
 # src/calculator.py
 def add(a: float, b: float) -> float:
@@ -97,7 +97,7 @@ def divide(a: float, b: float) -> float:
 import pytest
 from src.calculator import add, divide
 
-# ΓöÇΓöÇ Basic assertions ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+# ── Basic assertions ──────────────────────────────────────
 def test_add_two_positive_numbers():
     # Arrange
     a, b = 3, 4
@@ -114,7 +114,7 @@ def test_add_negative_and_positive():
 def test_add_floats():
     assert add(0.1, 0.2) == pytest.approx(0.3)   # Never use == with floats
 
-# ΓöÇΓöÇ Testing exceptions ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+# ── Testing exceptions ────────────────────────────────────
 def test_divide_by_zero_raises():
     with pytest.raises(ValueError, match="Cannot divide by zero"):
         divide(10, 0)
@@ -122,7 +122,7 @@ def test_divide_by_zero_raises():
 def test_divide_normal():
     assert divide(10, 2) == 5.0
 
-# ΓöÇΓöÇ Parametrize ΓÇö run the same test with multiple inputs ΓöÇΓöÇ
+# ── Parametrize — run the same test with multiple inputs ──
 @pytest.mark.parametrize("a, b, expected", [
     (1, 2, 3),
     (-1, -1, -2),
@@ -148,7 +148,7 @@ pytest --cov=src --cov-report=term-missing  # With coverage
 
 ```typescript
 // npm install -D vitest
-// vitest: Introduced 2021, Latest 1.x (2024) ΓÇö ≡ƒƒó Modern
+// vitest: Introduced 2021, Latest 1.x (2024) — 🟢 Modern
 
 // src/calculator.ts
 export function add(a: number, b: number): number {
@@ -207,7 +207,7 @@ npx vitest run --coverage  # With coverage
 
 ---
 
-### 3. Mocking ΓÇö Isolating Dependencies
+### 3. Mocking — Isolating Dependencies
 
 Mocks replace real dependencies (databases, APIs, email services) so tests run fast and don't need external services.
 
@@ -228,7 +228,7 @@ from unittest.mock import patch, MagicMock
 from src.user_service import get_user_name
 
 def test_get_user_name_returns_name():
-    # Mock the HTTP call ΓÇö no network needed
+    # Mock the HTTP call — no network needed
     mock_response = MagicMock()
     mock_response.json.return_value = {"id": 1, "name": "Alice"}
     mock_response.raise_for_status.return_value = None
@@ -297,7 +297,7 @@ describe('getUserName', () => {
 
 ### 4. Integration Tests
 
-Integration tests verify that multiple components work together ΓÇö real database queries, real HTTP calls between services, real filesystem operations.
+Integration tests verify that multiple components work together — real database queries, real HTTP calls between services, real filesystem operations.
 
 ```python
 # Integration test: real database call
@@ -308,7 +308,7 @@ from src.user_repo import UserRepository
 
 @pytest.fixture(scope="module")
 def db():
-    """Real test database ΓÇö destroyed after tests."""
+    """Real test database — destroyed after tests."""
     conn = create_db_connection("postgresql://localhost/test_db")
     yield conn
     conn.execute("DROP TABLE IF EXISTS users")
@@ -367,11 +367,11 @@ jobs:
 
 ### 5. End-to-End Tests with Playwright
 
-> **Tool:** Playwright ┬╖ **Introduced:** 2020 (Microsoft) ┬╖ **Latest:** 1.43 (2024) ┬╖ **Status:** ≡ƒƒó Modern  
-> **Runs on:** Windows Γ£à Linux Γ£à macOS Γ£à ΓÇö native support for all three
+> **Tool:** Playwright · **Introduced:** 2020 (Microsoft) · **Latest:** 1.43 (2024) · **Status:** 🟢 Modern  
+> **Runs on:** Windows ✅ Linux ✅ macOS ✅ — native support for all three
 
 ```bash
-# Setup ΓÇö cross-platform
+# Setup — cross-platform
 npm init playwright@latest
 npx playwright install   # Downloads Chromium, Firefox, WebKit
 ```
@@ -418,8 +418,8 @@ npx playwright show-report              # View HTML test report
 
 ### 6. Load Testing with k6
 
-> **Tool:** k6 ┬╖ **Introduced:** 2017 ┬╖ **Latest:** 0.51 (2024) ┬╖ **Status:** ≡ƒƒó Modern  
-> **Runs on:** Windows Γ£à Linux Γ£à (native binaries for both)
+> **Tool:** k6 · **Introduced:** 2017 · **Latest:** 0.51 (2024) · **Status:** 🟢 Modern  
+> **Runs on:** Windows ✅ Linux ✅ (native binaries for both)
 
 k6 scripts are written in JavaScript (TypeScript supported) and run from the CLI.
 
@@ -473,10 +473,10 @@ k6 run --vus 10 --duration 30s load_test.js   # Quick run: 10 users, 30 seconds
 
 ### 7. Test Coverage
 
-Coverage tells you which lines of code were executed during tests. It's a useful **guard** (not a goal ΓÇö 100% coverage with poor tests is worthless).
+Coverage tells you which lines of code were executed during tests. It's a useful **guard** (not a goal — 100% coverage with poor tests is worthless).
 
 ```bash
-# Python ΓÇö pytest-cov
+# Python — pytest-cov
 pytest --cov=src --cov-report=term-missing --cov-report=html
 
 # Output:
@@ -484,9 +484,9 @@ pytest --cov=src --cov-report=term-missing --cov-report=html
 # src/calculator.py         12      2    83%   34-35
 # src/user_service.py       18      0   100%
 
-# TypeScript ΓÇö Vitest built-in
+# TypeScript — Vitest built-in
 npx vitest run --coverage
-# Produces: coverage/index.html ΓÇö open in browser
+# Produces: coverage/index.html — open in browser
 ```
 
 **Useful thresholds (enforce in CI):**
@@ -557,28 +557,28 @@ jobs:
 
 ---
 
-## ≡ƒôÜ Resources
+## 📚 Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary">
 
-- ≡ƒôû **[pytest Docs (FREE)](https://docs.pytest.org/)** ΓÇö Comprehensive and well-structured
-- ≡ƒôû **[Vitest Docs (FREE)](https://vitest.dev/guide/)** ΓÇö Concise and excellent; covers all modern patterns
-- ≡ƒôû **[Playwright Docs (FREE)](https://playwright.dev/docs/intro)** ΓÇö Best E2E testing docs available
+- 📖 **[pytest Docs (FREE)](https://docs.pytest.org/)** — Comprehensive and well-structured
+- 📖 **[Vitest Docs (FREE)](https://vitest.dev/guide/)** — Concise and excellent; covers all modern patterns
+- 📖 **[Playwright Docs (FREE)](https://playwright.dev/docs/intro)** — Best E2E testing docs available
 
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- ≡ƒô║ **[ArjanCodes ΓÇö pytest Tutorial (YouTube, FREE)](https://www.youtube.com/watch?v=cHYq1MRoyI0)** ΓÇö Thorough pytest walkthrough with fixtures and parametrize
-- ≡ƒôû **[k6 Docs (FREE)](https://k6.io/docs/)** ΓÇö Load testing reference and examples
-- ≡ƒôû **[Google SRE Book ΓÇö Testing Chapter (FREE)](https://sre.google/sre-book/testing-reliability/)** ΓÇö Testing from a reliability engineering perspective
+- 📺 **[ArjanCodes — pytest Tutorial (YouTube, FREE)](https://www.youtube.com/watch?v=cHYq1MRoyI0)** — Thorough pytest walkthrough with fixtures and parametrize
+- 📖 **[k6 Docs (FREE)](https://k6.io/docs/)** — Load testing reference and examples
+- 📖 **[Google SRE Book — Testing Chapter (FREE)](https://sre.google/sre-book/testing-reliability/)** — Testing from a reliability engineering perspective
 
 
 </TabItem>
 <TabItem value="external" label="External Courses">
 
-- ≡ƒÄô **[Test-Driven Development with Python ΓÇö Harry Percival (PAID book, free online)](https://www.obeythetestinggoat.com/)** ΓÇö Full TDD course with Django, worth the read
+- 🎓 **[Test-Driven Development with Python — Harry Percival (PAID book, free online)](https://www.obeythetestinggoat.com/)** — Full TDD course with Django, worth the read
 
 
 </TabItem>
@@ -586,18 +586,18 @@ jobs:
 
 ---
 
-## ≡ƒÅù∩╕Å Assignments
+## 🏗️ Assignments
 
-### Assignment 1 ΓÇö Unit Test a Real Module
+### Assignment 1 — Unit Test a Real Module
 Choose a module from a previous project (calculator, API routes, data transformer):
 
 - [ ] Write at least 10 unit tests covering happy paths and error cases
 - [ ] Use `@pytest.mark.parametrize` or `it.each` to test multiple inputs in one test
 - [ ] Mock at least one external dependency (HTTP call, database, file system)
-- [ ] Achieve 80%+ coverage ΓÇö check with `--cov` or `--coverage`
+- [ ] Achieve 80%+ coverage — check with `--cov` or `--coverage`
 - [ ] All tests pass in CI (GitHub Actions workflow)
 
-### Assignment 2 ΓÇö Integration Tests with Docker
+### Assignment 2 — Integration Tests with Docker
 Set up a real integration test suite:
 
 - [ ] Run a real database (PostgreSQL) in Docker as a service in GitHub Actions
@@ -605,18 +605,18 @@ Set up a real integration test suite:
 - [ ] Use fixtures to set up and tear down data between tests
 - [ ] Verify tests pass in the CI pipeline
 
-### Assignment 3 ΓÇö E2E + Load Test
+### Assignment 3 — E2E + Load Test
 Test a web application end-to-end:
 
 - [ ] Write 3 Playwright tests covering the most critical user flows
 - [ ] All tests run headless and pass on both Windows and Linux
 - [ ] Write a k6 load test that ramps to 50 concurrent users
 - [ ] Set a performance threshold: p95 response time < 500ms
-- [ ] Run the full test suite: unit ΓåÆ integration ΓåÆ E2E ΓåÆ load in sequence in CI
+- [ ] Run the full test suite: unit → integration → E2E → load in sequence in CI
 
 ---
 
-## Γ£à Milestone Checklist
+## ✅ Milestone Checklist
 
 - [ ] Can explain unit, integration, and E2E tests and when to use each
 - [ ] Can write unit tests with pytest and Vitest using the AAA pattern
@@ -628,11 +628,11 @@ Test a web application end-to-end:
 
 ---
 
-## ≡ƒÅå Milestone Complete!
+## 🏆 Milestone Complete!
 
 > **The DevOps domain is complete.**
 >
 > You can now build, containerise, orchestrate, provision, monitor, and test production software.
 > That's the full lifecycle of modern cloud-native engineering.
 
-**Log this in your kanban:** Move `devops/testing` to Γ£à Done. Move the entire DevOps domain to Γ£à Complete.
+**Log this in your kanban:** Move `devops/testing` to ✅ Done. Move the entire DevOps domain to ✅ Complete.

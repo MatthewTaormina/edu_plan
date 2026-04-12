@@ -3,13 +3,13 @@ import TabItem from '@theme/TabItem';
 
 # Search Algorithms
 
-**Section:** Algorithms ΓÇ║ Search ┬╖ **Prerequisite:** [Complexity Analysis](./complexity.md)
+**Section:** Algorithms › Search · **Prerequisite:** [Complexity Analysis](./complexity.md)
 
 > **Who needs this:** Every program that needs to find something. The right search strategy can be the difference between an instant response and a query that never completes.
 
 ---
 
-## ≡ƒÄ» Learning Objectives
+## 🎯 Learning Objectives
 
 - [ ] Implement linear search and binary search from scratch
 - [ ] Explain why binary search requires sorted data
@@ -19,9 +19,9 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-## ≡ƒôû Concepts
+## 📖 Concepts
 
-### 1. Linear Search ΓÇö O(n)
+### 1. Linear Search — O(n)
 
 The simplest search: check every element until you find the target. Works on **unsorted** data.
 
@@ -53,8 +53,8 @@ def linear_search(collection: list, target) -> int:
 # Python's built-in 'in' operator uses linear search on lists
 # and O(1) lookup on sets/dicts
 nums = [3, 7, 1, 9, 4]
-print(linear_search(nums, 9))  # ΓåÆ 3
-print(9 in nums)               # ΓåÆ True (same cost, cleaner)
+print(linear_search(nums, 9))  # → 3
+print(9 in nums)               # → True (same cost, cleaner)
 ```
 
 </TabItem>
@@ -70,8 +70,8 @@ function linearSearch<T>(collection: T[], target: T): number {
 
 // Built-in equivalents
 const nums = [3, 7, 1, 9, 4];
-nums.indexOf(9);             // ΓåÆ 3
-nums.findIndex(x => x > 8); // ΓåÆ 3 (first element > 8)
+nums.indexOf(9);             // → 3
+nums.findIndex(x => x > 8); // → 3 (first element > 8)
 ```
 
 </TabItem>
@@ -89,8 +89,8 @@ fn linear_search<T: PartialEq>(collection: &[T], target: &T) -> Option<usize> {
 
 // Built-in equivalents
 let nums = vec![3, 7, 1, 9, 4];
-nums.iter().position(|&x| x == 9);  // ΓåÆ Some(3)
-nums.contains(&9);                   // ΓåÆ true
+nums.iter().position(|&x| x == 9);  // → Some(3)
+nums.contains(&9);                   // → true
 ```
 
 </TabItem>
@@ -100,42 +100,42 @@ nums.contains(&9);                   // ΓåÆ true
 
 ---
 
-### 2. Binary Search ΓÇö O(log n)
+### 2. Binary Search — O(log n)
 
 Binary search works on **sorted** data. Each step eliminates **half** the remaining candidates.
 
 ```
 Find 11 in: [1, 3, 5, 7, 9, 11, 13]
-                        Γåæ
-             mid = index 3 ΓåÆ value 7 < 11 ΓåÆ search RIGHT half
+                        ↑
+             mid = index 3 → value 7 < 11 → search RIGHT half
              [9, 11, 13]
-              Γåæ
-             mid = index 1 ΓåÆ value 11 ΓåÆ FOUND! (2 steps vs 6 for linear)
+              ↑
+             mid = index 1 → value 11 → FOUND! (2 steps vs 6 for linear)
 ```
 
 **Why O(log n)?** Each iteration halves the search space. Starting from n elements:
 ```
-n ΓåÆ n/2 ΓåÆ n/4 ΓåÆ n/8 ΓåÆ ... ΓåÆ 1
+n → n/2 → n/4 → n/8 → ... → 1
 ```
-After k steps: n / 2^k = 1 ΓåÆ k = logΓéé(n). So logΓéé(1,000,000) Γëê 20 steps maximum.
+After k steps: n / 2^k = 1 → k = log₂(n). So log₂(1,000,000) ≈ 20 steps maximum.
 
 <Tabs>
 <TabItem value="pseudo" label="Pseudocode">
 
 ```pseudocode
 FUNCTION binary_search(sorted_list: List<T>, target: T) -> Int
-    left  ΓåÉ 0
-    right ΓåÉ length(sorted_list) - 1
+    left  ← 0
+    right ← length(sorted_list) - 1
 
     WHILE left <= right DO
-        mid ΓåÉ left + (right - left) / 2   // Avoids integer overflow
+        mid ← left + (right - left) / 2   // Avoids integer overflow
 
         IF sorted_list[mid] == target THEN
             RETURN mid                     // Found!
         ELSE IF sorted_list[mid] < target THEN
-            left ΓåÉ mid + 1                // Target is in right half
+            left ← mid + 1                // Target is in right half
         ELSE
-            right ΓåÉ mid - 1              // Target is in left half
+            right ← mid - 1              // Target is in left half
         END IF
     END WHILE
 
@@ -163,8 +163,8 @@ def binary_search(sorted_list: list, target) -> int:
 # Python's bisect module is the production tool
 import bisect
 nums = [1, 3, 5, 7, 9, 11, 13]
-idx = bisect.bisect_left(nums, 11)  # ΓåÆ 5
-print(nums[idx] == 11)              # ΓåÆ True
+idx = bisect.bisect_left(nums, 11)  # → 5
+print(nums[idx] == 11)              # → True
 ```
 
 </TabItem>
@@ -203,9 +203,9 @@ fn binary_search<T: Ord>(sorted_list: &[T], target: &T) -> Option<usize> {
     None
 }
 
-// Built-in ΓÇö Vec and slices have binary_search()
+// Built-in — Vec and slices have binary_search()
 let nums = vec![1, 3, 5, 7, 9, 11, 13];
-nums.binary_search(&11);  // ΓåÆ Ok(5)
+nums.binary_search(&11);  // → Ok(5)
 ```
 
 </TabItem>
@@ -219,25 +219,25 @@ Using `mid = (left + right) / 2` can cause **integer overflow** in languages wit
 
 ---
 
-### 3. Hash Table Lookups ΓÇö O(1) Average
+### 3. Hash Table Lookups — O(1) Average
 
 A **hash table** (Python `dict`, JS `Map`/object, Rust `HashMap`) maps keys to values using a hash function. Lookup, insert, and delete are all **O(1) average**.
 
 ```
 // Under the hood:
-// 1. hash("username") ΓåÆ integer index
-// 2. Go directly to that bucket ΓÇö no iteration
+// 1. hash("username") → integer index
+// 2. Go directly to that bucket — no iteration
 
 // This is why Python's 'in' on a dict is O(1) but on a list is O(n)
 d = {"alice": 42, "bob": 7}
-"alice" in d       # O(1) ΓÇö hash lookup
-"alice" in list(d) # O(n) ΓÇö linear scan of converted list
+"alice" in d       # O(1) — hash lookup
+"alice" in list(d) # O(n) — linear scan of converted list
 ```
 
 **When to use:** When you need fast lookup and the data isn't sorted (or sorted order doesn't matter). Hash tables trade space (O(n)) for speed (O(1) lookups). They're the most common "make it fast" tool in practice.
 
 :::note Cross-link
-See [Data Structures ΓÇö Hash Tables](../data_structures.mdx) for a full explanation of how hash functions, collision resolution, and load factors work.
+See [Data Structures — Hash Tables](../data_structures.mdx) for a full explanation of how hash functions, collision resolution, and load factors work.
 :::
 
 ---
@@ -246,7 +246,7 @@ See [Data Structures ΓÇö Hash Tables](../data_structures.mdx) for a full expl
 
 | Scenario | Best Strategy |
 |----------|--------------|
-| Small list (< ~50 elements) | Linear ΓÇö overhead of sorting/hashing isn't worth it |
+| Small list (< ~50 elements) | Linear — overhead of sorting/hashing isn't worth it |
 | Large sorted list, searched many times | Binary search |
 | Large unsorted collection, searched many times | Hash table |
 | Sorted list, find *closest* match | Binary search (with bisect / lower_bound) |
@@ -257,35 +257,35 @@ See [Data Structures ΓÇö Hash Tables](../data_structures.mdx) for a full expl
 
 | Algorithm | Complexity | Use When |
 |-----------|-----------|---------|
-| **Jump Search** | O(ΓêÜn) | Sorted list, random access is expensive (e.g., tape media) |
+| **Jump Search** | O(√n) | Sorted list, random access is expensive (e.g., tape media) |
 | **Interpolation Search** | O(log log n) avg | Sorted, *uniformly distributed* numeric data |
 | **Exponential Search** | O(log n) | Unbounded/infinite sorted lists |
 | **Ternary Search** | O(log n) | Finding max/min of a unimodal function |
 
-You will very rarely implement these from scratch ΓÇö they're good to know exist.
+You will very rarely implement these from scratch — they're good to know exist.
 
 ---
 
-## ≡ƒôÜ Resources
+## 📚 Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary (Do These)">
 
-- ≡ƒô║ **[CS50x Week 3 ΓÇö Search (FREE)](https://cs50.harvard.edu/x/)** ΓÇö Visual walkthrough of linear and binary search
-- ≡ƒô║ **[NeetCode ΓÇö Binary Search (YouTube, FREE)](https://www.youtube.com/watch?v=s4DPM8ct1pI)** ΓÇö Practical patterns for applying binary search on LeetCode-style problems
+- 📺 **[CS50x Week 3 — Search (FREE)](https://cs50.harvard.edu/x/)** — Visual walkthrough of linear and binary search
+- 📺 **[NeetCode — Binary Search (YouTube, FREE)](https://www.youtube.com/watch?v=s4DPM8ct1pI)** — Practical patterns for applying binary search on LeetCode-style problems
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- ≡ƒôû **[Visualgo ΓÇö Binary Search animation (FREE)](https://visualgo.net/en/bst)** ΓÇö Watch the algorithm eliminate halves in real time
-- ≡ƒô║ **[Abdul Bari ΓÇö Binary Search (YouTube, FREE)](https://www.youtube.com/watch?v=C2apEw9pgtw)** ΓÇö Full derivation and analysis
+- 📖 **[Visualgo — Binary Search animation (FREE)](https://visualgo.net/en/bst)** — Watch the algorithm eliminate halves in real time
+- 📺 **[Abdul Bari — Binary Search (YouTube, FREE)](https://www.youtube.com/watch?v=C2apEw9pgtw)** — Full derivation and analysis
 
 </TabItem>
 <TabItem value="practice" label="Practice">
 
-- ≡ƒÄ« **[LeetCode #704 ΓÇö Binary Search (FREE)](https://leetcode.com/problems/binary-search/)** ΓÇö Classic baseline
-- ≡ƒÄ« **[LeetCode #35 ΓÇö Search Insert Position (FREE)](https://leetcode.com/problems/search-insert-position/)** ΓÇö Binary search variant
-- ≡ƒÄ« **[LeetCode #33 ΓÇö Search in Rotated Sorted Array (FREE)](https://leetcode.com/problems/search-in-rotated-sorted-array/)** ΓÇö Common interview twist
+- 🎮 **[LeetCode #704 — Binary Search (FREE)](https://leetcode.com/problems/binary-search/)** — Classic baseline
+- 🎮 **[LeetCode #35 — Search Insert Position (FREE)](https://leetcode.com/problems/search-insert-position/)** — Binary search variant
+- 🎮 **[LeetCode #33 — Search in Rotated Sorted Array (FREE)](https://leetcode.com/problems/search-in-rotated-sorted-array/)** — Common interview twist
 
 </TabItem>
 </Tabs>

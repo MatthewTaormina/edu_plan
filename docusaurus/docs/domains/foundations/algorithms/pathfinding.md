@@ -3,13 +3,13 @@ import TabItem from '@theme/TabItem';
 
 # Pathfinding Algorithms
 
-**Section:** Algorithms ΓÇ║ Pathfinding ┬╖ **Prerequisite:** [Graph Traversal](./graph.md)
+**Section:** Algorithms › Pathfinding · **Prerequisite:** [Graph Traversal](./graph.md)
 
-> **Who needs this:** Game developers, mapping apps, network routing, logistics systems ΓÇö any domain where you need to find the optimal route between two points in a weighted graph. Dijkstra's algorithm in particular is one of the most deployed algorithms in the world (it powers GPS, network routing protocols like OSPF, and countless games).
+> **Who needs this:** Game developers, mapping apps, network routing, logistics systems — any domain where you need to find the optimal route between two points in a weighted graph. Dijkstra's algorithm in particular is one of the most deployed algorithms in the world (it powers GPS, network routing protocols like OSPF, and countless games).
 
 ---
 
-## ≡ƒÄ» Learning Objectives
+## 🎯 Learning Objectives
 
 - [ ] Explain why BFS fails for weighted graphs and Dijkstra is needed
 - [ ] Implement Dijkstra's algorithm using a priority queue
@@ -19,33 +19,33 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-## ≡ƒôû Concepts
+## 📖 Concepts
 
 ### Why BFS Isn't Enough for Weighted Graphs
 
 BFS finds the path with the **fewest hops** in an unweighted graph. In a weighted graph, the shortest-hop path is not necessarily the lowest-cost path:
 
 ```
-A ΓÇö(1)ΓÇö B ΓÇö(1)ΓÇö D
-|               Γåæ
-+ΓÇö(10)ΓÇö C ΓÇö(1)ΓÇö+
+A —(1)— B —(1)— D
+|               ↑
++—(10)— C —(1)—+
 
-BFS finds: A ΓåÆ B ΓåÆ D (2 hops, cost 2)   Γ£ô correct here
+BFS finds: A → B → D (2 hops, cost 2)   ✓ correct here
 
 But consider:
-A ΓÇö(1)ΓÇö B ΓÇö(100)ΓÇö D
-|                 Γåæ
-+ΓÇö(2)ΓÇö C ΓÇö(2)ΓÇöΓÇö+
+A —(1)— B —(100)— D
+|                 ↑
++—(2)— C —(2)——+
 
-BFS finds: A ΓåÆ B ΓåÆ D (2 hops, cost 101)
-Optimal:   A ΓåÆ C ΓåÆ D (2 hops, cost 4)   ΓåÉ same hops, different cost!
+BFS finds: A → B → D (2 hops, cost 101)
+Optimal:   A → C → D (2 hops, cost 4)   ← same hops, different cost!
 ```
 
 BFS doesn't know about edge weights. You need Dijkstra's.
 
 ---
 
-### 1. Dijkstra's Algorithm ΓÇö O(E log V)
+### 1. Dijkstra's Algorithm — O(E log V)
 
 Dijkstra finds the **shortest weighted path** from a source to all reachable nodes in a graph with **non-negative weights**. It uses a **min-heap (priority queue)** to always process the currently cheapest-to-reach node next.
 
@@ -53,27 +53,27 @@ Dijkstra finds the **shortest weighted path** from a source to all reachable nod
 
 ```
 Graph (weighted, undirected):
-  A ΓÇö(4)ΓÇö B
-  A ΓÇö(2)ΓÇö C
-  C ΓÇö(1)ΓÇö B
-  B ΓÇö(5)ΓÇö D
-  C ΓÇö(8)ΓÇö D
+  A —(4)— B
+  A —(2)— C
+  C —(1)— B
+  B —(5)— D
+  C —(8)— D
 
 Find shortest path from A to all nodes:
 
-Step 1: dist = {A:0, B:Γê₧, C:Γê₧, D:Γê₧}; visit A
-        ΓåÆ B via A: 0+4=4; C via A: 0+2=2
-        dist = {A:0, B:4, C:2, D:Γê₧}
+Step 1: dist = {A:0, B:∞, C:∞, D:∞}; visit A
+        → B via A: 0+4=4; C via A: 0+2=2
+        dist = {A:0, B:4, C:2, D:∞}
 
 Step 2: visit C (cheapest unvisited, cost 2)
-        ΓåÆ B via C: 2+1=3 < 4 ΓåÆ update!; D via C: 2+8=10
+        → B via C: 2+1=3 < 4 → update!; D via C: 2+8=10
         dist = {A:0, B:3, C:2, D:10}
 
 Step 3: visit B (cost 3)
-        ΓåÆ D via B: 3+5=8 < 10 ΓåÆ update!
+        → D via B: 3+5=8 < 10 → update!
         dist = {A:0, B:3, C:2, D:8}
 
-Step 4: visit D (cost 8) ΓÇö no improvements
+Step 4: visit D (cost 8) — no improvements
 Final: {A:0, B:3, C:2, D:8}
 ```
 
@@ -82,20 +82,20 @@ Final: {A:0, B:3, C:2, D:8}
 
 ```pseudocode
 FUNCTION dijkstra(graph: WeightedAdjList, start: Vertex) -> Map<Vertex, Int>
-    dist     ΓåÉ MAP { start: 0, all others: INFINITY }
-    pq       ΓåÉ MIN_PRIORITY_QUEUE [(0, start)]   // (cost, node)
-    visited  ΓåÉ SET {}
+    dist     ← MAP { start: 0, all others: INFINITY }
+    pq       ← MIN_PRIORITY_QUEUE [(0, start)]   // (cost, node)
+    visited  ← SET {}
 
     WHILE pq is NOT EMPTY DO
-        (cost, node) ΓåÉ EXTRACT_MIN from pq
+        (cost, node) ← EXTRACT_MIN from pq
 
         IF node IN visited THEN CONTINUE    // Already finalized
         ADD node TO visited
 
         FOR each (neighbor, weight) IN graph[node] DO
-            new_cost ΓåÉ cost + weight
+            new_cost ← cost + weight
             IF new_cost < dist[neighbor] THEN
-                dist[neighbor] ΓåÉ new_cost
+                dist[neighbor] ← new_cost
                 PUSH (new_cost, neighbor) INTO pq
             END IF
         END FOR
@@ -118,12 +118,12 @@ def dijkstra(graph: dict, start: str) -> dict:
     """
     dist = {node: float('inf') for node in graph}
     dist[start] = 0
-    pq = [(0, start)]  # (cost, node) ΓÇö heapq is a min-heap
+    pq = [(0, start)]  # (cost, node) — heapq is a min-heap
 
     while pq:
         cost, node = heapq.heappop(pq)
         if cost > dist[node]:
-            continue  # Stale entry in heap ΓÇö skip
+            continue  # Stale entry in heap — skip
 
         for neighbor, weight in graph.get(node, []):
             new_cost = cost + weight
@@ -215,21 +215,21 @@ Dijkstra **does not work** with negative edge weights. If a neighbor has a negat
 
 ---
 
-### 2. A* (A-Star) ΓÇö O(E log V) with good heuristic
+### 2. A* (A-Star) — O(E log V) with good heuristic
 
 A* extends Dijkstra with a **heuristic function** `h(node)` that estimates the remaining cost from a node to the goal. Instead of always visiting the cheapest-so-far node, A* visits the node with the lowest `f(n) = g(n) + h(n)`:
 
 - `g(n)` = actual cost from start to n (same as Dijkstra's `dist[n]`)
-- `h(n)` = **estimated** cost from n to goal (must never overestimate ΓÇö be *admissible*)
+- `h(n)` = **estimated** cost from n to goal (must never overestimate — be *admissible*)
 
-**Why it's faster than Dijkstra:** With a good heuristic, A* explores far fewer nodes. In grid pathfinding with Manhattan distance as the heuristic, it can be 10ΓÇô100├ù faster than Dijkstra.
+**Why it's faster than Dijkstra:** With a good heuristic, A* explores far fewer nodes. In grid pathfinding with Manhattan distance as the heuristic, it can be 10–100× faster than Dijkstra.
 
 ```
 Common heuristics:
 - Grid with 4 directions:   Manhattan distance |dx| + |dy|
 - Grid with 8 directions:   Chebyshev distance max(|dx|, |dy|)
-- Any Euclidean space:      Euclidean distance ΓêÜ(dx┬▓ + dy┬▓)
-- General graphs:           0 (degenerates to Dijkstra ΓÇö still correct)
+- Any Euclidean space:      Euclidean distance √(dx² + dy²)
+- General graphs:           0 (degenerates to Dijkstra — still correct)
 ```
 
 <Tabs>
@@ -238,25 +238,25 @@ Common heuristics:
 ```pseudocode
 FUNCTION a_star(graph: WeightedAdjList, start: Vertex, goal: Vertex,
                 h: Function(Vertex) -> Int) -> List<Vertex>
-    g_score  ΓåÉ MAP { start: 0, all others: INFINITY }
-    f_score  ΓåÉ MAP { start: h(start) }
-    came_from ΓåÉ MAP {}
+    g_score  ← MAP { start: 0, all others: INFINITY }
+    f_score  ← MAP { start: h(start) }
+    came_from ← MAP {}
 
-    open_set ΓåÉ MIN_PRIORITY_QUEUE [(f_score[start], start)]
+    open_set ← MIN_PRIORITY_QUEUE [(f_score[start], start)]
 
     WHILE open_set is NOT EMPTY DO
-        (_, current) ΓåÉ EXTRACT_MIN from open_set
+        (_, current) ← EXTRACT_MIN from open_set
 
         IF current == goal THEN
             RETURN reconstruct_path(came_from, current)
         END IF
 
         FOR each (neighbor, weight) IN graph[current] DO
-            tentative_g ΓåÉ g_score[current] + weight
+            tentative_g ← g_score[current] + weight
             IF tentative_g < g_score[neighbor] THEN
-                came_from[neighbor] ΓåÉ current
-                g_score[neighbor]   ΓåÉ tentative_g
-                f_score[neighbor]   ΓåÉ tentative_g + h(neighbor)
+                came_from[neighbor] ← current
+                g_score[neighbor]   ← tentative_g
+                f_score[neighbor]   ← tentative_g + h(neighbor)
                 PUSH (f_score[neighbor], neighbor) INTO open_set
             END IF
         END FOR
@@ -306,7 +306,7 @@ def a_star(graph: dict, start: str, goal: str, h: Callable[[str], float]) -> lis
 
 ---
 
-### 3. Bellman-Ford ΓÇö O(VE)
+### 3. Bellman-Ford — O(VE)
 
 Bellman-Ford handles **negative edge weights** and detects **negative-weight cycles**. Slower than Dijkstra but correct in all cases.
 
@@ -317,13 +317,13 @@ Bellman-Ford handles **negative edge weights** and detects **negative-weight cyc
 
 ```pseudocode
 FUNCTION bellman_ford(vertices: List, edges: List<(u, v, w)>, start: Vertex)
-    dist ΓåÉ MAP { start: 0, all others: INFINITY }
+    dist ← MAP { start: 0, all others: INFINITY }
 
     // Relax all edges V-1 times
     FOR i FROM 1 TO length(vertices) - 1 DO
         FOR each (u, v, weight) IN edges DO
             IF dist[u] + weight < dist[v] THEN
-                dist[v] ΓåÉ dist[u] + weight
+                dist[v] ← dist[u] + weight
             END IF
         END FOR
     END FOR
@@ -345,7 +345,7 @@ END FUNCTION
 ```python
 def bellman_ford(vertices: list, edges: list, start: str) -> dict:
     """
-    edges = [(u, v, weight), ...]  ΓÇö directed edges
+    edges = [(u, v, weight), ...]  — directed edges
     """
     dist = {v: float('inf') for v in vertices}
     dist[start] = 0
@@ -385,26 +385,26 @@ print(bellman_ford(vertices, edges, "A"))  # {'A': 0, 'B': 1, 'C': -2, 'D': 0}
 
 ---
 
-## ≡ƒôÜ Resources
+## 📚 Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary (Do These)">
 
-- ≡ƒô║ **[NeetCode ΓÇö Dijkstra's Algorithm (YouTube, FREE)](https://www.youtube.com/watch?v=XEb7_z5dG3c)** ΓÇö Step-by-step with code
-- ≡ƒô║ **[Abdul Bari ΓÇö Dijkstra's Algorithm (YouTube, FREE)](https://www.youtube.com/watch?v=XB4MIexjvY0)** ΓÇö Clear hand-trace of the algorithm
+- 📺 **[NeetCode — Dijkstra's Algorithm (YouTube, FREE)](https://www.youtube.com/watch?v=XEb7_z5dG3c)** — Step-by-step with code
+- 📺 **[Abdul Bari — Dijkstra's Algorithm (YouTube, FREE)](https://www.youtube.com/watch?v=XB4MIexjvY0)** — Clear hand-trace of the algorithm
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- ≡ƒô║ **[A* Pathfinding Visualization (YouTube, FREE)](https://www.youtube.com/watch?v=-L-WgKMFuhE)** ΓÇö Visual comparison of BFS, Dijkstra, and A*
-- ≡ƒôû **[Red Blob Games ΓÇö A* Intro (FREE)](https://www.redblobgames.com/pathfinding/a-star/introduction.html)** ΓÇö Best interactive A* explanation on the internet
+- 📺 **[A* Pathfinding Visualization (YouTube, FREE)](https://www.youtube.com/watch?v=-L-WgKMFuhE)** — Visual comparison of BFS, Dijkstra, and A*
+- 📖 **[Red Blob Games — A* Intro (FREE)](https://www.redblobgames.com/pathfinding/a-star/introduction.html)** — Best interactive A* explanation on the internet
 
 </TabItem>
 <TabItem value="practice" label="Practice">
 
-- ≡ƒÄ« **[LeetCode #743 ΓÇö Network Delay Time (FREE)](https://leetcode.com/problems/network-delay-time/)** ΓÇö Classic Dijkstra
-- ≡ƒÄ« **[LeetCode #1631 ΓÇö Path With Minimum Effort (FREE)](https://leetcode.com/problems/path-with-minimum-effort/)** ΓÇö Dijkstra on a grid
-- ≡ƒÄ« **[LeetCode #787 ΓÇö Cheapest Flights Within K Stops (FREE)](https://leetcode.com/problems/cheapest-flights-within-k-stops/)** ΓÇö Bellman-Ford variant
+- 🎮 **[LeetCode #743 — Network Delay Time (FREE)](https://leetcode.com/problems/network-delay-time/)** — Classic Dijkstra
+- 🎮 **[LeetCode #1631 — Path With Minimum Effort (FREE)](https://leetcode.com/problems/path-with-minimum-effort/)** — Dijkstra on a grid
+- 🎮 **[LeetCode #787 — Cheapest Flights Within K Stops (FREE)](https://leetcode.com/problems/cheapest-flights-within-k-stops/)** — Bellman-Ford variant
 
 </TabItem>
 </Tabs>

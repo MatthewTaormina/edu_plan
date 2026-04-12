@@ -3,16 +3,16 @@ import TabItem from '@theme/TabItem';
 
 # Complexity Analysis
 
-**Section:** Algorithms ΓÇ║ Complexity ┬╖ **Prerequisite:** [Data Structures](../data_structures.mdx)
+**Section:** Algorithms › Complexity · **Prerequisite:** [Data Structures](../data_structures.mdx)
 
-> **Who needs this:** Anyone writing code that has to scale. Complexity analysis is the vocabulary engineers use to talk about performance ΓÇö you can't have a meaningful conversation about algorithms without it.
+> **Who needs this:** Anyone writing code that has to scale. Complexity analysis is the vocabulary engineers use to talk about performance — you can't have a meaningful conversation about algorithms without it.
 
 ---
 
-## ≡ƒÄ» Learning Objectives
+## 🎯 Learning Objectives
 
 - [ ] Read and write Big-O notation for any function or loop
-- [ ] Explain the difference between O(1), O(log n), O(n), O(n log n), and O(n┬▓)
+- [ ] Explain the difference between O(1), O(log n), O(n), O(n log n), and O(n²)
 - [ ] Apply the four rules for calculating Big-O (drop constants, drop non-dominant terms, addition, multiplication)
 - [ ] Distinguish between best, average, and worst case
 - [ ] Understand the difference between time complexity and space complexity
@@ -20,71 +20,71 @@ import TabItem from '@theme/TabItem';
 
 ---
 
-## ≡ƒôû Concepts
+## 📖 Concepts
 
 ### 1. What Is Big-O?
 
 **Big-O notation** describes how the runtime (or memory usage) of an algorithm *scales* as the input grows. It answers: **"If I double the input size, what happens to the time?"**
 
-It's not about measuring exact milliseconds ΓÇö it's about the *shape* of growth.
+It's not about measuring exact milliseconds — it's about the *shape* of growth.
 
 ```
 n = input size
 
-O(1)        Constant     ΓÇö doesn't matter how big n is, same time
-O(log n)    Logarithmic  ΓÇö doubles input ΓåÆ 1 more step (binary search)
-O(n)        Linear       ΓÇö doubles input ΓåÆ doubles time (one loop)
-O(n log n)  Linearithmic ΓÇö typical good sorting (merge sort, quicksort)
-O(n┬▓)       Quadratic    ΓÇö doubles input ΓåÆ quadruples time (nested loops)
-O(2Γü┐)       Exponential  ΓÇö avoid at all costs (naive recursive fibonacci)
-O(n!)       Factorial    ΓÇö only for tiny n (brute-force permutations)
+O(1)        Constant     — doesn't matter how big n is, same time
+O(log n)    Logarithmic  — doubles input → 1 more step (binary search)
+O(n)        Linear       — doubles input → doubles time (one loop)
+O(n log n)  Linearithmic — typical good sorting (merge sort, quicksort)
+O(n²)       Quadratic    — doubles input → quadruples time (nested loops)
+O(2ⁿ)       Exponential  — avoid at all costs (naive recursive fibonacci)
+O(n!)       Factorial    — only for tiny n (brute-force permutations)
 ```
 
 **Visualizing growth:**
 
-| n (input) | O(1) | O(log n) | O(n) | O(n log n) | O(n┬▓) |
+| n (input) | O(1) | O(log n) | O(n) | O(n log n) | O(n²) |
 |-----------|------|----------|------|------------|-------|
 | 10 | 1 | 3 | 10 | 33 | 100 |
 | 100 | 1 | 7 | 100 | 664 | 10,000 |
 | 1,000 | 1 | 10 | 1,000 | 10,000 | 1,000,000 |
 | 1,000,000 | 1 | 20 | 1M | 20M | **1 trillion** |
 
-At n=1,000,000 ΓÇö an O(n┬▓) algorithm takes **1 trillion operations**. At 1 billion ops/second that's ~16 minutes. An O(n log n) algorithm takes 20M operations ΓÇö 20 milliseconds.
+At n=1,000,000 — an O(n²) algorithm takes **1 trillion operations**. At 1 billion ops/second that's ~16 minutes. An O(n log n) algorithm takes 20M operations — 20 milliseconds.
 
 ---
 
 ### 2. Calculating Big-O
 
-**Four rules ΓÇö apply in order:**
+**Four rules — apply in order:**
 
 ```
 // Rule 1: Drop constants
-// O(2n) ΓåÆ O(n)    ΓåÉ constants don't matter for growth shape
-// O(500) ΓåÆ O(1)
+// O(2n) → O(n)    ← constants don't matter for growth shape
+// O(500) → O(1)
 
 // Rule 2: Drop non-dominant terms
-// O(n┬▓ + n) ΓåÆ O(n┬▓)    ΓåÉ n┬▓ dominates as n grows
-// O(n + log n) ΓåÆ O(n)
+// O(n² + n) → O(n²)    ← n² dominates as n grows
+// O(n + log n) → O(n)
 
-// Rule 3: Addition ΓÇö sequential steps add
+// Rule 3: Addition — sequential steps add
 FUNCTION example(n):
     FOR i FROM 0 TO n:        // O(n)
         DO_SOMETHING()
     FOR j FROM 0 TO n:        // O(n)
         DO_SOMETHING_ELSE()
-// Total: O(n) + O(n) = O(2n) ΓåÆ O(n)
+// Total: O(n) + O(n) = O(2n) → O(n)
 
-// Rule 4: Multiplication ΓÇö nested steps multiply
+// Rule 4: Multiplication — nested steps multiply
 FUNCTION example(n):
     FOR i FROM 0 TO n:        // O(n)
         FOR j FROM 0 TO n:    // O(n)
-            DO_SOMETHING()    //   Γåæ this inner loop runs n times for EACH outer i
-// Total: O(n ├ù n) = O(n┬▓)
+            DO_SOMETHING()    //   ↑ this inner loop runs n times for EACH outer i
+// Total: O(n × n) = O(n²)
 
-// Rule 5: Halving the problem ΓåÆ O(log n)
+// Rule 5: Halving the problem → O(log n)
 WHILE n > 1 DO
-    n ΓåÉ n / 2    // Each step halves the problem
-// If n=1000: 1000ΓåÆ500ΓåÆ250ΓåÆ125ΓåÆ... Γëê 10 steps ΓåÆ O(log n)
+    n ← n / 2    // Each step halves the problem
+// If n=1000: 1000→500→250→125→... ≈ 10 steps → O(log n)
 ```
 
 **Common patterns to recognize:**
@@ -92,28 +92,28 @@ WHILE n > 1 DO
 | Pattern | Complexity |
 |---------|-----------|
 | Single loop over n | O(n) |
-| Two nested loops over n | O(n┬▓) |
+| Two nested loops over n | O(n²) |
 | Loop that halves n each iteration | O(log n) |
 | Loop over n, inner loop halves | O(n log n) |
 | Recursive call on each half | O(log n) |
 | Recursive call on all-but-one | O(n) |
-| Two recursive calls | O(2Γü┐) often |
+| Two recursive calls | O(2ⁿ) often |
 | Hash table lookup | O(1) average |
 
 ---
 
 ### 3. Best, Average, and Worst Case
 
-Big-O is typically used for **worst case** ΓÇö which gives you a guarantee.
+Big-O is typically used for **worst case** — which gives you a guarantee.
 
 | Case | Meaning | Notation |
 |------|---------|---------|
-| **Best case** | The luckiest possible input (e.g., target is the first element) | Big-╬⌐ (Omega) |
-| **Average case** | Expected cost over all possible inputs | Big-╬ÿ (Theta) |
+| **Best case** | The luckiest possible input (e.g., target is the first element) | Big-Ω (Omega) |
+| **Average case** | Expected cost over all possible inputs | Big-Θ (Theta) |
 | **Worst case** | The most costly possible input (target is last, or absent) | Big-O |
 
-:::tip Research Question ≡ƒöì
-Look up "Quicksort worst case." When does it degrade from O(n log n) to O(n┬▓)? How does random pivot selection or median-of-three fix this?
+:::tip Research Question 🔍
+Look up "Quicksort worst case." When does it degrade from O(n log n) to O(n²)? How does random pivot selection or median-of-three fix this?
 :::
 
 ---
@@ -123,29 +123,29 @@ Look up "Quicksort worst case." When does it degrade from O(n log n) to O(n┬�
 Big-O also applies to **memory**. Every variable, data structure, or recursive call stack frame consumes space.
 
 ```
-// O(1) space ΓÇö only a few variables, no extra structures
+// O(1) space — only a few variables, no extra structures
 FUNCTION sum(arr):
-    total ΓåÉ 0
+    total ← 0
     FOR each x IN arr:
-        total ΓåÉ total + x
+        total ← total + x
     RETURN total
 
-// O(n) space ΓÇö creates a copy of the input
+// O(n) space — creates a copy of the input
 FUNCTION double_all(arr):
-    result ΓåÉ NEW Array of size length(arr)
+    result ← NEW Array of size length(arr)
     FOR i FROM 0 TO length(arr) - 1:
-        result[i] ΓåÉ arr[i] * 2
+        result[i] ← arr[i] * 2
     RETURN result
 
-// O(n) space (call stack) ΓÇö each recursive call adds a frame
+// O(n) space (call stack) — each recursive call adds a frame
 FUNCTION factorial(n):
     IF n == 0 THEN RETURN 1
     RETURN n * factorial(n - 1)
-// n=1000 ΓåÆ 1000 stack frames until base case
+// n=1000 → 1000 stack frames until base case
 ```
 
 :::note Space vs Time Tradeoff
-These often trade off. A hash table uses O(n) space to give you O(1) lookups instead of O(n) search. Memoization uses O(n) space to turn O(2Γü┐) recursion into O(n) time. This is one of the most common design decisions in algorithm engineering.
+These often trade off. A hash table uses O(n) space to give you O(1) lookups instead of O(n) search. Memoization uses O(n) space to turn O(2ⁿ) recursion into O(n) time. This is one of the most common design decisions in algorithm engineering.
 :::
 
 ---
@@ -159,13 +159,13 @@ Some operations are *occasionally* expensive but *cheap on average* across many 
 ```
 // A dynamic array (Python list, JS Array, Rust Vec) doubles in size when full.
 
-// 90% of the time: append is O(1) ΓÇö just write to the next slot
-// 10% of the time: append triggers a resize ΓåÆ O(n) copy
+// 90% of the time: append is O(1) — just write to the next slot
+// 10% of the time: append triggers a resize → O(n) copy
 
 // But amortized across n appends, each element is copied at most once per doubling.
 // Total work: O(n). Average per-append: O(1).
 
-// This is why Python list.append() is described as O(1) amortized ΓÇö
+// This is why Python list.append() is described as O(1) amortized —
 // even though individual appends can be O(n).
 ```
 
@@ -175,25 +175,25 @@ You don't need to prove amortized bounds mathematically to use them well. The ke
 
 ---
 
-## ≡ƒôÜ Resources
+## 📚 Resources
 
 <Tabs>
 <TabItem value="primary" label="Primary (Do These)">
 
-- ≡ƒô║ **[CS50x Week 3 ΓÇö Algorithms (FREE)](https://cs50.harvard.edu/x/)** ΓÇö Big-O with visual demonstrations
-- ≡ƒô║ **[Abdul Bari ΓÇö Time Complexity (YouTube, FREE)](https://www.youtube.com/watch?v=9TlHvipP5yA)** ΓÇö Clear derivation of common complexities
+- 📺 **[CS50x Week 3 — Algorithms (FREE)](https://cs50.harvard.edu/x/)** — Big-O with visual demonstrations
+- 📺 **[Abdul Bari — Time Complexity (YouTube, FREE)](https://www.youtube.com/watch?v=9TlHvipP5yA)** — Clear derivation of common complexities
 
 </TabItem>
 <TabItem value="supplemental" label="Supplemental">
 
-- ≡ƒôû **[Big-O Cheat Sheet (bigocheatsheet.com)](https://www.bigocheatsheet.com/)** ΓÇö Quick visual for common algorithm and data structure costs
-- ≡ƒô║ **[NeetCode ΓÇö Big-O Notation (YouTube, FREE)](https://www.youtube.com/watch?v=BgLTDT03QtU)** ΓÇö Short, practical intro
+- 📖 **[Big-O Cheat Sheet (bigocheatsheet.com)](https://www.bigocheatsheet.com/)** — Quick visual for common algorithm and data structure costs
+- 📺 **[NeetCode — Big-O Notation (YouTube, FREE)](https://www.youtube.com/watch?v=BgLTDT03QtU)** — Short, practical intro
 
 </TabItem>
 <TabItem value="practice" label="Practice">
 
-- ≡ƒÄ« **[LeetCode ΓÇö Time Complexity tag (FREE)](https://leetcode.com/problemset/)** ΓÇö Filter problems by complexity
-- ≡ƒôä **[Explain complexity of your code (pen and paper)](#)** ΓÇö Practice on any loop-containing function you write this week
+- 🎮 **[LeetCode — Time Complexity tag (FREE)](https://leetcode.com/problemset/)** — Filter problems by complexity
+- 📄 **[Explain complexity of your code (pen and paper)](#)** — Practice on any loop-containing function you write this week
 
 </TabItem>
 </Tabs>
