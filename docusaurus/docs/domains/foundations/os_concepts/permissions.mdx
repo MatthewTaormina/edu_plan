@@ -15,64 +15,88 @@ import TabItem from '@theme/TabItem';
 
 Every file and directory has a three-level permission set: **owner**, **group**, and **other (everyone else)**.
 
-<svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Unix permissions anatomy diagram" style={{width:'100%',display:'block',margin:'1.5rem auto'}}>
+<svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Unix permissions anatomy diagram" style={{width:'100%',display:'block',margin:'1.5rem auto'}}>
   <defs>
     <linearGradient id="perm-type" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor="#6366f1" stopOpacity="0.2"/>
-      <stop offset="100%" stopColor="#6366f1" stopOpacity="0.05"/>
+      <stop offset="0%" stopColor="#6366f1" stopOpacity="0.25"/>
+      <stop offset="100%" stopColor="#6366f1" stopOpacity="0.06"/>
     </linearGradient>
     <linearGradient id="perm-owner" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor="#ef4444" stopOpacity="0.2"/>
-      <stop offset="100%" stopColor="#ef4444" stopOpacity="0.05"/>
+      <stop offset="0%" stopColor="#ef4444" stopOpacity="0.25"/>
+      <stop offset="100%" stopColor="#ef4444" stopOpacity="0.06"/>
     </linearGradient>
     <linearGradient id="perm-group" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.2"/>
-      <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.05"/>
+      <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.25"/>
+      <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.06"/>
     </linearGradient>
     <linearGradient id="perm-other" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor="#10b981" stopOpacity="0.2"/>
-      <stop offset="100%" stopColor="#10b981" stopOpacity="0.05"/>
+      <stop offset="0%" stopColor="#10b981" stopOpacity="0.25"/>
+      <stop offset="100%" stopColor="#10b981" stopOpacity="0.06"/>
     </linearGradient>
   </defs>
 
-  {/* Output line */}
-  <text x="20" y="40" fontFamily="monospace" fontSize="16" fontWeight="700" fill="var(--ifm-color-emphasis-800)">-rwxr-xr--  2  alice  devteam  4096  script.sh</text>
+  {/* ── ls -la output line ── */}
+  <text x="20" y="38" fontFamily="monospace" fontSize="18" fontWeight="700" fill="var(--ifm-color-emphasis-800)">-rwxr-xr--  2  alice  devteam  4096  script.sh</text>
 
-  {/* Type bracket */}
-  <rect x="16" y="50" width="14" height="30" rx="2" fill="url(#perm-type)" stroke="#6366f1" strokeWidth="1.2"/>
-  <line x1="23" y1="80" x2="23" y2="110" stroke="#6366f1" strokeWidth="1" strokeDasharray="3,2"/>
-  <text x="23" y="124" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="#6366f1">type</text>
-  <text x="23" y="136" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="#6366f1">- = file</text>
-  <text x="23" y="148" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="#6366f1">d = dir</text>
-  <text x="23" y="160" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="#6366f1">l = link</text>
+  {/* ── Highlight brackets under each section ── */}
 
-  {/* Owner bracket */}
-  <rect x="30" y="50" width="36" height="30" rx="2" fill="url(#perm-owner)" stroke="#ef4444" strokeWidth="1.2"/>
-  <line x1="48" y1="80" x2="48" y2="96" stroke="#ef4444" strokeWidth="1" strokeDasharray="3,2"/>
-  <text x="48" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="#ef4444">owner</text>
-  <text x="48" y="124" textAnchor="middle" fontFamily="monospace" fontSize="11" fontWeight="700" fill="#ef4444">rwx = 7</text>
-  <text x="48" y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-600)">read+write+exec</text>
+  {/* Type: character at x≈20 */}
+  <rect x="16"  y="46" width="16"  height="28" rx="3" fill="url(#perm-type)"  stroke="#6366f1" strokeWidth="1.5"/>
 
-  {/* Group bracket */}
-  <rect x="66" y="50" width="36" height="30" rx="2" fill="url(#perm-group)" stroke="#f59e0b" strokeWidth="1.2"/>
-  <line x1="84" y1="80" x2="84" y2="96" stroke="#f59e0b" strokeWidth="1" strokeDasharray="3,2"/>
-  <text x="84" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="#f59e0b">group</text>
-  <text x="84" y="124" textAnchor="middle" fontFamily="monospace" fontSize="11" fontWeight="700" fill="#f59e0b">r-x = 5</text>
-  <text x="84" y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-600)">read+exec</text>
+  {/* Owner: rwx — chars at x≈36 */}
+  <rect x="36"  y="46" width="46"  height="28" rx="3" fill="url(#perm-owner)" stroke="#ef4444" strokeWidth="1.5"/>
 
-  {/* Other bracket */}
-  <rect x="102" y="50" width="36" height="30" rx="2" fill="url(#perm-other)" stroke="#10b981" strokeWidth="1.2"/>
-  <line x1="120" y1="80" x2="120" y2="96" stroke="#10b981" strokeWidth="1" strokeDasharray="3,2"/>
-  <text x="120" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="#10b981">other</text>
-  <text x="120" y="124" textAnchor="middle" fontFamily="monospace" fontSize="11" fontWeight="700" fill="#10b981">r-- = 4</text>
-  <text x="120" y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-600)">read only</text>
+  {/* Group: r-x — chars at x≈85 */}
+  <rect x="85"  y="46" width="46"  height="28" rx="3" fill="url(#perm-group)" stroke="#f59e0b" strokeWidth="1.5"/>
 
-  {/* Link count */}
-  <text x="165" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-500)">links: 2</text>
+  {/* Other: r-- — chars at x≈135 */}
+  <rect x="134" y="46" width="46"  height="28" rx="3" fill="url(#perm-other)" stroke="#10b981" strokeWidth="1.5"/>
 
-  {/* Owner / group labels */}
-  <text x="230" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-500)">alice</text>
-  <text x="300" y="110" textAnchor="middle" fontFamily="sans-serif" fontSize="10" fill="var(--ifm-color-emphasis-500)">devteam</text>
+  {/* ── Drop lines to labels ── */}
+  <line x1="24"  y1="74" x2="24"  y2="120" stroke="#6366f1" strokeWidth="1.2" strokeDasharray="4,3"/>
+  <line x1="59"  y1="74" x2="59"  y2="120" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="4,3"/>
+  <line x1="108" y1="74" x2="108" y2="120" stroke="#f59e0b" strokeWidth="1.2" strokeDasharray="4,3"/>
+  <line x1="157" y1="74" x2="157" y2="120" stroke="#10b981" strokeWidth="1.2" strokeDasharray="4,3"/>
+
+  {/* ── Column labels ── */}
+
+  {/* Type column */}
+  <text x="24"  y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fontWeight="700" fill="#6366f1">type</text>
+  <text x="24"  y="158" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="#6366f1">- = file</text>
+  <text x="24"  y="174" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="#6366f1">d = dir</text>
+  <text x="24"  y="190" textAnchor="middle" fontFamily="monospace" fontSize="12" fill="#6366f1">l = link</text>
+
+  {/* Owner column */}
+  <text x="59"  y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fontWeight="700" fill="#ef4444">owner</text>
+  <text x="59"  y="158" textAnchor="middle" fontFamily="monospace" fontSize="14" fontWeight="700" fill="#ef4444">rwx = 7</text>
+  <text x="59"  y="176" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-600)">read</text>
+  <text x="59"  y="192" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-600)">write</text>
+  <text x="59"  y="208" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-600)">execute</text>
+
+  {/* Group column */}
+  <text x="108" y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fontWeight="700" fill="#f59e0b">group</text>
+  <text x="108" y="158" textAnchor="middle" fontFamily="monospace" fontSize="14" fontWeight="700" fill="#f59e0b">r-x = 5</text>
+  <text x="108" y="176" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-600)">read</text>
+  <text x="108" y="192" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-600)">execute</text>
+
+  {/* Other column */}
+  <text x="157" y="138" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fontWeight="700" fill="#10b981">other</text>
+  <text x="157" y="158" textAnchor="middle" fontFamily="monospace" fontSize="14" fontWeight="700" fill="#10b981">r-- = 4</text>
+  <text x="157" y="176" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-600)">read only</text>
+
+  {/* ── Right-side field labels (link count, owner, group, size, name) ── */}
+  <line x1="186" y1="60" x2="186" y2="240" stroke="var(--ifm-color-emphasis-200)" strokeWidth="0.8" strokeDasharray="3,3"/>
+
+  <text x="210" y="230" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-500)">link count</text>
+  <text x="310" y="230" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-500)">owner</text>
+  <text x="390" y="230" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-500)">group</text>
+  <text x="480" y="230" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-500)">size (bytes)</text>
+  <text x="590" y="230" fontFamily="sans-serif" fontSize="12" fill="var(--ifm-color-emphasis-500)">filename</text>
+
+  {/* ── Octal quick-ref at bottom ── */}
+  <rect x="16" y="248" width="724" height="58" rx="6" fill="var(--ifm-color-emphasis-100)" stroke="var(--ifm-color-emphasis-200)" strokeWidth="1"/>
+  <text x="380" y="268" textAnchor="middle" fontFamily="sans-serif" fontSize="13" fontWeight="700" fill="var(--ifm-color-emphasis-700)">Octal: r=4  w=2  x=1 — each group is their sum</text>
+  <text x="380" y="290" textAnchor="middle" fontFamily="monospace" fontSize="13" fill="var(--ifm-color-emphasis-700)">chmod 754 script.sh  →  owner=rwx(7)  group=r-x(5)  other=r--(4)</text>
 </svg>
 
 ### Permission Bits

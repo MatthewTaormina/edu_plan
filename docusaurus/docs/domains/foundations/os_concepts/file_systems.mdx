@@ -45,14 +45,14 @@ Every file has a **metadata record** that stores everything *except* the name:
 ```mermaid
 flowchart LR
     subgraph Dir["Directory entry"]
-        Name["\"config.txt\"\n↓ inode 42"]
+        Name["config.txt → inode 42"]
     end
-    subgraph Inode["Inode 42 (Linux ext4)\nor MFT entry (Windows NTFS)"]
-        Meta["owner: alice\nperms: 644\nsize: 1.2 KB\nctime/mtime/atime\nblock pointers..."]
+    subgraph Inode["Inode 42 — Linux ext4 / MFT entry — Windows NTFS"]
+        Meta["owner: alice | perms: 644 | size: 1.2 KB\nctime / mtime / atime | block pointers"]
     end
     subgraph Blocks["Data blocks on disk"]
         B1["Block 8041\nbytes 0–4095"]
-        B2["Block 8042\nbytes 4096–..."]
+        B2["Block 8042\nbytes 4096–end"]
     end
 
     Name --> Inode
