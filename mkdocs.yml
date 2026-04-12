@@ -230,6 +230,20 @@ nav:
       - "Lesson 05 — Error Boundaries & Suspense": courses/react_advanced/lesson_05.md
       - "Lesson 06 — Testing React with Vitest + Testing Library": courses/react_advanced/lesson_06.md
       - "Lesson 07 — Capstone: Multi-Page Dashboard": courses/react_advanced/lesson_07.md
+    - "Next.js":
+      - courses/nextjs/index.md
+      - "Lesson 01 — App Router Setup & Project Structure": courses/nextjs/lesson_01.md
+      - "Lesson 02 — Server vs Client Components": courses/nextjs/lesson_02.md
+      - "Lesson 03 — File-Based Routing — Layouts, Loading, Error": courses/nextjs/lesson_03.md
+      - "Lesson 04 — Data Fetching in Server Components": courses/nextjs/lesson_04.md
+      - "Lesson 05 — SSG and ISR": courses/nextjs/lesson_05.md
+      - "Lesson 06 — Route Handlers (API Routes)": courses/nextjs/lesson_06.md
+      - "Lesson 07 — Middleware & Auth Patterns": courses/nextjs/lesson_07.md
+      - "Lesson 08 — Capstone: Blog with CMS": courses/nextjs/lesson_08.md
+    - "Angular Fundamentals":
+      - courses/angular_fundamentals/index.md
+      - "Lesson 01 — Angular Architecture & CLI Setup": courses/angular_fundamentals/lesson_01.md
+      - "Lesson 02 — Standalone Components & Templates": courses/angular_fundamentals/lesson_02.md
   - Wiki:
     - "Foundations":
       - domains/foundations/index.md
