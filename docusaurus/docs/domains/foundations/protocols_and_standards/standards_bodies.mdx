@@ -1,0 +1,89 @@
+# Standards Bodies
+
+> **Part of:** [Protocols & Standards](./index)
+
+Protocols don't appear from thin air. They are designed by engineers, debated publicly, and published as specifications by standards bodies. Understanding who makes the standards — and how — helps you read primary sources rather than always relying on summaries.
+
+---
+
+## Major Standards Bodies
+
+| Body | Full Name | Focus | Key Standards |
+|------|-----------|-------|---------------|
+| **IETF** | Internet Engineering Task Force | Internet protocols | HTTP (RFC 9110), TCP (RFC 793), DNS (RFC 1035), TLS (RFC 8446), WebSocket (RFC 6455), QUIC (RFC 9000) |
+| **W3C** | World Wide Web Consortium | Web technologies | HTML, CSS, SVG, WebAssembly, Web API specs |
+| **IEEE** | Institute of Electrical & Electronics Engineers | Networking hardware & computing | Wi-Fi (802.11), Ethernet (802.3), Bluetooth (802.15.1) |
+| **ISO** | International Organization for Standardization | Broad international standards | ISO 8601 (date/time), ISO 27001 (information security), ISO 9001 (quality) |
+| **ECMA** | Ecma International | Scripting languages | ECMAScript (JavaScript), JSON (ECMA-404), C# (ECMA-334) |
+| **OpenAPI** | OpenAPI Initiative (Linux Foundation) | API specification | OpenAPI 3.x (REST API description format, formerly Swagger) |
+| **WHATWG** | Web Hypertext Application Technology Working Group | Living HTML/DOM standard | HTML Living Standard, Fetch, Streams, URL |
+
+---
+
+## RFCs — Request for Comments
+
+**RFCs** are the documents that define internet standards at the IETF. Despite the name, they are not requests — once published with a number, they are normative specifications.
+
+- Freely available at [rfc-editor.org](https://www.rfc-editor.org/)
+- Proposed Standard → Standard track → Internet Standard
+- Some are purely informational (not specifications)
+
+**RFC language is precise by design.** RFC 2119 defines exactly what capital words mean:
+
+| Word | Meaning |
+|------|---------|
+| **MUST** | Absolute requirement |
+| **MUST NOT** | Absolute prohibition |
+| **SHOULD** | Recommended; deviations require explanation |
+| **SHOULD NOT** | Not recommended; deviations require explanation |
+| **MAY** | Optional |
+
+This precision is what makes implementations interoperable. When you see a bug report that says "the server MUST return 400 for this case," they're citing an RFC.
+
+---
+
+## Key RFCs to Know
+
+| RFC | Title | Why It Matters |
+|-----|-------|----------------|
+| 2119 | Key words for use in RFCs | Defines MUST, SHOULD, MAY |
+| 793 | Transmission Control Protocol | Original TCP specification |
+| 1035 | Domain Names — Implementation | Core DNS specification |
+| 2616 | HTTP/1.1 (obsolete, but historically important) | The web's original HTTP spec |
+| 7230–7235 | HTTP/1.1 (updated 2014) | Modern HTTP/1.1 series |
+| 7540 | HTTP/2 | Multiplexed binary HTTP |
+| 8446 | TLS 1.3 | Current TLS specification |
+| 6455 | WebSocket | WebSocket protocol |
+| 9000 | QUIC | UDP-based transport |
+| 9110 | HTTP Semantics | Unified HTTP semantics for all versions |
+| 9114 | HTTP/3 | HTTP over QUIC |
+
+---
+
+## How a Standard Gets Made (IETF Process)
+
+```
+Individual Submission / Working Group Draft
+        ↓
+   Internet-Draft (I-D) — expires in 6 months, iterate
+        ↓
+   Working Group Last Call
+        ↓
+   IETF Last Call
+        ↓
+   IESG Review and Approval
+        ↓
+   RFC Editor → Published RFC
+```
+
+The process is public, consensus-driven, and anyone can submit a draft. This is why IETF standards tend to reflect real implementation experience rather than pure theory.
+
+---
+
+## W3C vs. WHATWG
+
+HTML is now maintained by **WHATWG** as a "Living Standard" — a continuously updated document with no versioning. The W3C publishes periodic snapshots. In 2019, the W3C and WHATWG agreed that WHATWG is the authoritative source for HTML and DOM. The W3C continues to lead on CSS, WASM, and accessibility standards.
+
+:::tip[Research Question 🔍]
+Read the first 5 pages of [RFC 9110 (HTTP Semantics)](https://www.rfc-editor.org/rfc/rfc9110). How are RFCs structured? What is a "MUST" vs a "SHOULD" in RFC language? (Look up [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) — it defines these terms.) This skill — reading primary specs — separates senior engineers from those who can only read tutorials.
+:::
