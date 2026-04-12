@@ -1072,6 +1072,23 @@ class HashMap<K, V> {
 When does a hash table's worst-case O(n) actually occur? What is a "hash collision attack" and why do Python and Rust use hash randomization? What is the "load factor" and how does it affect performance?
 :::
 
+:::info[Related: Sets]
+A **Set** is a hash table with no values — just keys. It answers one question efficiently: *"Is this item in the collection?"* O(1) average.
+
+Every language wraps a hash table underneath: Python `set`, JavaScript `Set`, Rust `HashSet`. Use a Set whenever you need fast membership testing or want to de-duplicate a collection.
+
+```python
+seen = set()
+seen.add("alice")
+seen.add("bob")
+print("alice" in seen)   # True — O(1)
+print("carol" in seen)   # False
+
+# De-duplication
+unique = list(set([1, 2, 2, 3, 3, 3]))  # [1, 2, 3]
+```
+:::
+
 ---
 
 ### 9. Trees
@@ -1242,6 +1259,22 @@ class BST<T> {
 
 :::tip[Research Question 🔍]
 What happens to BST search performance when you insert elements in sorted order? (Try: insert 1, 2, 3, 4, 5 — draw the tree.) What are **AVL trees** and **Red-Black trees**, and what problem do they solve?
+:::
+
+:::info[Real World: B-Trees]
+BSTs are the **concept**. **B-Trees** are what databases and file systems actually use.
+
+A B-Tree is a generalised BST where each node holds **multiple keys** and has **multiple children** (not just two). This design fits how storage hardware works: disks and SSDs read data in fixed-size *pages* (4–16 KB). A B-Tree node is sized to fill exactly one page, so one disk read loads a node with dozens of keys — far faster than a BST that might need one disk read per node.
+
+| Structure | Keys per node | Used for |
+|-----------|--------------|---------|
+| BST | 1 | In-memory trees, conceptual learning |
+| B-Tree | Many (order *m*) | Database indexes, file system metadata |
+| B+ Tree | Many; data only in leaves | Most real DB indexes — leaves form a linked list enabling efficient range scans |
+
+**You don't implement B-Trees from scratch in application code** — you use a database that manages them for you. But understanding *why* they exist explains why adding an index speeds up a query, and why indexes have a write cost.
+
+📖 **[CMU 15-445: Database Systems (free)](https://15445.courses.cs.cmu.edu/)** — the standard deep-dive if you go into databases.
 :::
 
 ---
