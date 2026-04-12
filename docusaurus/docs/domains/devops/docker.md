@@ -55,21 +55,27 @@ Understanding *what problem containers solve* is more important than syntax. Doc
 
 **Container:** Shares the host OS kernel. Isolates processes using Linux kernel features (`namespaces` for isolation, `cgroups` for resource limits).
 
+```mermaid
+graph TB
+  subgraph vm["Virtual Machine"]
+    direction TB
+    VA["App A"] --- VL1["Libs"]
+    VB["App B"] --- VL2["Libs"]
+    VL1 --- VOS1["Guest OS"]
+    VL2 --- VOS2["Guest OS"]
+    VOS1 & VOS2 --- VH["Hypervisor"]
+    VH --- VHOS["Host OS + Hardware"]
+  end
+  subgraph con["Container"]
+    direction TB
+    CA["Container A"] --- CL1["Libs"]
+    CB["Container B"] --- CL2["Libs"]
+    CL1 & CL2 --- DE["Docker Engine"]
+    DE --- KH["Host OS Kernel + Hardware"]
+  end
 ```
-Virtual Machine:                    Container:
-┌─────────────────────────┐        ┌─────────────────────────┐
-│  App A     │  App B     │        │  Container A │ Container B│
-│  Libs      │  Libs      │        │  Libs        │ Libs       │
-│  Guest OS  │  Guest OS  │        ├──────────────────────────┤
-│  ──────────┤──────────  │        │     Docker Engine        │
-│        Hypervisor        │        │       Host OS Kernel     │
-│        Host OS           │        │         Hardware         │
-│        Hardware          │        └─────────────────────────┘
-└─────────────────────────┘
 
-VM overhead: 500MB–2GB+ per VM, seconds to start
-Container overhead: MBs, milliseconds to start
-```
+> 🏋️ **VM:** 500 MB–2 GB per VM, seconds to boot &nbsp;·&nbsp; 🚀 **Container:** MBs, milliseconds to start
 
 | | Container | Virtual Machine |
 |-|-----------|----------------|
@@ -84,25 +90,15 @@ Container overhead: MBs, milliseconds to start
 
 ### 2. Key Concepts
 
-```
-Image       The blueprint — a read-only filesystem snapshot with metadata.
-            Built from a Dockerfile. Stored in a registry.
-
-Container   A running instance of an image. Like a process spawned from an executable.
-            Each container has its own isolated filesystem, network, and PID namespace.
-
-Dockerfile  Instructions to build an image, layer by layer.
-
-Registry    A storage and distribution system for images.
-            Docker Hub (public), GHCR (GitHub), ECR (AWS), GCR (Google).
-
-Volume      Persistent storage that outlives a container's lifetime.
-
-Network     Virtual network that allows containers to communicate.
-
-Layer       Each Dockerfile instruction creates a new filesystem layer.
-            Layers are content-addressed and cached — unchanged layers are reused.
-```
+| Term | Definition |
+|------|------------|
+| **Image** | The blueprint — a read-only filesystem snapshot with metadata. Built from a Dockerfile. Stored in a registry. |
+| **Container** | A running instance of an image. Each container has its own isolated filesystem, network, and PID namespace. |
+| **Dockerfile** | The recipe — instructions to build an image, layer by layer. |
+| **Registry** | Storage and distribution for images (Docker Hub, GHCR, ECR, GCR). |
+| **Volume** | Persistent storage that outlives a container's lifetime. |
+| **Network** | Virtual network that allows containers to communicate with each other and the host. |
+| **Layer** | Each Dockerfile instruction creates a filesystem layer. Layers are cached — unchanged ones are reused. |
 
 ---
 
