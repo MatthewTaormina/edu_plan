@@ -9,6 +9,12 @@ import TabItem from '@theme/TabItem';
 import YouTubeEmbed from '@site/src/components/YouTubeEmbed';
 import QuizQuestion from '@site/src/components/QuizQuestion';
 import MilestoneChecklist from '@site/src/components/MilestoneChecklist';
+import ArrayMemory from '@site/src/assets/diagrams/array_memory.svg';
+import StackStates from '@site/src/assets/diagrams/stack_states.svg';
+import QueueFifo from '@site/src/assets/diagrams/queue_fifo.svg';
+import HashTable from '@site/src/assets/diagrams/hash_table.svg';
+import BstTree from '@site/src/assets/diagrams/bst_tree.svg';
+import GraphNodes from '@site/src/assets/diagrams/graph_nodes.svg';
 
 # Data Structures
 
@@ -66,18 +72,7 @@ Before writing any significant program, ask: *What operations will I do most? Wh
 
 An **array** is a contiguous block of memory where each element is the same size and directly accessible by index.
 
-<svg viewBox="0 0 430 72" width="100%" style={{maxWidth:'500px',display:'block',margin:'1rem auto'}} aria-label="Array with 5 cells indexed 0-4">
-  <style>{`
-    .ac { fill: var(--ifm-card-background-color, #1e1e2e); stroke: var(--ifm-color-primary, #7c3aed); stroke-width: 2; }
-    .av { font: bold 18px monospace; fill: var(--ifm-font-color-base, #cdd6f4); dominant-baseline: middle; text-anchor: middle; }
-    .ai { font: bold 12px monospace; fill: var(--ifm-color-primary, #a78bfa); text-anchor: middle; }
-  `}</style>
-  <rect className="ac" x="4"   y="8" width="78" height="44" rx="6"/><text className="av" x="43"  y="30">10</text><text className="ai" x="43"  y="64">[0]</text>
-  <rect className="ac" x="90"  y="8" width="78" height="44" rx="6"/><text className="av" x="129" y="30">20</text><text className="ai" x="129" y="64">[1]</text>
-  <rect className="ac" x="176" y="8" width="78" height="44" rx="6"/><text className="av" x="215" y="30">30</text><text className="ai" x="215" y="64">[2]</text>
-  <rect className="ac" x="262" y="8" width="78" height="44" rx="6"/><text className="av" x="301" y="30">40</text><text className="ai" x="301" y="64">[3]</text>
-  <rect className="ac" x="348" y="8" width="78" height="44" rx="6"/><text className="av" x="387" y="30">50</text><text className="ai" x="387" y="64">[4]</text>
-</svg>
+<ArrayMemory />
 
 `array[2]` → `base_address + (2 × element_size)` → **30**
 
@@ -479,90 +474,7 @@ What is a **doubly linked list**? When would you use it vs. singly linked? What 
 A **stack** is LIFO — **Last In, First Out**. Like a stack of plates — you can only add or take from the top.
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <svg viewBox="0 0 780 280" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Stack state progression: Push 10, Push 20, Push 30, Pop returns 30, Peek returns 20">
-    <style>{`
-      .sk-col  { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
-      .sk-top  { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
-      .sk-op   { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 1.5; }
-      .sk-empty{ fill: var(--diagram-semantic-page); stroke: var(--diagram-semantic-stroke); stroke-width: 2; stroke-dasharray: 5 3; }
-      .sk-arr  { stroke: var(--diagram-text-muted); stroke-width: 2; fill: none; marker-end: url(#sk-arrow); }
-      .sk-title{ fill: var(--diagram-text);       font: 600 13px var(--ifm-font-family-base); text-anchor: middle; }
-      .sk-val  { fill: var(--diagram-text);       font: bold 16px monospace;                  text-anchor: middle; dominant-baseline: middle; }
-      .sk-top-lbl { fill: var(--diagram-layer-2-stroke); font: bold 11px var(--ifm-font-family-base); text-anchor: start; }
-      .sk-op-lbl  { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: middle; }
-    `}</style>
-    <defs>
-      <marker id="sk-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="var(--diagram-text-muted)" />
-      </marker>
-    </defs>
-
-    {/* ── Column 1: Empty ── */}
-    <text x="78" y="20" className="sk-title">Empty</text>
-    <rect x="40" y="30" width="76" height="44" className="sk-empty" rx="4"/>
-    <text x="78" y="58" className="sk-op-lbl" style={{fontStyle:'italic'}}>no items</text>
-
-    {/* ── Arrow 1→2 ── */}
-    <line x1="120" y1="100" x2="148" y2="100" className="sk-arr"/>
-    <text x="134" y="92" className="sk-op-lbl">push(10)</text>
-
-    {/* ── Column 2: [10] ── */}
-    <text x="208" y="20" className="sk-title">Push 10</text>
-    <rect x="170" y="74" width="76" height="44" className="sk-top" rx="4"/>
-    <text x="208" y="99" className="sk-val">10</text>
-    <text x="250" y="87" className="sk-top-lbl">← TOP</text>
-
-    {/* ── Arrow 2→3 ── */}
-    <line x1="250" y1="100" x2="278" y2="100" className="sk-arr"/>
-    <text x="264" y="92" className="sk-op-lbl">push(20)</text>
-
-    {/* ── Column 3: [20,10] ── */}
-    <text x="338" y="20" className="sk-title">Push 20</text>
-    <rect x="300" y="30" width="76" height="44" className="sk-top" rx="4"/>
-    <text x="338" y="55" className="sk-val">20</text>
-    <text x="380" y="43" className="sk-top-lbl">← TOP</text>
-    <rect x="300" y="74" width="76" height="44" className="sk-col" rx="4"/>
-    <text x="338" y="99" className="sk-val">10</text>
-
-    {/* ── Arrow 3→4 ── */}
-    <line x1="380" y1="70" x2="408" y2="70" className="sk-arr"/>
-    <text x="394" y="62" className="sk-op-lbl">push(30)</text>
-
-    {/* ── Column 4: [30,20,10] ── */}
-    <text x="468" y="20" className="sk-title">Push 30</text>
-    <rect x="430" y="30" width="76" height="40" className="sk-top" rx="4"/>
-    <text x="468" y="52" className="sk-val">30</text>
-    <text x="510" y="43" className="sk-top-lbl">← TOP</text>
-    <rect x="430" y="70" width="76" height="40" className="sk-col" rx="4"/>
-    <text x="468" y="92" className="sk-val">20</text>
-    <rect x="430" y="110" width="76" height="40" className="sk-col" rx="4"/>
-    <text x="468" y="132" className="sk-val">10</text>
-
-    {/* ── Arrow 4→5 pop ── */}
-    <line x1="510" y1="85" x2="538" y2="85" className="sk-arr"/>
-    <text x="524" y="77" className="sk-op-lbl">pop()</text>
-    <rect x="510" y="93" width="54" height="20" className="sk-op" rx="3"/>
-    <text x="537" y="107" className="sk-op-lbl">→ 30</text>
-
-    {/* ── Column 5: [20,10] after pop ── */}
-    <text x="600" y="20" className="sk-title">After Pop</text>
-    <rect x="562" y="30" width="76" height="44" className="sk-top" rx="4"/>
-    <text x="600" y="55" className="sk-val">20</text>
-    <text x="642" y="43" className="sk-top-lbl">← TOP</text>
-    <rect x="562" y="74" width="76" height="44" className="sk-col" rx="4"/>
-    <text x="600" y="99" className="sk-val">10</text>
-
-    {/* Peek annotation */}
-    <text x="600" y="145" className="sk-op-lbl" style={{fontSize:'12px'}}>peek() → 20 (no removal)</text>
-
-    {/* Legend */}
-    <rect x="20" y="200" width="14" height="14" className="sk-top" rx="2"/>
-    <text x="40" y="212" className="sk-op-lbl" style={{fontSize:'11px'}}>TOP item</text>
-    <rect x="100" y="200" width="14" height="14" className="sk-col" rx="2"/>
-    <text x="120" y="212" className="sk-op-lbl" style={{fontSize:'11px'}}>lower items</text>
-    <rect x="190" y="200" width="14" height="14" className="sk-op" rx="2"/>
-    <text x="210" y="212" className="sk-op-lbl" style={{fontSize:'11px'}}>return value</text>
-  </svg>
+  <StackStates />
 </div>
 
 **Real uses:** undo/redo, browser back button, call stack, parenthesis matching, expression evaluation.
@@ -705,94 +617,7 @@ function isBalanced(text: string): boolean {
 A **queue** is FIFO — **First In, First Out**. Like a line at a store — new arrivals join the back, service happens at the front.
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <svg viewBox="0 0 820 310" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Queue FIFO: enqueue 10, 20, 30; then dequeue returns 10 from FRONT">
-    <style>{`
-      .q-node  { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
-      .q-front { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
-      .q-back  { fill: var(--diagram-layer-3-fill); stroke: var(--diagram-layer-3-stroke); stroke-width: 2; }
-      .q-gone  { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 2; stroke-dasharray: 5 3; opacity: 0.65; }
-      .q-arr   { stroke: var(--diagram-text-muted); stroke-width: 2; fill: none; marker-end: url(#q-arrow); }
-      .q-lbl   { fill: var(--diagram-text);          font: 600 12px var(--ifm-font-family-base); text-anchor: start; dominant-baseline: middle; }
-      .q-val   { fill: var(--diagram-text);          font: bold 15px monospace; text-anchor: middle; dominant-baseline: middle; }
-      .q-tag-f { fill: var(--diagram-layer-2-stroke); font: bold 10px var(--ifm-font-family-base); text-anchor: middle; }
-      .q-tag-b { fill: var(--diagram-layer-3-stroke); font: bold 10px var(--ifm-font-family-base); text-anchor: middle; }
-      .q-note  { fill: var(--diagram-text-muted); font: 10px var(--ifm-font-family-base); text-anchor: middle; }
-    `}</style>
-    <defs>
-      <marker id="q-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-        <polygon points="0 0, 8 3, 0 6" fill="var(--diagram-text-muted)" />
-      </marker>
-    </defs>
-
-    {/* ── Row labels on far left ── */}
-    <text x="10" y="50"  className="q-lbl">enqueue(10)</text>
-    <text x="10" y="130" className="q-lbl">enqueue(20)</text>
-    <text x="10" y="210" className="q-lbl">enqueue(30)</text>
-    <text x="10" y="290" className="q-lbl">dequeue()</text>
-
-    {/* ── Divider ── */}
-    <line x1="148" y1="10" x2="148" y2="300" stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 3"/>
-
-    {/* ─── ROW 1: [10]  FRONT=10 ─── */}
-    <rect x="160" y="30" width="52" height="38" className="q-front" rx="4"/>
-    <text x="186" y="50" className="q-val">10</text>
-    <text x="186" y="73" className="q-tag-f">FRONT</text>
-    <text x="225" y="50" className="q-note" style={{textAnchor:'start', fontSize:'10px'}}>← BACK</text>
-
-    {/* ─── ROW 2: [10, 20]  ─── */}
-    <rect x="160" y="110" width="52" height="38" className="q-front" rx="4"/>
-    <text x="186" y="130" className="q-val">10</text>
-    <text x="186" y="153" className="q-tag-f">FRONT</text>
-    <line x1="213" y1="129" x2="229" y2="129" className="q-arr"/>
-    <rect x="232" y="110" width="52" height="38" className="q-back" rx="4"/>
-    <text x="258" y="130" className="q-val">20</text>
-    <text x="258" y="153" className="q-tag-b">BACK</text>
-
-    {/* ─── ROW 3: [10, 20, 30]  ─── */}
-    <rect x="160" y="190" width="52" height="38" className="q-front" rx="4"/>
-    <text x="186" y="210" className="q-val">10</text>
-    <text x="186" y="233" className="q-tag-f">FRONT</text>
-    <line x1="213" y1="209" x2="229" y2="209" className="q-arr"/>
-    <rect x="232" y="190" width="52" height="38" className="q-node" rx="4"/>
-    <text x="258" y="210" className="q-val">20</text>
-    <line x1="285" y1="209" x2="301" y2="209" className="q-arr"/>
-    <rect x="304" y="190" width="52" height="38" className="q-back" rx="4"/>
-    <text x="330" y="210" className="q-val">30</text>
-    <text x="330" y="233" className="q-tag-b">BACK</text>
-
-    {/* ─── ROW 4: dequeue result — [20, 30], 10 returned ─── */}
-    {/* 10 crossed out */}
-    <rect x="160" y="270" width="52" height="38" className="q-gone" rx="4"/>
-    <text x="186" y="290" className="q-val" style={{opacity:0.45}}>10</text>
-    <text x="186" y="313" className="q-note">removed</text>
-    {/* returned badge */}
-    <rect x="160" y="252" width="52" height="14" rx="3" fill="var(--diagram-layer-4-fill)" stroke="var(--diagram-layer-4-stroke)" strokeWidth="1"/>
-    <text x="186" y="261" className="q-note" style={{fill:'var(--diagram-layer-4-stroke)', fontWeight:'bold'}}>→ 10</text>
-
-    <line x1="213" y1="289" x2="229" y2="289" className="q-arr"/>
-    <rect x="232" y="270" width="52" height="38" className="q-front" rx="4"/>
-    <text x="258" y="290" className="q-val">20</text>
-    <text x="258" y="313" className="q-tag-f">new FRONT</text>
-    <line x1="285" y1="289" x2="301" y2="289" className="q-arr"/>
-    <rect x="304" y="270" width="52" height="38" className="q-back" rx="4"/>
-    <text x="330" y="290" className="q-val">30</text>
-    <text x="330" y="313" className="q-tag-b">BACK</text>
-
-    {/* ── Legend ── */}
-    <rect x="410" y="30" width="12" height="12" className="q-front" rx="2"/>
-    <text x="428" y="40" className="q-note" style={{textAnchor:'start'}}>FRONT — served first (dequeued)</text>
-    <rect x="410" y="52" width="12" height="12" className="q-back" rx="2"/>
-    <text x="428" y="62" className="q-note" style={{textAnchor:'start'}}>BACK — new arrivals (enqueued)</text>
-    <rect x="410" y="74" width="12" height="12" className="q-node" rx="2"/>
-    <text x="428" y="84" className="q-note" style={{textAnchor:'start'}}>middle items</text>
-    <rect x="410" y="96" width="12" height="12" className="q-gone" rx="2"/>
-    <text x="428" y="106" className="q-note" style={{textAnchor:'start'}}>dequeued / removed</text>
-
-    {/* ── FIFO rule summary ── */}
-    <text x="410" y="145" className="q-lbl" style={{fontSize:'13px'}}>FIFO: First In, First Out</text>
-    <text x="410" y="165" className="q-note" style={{textAnchor:'start', fontSize:'11px'}}>Items leave in the same order they arrived.</text>
-    <text x="410" y="182" className="q-note" style={{textAnchor:'start', fontSize:'11px'}}>The item at FRONT was enqueued first.</text>
-  </svg>
+  <QueueFifo />
 </div>
 
 **Real uses:** task schedulers, web server request handling, BFS graph traversal, print queues.
@@ -899,70 +724,7 @@ A **hash table** maps keys to values with average O(1) lookup, insert, and delet
 **Concept — how it works:**
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Hash table: key is hashed to a bucket index, and the value is stored there">
-    <style>{`
-      .ht-key    { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
-      .ht-hash   { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 2; }
-      .ht-bucket { fill: var(--diagram-layer-3-fill); stroke: var(--diagram-layer-3-stroke); stroke-width: 2; }
-      .ht-val    { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
-      .ht-arr    { stroke: var(--diagram-text-muted); stroke-width: 1.5; fill: none; marker-end: url(#ht-arrow); }
-      .ht-txt    { fill: var(--diagram-text);       font: 13px monospace; text-anchor: middle; dominant-baseline: middle; }
-      .ht-lbl    { fill: var(--diagram-text-muted); font: 10px var(--ifm-font-family-base); text-anchor: middle; }
-    `}</style>
-    <defs>
-      <marker id="ht-arrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-        <polygon points="0 0, 7 2.5, 0 5" fill="var(--diagram-text-muted)" />
-      </marker>
-    </defs>
-
-    {/* Column headers */}
-    <text x="80"  y="16" className="ht-lbl">key</text>
-    <text x="220" y="16" className="ht-lbl">hash(key)</text>
-    <text x="370" y="16" className="ht-lbl">bucket index</text>
-    <text x="530" y="16" className="ht-lbl">value</text>
-
-    {/* Row 1 */}
-    <rect x="20"  y="30" width="120" height="32" className="ht-key"   rx="4"/>
-    <text x="80"  y="47" className="ht-txt">&quot;name&quot;</text>
-    <line x1="140" y1="46" x2="158" y2="46" className="ht-arr"/>
-    <rect x="160" y="30" width="120" height="32" className="ht-hash"  rx="4"/>
-    <text x="220" y="47" className="ht-txt">hash()</text>
-    <line x1="280" y1="46" x2="298" y2="46" className="ht-arr"/>
-    <rect x="300" y="30" width="120" height="32" className="ht-bucket" rx="4"/>
-    <text x="360" y="47" className="ht-txt">bucket[42]</text>
-    <line x1="420" y1="46" x2="438" y2="46" className="ht-arr"/>
-    <rect x="440" y="30" width="120" height="32" className="ht-val"   rx="4"/>
-    <text x="500" y="47" className="ht-txt">&quot;Alice&quot;</text>
-
-    {/* Row 2 */}
-    <rect x="20"  y="74" width="120" height="32" className="ht-key"   rx="4"/>
-    <text x="80"  y="91" className="ht-txt">&quot;age&quot;</text>
-    <line x1="140" y1="90" x2="158" y2="90" className="ht-arr"/>
-    <rect x="160" y="74" width="120" height="32" className="ht-hash"  rx="4"/>
-    <text x="220" y="91" className="ht-txt">hash()</text>
-    <line x1="280" y1="90" x2="298" y2="90" className="ht-arr"/>
-    <rect x="300" y="74" width="120" height="32" className="ht-bucket" rx="4"/>
-    <text x="360" y="91" className="ht-txt">bucket[7]</text>
-    <line x1="420" y1="90" x2="438" y2="90" className="ht-arr"/>
-    <rect x="440" y="74" width="120" height="32" className="ht-val"   rx="4"/>
-    <text x="500" y="91" className="ht-txt">25</text>
-
-    {/* Row 3 */}
-    <rect x="20"  y="118" width="120" height="32" className="ht-key"   rx="4"/>
-    <text x="80"  y="135" className="ht-txt">&quot;city&quot;</text>
-    <line x1="140" y1="134" x2="158" y2="134" className="ht-arr"/>
-    <rect x="160" y="118" width="120" height="32" className="ht-hash"  rx="4"/>
-    <text x="220" y="135" className="ht-txt">hash()</text>
-    <line x1="280" y1="134" x2="298" y2="134" className="ht-arr"/>
-    <rect x="300" y="118" width="120" height="32" className="ht-bucket" rx="4"/>
-    <text x="360" y="135" className="ht-txt">bucket[19]</text>
-    <line x1="420" y1="134" x2="438" y2="134" className="ht-arr"/>
-    <rect x="440" y="118" width="120" height="32" className="ht-val"   rx="4"/>
-    <text x="500" y="135" className="ht-txt">&quot;Toronto&quot;</text>
-
-    {/* bottom note */}
-    <text x="340" y="168" className="ht-lbl" style={{fontSize:'11px'}}>Each key hashes to a unique bucket index → O(1) average lookup, no searching</text>
-  </svg>
+  <HashTable />
 </div>
 
 Lookup `table["name"]`:
@@ -1141,68 +903,7 @@ When does a hash table's worst-case O(n) actually occur? What is a "hash collisi
 A **tree** is a hierarchical structure. Every node has one parent (except root) and zero or more children. Trees are acyclic.
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Binary Search Tree: root 50, left subtree 30 with children 20 and 40, right subtree 70 with child 80">
-    <style>{`
-      .tr-node  { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
-      .tr-root  { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 2.5; }
-      .tr-leaf  { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
-      .tr-edge  { stroke: var(--diagram-text-muted); stroke-width: 2; }
-      .tr-val   { fill: var(--diagram-text); font: bold 18px monospace; text-anchor: middle; dominant-baseline: middle; }
-      .tr-ann   { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: start; dominant-baseline: middle; }
-      .tr-dep   { fill: var(--diagram-layer-2-stroke); font: bold 11px var(--ifm-font-family-base); text-anchor: end; dominant-baseline: middle; }
-      .tr-lbl   { fill: var(--diagram-text-muted); font: 10px var(--ifm-font-family-base); text-anchor: middle; }
-    `}</style>
-
-    {/* Depth guide lines */}
-    <line x1="10" y1="80"  x2="420" y2="80"  stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 4"/>
-    <line x1="10" y1="168" x2="420" y2="168" stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 4"/>
-    <line x1="10" y1="256" x2="420" y2="256" stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 4"/>
-    <text x="408" y="80"  className="tr-dep">depth 0</text>
-    <text x="408" y="168" className="tr-dep">depth 1</text>
-    <text x="408" y="256" className="tr-dep">depth 2</text>
-
-    {/* Edges */}
-    <line x1="210" y1="98"  x2="130" y2="150" className="tr-edge"/>
-    <line x1="210" y1="98"  x2="290" y2="150" className="tr-edge"/>
-    <line x1="130" y1="186" x2="70"  y2="238" className="tr-edge"/>
-    <line x1="130" y1="186" x2="190" y2="238" className="tr-edge"/>
-    <line x1="290" y1="186" x2="350" y2="238" className="tr-edge"/>
-
-    {/* Root */}
-    <circle cx="210" cy="80"  r="28" className="tr-root"/>
-    <text    x="210"  y="80"  className="tr-val">50</text>
-
-    {/* Depth 1 */}
-    <circle cx="130" cy="168" r="26" className="tr-node"/>
-    <text    x="130"  y="168" className="tr-val">30</text>
-    <circle cx="290" cy="168" r="26" className="tr-node"/>
-    <text    x="290"  y="168" className="tr-val">70</text>
-
-    {/* Depth 2 / Leaves */}
-    <circle cx="70"  cy="256" r="24" className="tr-leaf"/>
-    <text    x="70"   y="256" className="tr-val">20</text>
-    <circle cx="190" cy="256" r="24" className="tr-leaf"/>
-    <text    x="190"  y="256" className="tr-val">40</text>
-    <circle cx="350" cy="256" r="24" className="tr-leaf"/>
-    <text    x="350"  y="256" className="tr-val">80</text>
-
-    {/* Annotations */}
-    <text x="440" y="80"  className="tr-ann">root — top of the tree, no parent</text>
-    <text x="440" y="168" className="tr-ann">internal nodes — have children</text>
-    <text x="440" y="256" className="tr-ann">leaves — no children</text>
-
-    {/* BST ordering annotation */}
-    <text x="60" y="16" className="tr-lbl" style={{textAnchor:'start', fontSize:'11px', fill:'var(--diagram-text)'}}>BST rule: left child &lt; parent &lt; right child</text>
-    <text x="60" y="30" className="tr-lbl" style={{textAnchor:'start'}}>Height = 2  (longest root-to-leaf path)</text>
-
-    {/* Legend */}
-    <circle cx="26" cy="200" r="10" className="tr-root"/>
-    <text x="42" y="200" className="tr-lbl" style={{textAnchor:'start'}}>root</text>
-    <circle cx="80" cy="200" r="10" className="tr-node"/>
-    <text x="96" y="200" className="tr-lbl" style={{textAnchor:'start'}}>internal</text>
-    <circle cx="150" cy="200" r="10" className="tr-leaf"/>
-    <text x="166" y="200" className="tr-lbl" style={{textAnchor:'start'}}>leaf</text>
-  </svg>
+  <BstTree />
 </div>
 
 **Binary Search Tree (BST) rule:** for every node, ALL values in the left subtree are smaller, ALL values in the right subtree are larger. This makes search O(log n) for balanced trees.
@@ -1374,57 +1075,7 @@ What happens to BST search performance when you insert elements in sorted order?
 A **graph** is nodes connected by edges. Unlike trees, graphs can have cycles and any connection structure.
 
 <div className="svg-graphic-container margin-bottom--lg">
-  <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Undirected graph with 5 nodes: A connected to B and C, B connected to D, C connected to D, D connected to E">
-    <style>{`
-      .gr-node { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2.5; }
-      .gr-edge { stroke: var(--diagram-text-muted); stroke-width: 2; }
-      .gr-val  { fill: var(--diagram-text); font: bold 17px monospace; text-anchor: middle; dominant-baseline: middle; }
-      .gr-lbl  { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: middle; }
-      .gr-ann  { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: start; dominant-baseline: middle; }
-    `}</style>
-
-    {/* Edges (undirected — no arrowheads) */}
-    <line x1="120" y1="100" x2="240" y2="60"  className="gr-edge"/>{/* A-B */}
-    <line x1="120" y1="100" x2="240" y2="160" className="gr-edge"/>{/* A-C */}
-    <line x1="240" y1="60"  x2="370" y2="100" className="gr-edge"/>{/* B-D */}
-    <line x1="240" y1="160" x2="370" y2="100" className="gr-edge"/>{/* C-D */}
-    <line x1="370" y1="100" x2="490" y2="100" className="gr-edge"/>{/* D-E */}
-
-    {/* Nodes */}
-    <circle cx="120" cy="100" r="28" className="gr-node"/>
-    <text    x="120"  y="100" className="gr-val">A</text>
-
-    <circle cx="240" cy="60"  r="28" className="gr-node"/>
-    <text    x="240"  y="60"  className="gr-val">B</text>
-
-    <circle cx="240" cy="160" r="28" className="gr-node"/>
-    <text    x="240"  y="160" className="gr-val">C</text>
-
-    <circle cx="370" cy="100" r="28" className="gr-node"/>
-    <text    x="370"  y="100" className="gr-val">D</text>
-
-    <circle cx="490" cy="100" r="28" className="gr-node"/>
-    <text    x="490"  y="100" className="gr-val">E</text>
-
-    {/* Edge labels */}
-    <text x="178" y="55"  className="gr-lbl">A–B</text>
-    <text x="178" y="148" className="gr-lbl">A–C</text>
-    <text x="302" y="64"  className="gr-lbl">B–D</text>
-    <text x="302" y="148" className="gr-lbl">C–D</text>
-    <text x="428" y="88"  className="gr-lbl">D–E</text>
-
-    {/* Annotations column */}
-    <text x="548" y="46"  className="gr-ann">Undirected: edges have</text>
-    <text x="548" y="60"  className="gr-ann">no direction (A↔B)</text>
-    <text x="548" y="84"  className="gr-ann">Directed: arrow shows</text>
-    <text x="548" y="98"  className="gr-ann">one-way flow (A→B)</text>
-    <text x="548" y="122" className="gr-ann">Weighted: edges carry</text>
-    <text x="548" y="136" className="gr-ann">a cost (distance, time…)</text>
-
-    {/* Adjacency list */}
-    <text x="20"  y="205" className="gr-lbl" style={{textAnchor:'start', fontSize:'11px', fill:'var(--diagram-text)', fontWeight:'bold'}}>Adjacency list (how this graph is stored):</text>
-    <text x="20"  y="222" className="gr-lbl" style={{textAnchor:'start', fontFamily:'monospace', fontSize:'11px', fill:'var(--diagram-text)'}}>A → [B, C]   B → [A, D]   C → [A, D]   D → [B, C, E]   E → [D]</text>
-  </svg>
+  <GraphNodes />
 </div>
 
 **Types:** directed (edges have direction), undirected (bidirectional), weighted (edges have costs).

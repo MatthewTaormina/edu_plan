@@ -9,6 +9,7 @@ import TabItem from '@theme/TabItem';
 import YouTubeEmbed from '@site/src/components/YouTubeEmbed';
 import QuizQuestion from '@site/src/components/QuizQuestion';
 import MilestoneChecklist from '@site/src/components/MilestoneChecklist';
+import DockerLayers from '@site/src/assets/diagrams/docker_layers.svg';
 
 > **Tool:** Docker Engine · **Created:** 2013 · **Latest:** 27.x (2025) · **Status:** 🟢 Modern · **Maintained by:** Docker Inc. + CNCF ecosystem
 >
@@ -56,70 +57,7 @@ Understanding *what problem containers solve* is more important than syntax. Doc
 **Container:** Shares the host OS kernel. Isolates processes using Linux kernel features (`namespaces` for isolation, `cgroups` for resource limits).
 
 <div className="svg-graphic-container margin-bottom--lg text--center">
-  <svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" className="diagram-svg">
-    <style>
-      {`.bg-base { fill: var(--ifm-color-emphasis-100); stroke: var(--ifm-color-emphasis-300); stroke-width: 2; rx: 8; }
-        .bg-layer { fill: var(--ifm-color-primary-100); stroke: var(--ifm-color-primary-700); stroke-width: 2; rx: 6; }
-        .bg-app { fill: var(--ifm-color-success-100); stroke: var(--ifm-color-success-700); stroke-width: 2; rx: 6; }
-        .bg-hypervisor { fill: var(--ifm-color-warning-100); stroke: var(--ifm-color-warning-700); stroke-width: 2; rx: 6; }
-        .text-dark { fill: var(--ifm-font-color-base); font-family: var(--ifm-font-family-base); font-weight: 600; font-size: 14px; text-anchor: middle; }
-        .title { fill: var(--ifm-font-color-base); font-family: var(--ifm-font-family-base); font-size: 18px; font-weight: bold; text-anchor: middle; }`}
-    </style>
-    
-    {/* Virtual Machine Side */}
-    <text x="200" y="30" className="title">Virtual Machine</text>
-    
-    {/* Apps */}
-    <rect x="70" y="50" width="120" height="40" className="bg-app" />
-    <text x="130" y="75" className="text-dark">App A</text>
-    <rect x="210" y="50" width="120" height="40" className="bg-app" />
-    <text x="270" y="75" className="text-dark">App B</text>
-    
-    {/* Bins/Libs */}
-    <rect x="70" y="100" width="120" height="40" className="bg-layer" />
-    <text x="130" y="125" className="text-dark">Bins/Libs</text>
-    <rect x="210" y="100" width="120" height="40" className="bg-layer" />
-    <text x="270" y="125" className="text-dark">Bins/Libs</text>
-    
-    {/* Guest OS */}
-    <rect x="70" y="150" width="120" height="40" className="bg-base" />
-    <text x="130" y="175" className="text-dark">Guest OS</text>
-    <rect x="210" y="150" width="120" height="40" className="bg-base" />
-    <text x="270" y="175" className="text-dark">Guest OS</text>
-    
-    {/* Hypervisor */}
-    <rect x="70" y="200" width="260" height="40" className="bg-hypervisor" />
-    <text x="200" y="225" className="text-dark">Hypervisor</text>
-    
-    {/* Infrastructure */}
-    <rect x="70" y="250" width="260" height="60" className="bg-base" />
-    <text x="200" y="275" className="text-dark">Host OS Kernel</text>
-    <text x="200" y="295" className="text-dark">&amp; Hardware</text>
-
-    {/* Container Side */}
-    <text x="600" y="30" className="title">Container</text>
-    
-    {/* Apps */}
-    <rect x="470" y="80" width="120" height="60" className="bg-app" />
-    <text x="530" y="115" className="text-dark">App A</text>
-    <rect x="610" y="80" width="120" height="60" className="bg-app" />
-    <text x="670" y="115" className="text-dark">App B</text>
-    
-    {/* Bins/Libs */}
-    <rect x="470" y="150" width="120" height="40" className="bg-layer" />
-    <text x="530" y="175" className="text-dark">Bins/Libs</text>
-    <rect x="610" y="150" width="120" height="40" className="bg-layer" />
-    <text x="670" y="175" className="text-dark">Bins/Libs</text>
-    
-    {/* Container Engine */}
-    <rect x="470" y="200" width="260" height="40" className="bg-primary bg-layer" />
-    <text x="600" y="225" className="text-dark">Docker Engine</text>
-    
-    {/* Infrastructure */}
-    <rect x="470" y="250" width="260" height="60" className="bg-base" />
-    <text x="600" y="275" className="text-dark">Host OS Kernel</text>
-    <text x="600" y="295" className="text-dark">&amp; Hardware</text>
-  </svg>
+  <DockerLayers />
 </div>
 
 > 🏋️ **VM:** 500 MB–2 GB per VM, seconds to boot &nbsp;·&nbsp; 🚀 **Container:** MBs, milliseconds to start

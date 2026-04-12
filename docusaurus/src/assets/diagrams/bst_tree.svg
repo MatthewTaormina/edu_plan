@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" class="diagram-svg" role="img" aria-label="Binary Search Tree: root 50, left subtree 30 with children 20 and 40, right subtree 70 with child 80">
+    <style>
+      .tr-node  { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
+      .tr-root  { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 2.5; }
+      .tr-leaf  { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
+      .tr-edge  { stroke: var(--diagram-text-muted); stroke-width: 2; }
+      .tr-val   { fill: var(--diagram-text); font: bold 18px monospace; text-anchor: middle; dominant-baseline: middle; }
+      .tr-ann   { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: start; dominant-baseline: middle; }
+      .tr-dep   { fill: var(--diagram-layer-2-stroke); font: bold 11px var(--ifm-font-family-base); text-anchor: end; dominant-baseline: middle; }
+      .tr-lbl   { fill: var(--diagram-text-muted); font: 10px var(--ifm-font-family-base); text-anchor: middle; }
+    </style>
+
+    {/* Depth guide lines */}
+    <line x1="10" y1="80"  x2="420" y2="80"  stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 4"/>
+    <line x1="10" y1="168" x2="420" y2="168" stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 4"/>
+    <line x1="10" y1="256" x2="420" y2="256" stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 4"/>
+    <text x="408" y="80"  class="tr-dep">depth 0</text>
+    <text x="408" y="168" class="tr-dep">depth 1</text>
+    <text x="408" y="256" class="tr-dep">depth 2</text>
+
+    {/* Edges */}
+    <line x1="210" y1="98"  x2="130" y2="150" class="tr-edge"/>
+    <line x1="210" y1="98"  x2="290" y2="150" class="tr-edge"/>
+    <line x1="130" y1="186" x2="70"  y2="238" class="tr-edge"/>
+    <line x1="130" y1="186" x2="190" y2="238" class="tr-edge"/>
+    <line x1="290" y1="186" x2="350" y2="238" class="tr-edge"/>
+
+    {/* Root */}
+    <circle cx="210" cy="80"  r="28" class="tr-root"/>
+    <text    x="210"  y="80"  class="tr-val">50</text>
+
+    {/* Depth 1 */}
+    <circle cx="130" cy="168" r="26" class="tr-node"/>
+    <text    x="130"  y="168" class="tr-val">30</text>
+    <circle cx="290" cy="168" r="26" class="tr-node"/>
+    <text    x="290"  y="168" class="tr-val">70</text>
+
+    {/* Depth 2 / Leaves */}
+    <circle cx="70"  cy="256" r="24" class="tr-leaf"/>
+    <text    x="70"   y="256" class="tr-val">20</text>
+    <circle cx="190" cy="256" r="24" class="tr-leaf"/>
+    <text    x="190"  y="256" class="tr-val">40</text>
+    <circle cx="350" cy="256" r="24" class="tr-leaf"/>
+    <text    x="350"  y="256" class="tr-val">80</text>
+
+    {/* Annotations */}
+    <text x="440" y="80"  class="tr-ann">root — top of the tree, no parent</text>
+    <text x="440" y="168" class="tr-ann">internal nodes — have children</text>
+    <text x="440" y="256" class="tr-ann">leaves — no children</text>
+
+    {/* BST ordering annotation */}
+    <text x="60" y="16" class="tr-lbl" style="text-anchor:start;font-size:11px;fill:var(--diagram-text)">BST rule: left child &lt; parent &lt; right child</text>
+    <text x="60" y="30" class="tr-lbl" style="text-anchor:start">Height = 2  (longest root-to-leaf path)</text>
+
+    {/* Legend */}
+    <circle cx="26" cy="200" r="10" class="tr-root"/>
+    <text x="42" y="200" class="tr-lbl" style="text-anchor:start">root</text>
+    <circle cx="80" cy="200" r="10" class="tr-node"/>
+    <text x="96" y="200" class="tr-lbl" style="text-anchor:start">internal</text>
+    <circle cx="150" cy="200" r="10" class="tr-leaf"/>
+    <text x="166" y="200" class="tr-lbl" style="text-anchor:start">leaf</text>
+  </svg>

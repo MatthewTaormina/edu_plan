@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 72" width="100%" style="max-width:500px;display:block;margin:1remauto" aria-label="Array with 5 cells indexed 0-4">
+  <style>
+    .ac { fill: var(--ifm-card-background-color, #1e1e2e); stroke: var(--ifm-color-primary, #7c3aed); stroke-width: 2; }
+    .av { font: bold 18px monospace; fill: var(--ifm-font-color-base, #cdd6f4); dominant-baseline: middle; text-anchor: middle; }
+    .ai { font: bold 12px monospace; fill: var(--ifm-color-primary, #a78bfa); text-anchor: middle; }
+  </style>
+  <rect class="ac" x="4"   y="8" width="78" height="44" rx="6"/><text class="av" x="43"  y="30">10</text><text class="ai" x="43"  y="64">[0]</text>
+  <rect class="ac" x="90"  y="8" width="78" height="44" rx="6"/><text class="av" x="129" y="30">20</text><text class="ai" x="129" y="64">[1]</text>
+  <rect class="ac" x="176" y="8" width="78" height="44" rx="6"/><text class="av" x="215" y="30">30</text><text class="ai" x="215" y="64">[2]</text>
+  <rect class="ac" x="262" y="8" width="78" height="44" rx="6"/><text class="av" x="301" y="30">40</text><text class="ai" x="301" y="64">[3]</text>
+  <rect class="ac" x="348" y="8" width="78" height="44" rx="6"/><text class="av" x="387" y="30">50</text><text class="ai" x="387" y="64">[4]</text>
+</svg>

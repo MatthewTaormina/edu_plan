@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" class="diagram-svg">
+    <style>
+      .bg-base { fill: var(--ifm-color-emphasis-100); stroke: var(--ifm-color-emphasis-300); stroke-width: 2; rx: 8; }
+        .bg-layer { fill: var(--ifm-color-primary-100); stroke: var(--ifm-color-primary-700); stroke-width: 2; rx: 6; }
+        .bg-app { fill: var(--ifm-color-success-100); stroke: var(--ifm-color-success-700); stroke-width: 2; rx: 6; }
+        .bg-hypervisor { fill: var(--ifm-color-warning-100); stroke: var(--ifm-color-warning-700); stroke-width: 2; rx: 6; }
+        .text-dark { fill: var(--ifm-font-color-base); font-family: var(--ifm-font-family-base); font-weight: 600; font-size: 14px; text-anchor: middle; }
+        .title { fill: var(--ifm-font-color-base); font-family: var(--ifm-font-family-base); font-size: 18px; font-weight: bold; text-anchor: middle; }
+    </style>
+    
+    {/* Virtual Machine Side */}
+    <text x="200" y="30" class="title">Virtual Machine</text>
+    
+    {/* Apps */}
+    <rect x="70" y="50" width="120" height="40" class="bg-app" />
+    <text x="130" y="75" class="text-dark">App A</text>
+    <rect x="210" y="50" width="120" height="40" class="bg-app" />
+    <text x="270" y="75" class="text-dark">App B</text>
+    
+    {/* Bins/Libs */}
+    <rect x="70" y="100" width="120" height="40" class="bg-layer" />
+    <text x="130" y="125" class="text-dark">Bins/Libs</text>
+    <rect x="210" y="100" width="120" height="40" class="bg-layer" />
+    <text x="270" y="125" class="text-dark">Bins/Libs</text>
+    
+    {/* Guest OS */}
+    <rect x="70" y="150" width="120" height="40" class="bg-base" />
+    <text x="130" y="175" class="text-dark">Guest OS</text>
+    <rect x="210" y="150" width="120" height="40" class="bg-base" />
+    <text x="270" y="175" class="text-dark">Guest OS</text>
+    
+    {/* Hypervisor */}
+    <rect x="70" y="200" width="260" height="40" class="bg-hypervisor" />
+    <text x="200" y="225" class="text-dark">Hypervisor</text>
+    
+    {/* Infrastructure */}
+    <rect x="70" y="250" width="260" height="60" class="bg-base" />
+    <text x="200" y="275" class="text-dark">Host OS Kernel</text>
+    <text x="200" y="295" class="text-dark">&amp; Hardware</text>
+
+    {/* Container Side */}
+    <text x="600" y="30" class="title">Container</text>
+    
+    {/* Apps */}
+    <rect x="470" y="80" width="120" height="60" class="bg-app" />
+    <text x="530" y="115" class="text-dark">App A</text>
+    <rect x="610" y="80" width="120" height="60" class="bg-app" />
+    <text x="670" y="115" class="text-dark">App B</text>
+    
+    {/* Bins/Libs */}
+    <rect x="470" y="150" width="120" height="40" class="bg-layer" />
+    <text x="530" y="175" class="text-dark">Bins/Libs</text>
+    <rect x="610" y="150" width="120" height="40" class="bg-layer" />
+    <text x="670" y="175" class="text-dark">Bins/Libs</text>
+    
+    {/* Container Engine */}
+    <rect x="470" y="200" width="260" height="40" class="bg-primary bg-layer" />
+    <text x="600" y="225" class="text-dark">Docker Engine</text>
+    
+    {/* Infrastructure */}
+    <rect x="470" y="250" width="260" height="60" class="bg-base" />
+    <text x="600" y="275" class="text-dark">Host OS Kernel</text>
+    <text x="600" y="295" class="text-dark">&amp; Hardware</text>
+  </svg>

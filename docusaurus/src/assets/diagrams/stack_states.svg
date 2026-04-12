@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 280" xmlns="http://www.w3.org/2000/svg" class="diagram-svg" role="img" aria-label="Stack state progression: Push 10, Push 20, Push 30, Pop returns 30, Peek returns 20">
+    <style>
+      .sk-col  { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
+      .sk-top  { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
+      .sk-op   { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 1.5; }
+      .sk-empty{ fill: var(--diagram-semantic-page); stroke: var(--diagram-semantic-stroke); stroke-width: 2; stroke-dasharray: 5 3; }
+      .sk-arr  { stroke: var(--diagram-text-muted); stroke-width: 2; fill: none; marker-end: url(#sk-arrow); }
+      .sk-title{ fill: var(--diagram-text);       font: 600 13px var(--ifm-font-family-base); text-anchor: middle; }
+      .sk-val  { fill: var(--diagram-text);       font: bold 16px monospace;                  text-anchor: middle; dominant-baseline: middle; }
+      .sk-top-lbl { fill: var(--diagram-layer-2-stroke); font: bold 11px var(--ifm-font-family-base); text-anchor: start; }
+      .sk-op-lbl  { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: middle; }
+    </style>
+    <defs>
+      <marker id="sk-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--diagram-text-muted)" />
+      </marker>
+    </defs>
+
+    {/* ── Column 1: Empty ── */}
+    <text x="78" y="20" class="sk-title">Empty</text>
+    <rect x="40" y="30" width="76" height="44" class="sk-empty" rx="4"/>
+    <text x="78" y="58" class="sk-op-lbl" style="font-style:italic">no items</text>
+
+    {/* ── Arrow 1→2 ── */}
+    <line x1="120" y1="100" x2="148" y2="100" class="sk-arr"/>
+    <text x="134" y="92" class="sk-op-lbl">push(10)</text>
+
+    {/* ── Column 2: [10] ── */}
+    <text x="208" y="20" class="sk-title">Push 10</text>
+    <rect x="170" y="74" width="76" height="44" class="sk-top" rx="4"/>
+    <text x="208" y="99" class="sk-val">10</text>
+    <text x="250" y="87" class="sk-top-lbl">← TOP</text>
+
+    {/* ── Arrow 2→3 ── */}
+    <line x1="250" y1="100" x2="278" y2="100" class="sk-arr"/>
+    <text x="264" y="92" class="sk-op-lbl">push(20)</text>
+
+    {/* ── Column 3: [20,10] ── */}
+    <text x="338" y="20" class="sk-title">Push 20</text>
+    <rect x="300" y="30" width="76" height="44" class="sk-top" rx="4"/>
+    <text x="338" y="55" class="sk-val">20</text>
+    <text x="380" y="43" class="sk-top-lbl">← TOP</text>
+    <rect x="300" y="74" width="76" height="44" class="sk-col" rx="4"/>
+    <text x="338" y="99" class="sk-val">10</text>
+
+    {/* ── Arrow 3→4 ── */}
+    <line x1="380" y1="70" x2="408" y2="70" class="sk-arr"/>
+    <text x="394" y="62" class="sk-op-lbl">push(30)</text>
+
+    {/* ── Column 4: [30,20,10] ── */}
+    <text x="468" y="20" class="sk-title">Push 30</text>
+    <rect x="430" y="30" width="76" height="40" class="sk-top" rx="4"/>
+    <text x="468" y="52" class="sk-val">30</text>
+    <text x="510" y="43" class="sk-top-lbl">← TOP</text>
+    <rect x="430" y="70" width="76" height="40" class="sk-col" rx="4"/>
+    <text x="468" y="92" class="sk-val">20</text>
+    <rect x="430" y="110" width="76" height="40" class="sk-col" rx="4"/>
+    <text x="468" y="132" class="sk-val">10</text>
+
+    {/* ── Arrow 4→5 pop ── */}
+    <line x1="510" y1="85" x2="538" y2="85" class="sk-arr"/>
+    <text x="524" y="77" class="sk-op-lbl">pop()</text>
+    <rect x="510" y="93" width="54" height="20" class="sk-op" rx="3"/>
+    <text x="537" y="107" class="sk-op-lbl">→ 30</text>
+
+    {/* ── Column 5: [20,10] after pop ── */}
+    <text x="600" y="20" class="sk-title">After Pop</text>
+    <rect x="562" y="30" width="76" height="44" class="sk-top" rx="4"/>
+    <text x="600" y="55" class="sk-val">20</text>
+    <text x="642" y="43" class="sk-top-lbl">← TOP</text>
+    <rect x="562" y="74" width="76" height="44" class="sk-col" rx="4"/>
+    <text x="600" y="99" class="sk-val">10</text>
+
+    {/* Peek annotation */}
+    <text x="600" y="145" class="sk-op-lbl" style="font-size:12px">peek() → 20 (no removal)</text>
+
+    {/* Legend */}
+    <rect x="20" y="200" width="14" height="14" class="sk-top" rx="2"/>
+    <text x="40" y="212" class="sk-op-lbl" style="font-size:11px">TOP item</text>
+    <rect x="100" y="200" width="14" height="14" class="sk-col" rx="2"/>
+    <text x="120" y="212" class="sk-op-lbl" style="font-size:11px">lower items</text>
+    <rect x="190" y="200" width="14" height="14" class="sk-op" rx="2"/>
+    <text x="210" y="212" class="sk-op-lbl" style="font-size:11px">return value</text>
+  </svg>

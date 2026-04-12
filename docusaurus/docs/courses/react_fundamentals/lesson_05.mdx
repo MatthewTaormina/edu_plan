@@ -1,5 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ReactVdom from '@site/src/assets/diagrams/react_vdom.svg';
 
 # Lesson 05 — Events & Forms
 
@@ -212,9 +213,7 @@ function SignupForm() {
             >
                 {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">
-                        <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83" strokeWidth="2" strokeLinecap="round"/>
-                        </svg>
+                        <ReactVdom />
                         Creating account…
                     </span>
                 ) : "Create account"}

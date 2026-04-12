@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" class="diagram-svg" role="img" aria-label="Hash table: key is hashed to a bucket index, and the value is stored there">
+    <style>
+      .ht-key    { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
+      .ht-hash   { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 2; }
+      .ht-bucket { fill: var(--diagram-layer-3-fill); stroke: var(--diagram-layer-3-stroke); stroke-width: 2; }
+      .ht-val    { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
+      .ht-arr    { stroke: var(--diagram-text-muted); stroke-width: 1.5; fill: none; marker-end: url(#ht-arrow); }
+      .ht-txt    { fill: var(--diagram-text);       font: 13px monospace; text-anchor: middle; dominant-baseline: middle; }
+      .ht-lbl    { fill: var(--diagram-text-muted); font: 10px var(--ifm-font-family-base); text-anchor: middle; }
+    </style>
+    <defs>
+      <marker id="ht-arrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+        <polygon points="0 0, 7 2.5, 0 5" fill="var(--diagram-text-muted)" />
+      </marker>
+    </defs>
+
+    {/* Column headers */}
+    <text x="80"  y="16" class="ht-lbl">key</text>
+    <text x="220" y="16" class="ht-lbl">hash(key)</text>
+    <text x="370" y="16" class="ht-lbl">bucket index</text>
+    <text x="530" y="16" class="ht-lbl">value</text>
+
+    {/* Row 1 */}
+    <rect x="20"  y="30" width="120" height="32" class="ht-key"   rx="4"/>
+    <text x="80"  y="47" class="ht-txt">&quot;name&quot;</text>
+    <line x1="140" y1="46" x2="158" y2="46" class="ht-arr"/>
+    <rect x="160" y="30" width="120" height="32" class="ht-hash"  rx="4"/>
+    <text x="220" y="47" class="ht-txt">hash()</text>
+    <line x1="280" y1="46" x2="298" y2="46" class="ht-arr"/>
+    <rect x="300" y="30" width="120" height="32" class="ht-bucket" rx="4"/>
+    <text x="360" y="47" class="ht-txt">bucket[42]</text>
+    <line x1="420" y1="46" x2="438" y2="46" class="ht-arr"/>
+    <rect x="440" y="30" width="120" height="32" class="ht-val"   rx="4"/>
+    <text x="500" y="47" class="ht-txt">&quot;Alice&quot;</text>
+
+    {/* Row 2 */}
+    <rect x="20"  y="74" width="120" height="32" class="ht-key"   rx="4"/>
+    <text x="80"  y="91" class="ht-txt">&quot;age&quot;</text>
+    <line x1="140" y1="90" x2="158" y2="90" class="ht-arr"/>
+    <rect x="160" y="74" width="120" height="32" class="ht-hash"  rx="4"/>
+    <text x="220" y="91" class="ht-txt">hash()</text>
+    <line x1="280" y1="90" x2="298" y2="90" class="ht-arr"/>
+    <rect x="300" y="74" width="120" height="32" class="ht-bucket" rx="4"/>
+    <text x="360" y="91" class="ht-txt">bucket[7]</text>
+    <line x1="420" y1="90" x2="438" y2="90" class="ht-arr"/>
+    <rect x="440" y="74" width="120" height="32" class="ht-val"   rx="4"/>
+    <text x="500" y="91" class="ht-txt">25</text>
+
+    {/* Row 3 */}
+    <rect x="20"  y="118" width="120" height="32" class="ht-key"   rx="4"/>
+    <text x="80"  y="135" class="ht-txt">&quot;city&quot;</text>
+    <line x1="140" y1="134" x2="158" y2="134" class="ht-arr"/>
+    <rect x="160" y="118" width="120" height="32" class="ht-hash"  rx="4"/>
+    <text x="220" y="135" class="ht-txt">hash()</text>
+    <line x1="280" y1="134" x2="298" y2="134" class="ht-arr"/>
+    <rect x="300" y="118" width="120" height="32" class="ht-bucket" rx="4"/>
+    <text x="360" y="135" class="ht-txt">bucket[19]</text>
+    <line x1="420" y1="134" x2="438" y2="134" class="ht-arr"/>
+    <rect x="440" y="118" width="120" height="32" class="ht-val"   rx="4"/>
+    <text x="500" y="135" class="ht-txt">&quot;Toronto&quot;</text>
+
+    {/* bottom note */}
+    <text x="340" y="168" class="ht-lbl" style="font-size:11px">Each key hashes to a unique bucket index → O(1) average lookup, no searching</text>
+  </svg>
