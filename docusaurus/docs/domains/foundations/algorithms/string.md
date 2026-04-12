@@ -106,7 +106,7 @@ matches "AAB" at the start.
 ```
 
 <Tabs>
-<Tabtml value="pseudo" label="Pseudocode">
+<TabItem value="pseudo" label="Pseudocode">
 
 ```pseudocode
 // Build failure function (LPS array)
@@ -165,7 +165,7 @@ FUNCTION kmp_search(text: String, pattern: String) -> List<Int>
 END FUNCTION
 ```
 
-</Tabtml>
+</TabItem>
 <TabItem value="python" label="Python">
 
 ```python
@@ -494,4 +494,3 @@ You've worked through all nine algorithm categories. Return to the [Algorithms O
 
 **Log this in your kanban:** Move `foundations/algorithms` to ✅ Done.
 
-→ [Memory Management](../memory_management.md)
