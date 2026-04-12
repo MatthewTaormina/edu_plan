@@ -1,0 +1,236 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Lesson 05 — Events & Forms
+
+> **Course:** React Fundamentals · **Time:** 60 minutes
+> **📖 Wiki:** [JavaScript Core — Events](../../domains/web_dev/javascript_core.md)
+> **🔗 Official Docs:** [Responding to Events](https://react.dev/learn/responding-to-events) · [Reacting to Input with State](https://react.dev/learn/reacting-to-input-with-state)
+
+---
+
+## 🎯 Learning Objectives
+
+- [ ] Attach typed event handlers to JSX elements
+- [ ] Build controlled inputs (state mirrors the input)
+- [ ] Handle form submission and prevent default browser behaviour
+- [ ] Validate form fields and display inline errors
+- [ ] Handle loading states during async submission
+
+---
+
+## 📖 Concepts
+
+### Event Handlers in React
+
+```tsx
+// Handler functions — PascalCase with "handle" prefix by convention
+function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    console.log("Clicked at:", event.clientX, event.clientY);
+}
+
+// Inline handlers — fine for simple one-liners
+<button onClick={() => setOpen(true)}>Open</button>
+
+// Passing parameters to handlers
+<button onClick={() => handleDelete(item.id)}>Delete</button>
+
+// Typed event params — React wraps native events in SyntheticEvent
+function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setName(event.target.value);
+}
+
+function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();  // Stop browser from navigating on submit
+    // ...
+}
+```
+
+### Controlled Inputs
+
+In React, form elements should be **controlled** — their value is stored in state, and changes update state:
+
+```tsx
+function LoginForm() {
+    const [email, setEmail]       = useState('');
+    const [password, setPassword] = useState('');
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        console.log({ email, password });
+    }
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4 max-w-sm">
+            <div>
+                <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
+                <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                    autoComplete="email"
+                />
+            </div>
+            <div>
+                <label htmlFor="password" className="block text-sm font-medium mb-1">Password</label>
+                <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                    autoComplete="current-password"
+                />
+            </div>
+            <button type="submit" className="w-full btn btn-primary">Sign in</button>
+        </form>
+    );
+}
+```
+
+### Generic Form State Hook Pattern
+
+For forms with many fields, build a reusable hook:
+
+```tsx
+function useForm<T extends Record<string, unknown>>(initialValues: T) {
+    const [values, setValues]   = useState<T>(initialValues);
+    const [errors, setErrors]   = useState<Partial<Record<keyof T, string>>>({});
+    const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({});
+
+    function handleChange(field: keyof T) {
+        return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+            setValues(prev => ({ ...prev, [field]: e.target.value }));
+            // Clear error when user starts typing
+            if (errors[field]) setErrors(prev => ({ ...prev, [field]: undefined }));
+        };
+    }
+
+    function handleBlur(field: keyof T) {
+        return () => setTouched(prev => ({ ...prev, [field]: true }));
+    }
+
+    function reset() {
+        setValues(initialValues);
+        setErrors({});
+        setTouched({});
+    }
+
+    return { values, errors, touched, setErrors, handleChange, handleBlur, reset };
+}
+```
+
+### Full Validated Form with Loading State
+
+```tsx
+interface SignupFormValues {
+    name:            string;
+    email:           string;
+    password:        string;
+    confirmPassword: string;
+}
+
+function SignupForm() {
+    const { values, errors, touched, setErrors, handleChange, handleBlur, reset } =
+        useForm<SignupFormValues>({ name: '', email: '', password: '', confirmPassword: '' });
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [success, setSuccess]           = useState(false);
+
+    function validate(): boolean {
+        const newErrors: Partial<Record<keyof SignupFormValues, string>> = {};
+        if (!values.name.trim())                       newErrors.name = "Name is required";
+        if (!values.email.includes('@'))               newErrors.email = "Enter a valid email";
+        if (values.password.length < 8)               newErrors.password = "Password must be 8+ characters";
+        if (values.password !== values.confirmPassword) newErrors.confirmPassword = "Passwords don't match";
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
+
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        if (!validate()) return;
+
+        setIsSubmitting(true);
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            setSuccess(true);
+            reset();
+        } catch {
+            setErrors({ email: "This email is already registered" });
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+
+    if (success) {
+        return (
+            <div className="text-center py-8">
+                <div className="text-5xl mb-4">🎉</div>
+                <h2 className="text-2xl font-bold">Account created!</h2>
+                <p className="text-gray-500 mt-2">Check your email to verify your address.</p>
+            </div>
+        );
+    }
+
+    return (
+        <form onSubmit={handleSubmit} noValidate className="space-y-5 max-w-sm">
+            {(["name", "email", "password", "confirmPassword"] as const).map(field => (
+                <div key={field}>
+                    <label htmlFor={field} className="block text-sm font-medium mb-1 capitalize">
+                        {field.replace(/([A-Z])/g, ' $1')}
+                    </label>
+                    <input
+                        id={field}
+                        type={field.includes("password") || field.includes("Password") ? "password" : field === "email" ? "email" : "text"}
+                        value={values[field]}
+                        onChange={handleChange(field)}
+                        onBlur={handleBlur(field)}
+                        aria-describedby={errors[field] ? `${field}-error` : undefined}
+                        aria-invalid={touched[field] && !!errors[field]}
+                        className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500
+                                   ${touched[field] && errors[field] ? 'border-red-400' : 'border-gray-300'}`}
+                    />
+                    {touched[field] && errors[field] && (
+                        <p id={`${field}-error`} className="text-xs text-red-500 mt-1" role="alert">
+                            {errors[field]}
+                        </p>
+                    )}
+                </div>
+            ))}
+
+            <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full btn btn-primary disabled:opacity-50"
+            >
+                {isSubmitting ? (
+                    <span className="flex items-center justify-center gap-2">
+                        <img src="/img/diagrams/react_vdom.svg" alt="React Vdom" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
+                        Creating account…
+                    </span>
+                ) : "Create account"}
+            </button>
+        </form>
+    );
+}
+```
+
+---
+
+## ✅ Milestone Checklist
+
+- [ ] All my form inputs are controlled (value + onChange)
+- [ ] I call `e.preventDefault()` on form submit handlers
+- [ ] I show field-level errors only after the field has been blurred (touched)
+- [ ] My submit button is disabled and shows a spinner while async work is in progress
+
+## ➡️ Next Unit
+
+[Lesson 06 — Lists, Keys & Conditional Rendering](./lesson_06.md)

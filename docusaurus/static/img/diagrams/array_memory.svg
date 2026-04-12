@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 72" width="100%" style="max-width:500px;display:block;margin:1remauto" aria-label="Array with 5 cells indexed 0-4">
+  <style>
+  :root {
+    --d-bg:        #f4f4f8;
+    --d-card:      #ffffff;
+    --d-primary:   #6d28d9;
+    --d-accent:    #7c3aed;
+    --d-text:      #111827;
+    --d-muted:     #4b5563;
+    --d-l1-fill:   #bfdbfe; --d-l1-stroke: #2563eb;
+    --d-l2-fill:   #bbf7d0; --d-l2-stroke: #16a34a;
+    --d-l3-fill:   #fde68a; --d-l3-stroke: #d97706;
+    --d-l4-fill:   #e9d5ff; --d-l4-stroke: #7c3aed;
+    --d-sem:       #a78bfa;
+    --d-empty:     #e5e7eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:        #1e1e2e;
+      --d-card:      #2d2d44;
+      --d-primary:   #a78bfa;
+      --d-accent:    #c4b5fd;
+      --d-text:      #f1f5f9;
+      --d-muted:     #a0aec0;
+      --d-l1-fill:   #1e40af; --d-l1-stroke: #60a5fa;
+      --d-l2-fill:   #166534; --d-l2-stroke: #4ade80;
+      --d-l3-fill:   #92400e; --d-l3-stroke: #fbbf24;
+      --d-l4-fill:   #4c1d95; --d-l4-stroke: #c4b5fd;
+      --d-sem:       #6d5acd;
+      --d-empty:     #374151;
+    }
+  }
+
+
+    .ac { fill: var(--d-card); stroke: var(--d-primary); stroke-width: 2; }
+    .av { font: bold 18px monospace; fill: var(--d-text); dominant-baseline: middle; text-anchor: middle; }
+    .ai { font: bold 12px monospace; fill: var(--d-primary); text-anchor: middle; }
+  </style>
+  <rect class="ac" x="4"   y="8" width="78" height="44" rx="6"/><text class="av" x="43"  y="30">10</text><text class="ai" x="43"  y="64">[0]</text>
+  <rect class="ac" x="90"  y="8" width="78" height="44" rx="6"/><text class="av" x="129" y="30">20</text><text class="ai" x="129" y="64">[1]</text>
+  <rect class="ac" x="176" y="8" width="78" height="44" rx="6"/><text class="av" x="215" y="30">30</text><text class="ai" x="215" y="64">[2]</text>
+  <rect class="ac" x="262" y="8" width="78" height="44" rx="6"/><text class="av" x="301" y="30">40</text><text class="ai" x="301" y="64">[3]</text>
+  <rect class="ac" x="348" y="8" width="78" height="44" rx="6"/><text class="av" x="387" y="30">50</text><text class="ai" x="387" y="64">[4]</text>
+</svg>

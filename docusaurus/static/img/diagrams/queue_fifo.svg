@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 310"  class="diagram-svg" role="img" aria-label="Queue FIFO: enqueue 10, 20, 30; then dequeue returns 10 from FRONT">
+    <style>
+  :root {
+    --d-bg:        #f4f4f8;
+    --d-card:      #ffffff;
+    --d-primary:   #6d28d9;
+    --d-accent:    #7c3aed;
+    --d-text:      #111827;
+    --d-muted:     #4b5563;
+    --d-l1-fill:   #bfdbfe; --d-l1-stroke: #2563eb;
+    --d-l2-fill:   #bbf7d0; --d-l2-stroke: #16a34a;
+    --d-l3-fill:   #fde68a; --d-l3-stroke: #d97706;
+    --d-l4-fill:   #e9d5ff; --d-l4-stroke: #7c3aed;
+    --d-sem:       #a78bfa;
+    --d-empty:     #e5e7eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:        #1e1e2e;
+      --d-card:      #2d2d44;
+      --d-primary:   #a78bfa;
+      --d-accent:    #c4b5fd;
+      --d-text:      #f1f5f9;
+      --d-muted:     #a0aec0;
+      --d-l1-fill:   #1e40af; --d-l1-stroke: #60a5fa;
+      --d-l2-fill:   #166534; --d-l2-stroke: #4ade80;
+      --d-l3-fill:   #92400e; --d-l3-stroke: #fbbf24;
+      --d-l4-fill:   #4c1d95; --d-l4-stroke: #c4b5fd;
+      --d-sem:       #6d5acd;
+      --d-empty:     #374151;
+    }
+  }
+
+
+      .q-node  { fill: var(--d-l1-fill); stroke: var(--d-l1-stroke); stroke-width: 2; }
+      .q-front { fill: var(--d-l2-fill); stroke: var(--d-l2-stroke); stroke-width: 2; }
+      .q-back  { fill: var(--d-l3-fill); stroke: var(--d-l3-stroke); stroke-width: 2; }
+      .q-gone  { fill: var(--d-l4-fill); stroke: var(--d-l4-stroke); stroke-width: 2; stroke-dasharray: 5 3; opacity: 0.65; }
+      .q-arr   { stroke: var(--d-muted); stroke-width: 2; fill: none; marker-end: url(#q-arrow); }
+      .q-lbl   { fill: var(--d-text);          font: 600 12px system-ui,sans-serif; text-anchor: start; dominant-baseline: middle; }
+      .q-val   { fill: var(--d-text);          font: bold 15px monospace; text-anchor: middle; dominant-baseline: middle; }
+      .q-tag-f { fill: var(--d-l2-stroke); font: bold 10px system-ui,sans-serif; text-anchor: middle; }
+      .q-tag-b { fill: var(--d-l3-stroke); font: bold 10px system-ui,sans-serif; text-anchor: middle; }
+      .q-note  { fill: var(--d-muted); font: 10px system-ui,sans-serif; text-anchor: middle; }
+    </style>
+    <defs>
+      <marker id="q-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--d-muted)" />
+      </marker>
+    </defs>
+
+    
+    <text x="10" y="50"  class="q-lbl">enqueue(10)</text>
+    <text x="10" y="130" class="q-lbl">enqueue(20)</text>
+    <text x="10" y="210" class="q-lbl">enqueue(30)</text>
+    <text x="10" y="290" class="q-lbl">dequeue()</text>
+
+    
+    <line x1="148" y1="10" x2="148" y2="300" stroke="var(--d-sem)" stroke-width="1" stroke-dasharray="3 3"/>
+
+    
+    <rect x="160" y="30" width="52" height="38" class="q-front" rx="4"/>
+    <text x="186" y="50" class="q-val">10</text>
+    <text x="186" y="73" class="q-tag-f">FRONT</text>
+    <text x="225" y="50" class="q-note" style="text-anchor:start;font-size:10px">← BACK</text>
+
+    
+    <rect x="160" y="110" width="52" height="38" class="q-front" rx="4"/>
+    <text x="186" y="130" class="q-val">10</text>
+    <text x="186" y="153" class="q-tag-f">FRONT</text>
+    <line x1="213" y1="129" x2="229" y2="129" class="q-arr"/>
+    <rect x="232" y="110" width="52" height="38" class="q-back" rx="4"/>
+    <text x="258" y="130" class="q-val">20</text>
+    <text x="258" y="153" class="q-tag-b">BACK</text>
+
+    
+    <rect x="160" y="190" width="52" height="38" class="q-front" rx="4"/>
+    <text x="186" y="210" class="q-val">10</text>
+    <text x="186" y="233" class="q-tag-f">FRONT</text>
+    <line x1="213" y1="209" x2="229" y2="209" class="q-arr"/>
+    <rect x="232" y="190" width="52" height="38" class="q-node" rx="4"/>
+    <text x="258" y="210" class="q-val">20</text>
+    <line x1="285" y1="209" x2="301" y2="209" class="q-arr"/>
+    <rect x="304" y="190" width="52" height="38" class="q-back" rx="4"/>
+    <text x="330" y="210" class="q-val">30</text>
+    <text x="330" y="233" class="q-tag-b">BACK</text>
+
+    
+    
+    <rect x="160" y="270" width="52" height="38" class="q-gone" rx="4"/>
+    <text x="186" y="290" class="q-val" style="opacity:0.45">10</text>
+    <text x="186" y="313" class="q-note">removed</text>
+    
+    <rect x="160" y="252" width="52" height="14" rx="3" fill="var(--d-l4-fill)" stroke="var(--d-l4-stroke)" stroke-width="1"/>
+    <text x="186" y="261" class="q-note" style="fill:var(--d-l4-stroke);font-weight:bold">→ 10</text>
+
+    <line x1="213" y1="289" x2="229" y2="289" class="q-arr"/>
+    <rect x="232" y="270" width="52" height="38" class="q-front" rx="4"/>
+    <text x="258" y="290" class="q-val">20</text>
+    <text x="258" y="313" class="q-tag-f">new FRONT</text>
+    <line x1="285" y1="289" x2="301" y2="289" class="q-arr"/>
+    <rect x="304" y="270" width="52" height="38" class="q-back" rx="4"/>
+    <text x="330" y="290" class="q-val">30</text>
+    <text x="330" y="313" class="q-tag-b">BACK</text>
+
+    
+    <rect x="410" y="30" width="12" height="12" class="q-front" rx="2"/>
+    <text x="428" y="40" class="q-note" style="text-anchor:start">FRONT — served first (dequeued)</text>
+    <rect x="410" y="52" width="12" height="12" class="q-back" rx="2"/>
+    <text x="428" y="62" class="q-note" style="text-anchor:start">BACK — new arrivals (enqueued)</text>
+    <rect x="410" y="74" width="12" height="12" class="q-node" rx="2"/>
+    <text x="428" y="84" class="q-note" style="text-anchor:start">middle items</text>
+    <rect x="410" y="96" width="12" height="12" class="q-gone" rx="2"/>
+    <text x="428" y="106" class="q-note" style="text-anchor:start">dequeued / removed</text>
+
+    
+    <text x="410" y="145" class="q-lbl" style="font-size:13px">FIFO: First In, First Out</text>
+    <text x="410" y="165" class="q-note" style="text-anchor:start;font-size:11px">Items leave in the same order they arrived.</text>
+    <text x="410" y="182" class="q-note" style="text-anchor:start;font-size:11px">The item at FRONT was enqueued first.</text>
+  </svg>

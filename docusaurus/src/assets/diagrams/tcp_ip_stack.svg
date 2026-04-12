@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350"  class="diagram-svg">
+    <style>
+  /* ── Light mode (default) ── */
+  :root {
+    --d-bg:       #f4f4f8;
+    --d-card:     #ffffff;
+    --d-border:   #7c3aed;
+    --d-primary:  #7c3aed;
+    --d-accent:   #a78bfa;
+    --d-text:     #1a1a2e;
+    --d-muted:    #6b7280;
+    --d-l1-fill: #dbeafe; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #dcfce7; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #fef3c7; --d-l3-stroke: #d97706;
+    --d-l4-fill: #fce7f3; --d-l4-stroke: #db2777;
+    --d-sem:      #c4b5fd;
+  }
+  /* ── Dark mode via OS (IDE preview) ── */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:       #1e1e2e;
+      --d-card:     #27273f;
+      --d-border:   #a78bfa;
+      --d-primary:  #a78bfa;
+      --d-accent:   #c4b5fd;
+      --d-text:     #cdd6f4;
+      --d-muted:    #8b92a8;
+      --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+      --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+      --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+      --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+      --d-sem:      #4c3f75;
+    }
+  }
+  /* ── Dark mode via Docusaurus toggle ── */
+  :root[data-theme="dark"] {
+    --d-bg:       #1e1e2e;
+    --d-card:     #27273f;
+    --d-border:   #a78bfa;
+    --d-primary:  #a78bfa;
+    --d-accent:   #c4b5fd;
+    --d-text:     #cdd6f4;
+    --d-muted:    #8b92a8;
+    --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+    --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+    --d-sem:      #4c3f75;
+  }
+
+      .bg-app      { fill: var(--d-l1-fill); stroke: var(--d-l1-stroke); stroke-width: 2; }
+        .bg-transport { fill: var(--d-l2-fill); stroke: var(--d-l2-stroke); stroke-width: 2; }
+        .bg-internet  { fill: var(--d-l3-fill); stroke: var(--d-l3-stroke); stroke-width: 2; }
+        .bg-network   { fill: var(--d-l4-fill); stroke: var(--d-l4-stroke); stroke-width: 2; }
+        .dg-title { fill: var(--d-text);       font-family: system-ui,sans-serif; font-weight: bold; font-size: 18px; text-anchor: middle; }
+        .dg-sub   { fill: var(--d-muted); font-family: monospace;                   font-size: 13px;   text-anchor: middle; }
+        .dg-arrow { stroke: var(--d-muted); stroke-width: 2; marker-end: url(#arrow-tcp); }
+    </style>
+    <defs>
+      <marker id="arrow-tcp" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="var(--d-muted)" />
+      </marker>
+    </defs>
+
+    
+    <rect x="100" y="20" width="400" height="60" class="bg-app" rx="6"/>
+    <text x="300" y="46" class="dg-title">Application Layer</text>
+    <text x="300" y="65" class="dg-sub">HTTP · DNS · SSH · SMTP · FTP</text>
+    <line x1="300" y1="80" x2="300" y2="100" class="dg-arrow" />
+
+    
+    <rect x="100" y="100" width="400" height="60" class="bg-transport" rx="6"/>
+    <text x="300" y="126" class="dg-title">Transport Layer</text>
+    <text x="300" y="146" class="dg-sub">TCP · UDP (Ports, segments, reliable delivery)</text>
+    <line x1="300" y1="160" x2="300" y2="180" class="dg-arrow" />
+
+    
+    <rect x="100" y="180" width="400" height="60" class="bg-internet" rx="6"/>
+    <text x="300" y="206" class="dg-title">Internet Layer</text>
+    <text x="300" y="226" class="dg-sub">IP · ICMP (IP addresses, routing packets)</text>
+    <line x1="300" y1="240" x2="300" y2="260" class="dg-arrow" />
+
+    
+    <rect x="100" y="260" width="400" height="60" class="bg-network" rx="6"/>
+    <text x="300" y="286" class="dg-title">Network Access Layer</text>
+    <text x="300" y="306" class="dg-sub">Ethernet · Wi-Fi (MAC addresses, physical frames)</text>
+  </svg>

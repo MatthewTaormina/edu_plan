@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"  class="diagram-svg">
+    <style>
+  /* ── Light mode (default) ── */
+  :root {
+    --d-bg:       #f4f4f8;
+    --d-card:     #ffffff;
+    --d-border:   #7c3aed;
+    --d-primary:  #7c3aed;
+    --d-accent:   #a78bfa;
+    --d-text:     #1a1a2e;
+    --d-muted:    #6b7280;
+    --d-l1-fill: #dbeafe; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #dcfce7; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #fef3c7; --d-l3-stroke: #d97706;
+    --d-l4-fill: #fce7f3; --d-l4-stroke: #db2777;
+    --d-sem:      #c4b5fd;
+  }
+  /* ── Dark mode via OS (IDE preview) ── */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:       #1e1e2e;
+      --d-card:     #27273f;
+      --d-border:   #a78bfa;
+      --d-primary:  #a78bfa;
+      --d-accent:   #c4b5fd;
+      --d-text:     #cdd6f4;
+      --d-muted:    #8b92a8;
+      --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+      --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+      --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+      --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+      --d-sem:      #4c3f75;
+    }
+  }
+  /* ── Dark mode via Docusaurus toggle ── */
+  :root[data-theme="dark"] {
+    --d-bg:       #1e1e2e;
+    --d-card:     #27273f;
+    --d-border:   #a78bfa;
+    --d-primary:  #a78bfa;
+    --d-accent:   #c4b5fd;
+    --d-text:     #cdd6f4;
+    --d-muted:    #8b92a8;
+    --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+    --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+    --d-sem:      #4c3f75;
+  }
+
+      .bg-margin  { fill: var(--diagram-box-margin-fill);  stroke: var(--diagram-box-margin-stroke);  stroke-width: 2; stroke-dasharray: 6 4; }
+        .bg-border  { fill: var(--diagram-box-border-fill);  stroke: var(--diagram-box-border-stroke);  stroke-width: 5; }
+        .bg-padding { fill: var(--diagram-box-padding-fill); stroke: var(--diagram-box-padding-stroke); stroke-width: 2; stroke-dasharray: 4 2; }
+        .bg-content { fill: var(--diagram-box-content-fill); stroke: var(--diagram-box-content-stroke); stroke-width: 2; }
+        .dg-label { fill: var(--d-text);       font-family: monospace;                   font-weight: bold; font-size: 16px; text-anchor: middle; }
+        .dg-hint  { fill: var(--d-muted); font-family: system-ui,sans-serif; font-size: 12px;   text-anchor: middle; }
+    </style>
+
+    
+    <rect x="20" y="20" width="560" height="360" class="bg-margin" rx="6"/>
+    <text x="300" y="45" class="dg-label">MARGIN</text>
+    <text x="300" y="63" class="dg-hint">clears space outside the border — transparent</text>
+
+    
+    <rect x="70" y="80" width="460" height="260" class="bg-border" rx="4"/>
+    <text x="300" y="100" class="dg-label">BORDER</text>
+    <text x="300" y="115" class="dg-hint">visible edge — solid, dashed, dotted, etc.</text>
+
+    
+    <rect x="120" y="130" width="360" height="180" class="bg-padding" rx="4"/>
+    <text x="300" y="150" class="dg-label">PADDING</text>
+    <text x="300" y="167" class="dg-hint">clears space around content — transparent</text>
+
+    
+    <rect x="170" y="195" width="260" height="100" class="bg-content" rx="4"/>
+    <text x="300" y="240" class="dg-label">CONTENT</text>
+    <text x="300" y="258" class="dg-hint">text · images · child elements</text>
+    <text x="300" y="274" class="dg-hint">width × height</text>
+  </svg>

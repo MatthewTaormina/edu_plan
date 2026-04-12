@@ -1,0 +1,264 @@
+# Lesson 08 — Capstone: Admin Dashboard UI
+
+> **Course:** Tailwind CSS · **Time:** 90–120 minutes
+> **📖 Wiki:** [HTML & CSS](../../domains/web_dev/html_css.mdx)
+> **🔗 Official Docs:** [Tailwind CSS Components](https://tailwindcss.com/docs/reusing-styles)
+
+---
+
+## 🎯 Project Overview
+
+Build a **fully responsive admin dashboard** with:
+- Collapsible sidebar navigation
+- Stats cards row
+- Data table with status badges
+- Dark mode toggle (stored in localStorage)
+- Clean, professional visual design
+
+---
+
+## HTML Structure
+
+```html
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        // Apply theme before paint to prevent flash
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-gray-100">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 transform -translate-x-full md:translate-x-0 transition-transform">
+        <!-- Logo -->
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-gray-200 dark:border-slate-800">
+            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+                <span class="text-white font-bold text-sm">A</span>
+            </div>
+            <span class="font-semibold text-lg">AdminApp</span>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="p-4 space-y-1">
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400" aria-current="page">
+                <span class="text-lg">📊</span> Dashboard
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="text-lg">👥</span> Users
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="text-lg">📦</span> Products
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="text-lg">📋</span> Orders
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                <span class="text-lg">⚙️</span> Settings
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="overlay" class="fixed inset-0 z-30 bg-black/40 hidden md:hidden" aria-hidden="true"></div>
+
+    <!-- Main content -->
+    <div class="md:ml-64 min-h-screen flex flex-col">
+
+        <!-- Top bar -->
+        <header class="sticky top-0 z-20 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 md:px-8 py-4 flex items-center justify-between gap-4">
+            <button id="sidebar-toggle" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" aria-label="Toggle sidebar">
+                <img src="/img/diagrams/tailwind_dark_mode.svg" alt="Tailwind Dark Mode" style={{width:'100%',maxWidth:'720px',display:'block',margin:'1rem auto'}} />
+            </button>
+
+            <h1 class="text-lg font-semibold">Dashboard</h1>
+
+            <div class="flex items-center gap-3 ml-auto">
+                <!-- Search -->
+                <input type="search" placeholder="Search..." class="hidden sm:block w-56 px-3 py-1.5 text-sm border border-gray-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                <!-- Dark mode toggle -->
+                <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" aria-label="Toggle dark mode">
+                    <span id="theme-icon">🌙</span>
+                </button>
+
+                <!-- Avatar -->
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-medium">
+                    AK
+                </div>
+            </div>
+        </header>
+
+        <!-- Page content -->
+        <main class="flex-1 p-4 md:p-8">
+
+            <!-- Stats row -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 p-5">
+                    <p class="text-xs font-semibold tracking-widest uppercase text-gray-500">Total Revenue</p>
+                    <p class="mt-2 text-2xl font-bold">$48,295</p>
+                    <p class="mt-1 text-xs text-emerald-600">↑ 12% this month</p>
+                </div>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 p-5">
+                    <p class="text-xs font-semibold tracking-widest uppercase text-gray-500">Active Users</p>
+                    <p class="mt-2 text-2xl font-bold">1,284</p>
+                    <p class="mt-1 text-xs text-emerald-600">↑ 8% this month</p>
+                </div>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 p-5">
+                    <p class="text-xs font-semibold tracking-widest uppercase text-gray-500">New Orders</p>
+                    <p class="mt-2 text-2xl font-bold">348</p>
+                    <p class="mt-1 text-xs text-red-500">↓ 3% this week</p>
+                </div>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 p-5">
+                    <p class="text-xs font-semibold tracking-widest uppercase text-gray-500">Refund Rate</p>
+                    <p class="mt-2 text-2xl font-bold">2.4%</p>
+                    <p class="mt-1 text-xs text-emerald-600">↓ 0.3% this month</p>
+                </div>
+            </div>
+
+            <!-- Recent orders table -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 overflow-hidden">
+                <div class="px-6 py-4 flex items-center justify-between border-b border-gray-200 dark:border-slate-800">
+                    <h2 class="font-semibold">Recent Orders</h2>
+                    <button class="text-sm text-blue-600 hover:underline font-medium">View all</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 dark:bg-slate-800 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-3 text-left">Order ID</th>
+                                <th class="px-6 py-3 text-left">Customer</th>
+                                <th class="px-6 py-3 text-left hidden sm:table-cell">Date</th>
+                                <th class="px-6 py-3 text-right">Amount</th>
+                                <th class="px-6 py-3 text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 font-mono text-gray-500">#ORD-001</td>
+                                <td class="px-6 py-4 font-medium">Alice Johnson</td>
+                                <td class="px-6 py-4 text-gray-500 hidden sm:table-cell">Apr 12, 2026</td>
+                                <td class="px-6 py-4 text-right font-medium">$129.00</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Delivered</span>
+                                </td>
+                            </tr>
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 font-mono text-gray-500">#ORD-002</td>
+                                <td class="px-6 py-4 font-medium">Bob Chen</td>
+                                <td class="px-6 py-4 text-gray-500 hidden sm:table-cell">Apr 11, 2026</td>
+                                <td class="px-6 py-4 text-right font-medium">$349.99</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">Shipped</span>
+                                </td>
+                            </tr>
+                            <!-- Row 3 -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 font-mono text-gray-500">#ORD-003</td>
+                                <td class="px-6 py-4 font-medium">Carol Patel</td>
+                                <td class="px-6 py-4 text-gray-500 hidden sm:table-cell">Apr 10, 2026</td>
+                                <td class="px-6 py-4 text-right font-medium">$59.00</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Processing</span>
+                                </td>
+                            </tr>
+                            <!-- Row 4 -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 font-mono text-gray-500">#ORD-004</td>
+                                <td class="px-6 py-4 font-medium">David Kim</td>
+                                <td class="px-6 py-4 text-gray-500 hidden sm:table-cell">Apr 9, 2026</td>
+                                <td class="px-6 py-4 text-right font-medium">$799.00</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">Refunded</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/main.js" type="module"></script>
+</body>
+</html>
+```
+
+## JavaScript (main.js)
+
+```javascript
+// Sidebar toggle
+const sidebar       = document.getElementById('sidebar');
+const overlay       = document.getElementById('overlay');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+
+function openSidebar()  {
+    sidebar.classList.remove('-translate-x-full');
+    overlay.classList.remove('hidden');
+}
+function closeSidebar() {
+    sidebar.classList.add('-translate-x-full');
+    overlay.classList.add('hidden');
+}
+
+sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.contains('-translate-x-full') ? openSidebar() : closeSidebar();
+});
+overlay.addEventListener('click', closeSidebar);
+
+// Dark mode toggle
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon   = document.getElementById('theme-icon');
+
+function updateIcon() {
+    const isDark = document.documentElement.classList.contains('dark');
+    themeIcon.textContent = isDark ? '☀️' : '🌙';
+}
+
+themeToggle.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    document.documentElement.classList.toggle('dark', !isDark);
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    updateIcon();
+});
+
+updateIcon(); // Set correct icon on load
+```
+
+---
+
+## 🏗️ Extension Assignments
+
+1. Add a **chart placeholder** area using gradient divs (no library needed)
+2. Add a **notification bell** badge in the header
+3. Make the active nav item **dynamically highlighted** based on `window.location.hash`
+4. Add a **loading skeleton** state for the stats cards (using Tailwind animation `animate-pulse`)
+
+---
+
+## ✅ Milestone Checklist
+
+- [ ] The sidebar opens/closes on mobile and is pinned open on desktop
+- [ ] Dark mode works, persists, and has no flash on reload
+- [ ] The stats cards and table are fully responsive
+- [ ] Badge/pill status colours use semantic Tailwind color utilities
+
+## 🏆 Tailwind CSS Complete!
+
+You now know how to design production-quality UIs efficiently.
+
+## ➡️ Next Course
+
+[React Fundamentals](../react_fundamentals/index.md)

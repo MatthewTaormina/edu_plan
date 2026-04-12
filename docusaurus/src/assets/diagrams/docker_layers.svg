@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350"  class="diagram-svg">
+    <style>
+  /* ── Light mode (default) ── */
+  :root {
+    --d-bg:       #f4f4f8;
+    --d-card:     #ffffff;
+    --d-border:   #7c3aed;
+    --d-primary:  #7c3aed;
+    --d-accent:   #a78bfa;
+    --d-text:     #1a1a2e;
+    --d-muted:    #6b7280;
+    --d-l1-fill: #dbeafe; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #dcfce7; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #fef3c7; --d-l3-stroke: #d97706;
+    --d-l4-fill: #fce7f3; --d-l4-stroke: #db2777;
+    --d-sem:      #c4b5fd;
+  }
+  /* ── Dark mode via OS (IDE preview) ── */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:       #1e1e2e;
+      --d-card:     #27273f;
+      --d-border:   #a78bfa;
+      --d-primary:  #a78bfa;
+      --d-accent:   #c4b5fd;
+      --d-text:     #cdd6f4;
+      --d-muted:    #8b92a8;
+      --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+      --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+      --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+      --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+      --d-sem:      #4c3f75;
+    }
+  }
+  /* ── Dark mode via Docusaurus toggle ── */
+  :root[data-theme="dark"] {
+    --d-bg:       #1e1e2e;
+    --d-card:     #27273f;
+    --d-border:   #a78bfa;
+    --d-primary:  #a78bfa;
+    --d-accent:   #c4b5fd;
+    --d-text:     #cdd6f4;
+    --d-muted:    #8b92a8;
+    --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+    --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+    --d-sem:      #4c3f75;
+  }
+
+      .bg-base { fill: var(--ifm-color-emphasis-100); stroke: var(--ifm-color-emphasis-300); stroke-width: 2; rx: 8; }
+        .bg-layer { fill: var(--ifm-color-primary-100); stroke: var(--ifm-color-primary-700); stroke-width: 2; rx: 6; }
+        .bg-app { fill: var(--ifm-color-success-100); stroke: var(--ifm-color-success-700); stroke-width: 2; rx: 6; }
+        .bg-hypervisor { fill: var(--ifm-color-warning-100); stroke: var(--ifm-color-warning-700); stroke-width: 2; rx: 6; }
+        .text-dark { fill: var(--d-text); font-family: system-ui,sans-serif; font-weight: 600; font-size: 14px; text-anchor: middle; }
+        .title { fill: var(--d-text); font-family: system-ui,sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; }
+    </style>
+    
+    
+    <text x="200" y="30" class="title">Virtual Machine</text>
+    
+    
+    <rect x="70" y="50" width="120" height="40" class="bg-app" />
+    <text x="130" y="75" class="text-dark">App A</text>
+    <rect x="210" y="50" width="120" height="40" class="bg-app" />
+    <text x="270" y="75" class="text-dark">App B</text>
+    
+    
+    <rect x="70" y="100" width="120" height="40" class="bg-layer" />
+    <text x="130" y="125" class="text-dark">Bins/Libs</text>
+    <rect x="210" y="100" width="120" height="40" class="bg-layer" />
+    <text x="270" y="125" class="text-dark">Bins/Libs</text>
+    
+    
+    <rect x="70" y="150" width="120" height="40" class="bg-base" />
+    <text x="130" y="175" class="text-dark">Guest OS</text>
+    <rect x="210" y="150" width="120" height="40" class="bg-base" />
+    <text x="270" y="175" class="text-dark">Guest OS</text>
+    
+    
+    <rect x="70" y="200" width="260" height="40" class="bg-hypervisor" />
+    <text x="200" y="225" class="text-dark">Hypervisor</text>
+    
+    
+    <rect x="70" y="250" width="260" height="60" class="bg-base" />
+    <text x="200" y="275" class="text-dark">Host OS Kernel</text>
+    <text x="200" y="295" class="text-dark">&amp; Hardware</text>
+
+    
+    <text x="600" y="30" class="title">Container</text>
+    
+    
+    <rect x="470" y="80" width="120" height="60" class="bg-app" />
+    <text x="530" y="115" class="text-dark">App A</text>
+    <rect x="610" y="80" width="120" height="60" class="bg-app" />
+    <text x="670" y="115" class="text-dark">App B</text>
+    
+    
+    <rect x="470" y="150" width="120" height="40" class="bg-layer" />
+    <text x="530" y="175" class="text-dark">Bins/Libs</text>
+    <rect x="610" y="150" width="120" height="40" class="bg-layer" />
+    <text x="670" y="175" class="text-dark">Bins/Libs</text>
+    
+    
+    <rect x="470" y="200" width="260" height="40" class="bg-primary bg-layer" />
+    <text x="600" y="225" class="text-dark">Docker Engine</text>
+    
+    
+    <rect x="470" y="250" width="260" height="60" class="bg-base" />
+    <text x="600" y="275" class="text-dark">Host OS Kernel</text>
+    <text x="600" y="295" class="text-dark">&amp; Hardware</text>
+  </svg>

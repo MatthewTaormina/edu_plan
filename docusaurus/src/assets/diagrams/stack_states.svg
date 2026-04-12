@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 760 220"
+     class="diagram-svg" role="img"
+     aria-label="Stack state progression: Push 10, Push 20, Push 30, Pop returns 30, Peek returns 20">
+  <style>
+  /* ── Light mode (default) ── */
+  :root {
+    --d-bg:       #f4f4f8;
+    --d-card:     #ffffff;
+    --d-border:   #7c3aed;
+    --d-primary:  #7c3aed;
+    --d-accent:   #a78bfa;
+    --d-text:     #1a1a2e;
+    --d-muted:    #6b7280;
+    --d-l1-fill: #dbeafe; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #dcfce7; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #fef3c7; --d-l3-stroke: #d97706;
+    --d-l4-fill: #fce7f3; --d-l4-stroke: #db2777;
+    --d-sem:      #c4b5fd;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:       #1e1e2e; --d-card:     #27273f;
+      --d-border:   #a78bfa; --d-primary:  #a78bfa; --d-accent:   #c4b5fd;
+      --d-text:     #cdd6f4; --d-muted:    #8b92a8;
+      --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+      --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+      --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+      --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+      --d-sem:      #4c3f75;
+    }
+  }
+  :root[data-theme="dark"] {
+    --d-bg:       #1e1e2e; --d-card:     #27273f;
+    --d-border:   #a78bfa; --d-primary:  #a78bfa; --d-accent:   #c4b5fd;
+    --d-text:     #cdd6f4; --d-muted:    #8b92a8;
+    --d-l1-fill: #1e3a5f; --d-l1-stroke: #3b82f6;
+    --d-l2-fill: #14532d; --d-l2-stroke: #16a34a;
+    --d-l3-fill: #451a03; --d-l3-stroke: #d97706;
+    --d-l4-fill: #4c1d95; --d-l4-stroke: #a78bfa;
+    --d-sem:      #4c3f75;
+  }
+  .sk-col      { fill: var(--d-l1-fill);  stroke: var(--d-l1-stroke); stroke-width: 2; }
+  .sk-top      { fill: var(--d-l2-fill);  stroke: var(--d-l2-stroke); stroke-width: 2; }
+  .sk-op       { fill: var(--d-l4-fill);  stroke: var(--d-l4-stroke); stroke-width: 1.5; }
+  .sk-empty    { fill: none; stroke: var(--d-sem); stroke-width: 2; stroke-dasharray: 5 3; }
+  .sk-arr      { stroke: var(--d-muted);  stroke-width: 2; fill: none; marker-end: url(#sk-arrow); }
+  .sk-title    { fill: var(--d-text);     font: 600 14px system-ui,sans-serif; text-anchor: middle; }
+  .sk-val      { fill: var(--d-text);     font: bold 16px monospace; text-anchor: middle; dominant-baseline: middle; }
+  .sk-top-lbl  { fill: var(--d-l2-stroke); font: bold 11px system-ui,sans-serif; }
+  .sk-op-lbl   { fill: var(--d-muted);   font: 11px system-ui,sans-serif; text-anchor: middle; }
+  .sk-lbl      { fill: var(--d-muted);   font: 11px system-ui,sans-serif; }
+</style>
+  <defs>
+    <marker id="sk-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="var(--d-muted)"/>
+    </marker>
+  </defs>
+
+  <!-- ── Col 1: Empty ── x-centre = 55 -->
+  <text x="55" y="18" class="sk-title">Empty</text>
+  <rect x="17" y="28" width="76" height="44" class="sk-empty" rx="4"/>
+  <text x="55" y="53" class="sk-op-lbl" style="font-style:italic">no items</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="96" y1="96" x2="114" y2="96" class="sk-arr"/>
+  <text x="105" y="90" class="sk-op-lbl">push(10)</text>
+
+  <!-- ── Col 2: Push 10 ── x-centre = 185 -->
+  <text x="185" y="18" class="sk-title">Push 10</text>
+  <rect x="147" y="52" width="76" height="44" class="sk-top" rx="4"/>
+  <text x="185" y="76" class="sk-val">10</text>
+  <!-- TOP label above the arrow gap — push ABOVE the box -->
+  <text x="225" y="50" class="sk-top-lbl">← TOP</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="226" y1="96" x2="244" y2="96" class="sk-arr"/>
+  <text x="235" y="90" class="sk-op-lbl">push(20)</text>
+
+  <!-- ── Col 3: Push 20 ── x-centre = 315 -->
+  <text x="315" y="18" class="sk-title">Push 20</text>
+  <rect x="277" y="28" width="76" height="44" class="sk-top" rx="4"/>
+  <text x="315" y="52" class="sk-val">20</text>
+  <text x="355" y="26" class="sk-top-lbl">← TOP</text>
+  <rect x="277" y="72" width="76" height="44" class="sk-col" rx="4"/>
+  <text x="315" y="96" class="sk-val">10</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="356" y1="72" x2="374" y2="72" class="sk-arr"/>
+  <text x="365" y="66" class="sk-op-lbl">push(30)</text>
+
+  <!-- ── Col 4: Push 30 ── x-centre = 445 -->
+  <text x="445" y="18" class="sk-title">Push 30</text>
+  <rect x="407" y="28" width="76" height="40" class="sk-top" rx="4"/>
+  <text x="445" y="50" class="sk-val">30</text>
+  <text x="485" y="26" class="sk-top-lbl">← TOP</text>
+  <rect x="407" y="68" width="76" height="40" class="sk-col" rx="4"/>
+  <text x="445" y="90" class="sk-val">20</text>
+  <rect x="407" y="108" width="76" height="40" class="sk-col" rx="4"/>
+  <text x="445" y="130" class="sk-val">10</text>
+
+  <!-- Arrow 4→5: pop -->
+  <line x1="486" y1="80" x2="504" y2="80" class="sk-arr"/>
+  <text x="495" y="74" class="sk-op-lbl">pop()</text>
+  <!-- return value badge -->
+  <rect x="484" y="86" width="46" height="18" class="sk-op" rx="3"/>
+  <text x="507" y="98" class="sk-op-lbl">→ 30</text>
+
+  <!-- ── Col 5: After Pop ── x-centre = 610 -->
+  <text x="610" y="18" class="sk-title">After Pop</text>
+  <rect x="572" y="28" width="76" height="44" class="sk-top" rx="4"/>
+  <text x="610" y="52" class="sk-val">20</text>
+  <text x="650" y="26" class="sk-top-lbl">← TOP</text>
+  <rect x="572" y="72" width="76" height="44" class="sk-col" rx="4"/>
+  <text x="610" y="96" class="sk-val">10</text>
+  <!-- peek annotation -->
+  <text x="572" y="136" class="sk-lbl">peek() → 20  (no removal)</text>
+
+  <!-- ── Legend ── -->
+  <line x1="10" y1="158" x2="750" y2="158" stroke="var(--d-sem)" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="10"  y="168" width="14" height="14" class="sk-top" rx="2"/>
+  <text x="30"  y="178" class="sk-lbl" style="dominant-baseline:middle">TOP item</text>
+  <rect x="110" y="168" width="14" height="14" class="sk-col" rx="2"/>
+  <text x="130" y="178" class="sk-lbl" style="dominant-baseline:middle">lower items</text>
+  <rect x="230" y="168" width="14" height="14" class="sk-op" rx="2"/>
+  <text x="250" y="178" class="sk-lbl" style="dominant-baseline:middle">return value</text>
+</svg>

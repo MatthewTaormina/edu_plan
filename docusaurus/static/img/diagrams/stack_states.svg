@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 790 215"
+     class="diagram-svg" role="img"
+     aria-label="Stack state progression: Push 10, Push 20, Push 30, Pop returns 30, Peek returns 20">
+
+  <style>
+  :root {
+    --d-bg:        #f4f4f8;
+    --d-card:      #ffffff;
+    --d-primary:   #6d28d9;
+    --d-accent:    #7c3aed;
+    --d-text:      #111827;
+    --d-muted:     #4b5563;
+    --d-l1-fill:   #bfdbfe; --d-l1-stroke: #2563eb;
+    --d-l2-fill:   #bbf7d0; --d-l2-stroke: #16a34a;
+    --d-l3-fill:   #fde68a; --d-l3-stroke: #d97706;
+    --d-l4-fill:   #e9d5ff; --d-l4-stroke: #7c3aed;
+    --d-sem:       #a78bfa;
+    --d-empty:     #e5e7eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --d-bg:        #1e1e2e;
+      --d-card:      #2d2d44;
+      --d-primary:   #a78bfa;
+      --d-accent:    #c4b5fd;
+      --d-text:      #f1f5f9;
+      --d-muted:     #a0aec0;
+      --d-l1-fill:   #1e40af; --d-l1-stroke: #60a5fa;
+      --d-l2-fill:   #166534; --d-l2-stroke: #4ade80;
+      --d-l3-fill:   #92400e; --d-l3-stroke: #fbbf24;
+      --d-l4-fill:   #4c1d95; --d-l4-stroke: #c4b5fd;
+      --d-sem:       #6d5acd;
+      --d-empty:     #374151;
+    }
+  }
+
+  
+    .sk-col       { fill: var(--d-l1-fill);  stroke: var(--d-l1-stroke); stroke-width: 2; }
+    .sk-top       { fill: var(--d-l2-fill);  stroke: var(--d-l2-stroke); stroke-width: 2; }
+    .sk-op        { fill: var(--d-l4-fill);  stroke: var(--d-l4-stroke); stroke-width: 1.5; }
+    .sk-empty     { fill: none; stroke: var(--d-sem); stroke-width: 2; stroke-dasharray: 5 3; }
+    .sk-arr       { stroke: var(--d-muted);  stroke-width: 2; fill: none; marker-end: url(#sk-arrow); }
+    .sk-title     { fill: var(--d-text);     font: 600 13px system-ui,sans-serif; text-anchor: middle; }
+    .sk-val       { fill: var(--d-text);     font: bold 15px monospace; text-anchor: middle; dominant-baseline: middle; }
+    .sk-top-badge { fill: var(--d-l2-stroke);font: bold 10px system-ui,sans-serif; text-anchor: middle; }
+    .sk-transition{ fill: var(--d-muted);    font: 11px system-ui,sans-serif; text-anchor: middle; }
+    .sk-op-lbl    { fill: var(--d-text);     font: 11px system-ui,sans-serif; text-anchor: middle; }
+    .sk-note      { fill: var(--d-muted);    font: 10px system-ui,sans-serif; }
+    .sk-lbl       { fill: var(--d-muted);    font: 11px system-ui,sans-serif; }
+  </style>
+
+  <defs>
+    <marker id="sk-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="var(--d-muted)"/>
+    </marker>
+  </defs>
+
+  <!-- Col 1: Empty -->
+  <text x="50" y="18" class="sk-title">Empty</text>
+  <rect x="10" y="33" width="80" height="40" class="sk-empty" rx="4"/>
+  <text x="50" y="53" class="sk-transition" style="font-style:italic">no items</text>
+
+  <!-- Arrow 1→2: push(10) -->
+  <text x="135" y="37" class="sk-transition">push(10)</text>
+  <line x1="94" y1="53" x2="176" y2="53" class="sk-arr"/>
+
+  <!-- Col 2: Push 10 -->
+  <text x="220" y="18" class="sk-title">Push 10</text>
+  <text x="220" y="30" class="sk-top-badge">▲ TOP</text>
+  <rect x="180" y="33" width="80" height="40" class="sk-top" rx="4"/>
+  <text x="220" y="53" class="sk-val">10</text>
+
+  <!-- Arrow 2→3: push(20) -->
+  <text x="305" y="37" class="sk-transition">push(20)</text>
+  <line x1="264" y1="53" x2="346" y2="53" class="sk-arr"/>
+
+  <!-- Col 3: Push 20 -->
+  <text x="390" y="18" class="sk-title">Push 20</text>
+  <text x="390" y="30" class="sk-top-badge">▲ TOP</text>
+  <rect x="350" y="33" width="80" height="40" class="sk-top" rx="4"/>
+  <text x="390" y="53" class="sk-val">20</text>
+  <rect x="350" y="77" width="80" height="40" class="sk-col" rx="4"/>
+  <text x="390" y="97" class="sk-val">10</text>
+
+  <!-- Arrow 3→4: push(30) -->
+  <text x="475" y="37" class="sk-transition">push(30)</text>
+  <line x1="434" y1="53" x2="516" y2="53" class="sk-arr"/>
+
+  <!-- Col 4: Push 30 -->
+  <text x="560" y="18" class="sk-title">Push 30</text>
+  <text x="560" y="30" class="sk-top-badge">▲ TOP</text>
+  <rect x="520" y="33" width="80" height="40" class="sk-top" rx="4"/>
+  <text x="560" y="53" class="sk-val">30</text>
+  <rect x="520" y="77" width="80" height="40" class="sk-col" rx="4"/>
+  <text x="560" y="97" class="sk-val">20</text>
+  <rect x="520" y="121" width="80" height="40" class="sk-col" rx="4"/>
+  <text x="560" y="141" class="sk-val">10</text>
+
+  <!-- Arrow 4→5: pop() with return badge -->
+  <text x="645" y="37" class="sk-transition">pop()</text>
+  <line x1="604" y1="53" x2="686" y2="53" class="sk-arr"/>
+  <rect x="623" y="59" width="44" height="16" class="sk-op" rx="3"/>
+  <text x="645" y="70" class="sk-op-lbl">→ 30</text>
+
+  <!-- Col 5: After Pop -->
+  <text x="730" y="18" class="sk-title">After Pop</text>
+  <text x="730" y="30" class="sk-top-badge">▲ TOP</text>
+  <rect x="690" y="33" width="80" height="40" class="sk-top" rx="4"/>
+  <text x="730" y="53" class="sk-val">20</text>
+  <rect x="690" y="77" width="80" height="40" class="sk-col" rx="4"/>
+  <text x="730" y="97" class="sk-val">10</text>
+  <text x="690" y="133" class="sk-note">peek() → 20  (no pop)</text>
+
+  <!-- Legend -->
+  <line x1="10" y1="162" x2="780" y2="162" stroke="var(--d-sem)" stroke-width="1" stroke-dasharray="2 3"/>
+  <rect x="10"  y="172" width="14" height="14" class="sk-top" rx="2"/>
+  <text x="30"  y="182" class="sk-lbl" style="dominant-baseline:middle">TOP item</text>
+  <rect x="120" y="172" width="14" height="14" class="sk-col" rx="2"/>
+  <text x="140" y="182" class="sk-lbl" style="dominant-baseline:middle">lower items</text>
+  <rect x="250" y="172" width="14" height="14" class="sk-op" rx="2"/>
+  <text x="270" y="182" class="sk-lbl" style="dominant-baseline:middle">return value</text>
+</svg>
