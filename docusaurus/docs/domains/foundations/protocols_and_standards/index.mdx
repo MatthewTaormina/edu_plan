@@ -1,0 +1,147 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Protocols & Standards
+
+**Domain:** Foundations · **Time Estimate:** 2 weeks · **Language:** Conceptual — implementation examples in multiple languages
+
+> **Prerequisites:** [Networking](../networking.md) helps but is not required — this section is mostly conceptual.
+>
+> **Who needs this:** Everyone in IT, web dev, DevOps, or systems programming. These protocols are the *lingua franca* of the internet. You will encounter HTTP, DNS, and TLS in every production system.
+
+---
+
+## 🎯 Learning Objectives
+
+By the end of this section, you will be able to:
+
+- [ ] Explain how HTTP/1.1, HTTP/2, and HTTP/3 differ and when each is used
+- [ ] Read and construct valid HTTP request and response headers
+- [ ] Explain the TCP/IP model and how data moves through layers
+- [ ] Describe how DNS resolves a domain name to an IP address
+- [ ] Explain what TLS does and how a TLS handshake works (conceptually)
+- [ ] Describe REST architectural constraints and why they matter
+- [ ] Explain WebSockets and when to use them vs. HTTP
+- [ ] Know what a standard is, who makes them, and why they matter (RFC, W3C, IEEE, ISO)
+
+---
+
+## What Protocols and Standards Are
+
+A **protocol** is a set of rules that two parties agree to follow so they can communicate. Without protocols, every system would need custom logic to talk to every other system.
+
+A **standard** is a protocol that has been formally documented and ratified by a standards body, so any implementation following it should interoperate with any other.
+
+**Why this matters to you:**
+- When you write a REST API, you're following the HTTP standard
+- When you debug a network issue, you use DNS knowledge
+- When you add `https://`, TLS is protecting your users
+- When you build real-time features, you choose between WebSockets, SSE, or long-polling
+
+---
+
+## 📚 Subsections
+
+| Page | Topics |
+|------|--------|
+| [TCP/IP Model](./tcp_ip) | 4-layer model, TCP vs UDP, three-way handshake, QUIC |
+| [DNS](./dns) | Domain name resolution, record types, TTL, recursive resolvers |
+| [HTTP](./http) | Request/response anatomy, methods, status codes, HTTP/1.1 vs /2 vs /3 |
+| [TLS & HTTPS](./tls) | Encryption, integrity, authentication, TLS 1.3 handshake, certificate chain |
+| [REST](./rest) | Architectural constraints, resource design, REST vs GraphQL vs gRPC |
+| [WebSockets](./websockets) | Persistent bidirectional channel, when to use vs HTTP, code examples |
+| [Standards Bodies](./standards_bodies) | IETF, W3C, IEEE, ISO, ECMA, OpenAPI, RFCs explained |
+
+---
+
+## 🏗️ Assignments
+
+### Assignment 1 — HTTP Inspector
+**Combines:** HTTP, DNS, CLI tools, file I/O
+
+Using only `curl` and `nslookup`/`dig` from the terminal:
+- [ ] Perform a full `curl -v` request to `https://github.com` and annotate what each line means (write it in a markdown doc)
+- [ ] Find the IP address of 5 different domains using `nslookup`
+- [ ] Identify which HTTP version is being used (HTTP/1.1, 2, or 3) for each
+- [ ] Find a `301` redirect in the wild (try `http://github.com` — no S)
+- [ ] Observe a `304 Not Modified` response (hint: make the same request twice, check `If-None-Match`)
+
+---
+
+### Assignment 2 — Build a REST Client
+**Language:** Your choice
+
+Without using a REST client library for the core logic, build an HTTP client that:
+- [ ] Makes GET, POST, PUT, DELETE requests
+- [ ] Sends and receives JSON
+- [ ] Handles response status codes correctly (404 should throw, 201 should read Location header)
+- [ ] Implements retry logic (retry on 503, max 3 times with backoff)
+- [ ] Logs each request: method, URL, status code, time taken
+
+Test it against a public API like `https://jsonplaceholder.typicode.com/`.
+
+---
+
+### Assignment 3 — WebSocket Chat Server
+**Language:** Python or TypeScript
+
+Build a simple multi-user chat server:
+- [ ] Server accepts WebSocket connections on a port
+- [ ] When a message arrives, **broadcast** it to all connected clients
+- [ ] Include the sender's username in the broadcast
+- [ ] Handle disconnections gracefully (don't crash when a user leaves)
+- [ ] Command: `/users` lists all currently connected usernames
+- [ ] Command: `/quit` disconnects the requesting client
+
+⭐ **Stretch:** Add a `/dm username message` for direct messages.
+
+---
+
+## 📚 Resources
+
+<Tabs>
+<TabItem value="primary" label="Primary (Do These)">
+
+- 📖 **[MDN — HTTP Overview (FREE)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)** — Most thorough HTTP reference, free, always up-to-date
+- 📖 **[How DNS Works (FREE comic)](https://howdns.works/)** — Visual, fun, accurate — read this first for DNS
+
+</TabItem>
+<TabItem value="supplemental" label="Supplemental">
+
+- 📖 **[High Performance Browser Networking — Ilya Grigorik (FREE online)](https://hpbn.co/)** — Deep, excellent coverage of TCP, TLS, HTTP/2
+- 📺 **[Fireship — HTTP Crash Course (YouTube, FREE)](https://www.youtube.com/watch?v=iYM2zFP3Zn0)** — 12-minute visual intro
+
+</TabItem>
+<TabItem value="tools-to-use" label="Tools to Use">
+
+- 🔧 **[Postman (FREE tier)](https://www.postman.com/)** — GUI for making HTTP requests
+- 🔧 **curl** — CLI HTTP client, available everywhere. Learn `curl -v` for verbose output showing full request/response
+- 🔧 **Wireshark (FREE)** — Capture and inspect real network packets
+- 🔧 **Browser DevTools → Network tab** — See every HTTP request your browser makes in real time
+
+</TabItem>
+</Tabs>
+
+---
+
+## ✅ Milestone Checklist
+
+- [ ] Can draw the TCP/IP 4-layer model from memory with examples at each layer
+- [ ] Can explain the DNS resolution chain without notes
+- [ ] Can read any HTTP request/response and identify method, headers, status, and body
+- [ ] Know what TLS does and why HTTPS matters (can explain to a non-technical person)
+- [ ] Know the 5 REST constraints and can identify REST vs. non-REST APIs
+- [ ] Know when to use WebSockets vs. HTTP
+- [ ] All 3 assignments committed to GitHub
+
+---
+
+## 🏆 Milestone Complete!
+
+> **You now speak the internet's language.**
+>
+> HTTP, DNS, and TLS underpin almost every professional system you'll work with.
+> Every API you build, every cloud service you deploy, every security audit you participate in
+> requires this knowledge. You've got it.
+
+**Log this in your kanban:** Move `foundations/protocols_and_standards` to ✅ Done.
