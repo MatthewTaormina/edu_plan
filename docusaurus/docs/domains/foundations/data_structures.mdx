@@ -898,15 +898,72 @@ A **hash table** maps keys to values with average O(1) lookup, insert, and delet
 
 **Concept — how it works:**
 
-```mermaid
-flowchart LR
-    K1["key: &quot;name&quot;"] --> H1["hash()"] --> B1["bucket[42]"] --> V1["&quot;Alice&quot;"]
-    K2["key: &quot;age&quot;"]  --> H2["hash()"] --> B2["bucket[7]"]  --> V2["25"]
-    K3["key: &quot;city&quot;"] --> H3["hash()"] --> B3["bucket[19]"] --> V3["&quot;Toronto&quot;"]
-    style B1 fill:#4c1d95,color:#fff
-    style B2 fill:#4c1d95,color:#fff
-    style B3 fill:#4c1d95,color:#fff
-```
+<div className="svg-graphic-container margin-bottom--lg">
+  <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Hash table: key is hashed to a bucket index, and the value is stored there">
+    <style>{`
+      .ht-key    { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
+      .ht-hash   { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 2; }
+      .ht-bucket { fill: var(--diagram-layer-3-fill); stroke: var(--diagram-layer-3-stroke); stroke-width: 2; }
+      .ht-val    { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
+      .ht-arr    { stroke: var(--diagram-text-muted); stroke-width: 1.5; fill: none; marker-end: url(#ht-arrow); }
+      .ht-txt    { fill: var(--diagram-text);       font: 13px monospace; text-anchor: middle; dominant-baseline: middle; }
+      .ht-lbl    { fill: var(--diagram-text-muted); font: 10px var(--ifm-font-family-base); text-anchor: middle; }
+    `}</style>
+    <defs>
+      <marker id="ht-arrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+        <polygon points="0 0, 7 2.5, 0 5" fill="var(--diagram-text-muted)" />
+      </marker>
+    </defs>
+
+    {/* Column headers */}
+    <text x="80"  y="16" className="ht-lbl">key</text>
+    <text x="220" y="16" className="ht-lbl">hash(key)</text>
+    <text x="370" y="16" className="ht-lbl">bucket index</text>
+    <text x="530" y="16" className="ht-lbl">value</text>
+
+    {/* Row 1 */}
+    <rect x="20"  y="30" width="120" height="32" className="ht-key"   rx="4"/>
+    <text x="80"  y="47" className="ht-txt">&quot;name&quot;</text>
+    <line x1="140" y1="46" x2="158" y2="46" className="ht-arr"/>
+    <rect x="160" y="30" width="120" height="32" className="ht-hash"  rx="4"/>
+    <text x="220" y="47" className="ht-txt">hash()</text>
+    <line x1="280" y1="46" x2="298" y2="46" className="ht-arr"/>
+    <rect x="300" y="30" width="120" height="32" className="ht-bucket" rx="4"/>
+    <text x="360" y="47" className="ht-txt">bucket[42]</text>
+    <line x1="420" y1="46" x2="438" y2="46" className="ht-arr"/>
+    <rect x="440" y="30" width="120" height="32" className="ht-val"   rx="4"/>
+    <text x="500" y="47" className="ht-txt">&quot;Alice&quot;</text>
+
+    {/* Row 2 */}
+    <rect x="20"  y="74" width="120" height="32" className="ht-key"   rx="4"/>
+    <text x="80"  y="91" className="ht-txt">&quot;age&quot;</text>
+    <line x1="140" y1="90" x2="158" y2="90" className="ht-arr"/>
+    <rect x="160" y="74" width="120" height="32" className="ht-hash"  rx="4"/>
+    <text x="220" y="91" className="ht-txt">hash()</text>
+    <line x1="280" y1="90" x2="298" y2="90" className="ht-arr"/>
+    <rect x="300" y="74" width="120" height="32" className="ht-bucket" rx="4"/>
+    <text x="360" y="91" className="ht-txt">bucket[7]</text>
+    <line x1="420" y1="90" x2="438" y2="90" className="ht-arr"/>
+    <rect x="440" y="74" width="120" height="32" className="ht-val"   rx="4"/>
+    <text x="500" y="91" className="ht-txt">25</text>
+
+    {/* Row 3 */}
+    <rect x="20"  y="118" width="120" height="32" className="ht-key"   rx="4"/>
+    <text x="80"  y="135" className="ht-txt">&quot;city&quot;</text>
+    <line x1="140" y1="134" x2="158" y2="134" className="ht-arr"/>
+    <rect x="160" y="118" width="120" height="32" className="ht-hash"  rx="4"/>
+    <text x="220" y="135" className="ht-txt">hash()</text>
+    <line x1="280" y1="134" x2="298" y2="134" className="ht-arr"/>
+    <rect x="300" y="118" width="120" height="32" className="ht-bucket" rx="4"/>
+    <text x="360" y="135" className="ht-txt">bucket[19]</text>
+    <line x1="420" y1="134" x2="438" y2="134" className="ht-arr"/>
+    <rect x="440" y="118" width="120" height="32" className="ht-val"   rx="4"/>
+    <text x="500" y="135" className="ht-txt">&quot;Toronto&quot;</text>
+
+    {/* bottom note */}
+    <text x="340" y="168" className="ht-lbl" style={{fontSize:'11px'}}>Each key hashes to a unique bucket index → O(1) average lookup, no searching</text>
+  </svg>
+</div>
 
 Lookup `table["name"]`:
 1. `hash("name")` → 42
@@ -1083,15 +1140,70 @@ When does a hash table's worst-case O(n) actually occur? What is a "hash collisi
 
 A **tree** is a hierarchical structure. Every node has one parent (except root) and zero or more children. Trees are acyclic.
 
-```
-         50              ← root (depth 0)
-        /  \
-      30    70           ← internal nodes (depth 1)
-     /  \     \
-   20   40    80         ← leaves (depth 2)
+<div className="svg-graphic-container margin-bottom--lg">
+  <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Binary Search Tree: root 50, left subtree 30 with children 20 and 40, right subtree 70 with child 80">
+    <style>{`
+      .tr-node  { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2; }
+      .tr-root  { fill: var(--diagram-layer-4-fill); stroke: var(--diagram-layer-4-stroke); stroke-width: 2.5; }
+      .tr-leaf  { fill: var(--diagram-layer-1-fill); stroke: var(--diagram-layer-1-stroke); stroke-width: 2; }
+      .tr-edge  { stroke: var(--diagram-text-muted); stroke-width: 2; }
+      .tr-val   { fill: var(--diagram-text); font: bold 18px monospace; text-anchor: middle; dominant-baseline: middle; }
+      .tr-ann   { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: start; dominant-baseline: middle; }
+      .tr-dep   { fill: var(--diagram-layer-2-stroke); font: bold 11px var(--ifm-font-family-base); text-anchor: end; dominant-baseline: middle; }
+      .tr-lbl   { fill: var(--diagram-text-muted); font: 10px var(--ifm-font-family-base); text-anchor: middle; }
+    `}</style>
 
-Height = 2 (longest root-to-leaf path)
-```
+    {/* Depth guide lines */}
+    <line x1="10" y1="80"  x2="420" y2="80"  stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 4"/>
+    <line x1="10" y1="168" x2="420" y2="168" stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 4"/>
+    <line x1="10" y1="256" x2="420" y2="256" stroke="var(--diagram-semantic-stroke)" strokeWidth="1" strokeDasharray="3 4"/>
+    <text x="408" y="80"  className="tr-dep">depth 0</text>
+    <text x="408" y="168" className="tr-dep">depth 1</text>
+    <text x="408" y="256" className="tr-dep">depth 2</text>
+
+    {/* Edges */}
+    <line x1="210" y1="98"  x2="130" y2="150" className="tr-edge"/>
+    <line x1="210" y1="98"  x2="290" y2="150" className="tr-edge"/>
+    <line x1="130" y1="186" x2="70"  y2="238" className="tr-edge"/>
+    <line x1="130" y1="186" x2="190" y2="238" className="tr-edge"/>
+    <line x1="290" y1="186" x2="350" y2="238" className="tr-edge"/>
+
+    {/* Root */}
+    <circle cx="210" cy="80"  r="28" className="tr-root"/>
+    <text    x="210"  y="80"  className="tr-val">50</text>
+
+    {/* Depth 1 */}
+    <circle cx="130" cy="168" r="26" className="tr-node"/>
+    <text    x="130"  y="168" className="tr-val">30</text>
+    <circle cx="290" cy="168" r="26" className="tr-node"/>
+    <text    x="290"  y="168" className="tr-val">70</text>
+
+    {/* Depth 2 / Leaves */}
+    <circle cx="70"  cy="256" r="24" className="tr-leaf"/>
+    <text    x="70"   y="256" className="tr-val">20</text>
+    <circle cx="190" cy="256" r="24" className="tr-leaf"/>
+    <text    x="190"  y="256" className="tr-val">40</text>
+    <circle cx="350" cy="256" r="24" className="tr-leaf"/>
+    <text    x="350"  y="256" className="tr-val">80</text>
+
+    {/* Annotations */}
+    <text x="440" y="80"  className="tr-ann">root — top of the tree, no parent</text>
+    <text x="440" y="168" className="tr-ann">internal nodes — have children</text>
+    <text x="440" y="256" className="tr-ann">leaves — no children</text>
+
+    {/* BST ordering annotation */}
+    <text x="60" y="16" className="tr-lbl" style={{textAnchor:'start', fontSize:'11px', fill:'var(--diagram-text)'}}>BST rule: left child &lt; parent &lt; right child</text>
+    <text x="60" y="30" className="tr-lbl" style={{textAnchor:'start'}}>Height = 2  (longest root-to-leaf path)</text>
+
+    {/* Legend */}
+    <circle cx="26" cy="200" r="10" className="tr-root"/>
+    <text x="42" y="200" className="tr-lbl" style={{textAnchor:'start'}}>root</text>
+    <circle cx="80" cy="200" r="10" className="tr-node"/>
+    <text x="96" y="200" className="tr-lbl" style={{textAnchor:'start'}}>internal</text>
+    <circle cx="150" cy="200" r="10" className="tr-leaf"/>
+    <text x="166" y="200" className="tr-lbl" style={{textAnchor:'start'}}>leaf</text>
+  </svg>
+</div>
 
 **Binary Search Tree (BST) rule:** for every node, ALL values in the left subtree are smaller, ALL values in the right subtree are larger. This makes search O(log n) for balanced trees.
 
@@ -1261,14 +1373,59 @@ What happens to BST search performance when you insert elements in sorted order?
 
 A **graph** is nodes connected by edges. Unlike trees, graphs can have cycles and any connection structure.
 
-```mermaid
-flowchart LR
-    A --- B
-    A --- C
-    B --- D
-    C --- D
-    D --- E
-```
+<div className="svg-graphic-container margin-bottom--lg">
+  <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" className="diagram-svg" role="img" aria-label="Undirected graph with 5 nodes: A connected to B and C, B connected to D, C connected to D, D connected to E">
+    <style>{`
+      .gr-node { fill: var(--diagram-layer-2-fill); stroke: var(--diagram-layer-2-stroke); stroke-width: 2.5; }
+      .gr-edge { stroke: var(--diagram-text-muted); stroke-width: 2; }
+      .gr-val  { fill: var(--diagram-text); font: bold 17px monospace; text-anchor: middle; dominant-baseline: middle; }
+      .gr-lbl  { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: middle; }
+      .gr-ann  { fill: var(--diagram-text-muted); font: 11px var(--ifm-font-family-base); text-anchor: start; dominant-baseline: middle; }
+    `}</style>
+
+    {/* Edges (undirected — no arrowheads) */}
+    <line x1="120" y1="100" x2="240" y2="60"  className="gr-edge"/>{/* A-B */}
+    <line x1="120" y1="100" x2="240" y2="160" className="gr-edge"/>{/* A-C */}
+    <line x1="240" y1="60"  x2="370" y2="100" className="gr-edge"/>{/* B-D */}
+    <line x1="240" y1="160" x2="370" y2="100" className="gr-edge"/>{/* C-D */}
+    <line x1="370" y1="100" x2="490" y2="100" className="gr-edge"/>{/* D-E */}
+
+    {/* Nodes */}
+    <circle cx="120" cy="100" r="28" className="gr-node"/>
+    <text    x="120"  y="100" className="gr-val">A</text>
+
+    <circle cx="240" cy="60"  r="28" className="gr-node"/>
+    <text    x="240"  y="60"  className="gr-val">B</text>
+
+    <circle cx="240" cy="160" r="28" className="gr-node"/>
+    <text    x="240"  y="160" className="gr-val">C</text>
+
+    <circle cx="370" cy="100" r="28" className="gr-node"/>
+    <text    x="370"  y="100" className="gr-val">D</text>
+
+    <circle cx="490" cy="100" r="28" className="gr-node"/>
+    <text    x="490"  y="100" className="gr-val">E</text>
+
+    {/* Edge labels */}
+    <text x="178" y="55"  className="gr-lbl">A–B</text>
+    <text x="178" y="148" className="gr-lbl">A–C</text>
+    <text x="302" y="64"  className="gr-lbl">B–D</text>
+    <text x="302" y="148" className="gr-lbl">C–D</text>
+    <text x="428" y="88"  className="gr-lbl">D–E</text>
+
+    {/* Annotations column */}
+    <text x="548" y="46"  className="gr-ann">Undirected: edges have</text>
+    <text x="548" y="60"  className="gr-ann">no direction (A↔B)</text>
+    <text x="548" y="84"  className="gr-ann">Directed: arrow shows</text>
+    <text x="548" y="98"  className="gr-ann">one-way flow (A→B)</text>
+    <text x="548" y="122" className="gr-ann">Weighted: edges carry</text>
+    <text x="548" y="136" className="gr-ann">a cost (distance, time…)</text>
+
+    {/* Adjacency list */}
+    <text x="20"  y="205" className="gr-lbl" style={{textAnchor:'start', fontSize:'11px', fill:'var(--diagram-text)', fontWeight:'bold'}}>Adjacency list (how this graph is stored):</text>
+    <text x="20"  y="222" className="gr-lbl" style={{textAnchor:'start', fontFamily:'monospace', fontSize:'11px', fill:'var(--diagram-text)'}}>A → [B, C]   B → [A, D]   C → [A, D]   D → [B, C, E]   E → [D]</text>
+  </svg>
+</div>
 
 **Types:** directed (edges have direction), undirected (bidirectional), weighted (edges have costs).
 
