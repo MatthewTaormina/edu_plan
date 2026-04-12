@@ -1,165 +1,600 @@
-# HTML & CSS Reference
+---
+title: HTML & CSS Reference
+description: The complete HTML and CSS reference — semantics, the box model, Flexbox, Grid, custom properties, responsive design, and accessibility.
+sidebar_label: HTML & CSS
+---
 
-> **Domain:** Web Development · **Role:** Frontend / Fullstack
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import YouTubeEmbed from '@site/src/components/YouTubeEmbed';
+import QuizQuestion from '@site/src/components/QuizQuestion';
+import MilestoneChecklist from '@site/src/components/MilestoneChecklist';
 
-This reference guide covers the structural and aesthetic backbone of the open web. Elements covered here are assumed knowledge for the associated courses in the Web Development track.
+> **Domain:** Web Development · **Status:** 🔵 Foundation (HTML, 1991 · CSS, 1996) — the permanent bedrock of the web
+>
+> **Prerequisites:** None.
+>
+> **Who needs this:** Every frontend and fullstack developer. Everything else in web development sits on top of HTML and CSS.
 
 ---
 
-## 📖 Concepts: HTML Architecture
+## 🎯 Learning Objectives
 
-HTML (HyperText Markup Language) is the standard markup language for documents designed to be displayed in a web browser. Modern web applications rely on **semantic HTML** to provide meaning and accessiblity to user agents and screen readers.
+By the end of this unit, you will be able to:
 
-### The Document Structure
+- [ ] Write valid, semantic HTML that passes accessibility audits
+- [ ] Explain specificity, inheritance, and the cascade — and use them deliberately
+- [ ] Build any layout using Flexbox and CSS Grid
+- [ ] Use CSS custom properties (variables) for a maintainable design system
+- [ ] Write responsive CSS using `clamp()`, container queries, and media queries
+- [ ] Use CSS transitions and `@keyframes` animations
+- [ ] Apply ARIA and accessibility best practices for interactive elements
 
-Every HTML document consists of a tree of nodes (the Document Object Model or DOM) originating from a single root.
+---
+
+<YouTubeEmbed
+  id="1Rs2ND1ryYc"
+  title="CSS Tutorial — Zero to Hero (Full Course) by freeCodeCamp"
+  caption="Full CSS course by freeCodeCamp — practical, covers everything from box model through Flexbox and Grid."
+/>
+
+---
+
+## 📖 Concepts
+
+### 1. HTML Document Structure
+
+Every HTML document is a tree of nodes — the **Document Object Model (DOM)**. Understanding this tree is the foundation of everything: CSS selectors, JavaScript manipulation, accessibility, and performance.
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Metadata — not visible in the page body -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Title</title>
+    <meta name="description" content="Page description for search engines">
+    <title>Page Title — shown in browser tab and search results</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <!-- Visible content goes here -->
+    <!-- All visible content goes here -->
   </body>
 </html>
 ```
 
-### Semantic Architecture
+---
 
-Avoid `<div>` soup. Use semantic elements that describe their meaning to both the browser and the developer.
+### 2. Semantic HTML
 
-- **`<header>`**: Introductory content, typically containing navigation links or logos.
-- **`<nav>`**: A section of a page whose purpose is to provide navigation links.
-- **`<main>`**: The dominant content of the `<body>` of a document. A document must not have more than one `<main>` element.
-- **`<article>`**: A self-contained composition (e.g., a forum post, a magazine or newspaper article, or a blog entry).
-- **`<section>`**: A standalone section of a document, which doesn't have a more specific semantic element to represent it.
-- **`<aside>`**: Content indirectly related to the document's main content (e.g., sidebars).
-- **`<footer>`**: A footer for its nearest sectioning content.
+Semantic elements tell the browser (and assistive technologies) what the content *means*, not just how it looks.
+
+```mermaid
+graph TD
+    html["&lt;html&gt;"]
+    header["&lt;header&gt;\nSite logo, nav"]
+    nav["&lt;nav&gt;\nNavigation links"]
+    main["&lt;main&gt;\nPrimary content\n(only one per page)"]
+    article["&lt;article&gt;\nSelf-contained content\n(blog post, card)"]
+    section["&lt;section&gt;\nThematic grouping"]
+    aside["&lt;aside&gt;\nSidebar, related links"]
+    footer["&lt;footer&gt;\nCopyright, contact"]
+
+    html --> header
+    html --> main
+    html --> footer
+    header --> nav
+    main --> article
+    main --> aside
+    article --> section
+```
+
+**Use semantic elements instead of generic `<div>` everywhere:**
+
+| Element | Use for |
+|---------|---------|
+| `<header>` | Site or section header (logo, site nav, hero) |
+| `<nav>` | Primary navigation links |
+| `<main>` | The primary content — **one per page** |
+| `<article>` | Self-contained composition (post, card, comment) |
+| `<section>` | Thematic grouping within a page or article |
+| `<aside>` | Tangentially related content (sidebar, pull quote) |
+| `<footer>` | Footer for page or section |
+| `<figure>` + `<figcaption>` | Media with a caption (images, code, charts) |
+| `<time datetime="2025-01-01">` | Machine-readable dates |
+| `<address>` | Contact information |
+
+:::tip
+**`<div>` and `<span>` have no semantic meaning** — they're styling hooks. Use them when no semantic element fits, not as your default. Accessible HTML uses semantics first, and accessibility features become essentially free.
+:::
 
 ---
 
-## 📖 Concepts: CSS Mechanics
+### 3. Headings — One `<h1>`, Then Hierarchy
 
-CSS (Cascading Style Sheets) controls the presentation, formatting, and layout of the HTML document.
+```html
+<h1>Site/Page Title — ONE per page (SEO + screen reader landmark)</h1>
+  <h2>Major Section</h2>
+    <h3>Sub-section</h3>
+      <h4>Sub-sub-section (use sparingly)</h4>
+  <h2>Another Major Section</h2>
+```
 
-### The Cascade & Specificity
+:::important
+Never skip heading levels for visual reasons. Screen readers build a document outline from headings. Jumping from `<h2>` to `<h4>` breaks navigation for users of assistive technology. If you need smaller text, use CSS — don't downgrade the heading level.
+:::
 
-The "Cascade" determines which CSS rules apply if multiple rules target the same element. It calculates a weight (specificity) based on the selector types.
+---
 
-1. **Inline styles** (`style="..."`): Highest specificity.
-2. **IDs** (`#header`): High specificity.
-3. **Classes, attributes, and pseudo-classes** (`.card`, `[type="text"]`, `:hover`): Medium specificity.
-4. **Elements and pseudo-elements** (`div`, `h1`, `::before`): Low specificity.
+### 4. The Box Model
 
-> [!TIP]
-> **Best Practice:** Keep specificity low. Rely on classes (`.button`) rather than IDs (`#submit-button`) or element nesting (`div ul li a`) to make overriding styles easier and your CSS more maintainable.
+Every element in CSS is a rectangular box. The box model defines how its dimensions are calculated.
 
-### The Box Model
-
-Every element in web design is a rectangular box. CSS determines the size and properties of these boxes.
-
-- **Content**: The content of the box, where text and images appear.
-- **Padding**: Clears an area around the content. The padding is transparent.
-- **Border**: A border that goes around the padding and content.
-- **Margin**: Clears an area outside the border. The margin is transparent.
-
-The native box model calculates width as: `Width = Content Width`. Padding and Borders are *added* to this.
-Modern CSS recommends changing this behavior globally:
+```mermaid
+graph LR
+    subgraph margin["Margin (transparent)"]
+        subgraph border["Border"]
+            subgraph padding["Padding (transparent)"]
+                content["Content\n(text, images)"]
+            end
+        end
+    end
+```
 
 ```css
-/* Apply a more intuitive box model */
+/* The browser default: width = content only; padding and border ADD to it */
+.box {
+    width: 300px;       /* Content width */
+    padding: 20px;      /* Adds 40px total */
+    border: 2px solid;  /* Adds 4px total */
+    /* Total rendered width: 300 + 40 + 4 = 344px — confusing! */
+}
+
+/* Modern best practice: width INCLUDES padding and border */
 *, *::before, *::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+.box {
+    width: 300px;       /* Total width is exactly 300px */
+    padding: 20px;      /* Content area shrinks to fit */
+    border: 2px solid;
 }
 ```
-With `border-box`, `Width = Content + Padding + Border`.
+
+Always set `box-sizing: border-box` globally. It is the intuitive default and every modern framework does it.
 
 ---
 
-## 📖 Layout Paradigms
+### 5. The Cascade, Specificity, and Inheritance
 
-Historically, layouts were achieved using floats or tables. Modern CSS uses two primary layout systems: Flexbox (1D) and Grid (2D).
+The **cascade** resolves conflicts when multiple rules target the same element. Priority (from lowest to highest):
 
-### Flexbox (1-Dimensional Layout)
+1. Browser user-agent stylesheet (defaults)
+2. Inherited styles (properties that flow down the DOM tree)
+3. Author stylesheet — by **specificity**, then by **source order**
+4. `!important` (avoid — breaks the cascade deliberately)
 
-Flexbox is designed for laying out items in a single dimension—either in a row or a column.
+**Specificity** is a score calculated from selector components:
 
-- **Main Axis**: The primary axis along which flex items are laid out (horizontal if `flex-direction: row`). Directed by `justify-content`.
-- **Cross Axis**: The axis perpendicular to the main axis (vertical if `flex-direction: row`). Directed by `align-items`.
+| Selector type | Specificity points |
+|---------------|--------------------|
+| Inline `style=""` | `1-0-0-0` (highest) |
+| ID `#header` | `0-1-0-0` |
+| Class `.card`, attribute `[type]`, pseudo-class `:hover` | `0-0-1-0` |
+| Element `div`, pseudo-element `::before` | `0-0-0-1` |
+| Universal `*`, combinators `>`, `+`, `~` | `0-0-0-0` |
+
+```css
+/* Specificity: 0-0-0-1 (element) */
+p { color: black; }
+
+/* Specificity: 0-0-1-0 (class) — wins */
+.intro { color: navy; }
+
+/* Specificity: 0-0-1-1 (class + element) — wins over .intro alone */
+p.intro { color: blue; }
+
+/* Specificity: 0-1-0-0 (ID) — wins over all of the above */
+#hero { color: white; }
+```
+
+:::tip
+**Keep specificity low.** Build with classes. Avoid IDs in CSS. Avoid nesting selectors deeply. Low-specificity CSS is easier to override, debug, and maintain. If you need to increase specificity, add a class — don't reach for `!important`.
+:::
+
+**Inheritance:** Some properties automatically pass to children (`color`, `font-size`, `font-family`, `line-height`). Others don't (`border`, `padding`, `margin`, `background`).
+
+```css
+body {
+    font-family: Inter, sans-serif;  /* Inherited by all text elements */
+    color: #1a1a2e;                  /* Inherited */
+}
+button {
+    /* Buttons don't inherit font by default — explicitly reset */
+    font: inherit;
+}
+```
+
+---
+
+### 6. CSS Custom Properties (Variables)
+
+Custom properties are the foundation of any maintainable design system.
+
+```css
+/* Define on :root — available everywhere */
+:root {
+    /* Colors */
+    --color-primary:      hsl(265, 60%, 45%);
+    --color-primary-dim:  hsl(265, 60%, 35%);
+    --color-accent:       hsl(195, 90%, 50%);
+    --color-surface:      hsl(240, 10%, 8%);
+    --color-on-surface:   hsl(240, 10%, 92%);
+
+    /* Typography */
+    --font-sans:  'Inter', system-ui, sans-serif;
+    --font-mono:  'JetBrains Mono', 'Fira Code', monospace;
+    --text-sm:    0.875rem;
+    --text-base:  1rem;
+    --text-lg:    1.125rem;
+
+    /* Spacing scale */
+    --space-1: 0.25rem;  /* 4px */
+    --space-2: 0.5rem;   /* 8px */
+    --space-4: 1rem;     /* 16px */
+    --space-8: 2rem;     /* 32px */
+
+    /* Borders */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+}
+
+/* Use with var() */
+.button {
+    background-color: var(--color-primary);
+    color: var(--color-on-surface);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-sans);
+}
+
+/* Override locally for a component */
+.danger-button {
+    --color-primary: hsl(0, 75%, 50%);  /* Overrides within this element's scope */
+}
+
+/* Dark mode: just change the variables */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-surface:    hsl(240, 10%, 8%);
+        --color-on-surface: hsl(240, 10%, 92%);
+    }
+}
+```
+
+---
+
+### 7. Flexbox — One-Dimensional Layout
+
+Flexbox lays items out in **one direction**: a row or a column.
 
 ```css
 .flex-container {
-  display: flex;
-  flex-direction: row; /* or column */
-  justify-content: space-between; /* align on main axis */
-  align-items: center; /* align on cross axis */
-  flex-wrap: wrap; /* allow items to flow to next line */
+    display: flex;
+    flex-direction: row;           /* or column, row-reverse, column-reverse */
+    justify-content: space-between; /* Main axis alignment */
+    align-items: center;           /* Cross axis alignment */
+    flex-wrap: wrap;               /* Allow items to wrap to next line */
+    gap: 1rem;                     /* Space between items (modern — use over margin hacks) */
 }
+
+/* Flex item controls */
+.flex-item {
+    flex-grow: 1;    /* Take up available space proportionally */
+    flex-shrink: 0;  /* Don't shrink below flex-basis */
+    flex-basis: 200px; /* Starting size before flex adjustments */
+    /* Shorthand: flex: 1 0 200px */
+}
+
+/* Common patterns */
+.navbar        { display: flex; justify-content: space-between; align-items: center; }
+.card-footer   { display: flex; gap: 0.5rem; margin-top: auto; } /* Push to bottom */
+.icon-with-text{ display: flex; align-items: center; gap: 0.5rem; }
+.centered      { display: flex; justify-content: center; align-items: center; }
 ```
 
-### CSS Grid (2-Dimensional Layout)
+**`justify-content` values:**
 
-Grid is designed for two-dimensional layouts—managing columns and rows simultaneously.
+| Value | Behaviour |
+|-------|-----------|
+| `flex-start` | Pack at start (default) |
+| `flex-end` | Pack at end |
+| `center` | Center together |
+| `space-between` | First/last at edges, equal gaps between |
+| `space-around` | Equal space around each item |
+| `space-evenly` | Equal space between all items including edges |
+
+---
+
+### 8. CSS Grid — Two-Dimensional Layout
+
+Grid manages both rows and columns simultaneously.
 
 ```css
 .grid-container {
-  display: grid;
-  /* Define 3 equal columns */
-  grid-template-columns: repeat(3, 1fr);
-  /* Define rows automatically based on content, min 100px */
-  grid-auto-rows: minmax(100px, auto);
-  /* Spacing between grid items */
-  gap: 1rem;
+    display: grid;
+
+    /* Define columns */
+    grid-template-columns: repeat(3, 1fr);        /* 3 equal columns */
+    grid-template-columns: 250px 1fr;             /* Sidebar + content */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive cards */
+
+    /* Define rows */
+    grid-auto-rows: minmax(100px, auto);           /* Rows size to content, min 100px */
+
+    gap: 1rem;                                     /* Row and column gap */
+    row-gap: 2rem; column-gap: 1rem;              /* Or separately */
 }
+
+/* Place items explicitly */
+.header { grid-column: 1 / -1; }  /* Span all columns */
+.sidebar{ grid-column: 1 / 2; grid-row: 2 / 4; }  /* Fixed position */
+.main   { grid-column: 2 / -1; }
+
+/* Named template areas — most readable for page layouts */
+.page-layout {
+    display: grid;
+    grid-template-areas:
+        "header  header"
+        "sidebar main"
+        "footer  footer";
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+}
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+.footer  { grid-area: footer; }
 ```
+
+**Flexbox vs Grid — when to use which:**
+
+| Use | Flexbox | Grid |
+|-----|---------|------|
+| Layout direction | One axis known | Two axes needed |
+| Content-sized items | ✅ | Works but less natural |
+| Precise alignment to a grid | Less natural | ✅ |
+| Navbars, toolbars | ✅ | Possible |
+| Card grids | Works | ✅ |
+| Full page layout | Works | ✅ |
+
+:::tip
+In practice, you'll use both on the same page. Grid for the overall page structure and major layout regions; Flexbox for components within those regions (navbars, card contents, button groups).
+:::
 
 ---
 
-## 📖 Responsive Design
+### 9. Responsive Design
 
-Responsive web design ensures that web pages render well on a variety of devices and window or screen sizes.
-
-### Media Queries
-
-Media queries apply CSS properties only if a certain condition is true (e.g., the browser width is below or above a certain pixel count).
+**Mobile-first approach:** Write base styles for small screens, then add complexity for larger screens with `min-width` media queries.
 
 ```css
-/* Base styles apply to mobile first */
+/* Base: mobile */
 .container {
-  width: 100%;
+    width: 100%;
+    padding: 1rem;
 }
 
-/* Tablet and larger */
-@media (min-width: 768px) {
-  .container {
-    width: 750px;
-  }
+/* Tablet and up */
+@media (min-width: 640px) {
+    .container { max-width: 600px; margin: 0 auto; }
 }
 
-/* Desktop and larger */
+/* Desktop */
 @media (min-width: 1024px) {
-  .container {
-    width: 960px;
-  }
+    .container { max-width: 960px; }
+}
+
+/* Modern: clamp() for fluid typography — no media queries needed */
+h1 {
+    /* Min 1.75rem, scales with viewport, max 3rem */
+    font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
 }
 ```
 
-### Relative Units
+**Container queries (2023, widely supported)** — respond to the parent container's size instead of the viewport:
 
-- **`em` / `rem`**: Font-size relative to the parent (`em`) or the root element (`rem`). Use `rem` for typography and spacing to maintain accessible scaling.
-- **`vw` / `vh`**: 1% of the viewport width/height. Use cautiously for typography, as it does not respect user zoom settings gracefully.
+```css
+.card-container {
+    container-type: inline-size;
+    container-name: card;
+}
+
+@container card (min-width: 400px) {
+    .card { display: flex; }          /* Horizontal layout when card is wide */
+}
+@container card (max-width: 399px) {
+    .card { display: block; }         /* Stacked when card is narrow */
+}
+```
 
 ---
-## 📚 Resources
 
-=== "Primary"
-    - [MDN Web Docs: HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
-    - [MDN Web Docs: CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
+### 10. Transitions and Animations
 
-=== "Supplemental"
-    - [CSS-Tricks: A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
-    - [CSS-Tricks: A Complete Guide to Grid](https://css-tricks.com/snippets/css/complete-guide-grid/)
+```css
+/* Transition — smooth change between two states */
+.button {
+    background-color: var(--color-primary);
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    /* property  duration  easing */
+    transition: background-color 200ms ease,
+                transform 150ms ease,
+                box-shadow 200ms ease;
+}
+.button:hover {
+    background-color: var(--color-primary-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* Keyframe animation — multi-step, runs automatically */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title {
+    animation: fadeInUp 600ms ease-out both;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+```
+
+---
+
+### 11. Accessibility Essentials
+
+Accessible HTML is not a separate concern — it's just correct HTML.
+
+```html
+<!-- Images: always describe content, empty alt for decorative -->
+<img src="chart.png" alt="Bar chart showing 40% increase in sales Q1 2025">
+<img src="divider.svg" alt="">  <!-- Decorative — screen reader skips it -->
+
+<!-- Forms: every input needs a label -->
+<label for="email">Email address</label>
+<input type="email" id="email" name="email" required
+       aria-describedby="email-hint">
+<p id="email-hint">We'll never share your email.</p>
+
+<!-- Buttons vs links -->
+<button type="button">Submit form</button>              <!-- Does something -->
+<a href="/about">Learn more about us</a>               <!-- Navigates somewhere -->
+<!-- NEVER: <div onclick="..."> — no keyboard access, no screen reader role -->
+
+<!-- ARIA roles (use sparingly — prefer HTML semantics) -->
+<nav aria-label="Main navigation">...</nav>
+<nav aria-label="Breadcrumb">...</nav>
+
+<!-- Interactive elements: announce state -->
+<button aria-expanded="false" aria-controls="dropdown-menu">Menu</button>
+<ul id="dropdown-menu" hidden>...</ul>
+
+<!-- Live regions — announce dynamic content changes -->
+<div aria-live="polite" aria-atomic="true" id="status-message">
+    <!-- JS updates this, screen reader announces the new text -->
+</div>
+```
+
+**Quick accessibility audit checklist:**
+- All images have `alt` text
+- All form inputs have associated `<label>` elements
+- All interactive elements are reachable with Tab key
+- Focus outline is visible (don't `outline: none` without a replacement)
+- Color contrast ratio ≥ 4.5:1 for body text (use browser DevTools to check)
+- Page has exactly one `<h1>`
+- Page has a `<main>` landmark
+
+---
+
+## 🧠 Quick Check
+
+<QuizQuestion
+  id="htmlcss-q1"
+  question="You have a row of three cards that should be equal width and evenly spaced. Which approach is most appropriate?"
+  options={[
+    { label: "display: flex with justify-content: space-between and flex: 1 on each card", correct: true, explanation: "Correct! Flexbox on the container distributes space between items. flex: 1 makes each card grow equally. space-between pushes them apart." },
+    { label: "float: left on each card with a fixed width", correct: false, explanation: "Floats are a legacy technique for layout. Use Flexbox or Grid instead — they're simpler and more powerful." },
+    { label: "display: inline-block with text-align: center on the parent", correct: false, explanation: "inline-block has quirks (whitespace between elements, vertical alignment issues) and doesn't handle equal width distribution cleanly." },
+    { label: "position: absolute on each card with manually calculated left values", correct: false, explanation: "Absolute positioning removes elements from the normal flow — they won't respond to container size changes." },
+  ]}
+/>
+
+<QuizQuestion
+  id="htmlcss-q2"
+  question="Which CSS specificity wins: an ID selector #hero, or .hero.featured.large (three classes)?"
+  options={[
+    { label: "#hero — IDs always beat classes regardless of how many classes you stack", correct: true, explanation: "Correct! ID specificity is 0-1-0-0,  three classes are 0-0-3-0. IDs always beat any number of classes. This is why IDs in CSS make styles hard to override." },
+    { label: ".hero.featured.large — three classes beat one ID", correct: false, explanation: "No — IDs (0-1-0-0) always beat classes (0-0-n-0) regardless of how many class selectors you chain. Specificity is not additive across categories." },
+    { label: "They tie — specificity is equal", correct: false, explanation: "They are not equal. ID selectors have a higher specificity category than class selectors." },
+    { label: "Whichever comes later in the stylesheet wins", correct: false, explanation: "Source order only matters when specificity is equal. Here they're not equal — the ID wins." },
+  ]}
+/>
+
+<QuizQuestion
+  id="htmlcss-q3"
+  question="A client reports that updating your CSS theme colors requires changing the same value in 47 different places. What's the fix?"
+  options={[
+    { label: "Use a CSS preprocessor like Sass with $variables", correct: false, explanation: "Sass variables work, but CSS Custom Properties (var(--name)) are the modern native solution — no build step required, and they can be changed at runtime with JavaScript or @media queries." },
+    { label: "Use CSS Custom Properties (--color-primary: ...) defined on :root and referenced with var()", correct: true, explanation: "Correct! Custom properties (native CSS variables) let you define a value once on :root and reference it everywhere. Changing it in one place updates the whole site instantly." },
+    { label: "Find and replace all hex values in your editor", correct: false, explanation: "That solves today's problem but guarantees tomorrow's. You want a system, not a manual process." },
+    { label: "Use JavaScript to set all colors at runtime", correct: false, explanation: "JS can set custom properties (document.documentElement.style.setProperty(...)) but you don't need JS just to define the colors — CSS Custom Properties handle that natively." },
+  ]}
+/>
+
+---
+
+## 🏗️ Assignments
+
+### Assignment 1 — Semantic Page
+Build a blog post page using only semantic HTML (no CSS yet):
+- `<header>` with site logo and `<nav>`
+- `<main>` with `<article>` containing `<h1>`, multiple `<h2>` sections, a `<figure>` with `<figcaption>`, and an `<aside>`
+- `<footer>` with contact info using `<address>`
+- Run the page through the WAVE accessibility tool and fix all errors
+
+### Assignment 2 — Layout System
+Build a full responsive page layout:
+- [ ] Use CSS Grid for the page structure (header, sidebar, main, footer) with named areas
+- [ ] Use Flexbox inside the navbar and card components
+- [ ] Use `clamp()` for fluid heading sizes (no media query needed for typography)
+- [ ] Add a responsive card grid that auto-fills with `minmax(250px, 1fr)`
+- [ ] Dark mode via `@media (prefers-color-scheme: dark)` that only changes custom property values
+
+### Assignment 3 — Animation
+Add polish to the layout from Assignment 2:
+- [ ] Smooth hover transitions on all interactive elements (button, card, nav link)
+- [ ] A `fadeInUp` entry animation on the hero section
+- [ ] A CSS-only dropdown menu animated with `max-height` transition
+- [ ] Ensure all animations respect `prefers-reduced-motion`
+
+---
+
+## ✅ Milestone Checklist
+
+<MilestoneChecklist
+  lessonId="wiki-html-css"
+  items={[
+    "Can write semantic HTML that passes an accessibility audit",
+    "Understand specificity and can predict which rule wins without a calculator",
+    "Can build any layout using Flexbox and Grid — and know which to choose",
+    "Use CSS Custom Properties for all design tokens (colors, spacing, typography)",
+    "Build responsive layouts with mobile-first media queries and clamp()",
+    "Add transitions and animations that respect prefers-reduced-motion",
+    "All three assignments complete",
+  ]}
+/>
+
+---
+
+## ➡️ See Also
+
+- [Course: HTML Fundamentals](../../courses/html_fundamentals/index)
+- [Course: CSS Fundamentals](../../courses/css_fundamentals/index)
+- [JavaScript Core](./javascript_core) — making it interactive
