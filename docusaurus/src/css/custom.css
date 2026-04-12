@@ -194,3 +194,90 @@
   justify-content: center;
   margin: 1.5rem 0;
 }
+
+/* ─── Inline SVG Diagram Colour Tokens ───────────────────────────────────── */
+/*
+ * Use var(--diagram-*) for ALL inline SVG diagrams.
+ * These are explicitly tuned for both themes — do NOT use --ifm-color-X-100
+ * tints in SVGs because they collapse to near-black in dark mode.
+ */
+:root {
+  /* Layer fills — distinct pastel tints in light mode */
+  --diagram-layer-1-fill:   #dbeafe;   /* blue-100   */
+  --diagram-layer-1-stroke: #1d4ed8;   /* blue-700   */
+  --diagram-layer-2-fill:   #dcfce7;   /* green-100  */
+  --diagram-layer-2-stroke: #15803d;   /* green-700  */
+  --diagram-layer-3-fill:   #fef9c3;   /* yellow-100 */
+  --diagram-layer-3-stroke: #a16207;   /* yellow-700 */
+  --diagram-layer-4-fill:   #fee2e2;   /* red-100    */
+  --diagram-layer-4-stroke: #b91c1c;   /* red-700    */
+
+  /* Semantic page layout fills */
+  --diagram-semantic-header: #e0e7ff;  /* indigo-100 */
+  --diagram-semantic-nav:    #c7d2fe;  /* indigo-200 */
+  --diagram-semantic-main:   #d1fae5;  /* emerald-100 */
+  --diagram-semantic-article:#a7f3d0;  /* emerald-200 */
+  --diagram-semantic-aside:  #fef3c7;  /* amber-100  */
+  --diagram-semantic-footer: #e5e7eb;  /* gray-200   */
+  --diagram-semantic-page:   #f3f4f6;  /* gray-100   */
+  --diagram-semantic-stroke: #6b7280;  /* gray-500   */
+
+  /* Box model fills */
+  --diagram-box-margin-fill:  #fff7ed; /* orange-50  */
+  --diagram-box-margin-stroke:#c2410c; /* orange-700 */
+  --diagram-box-border-fill:  #fef9c3; /* yellow-100 */
+  --diagram-box-border-stroke:#ca8a04; /* yellow-600 */
+  --diagram-box-padding-fill: #dcfce7; /* green-100  */
+  --diagram-box-padding-stroke:#16a34a;/* green-600  */
+  --diagram-box-content-fill: #dbeafe; /* blue-100   */
+  --diagram-box-content-stroke:#2563eb;/* blue-600   */
+
+  /* Shared text */
+  --diagram-text:             #111827; /* gray-900   */
+  --diagram-text-muted:       #374151; /* gray-700   */
+}
+
+[data-theme='dark'] {
+  /* Layer fills — rich dark-mode variants with enough contrast */
+  --diagram-layer-1-fill:   #1e3a5f;
+  --diagram-layer-1-stroke: #60a5fa;   /* blue-400  */
+  --diagram-layer-2-fill:   #14432a;
+  --diagram-layer-2-stroke: #4ade80;   /* green-400 */
+  --diagram-layer-3-fill:   #422006;
+  --diagram-layer-3-stroke: #fbbf24;   /* amber-400 */
+  --diagram-layer-4-fill:   #450a0a;
+  --diagram-layer-4-stroke: #f87171;   /* red-400   */
+
+  /* Semantic page layout fills */
+  --diagram-semantic-header: #1e2a4a;
+  --diagram-semantic-nav:    #2a3a6a;
+  --diagram-semantic-main:   #132d1e;
+  --diagram-semantic-article:#1a3d28;
+  --diagram-semantic-aside:  #3d2e0a;
+  --diagram-semantic-footer: #1f2937;
+  --diagram-semantic-page:   #111827;
+  --diagram-semantic-stroke: #9ca3af;  /* gray-400  */
+
+  /* Box model fills */
+  --diagram-box-margin-fill:  #431407;
+  --diagram-box-margin-stroke:#fb923c; /* orange-400 */
+  --diagram-box-border-fill:  #422006;
+  --diagram-box-border-stroke:#fbbf24; /* yellow-400 */
+  --diagram-box-padding-fill: #14432a;
+  --diagram-box-padding-stroke:#4ade80; /* green-400 */
+  --diagram-box-content-fill: #1e3a5f;
+  --diagram-box-content-stroke:#60a5fa; /* blue-400  */
+
+  /* Shared text */
+  --diagram-text:             #f9fafb; /* gray-50   */
+  --diagram-text-muted:       #d1d5db; /* gray-300  */
+}
+
+/* Container for inline SVGs */
+.diagram-svg {
+  width: 100%;
+  max-width: 760px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
