@@ -1,0 +1,189 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Cache
+
+> **Part of:** [CPU](./index) · [Hardware Fundamentals](../index)
+
+The CPU cache is the single most impactful hardware concept for application-level performance. Code that fits its working set in cache runs orders of magnitude faster than code that constantly reaches out to RAM.
+
+---
+
+## The Memory Hierarchy
+
+Every level is faster, more expensive, and smaller than the one below it. The CPU always tries the nearest level first.
+
+```mermaid
+graph TD
+    REG["Registers\n~1 KB / core\n~0.3 ns\nFastest"]
+    L1["L1 Cache (private / core)\n32–64 KB / core\n~1–4 ns\n~1 TB/s bandwidth"]
+    L2["L2 Cache (private / core)\n256 KB – 4 MB / core\n~4–12 ns\n~hundreds GB/s"]
+    L3["L3 Cache (shared)\n8 MB – 192 MB total\n~30–40 ns\n~hundreds GB/s"]
+    RAM["RAM — DRAM\nGBs\n~60–100 ns\n~50–100 GB/s"]
+    NVME["NVMe SSD\nTBs\n~50–100 μs\n~5–7 GB/s"]
+    SATA["SATA SSD\nTBs\n~100–200 μs\n~500 MB/s"]
+    HDD["HDD\nTBs\n~5–15 ms\n~150 MB/s"]
+
+    REG --> L1 --> L2 --> L3 --> RAM --> NVME --> SATA --> HDD
+```
+
+**The key insight:** L1 cache is roughly **100× faster than RAM**. A cache miss that falls all the way to RAM stalls the CPU for 60–100 nanoseconds — enough time for 200+ wasted cycles. Programs whose working data fits in L3 run dramatically faster than those that spill to RAM constantly.
+
+---
+
+## Cache Lines — How Data Actually Moves
+
+The CPU never moves individual bytes between cache levels. It moves **cache lines** — fixed 64-byte blocks. When you read a single `int` (4 bytes), the CPU fetches the entire 64-byte line containing it.
+
+```mermaid
+graph LR
+    subgraph "Memory (RAM)"
+        B0["byte 0"]
+        B1["byte 1"]
+        Bn["..."]
+        B63["byte 63"]
+        B64["byte 64"]
+        B127["byte 127"]
+    end
+    CL0["Cache Line 0\n64 bytes"]
+    CL1["Cache Line 1\n64 bytes"]
+    B0 & B1 & Bn & B63 --> CL0
+    B64 & B127 --> CL1
+    CL0 --> L1["L1 Cache"]
+    CL1 --> L1
+```
+
+**Consequence:** accessing `array[0]` brings `array[0]` through `array[15]` (for a 4-byte int array) into L1 cache simultaneously. Accessing `array[1]` immediately after is effectively free.
+
+---
+
+## Cache-Friendly vs Cache-Hostile Code
+
+<Tabs>
+<TabItem value="friendly" label="Cache-Friendly (Fast)">
+
+```python
+# Sequential access — hardware prefetcher can predict and preload
+total = sum(arr)  # Access arr[0], arr[1], arr[2]... same cache lines throughout
+
+# Struct of Arrays (SoA) — process hot fields together
+positions_x = [e.x for e in entities]  # All x values packed tightly
+positions_y = [e.y for e in entities]  # All y values packed tightly
+
+# When updating positions every frame:
+for i in range(len(positions_x)):
+    positions_x[i] += velocities_x[i]  # Accesses two tightly-packed arrays — cache-friendly
+```
+
+</TabItem>
+<TabItem value="hostile" label="Cache-Hostile (Slow)">
+
+```python
+# Column-major access on a row-major array — jumps across cache lines
+matrix = [[...] for _ in range(1000)]  # 1000×1000 matrix
+
+# BAD: iterating column-first in a row-major layout
+# Each matrix[row][col] access jumps ~4KB — cache thrashes
+for col in range(1000):
+    for row in range(1000):
+        total += matrix[row][col]
+
+# GOOD: row-first matches memory layout — same cache line hit repeatedly
+for row in range(1000):
+    for col in range(1000):
+        total += matrix[row][col]
+# The row-first version can be 5–10× faster on large matrices
+```
+
+</TabItem>
+<TabItem value="struct" label="Array of Structs vs Struct of Arrays">
+
+```rust
+// Array of Structs (AoS) — bad for hot-loop access patterns
+struct Entity {
+    id: u64,        // 8 bytes  — queried rarely
+    x: f32,         // 4 bytes  — updated every frame
+    y: f32,         // 4 bytes  — updated every frame
+    name: String,   // 24 bytes — almost never touched
+    active: bool,   // 1 byte   — checked every frame
+}
+// Each Entity is ~41 bytes. To update x/y for 10,000 entities,
+// we drag the unused `id` and `name` into cache unnecessarily.
+
+// Struct of Arrays (SoA) — cache-optimal for batch processing
+struct World {
+    x: Vec<f32>,      // All x values packed contiguously
+    y: Vec<f32>,      // All y values packed contiguously
+    active: Vec<bool>,// All active flags packed contiguously
+    name: Vec<String>,// Cold data — only load when needed
+}
+// Now the hot update loop only touches x, y, active — fits in cache perfectly.
+// This is the foundation of Data-Oriented Design (DoD) used in game engines.
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## False Sharing — A Multi-Core Cache Trap
+
+False sharing occurs when two threads on different cores write to **different variables that happen to share a cache line**. The hardware cache coherency protocol causes the cache line to bounce between cores, serialising what should be parallel work.
+
+```mermaid
+sequenceDiagram
+    participant Core0
+    participant CacheLine as "Cache Line (64 bytes)\ncontains: counter_a[0..3] + counter_b[0..3]"
+    participant Core1
+
+    Core0->>CacheLine: Write counter_a (bytes 0–3)
+    Note over CacheLine: Line marked MODIFIED on Core 0
+    Core1->>CacheLine: Write counter_b (bytes 4–7)
+    Note over CacheLine: Core 1 must INVALIDATE Core 0's copy first
+    Core0->>CacheLine: Write counter_a again
+    Note over CacheLine: Core 0 must INVALIDATE Core 1's copy first
+    Note over Core0,Core1: Both cores are serialised despite writing different variables
+```
+
+**Fix:** Pad structures so each thread's data occupies its own cache line:
+
+```rust
+// Padded counter — each lives in its own 64-byte cache line
+#[repr(align(64))]
+struct PaddedCounter {
+    value: u64,
+    _pad: [u8; 56],   // Pad to 64 bytes total
+}
+```
+
+---
+
+## L3 Cache and Its Impact on Real Workloads
+
+AMD's 3D V-Cache products (e.g., Ryzen 7 9800X3D with 96 MB L3) demonstrate how dramatically cache size affects cache-sensitive workloads:
+
+```mermaid
+graph LR
+    OS["Working\ndata set size"] --> CMP{Fits in L3?}
+    CMP -->|Yes| Fast["Served from L3\n~30–40 ns latency\nExcellent performance"]
+    CMP -->|No| RAM["Must go to RAM\n~60–100 ns latency\nPerformance degrades"]
+    RAM --> DB["Especially painful:\nDatabases, game engines,\nbranchy workloads with\nlarge lookup tables"]
+```
+
+---
+
+## Practical Rules
+
+| Rule | Reason |
+|------|--------|
+| Access arrays sequentially, not randomly | Hardware prefetcher can predict sequential access patterns |
+| Group hot data together; keep cold data separate | Avoid dragging unused fields into cache lines |
+| Avoid pointer-chasing in hot loops | Each pointer dereference is a potential cache miss (linked lists, trees) |
+| Align thread-local data to cache line boundaries | Prevents false sharing |
+| Prefer arrays and contiguous memory over scattered heap objects | Predictable access = better prefetching |
+
+---
+
+:::tip[Try It 🔍]
+Write two versions of a 2D array sum in any language — one row-first, one column-first. Time both with a 2000×2000 matrix. The difference will be measurable and instructive. On large matrices that exceed L3 cache, the ratio often exceeds 5×.
+:::

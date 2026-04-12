@@ -1,0 +1,202 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# HDD — Hard Disk Drives
+
+> **Part of:** [Storage](./index) · [Hardware Fundamentals](../index)
+
+> **Tool:** HDD · **Introduced:** 1956 (IBM 350) · **Latest:** 20–24 TB helium-filled drives (2024) · **Deprecated:** N/A · **Status:** 🟡 Legacy (substantially replaced by SSD for primary storage, but dominant for high-capacity cold storage)
+
+Hard disk drives store data magnetically on spinning platters. They are orders of magnitude slower than SSDs for random access but remain cost-competitive for massive sequential storage — backup archives, media libraries, log retention, and cold-tier cloud storage.
+
+---
+
+## How an HDD Works
+
+```mermaid
+graph TD
+    subgraph HDD["HDD Internals"]
+        MOTOR["Spindle Motor\n(7,200 RPM)"]
+        PLATTER1["Platter 1\n(magnetic coating, both sides)"]
+        PLATTER2["Platter 2"]
+        PLATTER3["Platter 3"]
+        ARM["Actuator Arm\n(positions read/write head)"]
+        HEAD["Read/Write Head\n(floats 3 nm above surface)"]
+        CACHE["DRAM Cache\n(128–512 MB)"]
+
+        MOTOR --> PLATTER1 & PLATTER2 & PLATTER3
+        ARM --> HEAD
+        HEAD -.->|"Seek to track"| PLATTER1
+        HEAD -->|"Read/write data"| CACHE
+    end
+```
+
+**Key mechanical concepts:**
+
+| Term | Definition |
+|------|-----------|
+| **Platter** | Rigid disk coated in ferromagnetic material. Data is stored as magnetic domains |
+| **Track** | Concentric ring on a platter — each platter has thousands |
+| **Sector** | Fixed-size slice of a track — historically 512 bytes, modern drives use 4096-byte (4K) sectors |
+| **Cylinder** | The same track number across all platters — the head stack moves together |
+| **Seek time** | Time for the arm to physically move to the correct track (~3–12 ms average) |
+| **Rotational latency** | Time for the correct sector to spin under the head (avg = half rotation = ~4.2 ms at 7,200 RPM) |
+| **Transfer rate** | Once the head is in position, data streams off the platter at 150–250 MB/s |
+
+**Total random read latency = seek time + rotational latency + transfer time**
+~5 ms + 4 ms + ~0.1 ms = **~10 ms per random access** — compared to NVMe's ~0.07 ms.
+
+---
+
+## RPM and What It Means
+
+```mermaid
+graph LR
+    RPM5["5,400 RPM\nNAS / Laptop HDDs\nQuieter, lower power\nAvg rotational latency: ~5.6 ms"]
+    RPM7["7,200 RPM\nDesktop / Server standard\nAvg rotational latency: ~4.2 ms"]
+    RPM10["10,000 RPM\nEnterprise SAS (legacy)\nAvg rotational latency: ~3 ms"]
+    RPM15["15,000 RPM\nHigh-end enterprise SAS\nAvg rotational latency: ~2 ms"]
+
+    RPM5 -->|"Faster"| RPM7 -->|"Faster"| RPM10 -->|"Faster"| RPM15
+```
+
+15K RPM drives (SAS) have mostly been superseded by SSDs in enterprise contexts — an NVMe SSD at ~0.07 ms random latency still beats a 15K drive (~2 ms) by 28×.
+
+---
+
+## CMR vs SMR — Recording Technology
+
+Modern HDDs use two different recording techniques that have significant implications for write performance:
+
+```mermaid
+graph TD
+    subgraph CMR["CMR — Conventional Magnetic Recording\n(also called PMR)"]
+        direction LR
+        T1CMR["Track 1"]
+        T2CMR["Track 2"]
+        T3CMR["Track 3"]
+        T1CMR --- T2CMR --- T3CMR
+        CMRNOTE["Tracks are independent\nOverwrite any track at any time\nPredictable random write performance"]
+    end
+
+    subgraph SMR["SMR — Shingled Magnetic Recording"]
+        direction LR
+        T1SMR["Track 1"]
+        T2SMR["Track 2 (overlaps)"]
+        T3SMR["Track 3 (overlaps)"]
+        T1SMR -.->|"overlaps"| T2SMR -.->|"overlaps"| T3SMR
+        SMRNOTE["Tracks overlap like shingles\nHigher density — more GB per platter\nBut: overwriting zone requires\nread-modify-write of entire band\nBad for random writes / NAS RAID"]
+    end
+```
+
+**Why SMR matters:** Many budget HDDs quietly use SMR to achieve higher capacities cheaply. In NAS RAID arrays, SMR drives can cause extended rebuild times and poor write performance under load. Always verify CMR vs SMR before buying NAS drives.
+
+**CMR NAS drive examples:** Western Digital Red Plus, Seagate IronWolf (non-Pro), Toshiba N300.
+**SMR consumer examples:** WD Blue (some models), Seagate Barracuda (some models) — check manufacturer spec sheets.
+
+---
+
+## Sequential vs Random Access
+
+HDDs are extremely good at sequential access (reading one continuous stream of data) and extremely poor at random access (jumping between scattered locations):
+
+```mermaid
+graph LR
+    subgraph Sequential["Sequential Read"]
+        SQ["Head positioned once\nData streams off platter at 150–250 MB/s\nNo seeking between reads"]
+    end
+
+    subgraph Random["Random Read"]
+        RQ["Each read = seek + rotate\nAverage ~10 ms per read\n100 random reads = ~1 second\n= only ~100 reads/second"]
+    end
+
+    Sequential -->|"When HDD performs well"| GOOD["Backups, video streaming,\nlog archive, bulk copy"]
+    Random -->|"When HDD performs badly"| BAD["Databases, OS boot,\napp launch, VM disk images"]
+```
+
+---
+
+## When HDDs Still Make Sense
+
+Despite SSDs dominating primary storage, HDDs retain strong advantages:
+
+| Use case | Why HDD wins |
+|---------|-------------|
+| **Bulk backup / archive** | 20 TB HDD = ~$30/TB vs $50–100+/TB for SSD |
+| **Cold storage / compliance** | Sequential throughput is fine; cost-per-GB is decisive |
+| **Video surveillance** | High sequential write, enormous capacity needs, cost-sensitive |
+| **Media library** | Videos are large sequential reads — HDD bandwidth is sufficient |
+| **NAS (non-RAID-rebuild heavy)** | CMR NAS drives offer reliability + capacity for home labs |
+| **Cloud cold tier** | AWS S3 Glacier, GCP Nearline — backed by HDDs; pennies per GB |
+
+---
+
+## Checking HDD Health
+
+<Tabs>
+<TabItem value="linux" label="Linux">
+
+```bash
+# SMART health check (install smartmontools)
+sudo smartctl -H /dev/sda       # Quick health summary
+sudo smartctl -a /dev/sda       # Full SMART attribute dump
+
+# Key SMART attributes to monitor:
+# ID 5  — Reallocated Sector Count: non-zero = bad sectors remapped (warning sign)
+# ID 187 — Reported Uncorrectable Errors: should be 0
+# ID 197 — Current Pending Sector Count: sectors waiting to be remapped
+# ID 198 — Uncorrectable Sector Count: sectors that couldn't be recovered
+
+# Long self-test (takes hours on large drives)
+sudo smartctl -t long /dev/sda
+sudo smartctl -a /dev/sda       # Check results after test completes
+
+# Real-time monitoring of a specific drive
+sudo watch -n 5 smartctl -A /dev/sda
+```
+
+</TabItem>
+<TabItem value="windows" label="Windows">
+
+```powershell
+# Quick health check
+Get-PhysicalDisk | Select-Object FriendlyName, HealthStatus, OperationalStatus
+
+# SMART data
+Get-StorageReliabilityCounter -PhysicalDisk (Get-PhysicalDisk) |
+  Select-Object DeviceId, ReadErrorsTotal, WriteErrorsTotal, Temperature
+
+# Best option: CrystalDiskInfo (free GUI)
+# Colour-coded health status, all SMART attributes, temperature history
+# Download: https://crystalmark.info/en/software/crystaldiskinfo/
+
+# Windows Disk Management
+# Start → Disk Management — view partitions, disk status, format options
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## RAID Basics (Awareness Level)
+
+RAID (Redundant Array of Independent Disks) uses multiple HDDs together for either performance, redundancy, or both. The key levels:
+
+| RAID Level | Disks | Capacity | Redundancy | Read / Write |
+|-----------|-------|----------|-----------|-------------|
+| RAID 0 | 2+ | 100% | None (one fail = all lost) | Fast R+W |
+| RAID 1 | 2 | 50% | 1 disk can fail | Fast R, normal W |
+| RAID 5 | 3+ | ~66–80% | 1 disk can fail | Good R, slower W |
+| RAID 6 | 4+ | ~50–75% | 2 disks can fail | Good R, slower W |
+| RAID 10 | 4+ | 50% | 1 per mirrored pair | Fast R+W |
+
+:::warning
+**RAID is not a backup.** Accidental deletion, ransomware, controller failure, or fire will destroy a RAID array just as effectively as a disk failure. RAID provides uptime; backups provide data recovery.
+:::
+
+---
+
+:::tip[Research Question 🔍]
+Look up **HAMR** (Heat-Assisted Magnetic Recording) and **MAMR** (Microwave-Assisted Magnetic Recording). Both are technologies for pushing HDD areal density beyond what conventional PMR/CMR can achieve (targeting 30–50 TB per drive by 2027). How do they work, and which major manufacturers are pursuing each approach?
+:::

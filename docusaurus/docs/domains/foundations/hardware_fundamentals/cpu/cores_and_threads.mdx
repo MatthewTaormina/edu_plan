@@ -1,0 +1,149 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Cores & Threads
+
+> **Part of:** [CPU](./index) · [Hardware Fundamentals](../index)
+
+Modern CPUs achieve parallelism through **physical cores** and **hardware threads**. Understanding the difference — and knowing where limits lie — is essential for writing performant server software, choosing cloud instances, and diagnosing bottlenecks.
+
+---
+
+## Physical Cores vs Logical Processors
+
+```mermaid
+graph TD
+    subgraph "8-Core CPU with Hyperthreading"
+        direction LR
+        subgraph C0["Physical Core 0"]
+            T0["Logical Processor 0\n(HW Thread 0)"]
+            T1["Logical Processor 1\n(HW Thread 1)"]
+        end
+        subgraph C1["Physical Core 1"]
+            T2["Logical Processor 2"]
+            T3["Logical Processor 3"]
+        end
+        subgraph C2["Physical Core 2"]
+            T4["Logical Processor 4"]
+            T5["Logical Processor 5"]
+        end
+        subgraph CDots["..."]
+            TD["Physical Core 7\n→ LP 14 + LP 15"]
+        end
+    end
+    OS["OS Scheduler\n(sees 16 logical processors)"]
+    OS --> T0 & T1 & T2 & T3 & T4 & T5 & TD
+```
+
+| Concept | What It Is |
+|---------|-----------|
+| **Physical core** | A fully independent execution unit — its own registers, ALU, FPU, L1/L2 cache |
+| **Logical processor** | What the OS sees. With Hyperthreading: 2 per physical core, sharing execution units |
+| **Hyperthreading (Intel) / SMT (AMD)** | When one thread stalls waiting for memory, the second thread uses the idle execution units |
+| **Thread (software)** | A unit of scheduled work — don't confuse with hardware threads |
+
+**Practical impact of Hyperthreading:**
+- Best case (one thread stalls a lot): ~30–40% extra throughput
+- Worst case (both threads need full execution units): minimal gain, sometimes slight regression
+- Disabled in some security-sensitive environments (Spectre/Meltdown mitigations)
+
+---
+
+## NUMA — Non-Uniform Memory Access
+
+NUMA appears in **dual-socket server motherboards** — two physical CPUs sharing a single system.  Each CPU has RAM physically attached to it. Accessing the *other* socket's RAM crosses an interconnect and is significantly slower.
+
+```mermaid
+graph LR
+    subgraph Socket0["Socket 0 (NUMA Node 0)"]
+        CPU0["CPU 0\n(32 cores)"]
+        MEM0["Memory 0\n(256 GB DDR5)\nLocal latency: ~60 ns"]
+    end
+    subgraph Socket1["Socket 1 (NUMA Node 1)"]
+        CPU1["CPU 1\n(32 cores)"]
+        MEM1["Memory 1\n(256 GB DDR5)\nLocal latency: ~60 ns"]
+    end
+    CPU0 <-->|"QPI / UPI / Infinity Fabric\nRemote latency: ~120–200 ns\n(2× slower)"| CPU1
+    CPU0 --- MEM0
+    CPU1 --- MEM1
+    CPU0 -.->|"Remote access"| MEM1
+```
+
+**Why this matters:**
+- A process running on CPU 0 cores that allocates memory on NUMA node 1 pays 2× the memory latency penalty — on *every* memory access
+- Database servers, JVMs, and in-memory caches can degrade severely if the OS scheduler ignores NUMA topology
+- Cloud instances larger than 96 vCPUs are almost always NUMA systems
+
+### Checking and Controlling NUMA
+
+<Tabs>
+<TabItem value="linux" label="Linux">
+
+```bash
+# Check NUMA topology
+numactl --hardware             # Node count, memory per node, distance matrix
+lstopo                         # Visual topology map (hwloc package)
+lscpu | grep NUMA              # Quick NUMA node count
+
+# Run a process pinned to NUMA node 0 (uses only local memory and cores)
+numactl --cpunodebind=0 --membind=0 ./my_process
+
+# Check NUMA memory stats
+numastat                       # Per-node allocation hits/misses
+numastat -p <pid>              # NUMA stats for a specific process
+
+# Set NUMA policy for a process at runtime (Linux 5.x+)
+taskset -c 0-31 ./my_process   # Pin to logical processors 0–31
+```
+
+</TabItem>
+<TabItem value="windows" label="Windows (PowerShell)">
+
+```powershell
+# View NUMA nodes
+Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, SocketDesignation
+
+# Check if system is NUMA
+[System.Environment]::GetEnvironmentVariable("NUMBER_OF_PROCESSORS")
+# Task Manager → Performance → CPU → right-click → Show NUMA nodes
+
+# Set processor affinity for a process (pin to logical processors 0–31)
+$proc = Start-Process "my_process.exe" -PassThru
+$proc.ProcessorAffinity = [System.IntPtr]0x00000000FFFFFFFF  # Mask for first 32 LPs
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## How Many Cores Do You Actually Need?
+
+```mermaid
+graph TD
+    Q1{Is the work parallelisable?}
+    Q1 -->|No — inherently sequential| SEQ["Single-core speed wins\nHigh clock, high IPC\nExample: game engine main loop"]
+    Q1 -->|Partially| AMDT["Amdahl's Law applies\nDoublingcores gives diminishing returns"]
+    Q1 -->|Fully| PAR["Core count scales linearly\nExample: embarrassingly parallel ML training"]
+
+    AMDT --> AL["Amdahl: speedup = 1 / (S + (1-S)/N)\nS = serial fraction\nN = number of cores"]
+    AL --> EX["Example: 20% serial code\nMax speedup with ∞ cores = 5×\n16 cores only gives ~4.1×"]
+```
+
+**Amdahl's Law in plain English:** If 20% of your program is single-threaded, adding more cores eventually stops helping — the serial section becomes the bottleneck. This is why most programs don't linearly scale with core count.
+
+---
+
+## Cloud Instance Sizing: Cores
+
+| Need | Instance type | Reasoning |
+|------|--------------|-----------|
+| High-concurrency web server | Many vCPUs (c7i, c7g) | Requests are independent — scale with core count |
+| Database (OLTP) | Moderate vCPUs + fast clock | Most queries are single-threaded |
+| ML training | Many cores or GPU | Matrix ops are massively parallel |
+| Background batch jobs | Burstable (t4g) | Rarely CPU-bound continuously |
+| Real-time latency-sensitive | Dedicated (metal) instances | Avoid noisy-neighbour vCPU sharing |
+
+:::tip[Research Question 🔍]
+Search for "Amdahl's Law vs Gustafson's Law". Amdahl assumes a fixed problem size; Gustafson argues the workload grows with the hardware. Which model better describes how web servers scale when traffic increases?
+:::
